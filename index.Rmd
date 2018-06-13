@@ -3,7 +3,7 @@ title: "Tidyverse package development principles"
 author: ["Tidyverse Team"]
 site: bookdown::bookdown_site
 output: bookdown::gitbook
-github-repo: tidyverse/style
+github-repo: tidyverse/principles
 documentclass: book
 ---
 

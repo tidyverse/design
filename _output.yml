@@ -3,8 +3,12 @@ bookdown::gitbook:
   config:
     toc:
       before: |
-        <li><a href="./">R Style Guide</a></li>
+        <li><a href="./">tidyverse development principles</a></li>
       after: |
         <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
-    edit: https://github.com/tidyverse/style/edit/master/%s
-    sharing: no
+    edit: https://github.com/tidyverse/principles/edit/master/%s
+    sharing:
+      github: yes
+      facebook: no
+      twitter: no
+      
