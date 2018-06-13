@@ -1,0 +1,20 @@
+# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
+
+language: R
+sudo: false
+cache:
+  packages: true
+  directories:
+  - _bookdown_files
+  - $HOME/.npm
+
+before_install:
+- npm install netlify-cli -g
+
+script:
+- Rscript -e 'bookdown::render_book("index.Rmd")'
+
+deploy:
+  provider: script
+  script: netlify deploy -t $NETLIFY_PAT
+  skip_cleanup: true

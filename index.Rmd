@@ -1,0 +1,14 @@
+--- 
+title: "Tidyverse package development principles"
+author: ["Tidyverse Team"]
+site: bookdown::bookdown_site
+output: bookdown::gitbook
+github-repo: tidyverse/style
+documentclass: book
+---
+
+# Welcome {-}
+
+A place to document (and hash out) development principles for packages in the [tidyverse](http://tidyverse.org).
+
+A complement to <http://style.tidyverse.org>.

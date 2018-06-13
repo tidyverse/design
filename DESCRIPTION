@@ -1,0 +1,13 @@
+Package: principles
+Title: Tidyverse principles
+Version: 1.0.0
+Authors@R: c(
+  person("Tidyverse", "Team", , "tidyverse@rstudio.com", c("aut", "cre"))
+  )
+Depends: 
+    R (>= 3.1.0)
+Imports: 
+    bookdown,
+    rmarkdown
+URL: https://github.com/tidyverse/principles
+BugReports: https://github.com/tidyverse/principles/issues
