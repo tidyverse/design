@@ -1,4 +1,6 @@
 [![Travis build status](https://travis-ci.org/tidyverse/principles.svg?branch=master)](https://travis-ci.org/tidyverse/principles)
 
-An R Style Guide written in **bookdown** (https://github.com/rstudio/bookdown). 
+A place to document (and hash out) development principles for packages in the [tidyverse](http://tidyverse.org).
+
+A complement to <http://style.tidyverse.org>.
 
