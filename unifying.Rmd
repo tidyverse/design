@@ -1,0 +1,69 @@
+# Unifying principles
+
+While the subsequent chapters will get deeper into technical details, to begin I wanted to lay out some of the overarching principles that apply throughout the tidyverse. They are inspired by the [Unix Philsophy](https://homepage.cs.uri.edu/~thenry/resources/unix_art/ch01s06.html) and the [Zen of Python](https://www.python.org/dev/peps/pep-0020/). 
+
+These principles are aspirational, and I'll also note where in the tidyverse we fail to abide by them, and give you a little historical context as to why.
+
+## Consistent
+
+If there's one overarching goal of the tidyverse, it's to be consistent. This is so important because it critically affects how easy it it so learn: you can spend your precious cognitive resources on the fundamental underlying ideas, not the incidental complexity of varying syntax. In other words, we want to find the smallest possible set of key ideas and use them repeatedly.
+
+The majority of this book is concerned with laying out these principles so that we can use consistently across our packages, and so that you can also take advantage of them in your packages. A major part of consistency is consistency of function API. For example:
+
+* If your function uses non-standard evaluation, then it should do it 
+  with tidy evaluation.
+
+* If your function takes `...`, it should use the principles of tidy dots.
+
+* If your function creates names, it should ...
+
+But consistency also applies to data structures: we want to ensure we use the same data structures again and again and again. Principly, we expect data to be stored in [tidy](https://www.jstatsoft.org/article/view/v059i10) data frames or [tibbles](https://github.com/hadley/tibble/). This means that tools for converting other formats can be centralised in one place, and all other packages are simplified by assuming that data is already in a standard format.
+
+## Composable
+
+> No matter how complex and polished the individual operations are, 
+> it is often the quality of the glue that most directly determines 
+> the power of the system. 
+>
+> --- Hal Abelson
+
+A powerful strategy for solving complex problems is to combine many simple pieces. Each piece should be easily understood in isolation, and have a standard way to combine with other pieces. 
+
+Together with the first principle, this means that we prefer to compose functions using a single tool: the pipe, `%>%`. There are two notable exceptions to this principle within the tidyverse: ggplot2 composes graphical elements with `+`, and httr composes requests primarily through `...`. These are not bad techniques in isolation, and they well suited to the domains in which they are used, but the disadvantages of inconsistency outweight any local advantages.
+
+For smaller domains, this means carefully thinking out functions so that the inputs and outputs align (e.g. the output from `string::str_locate()` can easily be fed into `str_sub()`). For midling domains, this means drawing many [feature matrices](https://www.evanmiller.org/feature-matrix.html) and ensuring that they are dense (e.g. consider the map family in purrr). For larger domains, this means carefully thinking about algebras and grammars, identifying the atoms of a problem and the ways in which they might be composed to solve bigger problems.
+
+## Functional
+
+Obviously we want the tidyverse to be functional in the sense that it should solve real problems. But specifically this principle means to prefer functional programming (FP) solutions over object oriented (OOP) solutions.
+
+We decompose problems not by defining the minimal set of objects, but the minimal set of _functions_.
+
+(That said, there are domains where OOP is clearly a better fit to the underlying domain, particularly when dealing with mutable state.)
+
+## Human centered
+
+> Programs must be written for people to read, and only incidentally
+> for machines to execute.
+> 
+> --- Hal Abelson
+
+Programming is a task performed by humans, and we must explicitly recognise and acknowledge that. The primary goal of the tidyverse is to facilitate the conversation that a human has with a dataset via the medium of code.
+
+We want to avoid ["Norman doors"][norman-doors] where the exterior clues and cues point you in the wrong direction.
+
+## Welcoming
+
+We value not just the interface between the human and the computer, but also the interface between the humans and other humans. We want the tidyverse to be a diverse, inclusive, and welcoming community. 
+
+* We prefer explicit codes of conduct. 
+
+* We create safe and friendly communites. 
+
+* We actively think about how we can help others who are not like us, 
+  that's because they are visually impaired, or don't speak English.
+
+We also appreciate the paradox of tolerance: we will not enable the intolerant and unwelcoming to ruin the communities we build.
+
+
+[norman-doors]: https://99percentinvisible.org/article/norman-doors/

@@ -1,1 +1,9 @@
 output_dir: "docs"
+
+new_session: yes
+
+rmd_files:
+  [
+    "index.Rmd",
+    "unifying.Rmd"
+  ]

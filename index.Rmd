@@ -9,6 +9,6 @@ documentclass: book
 
 # Welcome {-}
 
-A place to document (and hash out) development principles for packages in the [tidyverse](http://tidyverse.org).
+A place to document (and hash out) development principles for packages in the [tidyverse](http://tidyverse.org). This book is a work in progress; currently we're mostly used it as a place to park ideas in [issues](https://github.com/tidyverse/principles/issues).
 
 A complement to <http://style.tidyverse.org>.
