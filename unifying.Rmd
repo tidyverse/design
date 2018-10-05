@@ -20,7 +20,7 @@ The tidyverse is __consistent__, __composable__, __functional__, __human centere
 
 If there's one overarching goal of the tidyverse, it's to be consistent. We want to find the smallest possible set of key ideas and use them repeatedly.
 
-The majority of this book is concerned with laying out these principles so that we can use consistently across our packages, and so that you can also take advantage of them in your packages. A major part of consistency is consistency of function API. For example:
+The majority of this book is concerned with laying out these principles so that we can use them consistently across our packages, and so that you can also take advantage of them in your packages. A major part of consistency is consistency of function API. For example:
 
 * If your function uses non-standard evaluation, then it should do it 
   with tidy evaluation.
@@ -29,7 +29,7 @@ The majority of this book is concerned with laying out these principles so that 
 
 * If your function creates names, it should ...
 
-But consistency also applies to data structures: we want to ensure we use the same data structures again and again and again. Principly, we expect data to be stored in [tidy](https://www.jstatsoft.org/article/view/v059i10) data frames or [tibbles](https://github.com/hadley/tibble/). This means that tools for converting other formats can be centralised in one place, and all other packages are simplified by assuming that data is already in a standard format.
+But consistency also applies to data structures: we want to ensure we use the same data structures again and again and again. Principally, we expect data to be stored in [tidy](https://www.jstatsoft.org/article/view/v059i10) data frames or [tibbles](https://github.com/hadley/tibble/). This means that tools for converting other formats can be centralised in one place, and that packages development is simplified by assuming that data is already in a standard format.
 
 ## Composable
 
@@ -39,17 +39,17 @@ But consistency also applies to data structures: we want to ensure we use the sa
 >
 > --- Hal Abelson
 
-A powerful strategy for solving complex problems is to combine many simple pieces. Each piece should be easily understood in isolation, and have a standard way to combine with other pieces. 
+A powerful strategy for solving complex problems is to combine many simple pieces. Each piece should be easily understood in isolation, and have a standard way of combining with other pieces. 
 
-Together with the first principle, this means that we prefer to compose functions using a single tool: the pipe, `%>%`. There are two notable exceptions to this principle within the tidyverse: ggplot2 composes graphical elements with `+`, and httr composes requests primarily through `...`. These are not bad techniques in isolation, and they well suited to the domains in which they are used, but the disadvantages of inconsistency outweight any local advantages.
+Together with the first principle, this means that we prefer to compose functions using a single tool: the pipe, `%>%`. Within the tidyverse, there are two notable exceptions: ggplot2 composes graphical elements with `+`, and httr composes requests primarily through `...`. These are not bad techniques in isolation, and they are well suited to the domains in which they are used, but the disadvantages of inconsistency outweigh any local advantages.
 
-For smaller domains, this means carefully thinking out functions so that the inputs and outputs align (e.g. the output from `string::str_locate()` can easily be fed into `str_sub()`). For midling domains, this means drawing many [feature matrices](https://www.evanmiller.org/feature-matrix.html) and ensuring that they are dense (e.g. consider the map family in purrr). For larger domains, this means carefully thinking about algebras and grammars, identifying the atoms of a problem and the ways in which they might be composed to solve bigger problems.
+For smaller domains, this means carefully designing functions so that the inputs and outputs align (e.g. the output from `string::str_locate()` can easily be fed into `str_sub()`). For middling domains, this means drawing many [feature matrices](https://www.evanmiller.org/feature-matrix.html) and ensuring that they are dense (e.g. consider the map family in purrr). For larger domains, this means carefully thinking about algebras and grammars, identifying the atoms of a problem and the ways in which they might be composed to solve bigger problems.
 
 ## Functional
 
-Obviously we want the tidyverse to be functional in the sense that it should solve real problems. But specifically this principle means to prefer functional programming (FP) solutions over object oriented (OOP) solutions.
+Obviously we want the tidyverse to be functional in the sense that it should solve real problems. But to be specific, this principle means preferring functional programming (FP) solutions over object oriented (OOP) ones.
 
-We decompose problems not by defining the minimal set of objects, but the minimal set of _functions_.
+We decompose problems not by defining the minimal set of objects, but by defining the minimal set of _functions_.
 
 (That said, there are domains where OOP is clearly a better fit to the underlying domain, particularly when dealing with mutable state.)
 
@@ -60,20 +60,20 @@ We decompose problems not by defining the minimal set of objects, but the minima
 > 
 > --- Hal Abelson
 
-Programming is a task performed by humans, and we must explicitly recognise and acknowledge that. The primary goal of the tidyverse is to facilitate the conversation that a human has with a dataset via the medium of code. The desire for consistency and composability is not motivated just by theoretical concerns; it's motivated by our belief that these lead to the "pit of success". We want you can spend your precious cognitive resources on the fundamental challenges of your data analysis, not the incidental complexities of the code you use to express.
+Programming is a task performed by humans. This is something we must explicitly recognise and acknowledge. The primary goal of the tidyverse is to facilitate the conversation that a human has with a dataset via the medium of code. The desire for consistency and composability is not motivated just by theoretical concerns; it's motivated by our belief that these lead to the "pit of success". We want you to spend your precious cognitive resources on the fundamental challenges of analysing data, not on the incidental complexities of how to code those tasks.
 
 We want to avoid ["Norman doors"][norman-doors] where the exterior clues and cues point you in the wrong direction.
 
 ## Welcoming
 
-We value not just the interface between the human and the computer, but also the interface between the humans and other humans. We want the tidyverse to be a diverse, inclusive, and welcoming community. 
+We value not just the interface between the human and the computer, but also the interface between humans. We want the tidyverse to be a diverse, inclusive, and welcoming community. 
 
 * We prefer explicit codes of conduct. 
 
-* We create safe and friendly communites. 
+* We create safe and friendly communities. 
 
 * We actively think about how we can help others who are not like us, 
-  that's because they are visually impaired, or don't speak English.
+  (they may be visually impaired or may not speak English).
 
 We also appreciate the paradox of tolerance: the only people that we do not welcome are the intolerant.
 
