@@ -8,7 +8,7 @@ While the subsequent chapters will get deeper into technical details, to begin I
 
 These principles are aspirational, and I'll also note where in the tidyverse we fail to abide by them, and give you a little historical context as to why.
 
-The tidyverse is __consistent__, __composable__, __functional__, __human centered__, and __welcoming__.
+The tidyverse is __consistent__, __composable__, __functional__, __human centered__, and __inclusive__.
 
 ## Consistent
 
@@ -64,15 +64,18 @@ Programming is a task performed by humans. This is something we must explicitly 
 
 We want to avoid ["Norman doors"][norman-doors] where the exterior clues and cues point you in the wrong direction.
 
-## Welcoming
+## Inclusive
 
 We value not just the interface between the human and the computer, but also the interface between humans. We want the tidyverse to be a diverse, inclusive, and welcoming community. 
+
+* We develope educational materials that are accessible to people with many
+  different skill levels.
 
 * We prefer explicit codes of conduct. 
 
 * We create safe and friendly communities. 
 
-* We actively think about how we can help others who are not like us, 
+* We think about how we can help others who are not like us 
   (they may be visually impaired or may not speak English).
 
 We also appreciate the paradox of tolerance: the only people that we do not welcome are the intolerant.
