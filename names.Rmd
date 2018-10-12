@@ -112,6 +112,8 @@ You might say that names like `x..5` are ugly and you would be right. This is in
 
 ## Syntactic and semantic names
 
+*we are questioning this use of "semantic" (meaning "unique and syntactic") and welcome alternative suggestions*
+
 A **syntactic** name in R:
 
  * Consists of letters, numbers, and the dot `.` or underscore `_` characters.
