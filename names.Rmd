@@ -31,6 +31,18 @@ names(ChickWeight)
 names(euro)
 ```
 
+## Minimal, unique, ?semantic?
+
+We identify three nested levels of naminess that are practically useful:
+
+  * Minimal: The `names` attribute is not `NULL`. The name of an unnamed element is `""` and never `NA`.
+  * Unique: No element of `names` is `""` or a duplicate.
+    - `x["name"]` works for each `"name"`.
+  * ?Semantic?: The `names` are unique and syntactic.
+    - `x$name` works for each `"name"`.
+    
+Below we give more details and describe implementation.
+
 ## Minimal names
 
 **Minimal** names exist. The `names` attribute is not `NULL`. The name of an unnamed element is `""` and never `NA`. Examples:
@@ -99,11 +111,11 @@ Original names (bearing suffixes): "..5"    "x" "x..3"    ""
                      unique names: "..1" "x..2" "x..3" "..4" 
 ```
 
-*JB: it is conceivable that this should be under the control of an argument, e.g. `dogfood = TRUE`*
+*JB: it is conceivable that this should be under the control of an argument, e.g. `dogfood = TRUE`, in the (currently unexported) function that does this*
 
 ### When is minimal better than unique?
 
-Why would you ever want a tibble with minimal names, instead of unique? Sometimes the first row of a data source -- allegedly variable names -- actually contains **data** and the resulting tibble will be reshaped with, e.g., `tidyr::gather()`. In this case, it is better to not munge the names at
+Why would you ever want to import a tibble and enforce only minimal names, instead of unique? Sometimes the first row of a data source -- allegedly variable names -- actually contains **data** and the resulting tibble will be reshaped with, e.g., `tidyr::gather()`. In this case, it is better to not munge the names at
 import.
 
 ### Ugly,  with a purpose
