@@ -115,8 +115,7 @@ Original names (bearing suffixes): "..5"    "x" "x..3"    ""
 
 ### When is minimal better than unique?
 
-Why would you ever want to import a tibble and enforce only minimal names, instead of unique? Sometimes the first row of a data source -- allegedly variable names -- actually contains **data** and the resulting tibble will be reshaped with, e.g., `tidyr::gather()`. In this case, it is better to not munge the names at
-import.
+Why would you ever want to import a tibble and enforce only minimal names, instead of unique? Sometimes the first row of a data source -- allegedly variable names -- actually contains **data** and the resulting tibble will be reshaped with, e.g., `tidyr::gather()`. In this case, it is better to not munge the names at import. This is a common special case of the "data stored in names" phenomenon.
 
 ### Ugly,  with a purpose
 
