@@ -60,7 +60,7 @@ The existing function [rlang::names2()](https://rlang.r-lib.org/reference/names2
 
 ## Unique names
 
-**Unique** names meet the requirements for minimal and have no duplicates. In the tidyverse, we go further and also assert that unique names are never empty (literally, no `""`s).
+**Unique** names meet the requirements for minimal and have no duplicates. In the tidyverse, we go further and also assert that unique names are never empty (literally, `""` is not allowed).
 
 Example of unique-ified names:
 ```
@@ -99,6 +99,8 @@ Original names (bearing suffixes): "..5"    "x" "x..3"    ""
                      unique names: "..1" "x..2" "x..3" "..4" 
 ```
 
+*JB: it is conceivable that this should be under the control of an argument, e.g. `dogfood = TRUE`*
+
 ### When is minimal better than unique?
 
 Why would you ever want a tibble with minimal names, instead of unique? Sometimes the first row of a data source -- allegedly variable names -- actually contains **data** and the resulting tibble will be reshaped with, e.g., `tidyr::gather()`. In this case, it is better to not munge the names at
@@ -119,7 +121,7 @@ A **syntactic** name in R:
  * Is not `...`.
  * Is not of the form `..j`, where `j` is a number.
 
-Syntactic names are easy to use "as is" in code. They do not require quoting and work well with nonstandard evaluation, such as list indexing via `$` or in packages like dplyr and ggplot2.
+Syntactic names are easy to use "as is" in code. They do not require quoting and work well with nonstandard evaluation, such as list indexing via `$` or in packages like dplyr and ggplot2 (literally, `x$name` works).
 
 ```{r}
 ## syntactic
