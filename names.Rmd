@@ -43,7 +43,7 @@ Original names of a vector with length 3: NULL
                            minimal names: "x" ""
 ```
 
-This appears to be a useful baseline requirement, if the `names` attribute of an object is going to be actively managed. Why? General name handling and repair can be implemented more simply if the baseline strategy ensures that `names(x)` returns a character vector of the correct length.
+This appears to be a useful baseline requirement, if the `names` attribute of an object is going to be actively managed. Why? General name handling and repair can be implemented more simply if the baseline strategy guarantees that `names(x)` returns a character vector of the correct length with no `NA`s.
 
 This is also a reasonable interpretation of base R's *intent* for named vectors, based on the docs for [names()](https://stat.ethz.ch/R-manual/R-patched/library/base/html/names.html), although base R's implementation/enforcement of this is uneven. From `?names`:
   
