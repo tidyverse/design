@@ -68,7 +68,7 @@ Original names:    ""    "x"    "" "y"    "x"
   unique names: "..1" "x..2" "..3" "y" "x..5"
 ```
 
-This augmented definition of "unique" has an important practical property: it ensures that each element can be identified by name. This is especially meaningful for variable names inside a tibble, because so many workflows rely on indexing by name. Note that uniqueness refers implicitly to a vector of names. It is not a property of an individual name.
+This augmented definition of "unique" has an important property: it ensures that each element can be identified by name (literally, `x["name"]` works). This has practical significance for variable names inside a tibble, because so many workflows rely on indexing by name. Note that uniqueness refers implicitly to a vector of names.
 
 ### Making names unique
 
@@ -138,7 +138,7 @@ x <- tibble::tibble(`else` = "else?!")
 #dplyr::select(x, else)
 ```
 
-In the tidyverse, when making names syntactic, we often go further and also make sure they are unique. Why? In practice, if you want syntactic names, you probably also want them to be unique. This is the meaning of `.name_repair = "semantic"` in tibble: user is requesting names that are unique and syntactic. *describes tibble > 1.4.2*
+In the tidyverse, when making names syntactic, we often go further and also make sure they are unique. Why? In practice, if you want syntactic names, you probably also want them to be unique. We call names that are unique (group-wise property) and syntactic (element-wise property) *semantic*. This is the meaning of `.name_repair = "semantic"` in tibble: user is requesting names that are unique and syntactic. *describes tibble > 1.4.2*
 
 ### Making an individual name syntactic
 
@@ -170,6 +170,10 @@ Original name   Syntactic name
 ```
 
 Currently implemented in the unexported function `tibble:::make_syntactic()`.  *describes tibble > 1.4.2*
+
+### Making names semantic
+
+TO FILL IN: how exactly we make names unique and syntactic. Is it a simple composition of two primitive operations?
 
 ## Messaging user about name repair
 
