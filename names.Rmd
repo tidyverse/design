@@ -37,7 +37,7 @@ We identify three nested levels of naminess that are practically useful:
 
   * Minimal: The `names` attribute is not `NULL`. The name of an unnamed element is `""` and never `NA`.
   * Unique: No element of `names` is `""` or a duplicate.
-    - All columns can be accessed by name via `df[["name"]]`
+    - All columns can be accessed by name via `df[["name"]]`.
   * Universal: The `names` are unique and syntactic.
     - Names work everywhere, without quoting: `df$name` and
       `lm(name1 ~ name2, data = df)` and `dplyr::select(df, name)` all work.
@@ -96,10 +96,16 @@ second occurrence.
 
 This level of naminess is regarded as normative for a tibble and a user must expressly request a tibble with names that violate this (but that is possible).  *describes tibble > 1.4.2*
 
-Base R's function for this is [make.unique()](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.unique.html) and here's what it does with the example above:
+Base R's function for this is [make.unique()](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.unique.html). We revisit the example above, comparing the tidyverse strategy for making names unique vs. what `make.unique()` does.
 
-```{r}
-make.unique(c("", "x", "", "y", "x"))
+```
+Original  Unique names       Result of
+   names   (tidyverse)   make.unique()
+      ""           ..1              ""
+     "x"          x..2             "x"
+      ""           ..3            ".1"
+     "y"          y                "y"
+     "x"          x..5           "x.1"
 ```
 
 ### Roundtrips
@@ -124,7 +130,9 @@ You might say that names like `x..5` are ugly and you would be right. This is in
 
 ## Universal names
 
-We'll use the term "universal" to mean the combination of "unique" (see above) and **syntactic** in the normal R sense. We define and motivate that here.
+**Universal** names are **unique**, in the sense described above, and **syntactic**, in the normal R sense. Universal names are appealing because they play nicely with base R and tidyverse functions that use non-standard evaluation.
+
+### Syntactic names
 
 A syntactic name in R:
 
@@ -132,28 +140,32 @@ A syntactic name in R:
  * Starts with a letter or starts with a dot `.` followed by anything but a
    number.
  * Is not a [reserved word](https://stat.ethz.ch/R-manual/R-patched/library/base/html/Reserved.html), e.g., `if` or `function` or `TRUE`.
- * Is not `...`.
+ * Is not `...`, R's special ellipsis or "dots" construct.
  * Is not of the form `..j`, where `j` is a number.
 
-Syntactic names are easy to use "as is" in code. They do not require quoting and work well with nonstandard evaluation, such as list indexing via `$` or in packages like dplyr and ggplot2 (literally, `x$name` works).
+A syntactic name can be used "as is" in code. For example, it does not require quoting in order to work with non-standard evaluation, such as list indexing via `$` or in packages like dplyr and ggplot2.
 
 ```{r}
-## syntactic names don't require quoting
+## a syntactic name doesn't require quoting
 x <- tibble::tibble(.else = "else?!")
 x$.else
 dplyr::select(x, .else)
 ```
 
 ```{r}
-## un-syntactic names DO require quoting
+## use a non-syntactic name
 x <- tibble::tibble(`else` = "else?!")
 
-## code below here does not parse
-#x$else
-#dplyr::select(x, else)
+## this code does not parse
+# x$else
+# dplyr::select(x, else)
+
+## a non-syntacitic name requires quoting
+x$`else`
+dplyr::select(x, `else`)
 ```
 
-In the tidyverse, when making names syntactic, we (plan to) generally go further and also make sure they are unique. Why? In practice, if you want syntactic names, you probably also want them to be unique. We call names that are unique (group-wise property) and syntactic (element-wise property) *universal*. This is the meaning of `.name_repair = "universal"` in tibble: user is requesting names that are unique and syntactic. *describes tibble > 1.4.2*
+Note that being syntactic is a property of an individual name.
 
 ### Making an individual name syntactic
 
@@ -173,21 +185,27 @@ There are many ways to fix a non-syntactic name. Here's how our logic compares t
 
 Examples of the tidyverse approach to making individual names syntactic versus [`base::make.names()`](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html):
 ```
-                Syntactic name            Result of
-Original name      (tidyverse)   base::make.names()
-           ""              "."                  "X"
-           NA              "."                "NA."
-        "(y)"            ".y."               "X.y."
-         "_z"            "._z"                "X_z"
-       ".2fa"          "..2fa"              "X.2fa"
-      "FALSE"         ".FALSE"             "FALSE."
-        "..."           "...."                "..." <- not syntactic
-        "..3"           "...3"                "..3" <- not syntactic
+                Syntactic name      Result of
+Original name      (tidyverse)   make.names()
+           ""                .              X
+           NA                .            NA.
+        "(y)"              .y.           X.y.
+         "_z"              ._z            X_z
+       ".2fa"            ..2fa          X.2fa
+      "FALSE"           .FALSE         FALSE.
+        "..."             ....            ... <- not syntactic
+        "..3"             ...3            ..3 <- not syntactic
 ```
 
 Currently implemented in the unexported function `tibble:::make_syntactic()`.  *describes tibble > 1.4.2*
 
-### Making names universal
+### Why universal?
+
+Now we can state the motivation for universal names, which have the group-wise property of being unique and the element-wise property of being syntactic.
+
+In practice, if you want syntactic names, you probably also want them to be unique. You need both in order to refer to individual elements easily, without ambiguity and without quoting.
+
+Currently, universal names are only exposed in the tidyverse via `.name_repair = "universal"` inside `tibble::tibble()` and `tibble::as_tibble()` *describes tibble > 1.4.2*. 
 
 TO FILL IN: how exactly we make names unique and syntactic. Explain relative to a simple composition of two primitive operations.
 
