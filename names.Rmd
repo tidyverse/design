@@ -31,15 +31,16 @@ names(ChickWeight)
 names(euro)
 ```
 
-## Minimal, unique, ?semantic?
+## Minimal, unique, universal
 
 We identify three nested levels of naminess that are practically useful:
 
   * Minimal: The `names` attribute is not `NULL`. The name of an unnamed element is `""` and never `NA`.
   * Unique: No element of `names` is `""` or a duplicate.
-    - `x["name"]` works for each `"name"`.
-  * ?Semantic?: The `names` are unique and syntactic.
-    - `x$name` works for each `"name"`.
+    - All columns can be accessed by name via `df[["name"]]`
+  * Universal: The `names` are unique and syntactic.
+    - Names work everywhere, without quoting: `df$name` and
+      `lm(name1 ~ name2, data = df)` and `dplyr::select(df, name)` all work.
     
 Below we give more details and describe implementation.
 
@@ -80,7 +81,7 @@ Original names:    ""    "x"    "" "y"    "x"
   unique names: "..1" "x..2" "..3" "y" "x..5"
 ```
 
-This augmented definition of "unique" has an important property: it ensures that each element can be identified by name (literally, `x["name"]` works). This has practical significance for variable names inside a tibble, because so many workflows rely on indexing by name. Note that uniqueness refers implicitly to a vector of names.
+This augmented definition of "unique" has an important property: it ensures that each element can be identified by name (literally, `df[["name"]]` works). This has practical significance for variable names inside a tibble, because so many workflows rely on indexing by name. Note that uniqueness refers implicitly to a vector of names.
 
 ### Making names unique
 
@@ -121,11 +122,11 @@ Why would you ever want to import a tibble and enforce only minimal names, inste
 
 You might say that names like `x..5` are ugly and you would be right. This is intentional. Names that have been automatically unique-ified by the tidyverse should catch the eye and give the user strong encouragement to take charge of the situation.
 
-## Syntactic and semantic names
+## Universal names
 
-*we are questioning this use of "semantic" (meaning "unique and syntactic") and welcome alternative suggestions*
+We'll use the term "universal" to mean the combination of "unique" (see above) and **syntactic** in the normal R sense. We define and motivate that here.
 
-A **syntactic** name in R:
+A syntactic name in R:
 
  * Consists of letters, numbers, and the dot `.` or underscore `_` characters.
  * Starts with a letter or starts with a dot `.` followed by anything but a
@@ -137,15 +138,14 @@ A **syntactic** name in R:
 Syntactic names are easy to use "as is" in code. They do not require quoting and work well with nonstandard evaluation, such as list indexing via `$` or in packages like dplyr and ggplot2 (literally, `x$name` works).
 
 ```{r}
-## syntactic
+## syntactic names don't require quoting
 x <- tibble::tibble(.else = "else?!")
 x$.else
 dplyr::select(x, .else)
 ```
 
-
 ```{r}
-## not syntactic
+## un-syntactic names DO require quoting
 x <- tibble::tibble(`else` = "else?!")
 
 ## code below here does not parse
@@ -153,7 +153,7 @@ x <- tibble::tibble(`else` = "else?!")
 #dplyr::select(x, else)
 ```
 
-In the tidyverse, when making names syntactic, we often go further and also make sure they are unique. Why? In practice, if you want syntactic names, you probably also want them to be unique. We call names that are unique (group-wise property) and syntactic (element-wise property) *semantic*. This is the meaning of `.name_repair = "semantic"` in tibble: user is requesting names that are unique and syntactic. *describes tibble > 1.4.2*
+In the tidyverse, when making names syntactic, we (plan to) generally go further and also make sure they are unique. Why? In practice, if you want syntactic names, you probably also want them to be unique. We call names that are unique (group-wise property) and syntactic (element-wise property) *universal*. This is the meaning of `.name_repair = "universal"` in tibble: user is requesting names that are unique and syntactic. *describes tibble > 1.4.2*
 
 ### Making an individual name syntactic
 
@@ -166,29 +166,30 @@ There are many ways to fix a non-syntactic name. Here's how our logic compares t
  * Different: We always fix a name by prepending a `.`. [base::make.names()](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html)
    sometimes prefixes with `X` and at other times appends a `.`.
  * Different: We treat `NA` and `""` the same: both become `.`. This is because
-   we first make names minimal. [base::make.names()](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html) turns `NA` in `"NA."` and `""` into `"X"`.
+   we first make names minimal. [base::make.names()](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html) turns `NA` into `"NA."` and `""` into `"X"`.
  * Different: We turn `...` into `....` and `..i` into `...i` (`i` is a
    number). [base::make.names()](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html) does not modify `...` or `..i`, which could
    be regarded as a bug (?).
 
-Examples:
+Examples of the tidyverse approach to making individual names syntactic versus [`base::make.names()`](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html):
 ```
-Original name   Syntactic name
-           ""              "."
-           NA              "."
-        "(y)"            ".y."
-         "_z"            "._z"
-       ".2fa"          "..2fa"
-      "FALSE"         ".FALSE"
-        "..."           "...."
-        "..3"           "...3"
+                Syntactic name            Result of
+Original name      (tidyverse)   base::make.names()
+           ""              "."                  "X"
+           NA              "."                "NA."
+        "(y)"            ".y."               "X.y."
+         "_z"            "._z"                "X_z"
+       ".2fa"          "..2fa"              "X.2fa"
+      "FALSE"         ".FALSE"             "FALSE."
+        "..."           "...."                "..." <- not syntactic
+        "..3"           "...3"                "..3" <- not syntactic
 ```
 
 Currently implemented in the unexported function `tibble:::make_syntactic()`.  *describes tibble > 1.4.2*
 
-### Making names semantic
+### Making names universal
 
-TO FILL IN: how exactly we make names unique and syntactic. Is it a simple composition of two primitive operations?
+TO FILL IN: how exactly we make names unique and syntactic. Explain relative to a simple composition of two primitive operations.
 
 ## Messaging user about name repair
 
@@ -197,7 +198,7 @@ Name repair should be communicated to the user. Here's how tibble messages:
 ```{r eval = FALSE}
 x <- tibble::tibble(
   x = 1, x = 2, `a1:` = 3, `_x_y}` = 4,
-  .name_repair = "syntactic"
+  .name_repair = "universal"
 )
 #> New names:
 #> * x -> x..1
