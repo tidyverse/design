@@ -8,6 +8,8 @@ Depends:
     R (>= 3.1.0)
 Imports: 
     bookdown,
-    rmarkdown
+    dplyr,
+    rmarkdown,
+    tibble
 URL: https://github.com/tidyverse/principles
 BugReports: https://github.com/tidyverse/principles/issues
