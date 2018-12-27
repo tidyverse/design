@@ -68,7 +68,7 @@ We want to avoid ["Norman doors"][norman-doors] where the exterior clues and cue
 
 We value not just the interface between the human and the computer, but also the interface between humans. We want the tidyverse to be a diverse, inclusive, and welcoming community. 
 
-* We develope educational materials that are accessible to people with many
+* We develop educational materials that are accessible to people with many
   different skill levels.
 
 * We prefer explicit codes of conduct. 
