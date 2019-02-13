@@ -1,14 +1,32 @@
 # Unifying principles
 
-While the subsequent chapters will get deeper into technical details, to begin I wanted to lay out some of the overarching principles that apply throughout the tidyverse: the tidyverse is __human centered__, __consistent__, __composable__, and __inclusive__. 
+The tidyverse is a language for solving data science challenges with R code. Its primary goal is to facilitate the conversation that a human has with a dataset via the medium of code, and we want to help dig a "pit of success" where the least-effort path trends towards a positive outcome. The primary tool to dig the pit is API design: by carefully considering the external interface to a function, we can help guide the user towards success. But it's also necessary to have some high level principles that guide how we think broadly about APIs, principles that we can use to "break ties" when other factors are balanced.
 
-These principles are aspirational, and the tidyverse doesn't always fully apply them, but we continue to strive towards them. These principles are inspired by writings about the design of other systems, such as:
+The tidyverse has four guiding principles:
+
+* It is __human centered__, i.e. the tidyverse is designed specifically to
+  support the activities of a human data analyst.
+  
+* It is __consistent__, so that what you learn about one function or package
+  can be applied to another, and the number of special cases that you need
+  to remember is as small as possible.
+
+* It is __composable__, allowing you to solve complex problems by breaking
+  them down into small pieces, supporting a rapid cycle of exploratory 
+  iteration to find the best solution.
+  
+* It is __inclusive__, because the tidyverse is not just the collection of 
+  packages, but it is also the community of people who use them.
+
+These guiding principles are aspirational; they're not always fully realised in current tidyverse packages, but we strive to make them so. 
+
+### Related work {-}
+
+These principles are inspired by writings about the design of other systems: such as:
 
 * [The Unix philsophy][unix-philosophy]
 * [The Zen of Python][zen-python]
 * [Design Principles Behind Smalltalk][smalltalk-design]
-
-The primary goal of the tidyverse is to facilitate the conversation that a human has with a dataset via the medium of code. We want to help dig a "pit of success" where the least-effort path tends to lead towards success.
 
 ## Human centered
 
