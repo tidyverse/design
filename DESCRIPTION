@@ -10,6 +10,7 @@ Imports:
     bookdown,
     dplyr,
     rmarkdown,
-    tibble
+    tibble,
+    vctrs
 URL: https://github.com/tidyverse/principles
 BugReports: https://github.com/tidyverse/principles/issues

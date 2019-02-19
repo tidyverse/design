@@ -1,0 +1,24 @@
+# Returning multiple values
+
+## Different sizes
+
+Use a list. Name it.
+
+If you return the same type of output from multiple functions, you should create a function that consistently creates exact the same format (to avoid accidentally inconsistency), and consider making it an S3 class (so you can have a custom print method).
+
+## Same size
+
+When a function returns two vectors of the same size, as a general rule should you return a tibble:
+
+* A matrix would only work if the vectors were the same type (and not factor or Date), doesn't make it easy to extract the individual values, and is not easily input to other tidyverse functions.
+
+* A list doesn't capture the constraint that both vectors are the same length.
+
+* A data frame is ok if you don't want to take a dependency on tibble, but you need to remember the drawbacks: if the columns are character vectors you'll need to remember to use `stringsAsFactors = FALSE`, and the print method is confusing for list- and df-cols (and you have to create by modifying an existing data frame, not by calling `data.frame()`). (Example: it would be weird if glue returned tibbles from a function.)
+
+## Case study: `str_locate()`
+
+e.g. `str_locate()`, `str_locate_all()`
+
+Interaction with `str_sub()`.
+

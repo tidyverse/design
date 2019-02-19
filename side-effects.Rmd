@@ -1,0 +1,9 @@
+# Side-effects
+
+withr.
+
+## Return value
+
+If your function is called primarily for its side-effects, it should return the primary data structure (which should be first argument), invisibly. This allows you to call it mid-pipe for its side-effects while allow the primary data to continue flowing through the pipe.
+
+If your function is called primarly to persistently alter global state, it should return the previous values. e.g. `options()`, `par()`. `on.exit()` pattern.

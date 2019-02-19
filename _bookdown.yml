@@ -4,5 +4,10 @@ rmd_files:
   [
     "index.Rmd",
     "unifying.Rmd",
-    "names.Rmd"
+    "names.Rmd",
+    "function-interface.Rmd",
+    "type-stability.Rmd",
+    "returning-multiple-values.Rmd",
+    "side-effects.Rmd",
+    "vectorisation.Rmd"
   ]
