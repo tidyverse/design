@@ -1,3 +1,11 @@
 # (PART) Function interface {-}
 
 # Introduction  {#function-interface  .unnumbered}
+
+The interface (aka API) of a function describes its external interface, independent of its internal implementation. The interface of a function has the following main components:
+
+* Name
+* Inputs, i.e. the names and types of its arguments.
+* Output, i.e. its return value.
+* Errors
+* Other side-effects
