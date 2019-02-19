@@ -1,5 +1,5 @@
 --- 
-title: "Tidyverse package development principles"
+title: "Tidyverse design principles"
 author: ["Tidyverse Team"]
 site: bookdown::bookdown_site
 output: bookdown::gitbook
@@ -9,6 +9,6 @@ documentclass: book
 
 # Welcome {-}
 
-A place to document (and hash out) development principles for packages in the [tidyverse](http://tidyverse.org). This book is a work in progress; currently we're mostly used it as a place to park ideas in [issues](https://github.com/tidyverse/principles/issues).
+This book documents (and hashes out!) design principles that underlie all packages in the tidyverse. It is used by the tidyverse team to promote consistency across packages in the core tidyverse. But you can also use it guide the design of your functions and packages in order to create APIs that feel "tidy", and fit in natural with tidyverse-centric workflows. It is a complement to <http://style.tidyverse.org>, which focusses on low-level code formatting.
 
-A complement to <http://style.tidyverse.org>.
+This book will be under heavy development for quite some time; currently we are loosely aiming for completion in 2020. You'll find many chapters contain disjointed text that mostly serve as placeholders for the authors, and I do not recommend attempting to systematically read the book at this time.
