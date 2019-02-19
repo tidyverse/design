@@ -5,11 +5,10 @@ bookdown::gitbook:
   config:
     toc:
       before: |
-        <li><a href="./">tidyverse development principles</a></li>
-      after: |
-        <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+        <li><a href="./">tidyverse design principles</a></li>
     edit: https://github.com/tidyverse/principles/edit/master/%s
     sharing:
       github: yes
       facebook: no
       twitter: no
+      all: []
