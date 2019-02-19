@@ -1,0 +1,30 @@
+# Dots
+
+* Allow S3 methods to take additional arguments.
+* Pass on to another function (particularly in functional programming).
+* Create data structures.
+
+### Avoiding false matches
+
+Place as far to the left as possible to force users to name arguments. Should come between data and details arguments.
+
+Use `ellipsis::check_dots_unnamed()` or `ellipsis::check_dots_used()`
+
+Ensure arguments to the right of the dots (i.e. details arguments) are prefixed with `.`. (The dots prefix is not considered part of the argument name so it's ok to have some functions with argument `f` and some with `.f`.)
+
+### Don't use just to avoid `c()`
+
+i.e. `forcats::fct_relevel()` as it makes future API changes quite difficult. 
+
+### Allow trailing dot
+
+Use `list2()` instead of list.
+
+```{r, error = TRUE}
+list(1, 2, )
+rlang::list2(1, 2, )
+```
+
+If you want something simpler of guaranteed type, you have to use `vctrs::vec_c(.ptype = integer())`. If you don't want a vctrs dependency, you'll need `c()` + an error if it's the incorrect type.
+
+Other rlang capturing functions 

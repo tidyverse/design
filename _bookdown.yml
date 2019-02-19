@@ -9,5 +9,6 @@ rmd_files:
     "type-stability.Rmd",
     "returning-multiple-values.Rmd",
     "side-effects.Rmd",
-    "vectorisation.Rmd"
+    "vectorisation.Rmd",
+    "dots.Rmd",
   ]
