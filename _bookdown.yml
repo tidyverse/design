@@ -6,6 +6,7 @@ rmd_files:
     "unifying.Rmd",
     "names.Rmd",
     "function-interface.Rmd",
+    "functioin-names.Rmd",
     "type-stability.Rmd",
     "returning-multiple-values.Rmd",
     "side-effects.Rmd",
