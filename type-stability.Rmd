@@ -69,6 +69,11 @@ median(Sys.Date() + 0:1)
 
 To be clear, the problems that this cause in practice are quite small, but this makes analysis of `median()` more complex, and it makes it to know what principle you should adhere to when creating `median` methods for new vector classes.
 
+```{r, error = TRUE}
+median("foo")
+median(c("foo", "bar"))
+```
+
 ## Exercises
 
 1.  How is a date like an integer? Why is this inconsistent? 
