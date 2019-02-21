@@ -45,6 +45,8 @@ A particularly useful tool from cognitive psychology is "cognitive load theory"[
 * By being __composable__ you can break down complex problems into bite sized
   pieces that you can easily hold in your head.
 
+Idea of "chunking" is important. Some setup cost to learn a new chunk, but once you've internalised it, it only takes up one spot in your working memory. In some sense the goal of the tidyverse is to discover the minimal set of chunks needed to do data science and have some sense of the priority of the remainder. 
+
 [^clt]: A good practical introduction is [Cognitive load theory in practice](https://www.cese.nsw.gov.au/images/stories/PDF/Cognitive_load_theory_practice_guide_AA.pdf) (PDF).
 
 Other useful ideas come from design. One particularly powerful idea is that of "affordance": the exterior of a tool should suggest how to use it. We want to avoid ["Norman doors"][norman-doors] where the exterior clues and cues point you in the wrong direction.

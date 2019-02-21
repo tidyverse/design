@@ -12,7 +12,7 @@ Use `ellipsis::check_dots_unnamed()` or `ellipsis::check_dots_used()`
 
 Ensure arguments to the right of the dots (i.e. details arguments) are prefixed with `.`. (The dots prefix is not considered part of the argument name so it's ok to have some functions with argument `f` and some with `.f`.)
 
-### Don't use just to avoid `c()`
+### Don't use just to avoid `c()` {#vectors-not-dots}
 
 i.e. `forcats::fct_relevel()` as it makes future API changes quite difficult. 
 
