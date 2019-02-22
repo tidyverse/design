@@ -12,6 +12,7 @@ rmd_files:
     "returning-multiple-values.Rmd",
     "side-effects.Rmd",
     "sneakily-peeking.Rmd",
+    "spooky-action.Rmd",
     "vectorisation.Rmd",
     "dots.Rmd",
     

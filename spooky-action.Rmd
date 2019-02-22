@@ -1,0 +1,70 @@
+# Spooky action
+
+Code is easiest to understand when it's constrained in both time and space. This means that your code shouldn't be affected by things that happened a long time ago or far far away, and in turn shouldn't affect other distant code. If code violates these principles we say it acts "spookily", because it's as if a poltergeist is moving your furniture around. Spooky actions are disturbing because it’s like hiring someone to clean your kitchen instead discovering them reorganising your medicine cabinet.
+
+It might seem like tedious busywork, and you sometimes spooky is convenient in the moment and you try to convince yourself that it’s necessary or a good idea (or maybe it’s just invisible to you)
+
+you flip a light switch and your shower turns on
+https://twitter.com/gossipgriii/status/713425874167537664?lang=en
+
+also a lot of the payoffs from worrying about this stuff come later in your career — like when you start to share code with other people or when you want to run code on other computers
+
+## What is spooky action in time?
+
+I think this is where poor process leaks into artefacts. By constantly running different scripts or chunks in a long-running shared R process, you create wormholes that are not explicit any where in the code.
+
+when running several scripts or knitting several Rmds, each should get its own fresh process
+they should not be communicating with each other in the global workspace
+they should not commuunicating at all or it should be in some very obvious way, probably through the file system and perhaps a choreographing tool like make or drake
+And so working in projects, restarting often, etc. are a method of constantly checking for these unplanned communication channels and eradicating them.
+
+## What is spooky action in space?
+
+There two primary meanings of "space" in an R script:
+
+* The directory structure 
+* The environment structure
+
+You can think of both directories and environments as being trees. Generally, code should only affect the tree beneath where it lives. You should avoid modifying up the tree or across into a different branch. (There are a few exceptions like the temporary directory which doesn't belong to anyoen.)
+
+Avoiding spooky action in space is harder than avoiding spooky action.  Run on travis.
+
+When your start out using R, you won't have a strong sense of what is surprising (because everything is!). But we suggest these principles because 
+
+* A function shouldn't modify objects in the global environment.
+* A package shouldn't attach other packages (or otherwise mess with the search path).
+* A script shouldn't change the working directory, or `rm(list = ls())`.
+* An Rmd shouldn't read or write files outside of the project it lives in.
+
+Why not? Because these are actions outside the usual scope of effects. 
+
+Why do we care about scope of effects? Because it allows us to build up a simpler.
+
+`lapply()` + `<<-`.
+
+— if the scope of effects is constrained/contained then you have a simpler model of computation that makes analysing/understanding code easier. Imagine each function/package/script creates a sort of nested tree: it's ok to affect your children, but not your parents.
+
+## How can I remediate spooky actions?
+
+The easiest way is to make them not spooky.
+
+When it's not spooky! i.e. a function/package/script can have actions outside of its usual scope if that is it's explicit and specific purpose:
+
+* It's ok for `<-` to modify the global environment, because that is its one job.
+  It's ok for `save_output(path)` to create files in path because it's clear 
+  from the name.
+
+* It's fine for `library(conflicted)` to mess with your search path; that is
+  its one purpose.
+
+* It's ok for `source("class-setup.R")` to install packages because the intent 
+  of a setup script is to get your computer into the same state as someone 
+  else's (but be aware by doing this, you might break other projects).
+
+It's ok if the user explicitly requests that your code do these things, but you should avoid doing it automatically, or as a side-effect of something unrelated. 
+
+## Talking points
+
+* `library(usethis)`: all the functions in usethis are specifically for modifying your computing environment. They designed to be used interactively, but shouldn't be called automatically (i.e. it's fine to wrap them in a function that is then called by the user, but you shouldn't generally run them in a script)
+
+* Assigning multiple objects in a for loop — generally this pattern does not set you up for success because once you have the objects in the environment, how do you work with them? It's better to put them in a list and then you can use the same techniques you would for iterating over values in a vector or columns in a data frame.
