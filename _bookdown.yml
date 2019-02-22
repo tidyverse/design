@@ -11,7 +11,7 @@ rmd_files:
     "type-stability.Rmd",
     "returning-multiple-values.Rmd",
     "side-effects.Rmd",
-    "sneakily-peeking.Rmd",
+    "hidden-inputs.Rmd",
     "spooky-action.Rmd",
     "vectorisation.Rmd",
     "dots.Rmd",
