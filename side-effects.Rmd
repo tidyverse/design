@@ -1,5 +1,7 @@
 # Side-effect soup
 
+Side-effect soup occurs when you mix side-effects and regular computation within the same function.
+
 ## What is a side-effect?
 
 There are two main types of side-effect:
@@ -51,18 +53,25 @@ More esoteric side-effects include:
 
 * Modifying the internal `.Random.seed` 
 
-## What's side-effect soup?
+## What are some examples?
 
-Side-effect soup occurs when you mix side-effect and regular computation. 
+*   The summary of a linear model includes a p-value for the overall  
+    regression. This value is only computed when the summary is printed:
+    you can see it but you can't touch it.
+
+    ```{r}
+    mod <- lm(mpg ~ wt, data = mtcars)
+    summary(mod)
+    ```
+
+
 
 ## Why is it bad?
 
 Side-effect soup is bad because:
 
 *   If a function does some computation and has side-effects, it can be 
-    challenging to extract the results of computation. For example, 
-    `print.summary.lm()` and `plot.lm()`. These functions are frustrating
-    because you can see what you want but you can't touch it!
+    challenging to extract the results of computation. 
 
 *   Makes code harder to analyse because it may have non-local effects.
     Take this code:
@@ -168,4 +177,24 @@ getOption("my_option1")
 
 If temporarily setting options in a function, you should always restore the previous values using `on.exit()`: this ensures that the code is run regardless of how the function exits.
 
-## When is it ok?
+## Package considerations
+
+Code in package is executed at build-time.i.e. if you have:
+
+```{r}
+x <- Sys.time()
+```
+
+For mac and windows, this will record when CRAN built the binary. For linux, when the package was installed.
+
+Beware copying functions from other packages:
+
+```{r, eval = FALSE}
+foofy <- barfy::foofy
+```
+
+Version of barfy might be different between run-time and build-time.
+
+Introduces a build-time dependency.
+
+<https://github.com/r-lib/devtools/issues/1788>
