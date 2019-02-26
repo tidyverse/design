@@ -1,70 +1,137 @@
 # Spooky action
 
-Code is easiest to understand when it's constrained in both time and space. This means that your code shouldn't be affected by things that happened a long time ago or far far away, and in turn shouldn't affect other distant code. If code violates these principles we say it acts "spookily", because it's as if a poltergeist is moving your furniture around. Spooky actions are disturbing because it’s like hiring someone to clean your kitchen instead discovering them reorganising your medicine cabinet.
+There is no limitation to what an R function or script can do. After you call `draw_plot()` or `source("analyse-data.R")`, you could discover that all the variables in your global environment might be deleted, or that 1000 new files have been created on your desktop. These actions are extremely surprising, because you don't expect a function or script to destructively modify the environment. 
 
-It might seem like tedious busywork, and you sometimes spooky is convenient in the moment and you try to convince yourself that it’s necessary or a good idea (or maybe it’s just invisible to you)
+Deleting variables and creating files on your desktop are obviously surprising even if you've only just started using R. But there are other actions that are less obviously destructive, and only start to become surprising as your mental model R matures. These include things like:
 
-you flip a light switch and your shower turns on
-https://twitter.com/gossipgriii/status/713425874167537664?lang=en
+* Attaching packages with `library()`. For example,
+  `ggplot2::geom_map()` used to call `library(maps)` in order
+  to get map data. This seems harmless, but if you were using purrr,
+  it breaks `map()` because it's now overridden by `maps::map()`
+  (which draws a map, rather than mapping a function over a vector).
+  
+* Installing packages with `install.packages()`. If a script
+  needs dplyr to work, and it's not installed, it seems harmless to
+  install it on behalf of the user. But installing a new package can
+  upgrade existing packages, which might break code in other projects.
 
-also a lot of the payoffs from worrying about this stuff come later in your career — like when you start to share code with other people or when you want to run code on other computers
+* Deleting objects in the global environment with `rm(list = ls())`. 
+  This might seem harmless to you because you who always runs scripts in a
+  new R session, and you always make sure that all objects can easily 
+  be re-created from a script. But not everyone works this way, and you
+  might cause pain for someone with a less polished workflow.
 
-## What is spooky action in time?
+Collectively, we call such side-effects "spooky actions" because the connection between action (calling a function or sourcing a script) and result (deleting objects or upgrading packages) is surprising. It's like flipping a light-switch and discovering that shower starts running, or having a poltergeist that rearranges the contents of your kitchen cupboards when you're not looking.
 
-I think this is where poor process leaks into artefacts. By constantly running different scripts or chunks in a long-running shared R process, you create wormholes that are not explicit any where in the code.
+Because R doesn't constrain the potential scope of functions and scripts, *you* have to. By restraining your possible actions in functions and scripts, you will create code that is less suprising to other R user. At first, this might seem like tedious busywork. You might find that spooky action is convenient in the moment, and you might convince yourself that it’s necessary or a good idea. But as you share your code with more people and run more code that has been shared with you, you'll find spooky action to get more and more surprising and frustrating.
 
-when running several scripts or knitting several Rmds, each should get its own fresh process
-they should not be communicating with each other in the global workspace
-they should not commuunicating at all or it should be in some very obvious way, probably through the file system and perhaps a choreographing tool like make or drake
-And so working in projects, restarting often, etc. are a method of constantly checking for these unplanned communication channels and eradicating them.
+## What is the underlying principle?
 
-## What is spooky action in space?
+We can make the notion of spooky action more precise by thinking about trees. There are important types of trees:
 
-There two primary meanings of "space" in an R script:
+* The tree formed by files and directories.
 
-* The directory structure 
-* The environment structure
+* The tree of environments created by function calls.
 
-You can think of both directories and environments as being trees. Generally, code should only affect the tree beneath where it lives. You should avoid modifying up the tree or across into a different branch. (There are a few exceptions like the temporary directory which doesn't belong to anyoen.)
+Generally, code should only affect the tree beneath where it lives. You should avoid modifying up the tree or across into a different branch:
 
-Avoiding spooky action in space is harder than avoiding spooky action.  Run on travis.
+*   A script should only read from and write to directories beneath the
+    directory where it lives. 
+    
+    This rule can be relaxed in two small ways. Firstly, if the script
+    lives in a project, it's ok to read from and write to anywhere in the
+    project (i.e. a file in `R/` can read from `data-raw/` and write to
+    `data/`). Secondly, it's always ok to write to the sessions specific
+    temporary directory accessed with `tempdir()`.
 
-When your start out using R, you won't have a strong sense of what is surprising (because everything is!). But we suggest these principles because 
-
-* A function shouldn't modify objects in the global environment.
-* A package shouldn't attach other packages (or otherwise mess with the search path).
-* A script shouldn't change the working directory, or `rm(list = ls())`.
-* An Rmd shouldn't read or write files outside of the project it lives in.
-
-Why not? Because these are actions outside the usual scope of effects. 
-
-Why do we care about scope of effects? Because it allows us to build up a simpler.
-
-`lapply()` + `<<-`.
-
-— if the scope of effects is constrained/contained then you have a simpler model of computation that makes analysing/understanding code easier. Imagine each function/package/script creates a sort of nested tree: it's ok to affect your children, but not your parents.
+*   A function should only create and modify variables in its own 
+    environment or functions that it calls. This is the principle
+    that implies you shouldn't attach packages, delete variables with `rm()`,
+    or assign with `<<-`.
 
 ## How can I remediate spooky actions?
 
-The easiest way is to make them not spooky.
+### Make action clear
 
-When it's not spooky! i.e. a function/package/script can have actions outside of its usual scope if that is it's explicit and specific purpose:
+The easiest way to make actions not spooky is by making it clear what's going to happen from the outside. It is perfectly fine for function or script to have actions outside of its usual scope if that is it's explicit in its name:
 
-* It's ok for `<-` to modify the global environment, because that is its one job.
-  It's ok for `save_output(path)` to create files in path because it's clear 
-  from the name.
+* It's ok for `<-` to modify the global environment, because that is its one 
+  job. It's ok for `save_output(path)` to create files in path because it's 
+  clear from the name.
 
-* It's fine for `library(conflicted)` to mess with your search path; that is
-  its one purpose.
+* It's fine for `install.packages()` to modify files outside of the current
+  working directory because it's designed specifically to install packages.
 
 * It's ok for `source("class-setup.R")` to install packages because the intent 
   of a setup script is to get your computer into the same state as someone 
   else's (but be aware by doing this, you might break other projects).
 
-It's ok if the user explicitly requests that your code do these things, but you should avoid doing it automatically, or as a side-effect of something unrelated. 
+Note that it's the name that's important - it's fine for `install.packages()` to install packages, but it's not ok as soon as it's hidden behind even a very simple wrapper:
+
+```{r}
+current_time <- function() {
+  if (!requireNamespace("lubridate", quietly = TRUE)) {
+    install.packages("lubridate")
+  }
+  lubridate::now()
+}
+current_time()
+```
+
+### Ask for confirmation
+
+If you believe the spooky action is important, and you can't pull it out into a top-level function or script specifically designed for a purpose, make sure that the user can opt-out, with a clear confirmation message.
+
+```{r}
+install_if_needed <- function(package) {
+  if (requireNamespace(package, quietly = TRUE)) {
+    return(invisible(TRUE))
+  }
+  
+  if (!interactive()) {
+    stop(package, " is not installed", call. = FALSE)
+  }
+  
+  title <- paste0(package, " is not installed. Do you wish to install now?")
+  if (menu(c("Yes", "No"), title = title) != 1) {
+    stop("Confirmation not recieved", call. = FALSE)
+  }
+  
+  invisible(TRUE)
+}
+```
+
+Note the use of `interactive()` here: if the user is not in an interactive setting (i.e. the code is being run with `Rscript`) we should be conservative.
+
+Also note that the function errors if the user chooses not to install. This ensures that the remainder of the code does not run.
+
+Ideally this function would also advertise what exactly the consequences of this decision would be. For example, it would be nice to know if it would have to download a significant amount of data (since you might want to wait until your at a fast connection if downloading a Gb sized data set), and if it's going to upgrade existing packages. However, this information is very difficult to access so is out of scope for this case.
+
+### Advertise the side-effects
+
+```{r, eval = FALSE}
+install.packages("dplyr")
+#> Installing package into ‘/Users/hadley/R’
+#> (as ‘lib’ is unspecified)
+#> Trying URL 'https://cran.rstudio.com/bin/macosx/el-capitan/contrib/3.5/dplyr_0.8.0.1.tgz'
+#> Content type 'application/x-gzip' length 6587031 bytes (6.3 MB)
+#> ==================================================
+#> downloaded 6.3 MB
+```
+
+* It says installing "package", without specifying which package (so if
+  this is called inside another function it won't be informative).
+  
+* It doesn't notify me which dependencies it's also going to update.
+
+* It notifies me of the url it's downloading from, which I don't carry about.
+  It only notifies me about the size when it's too late to stop it.
 
 ## Talking points
 
 * `library(usethis)`: all the functions in usethis are specifically for modifying your computing environment. They designed to be used interactively, but shouldn't be called automatically (i.e. it's fine to wrap them in a function that is then called by the user, but you shouldn't generally run them in a script)
 
 * Assigning multiple objects in a for loop — generally this pattern does not set you up for success because once you have the objects in the environment, how do you work with them? It's better to put them in a list and then you can use the same techniques you would for iterating over values in a vector or columns in a data frame.
+
+* `lapply()` + `<<-` vs `counter()`
+  https://stackoverflow.com/questions/2656792
