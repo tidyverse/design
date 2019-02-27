@@ -36,7 +36,9 @@ We can make the notion of spooky action more precise by thinking about trees. Th
 Generally, code should only affect the tree beneath where it lives. You should avoid modifying up the tree or across into a different branch:
 
 *   A script should only read from and write to directories beneath the
-    directory where it lives. 
+    directory where it lives. This implies that installing packages is
+    a spooky action (unless it's a project specific package), and also
+    explains why you shouldn't create files in central locations.
     
     This rule can be relaxed in two small ways. Firstly, if the script
     lives in a project, it's ok to read from and write to anywhere in the
@@ -45,11 +47,22 @@ Generally, code should only affect the tree beneath where it lives. You should a
     temporary directory accessed with `tempdir()`.
 
 *   A function should only create and modify variables in its own 
-    environment or functions that it calls. This is the principle
-    that implies you shouldn't attach packages, delete variables with `rm()`,
-    or assign with `<<-`.
+    environment or functions that it calls. This is explains why you shouldn't 
+    attach packages (because that changes environments in the 
+    [search path](https://adv-r.hadley.nz/environments.html#search-path)),
+    why you shouldn't delete variables with `rm(list = ls())`,
+    or assign to variables that you didn't create with `<<-`.
 
 ## How can I remediate spooky actions?
+
+If you have read the above cautions, and still want to proceed, there are three ways you can make the spooky action as safe as possible:
+
+* Make the action less spooky by giving it a name that clearly implies it's 
+  action.
+  
+* Explicitly check with the user before proceeding.
+
+* Advertise what's happening so the action isn't silent.
 
 ### Make action clear
 
@@ -80,7 +93,9 @@ current_time()
 
 ### Ask for confirmation
 
-If you believe the spooky action is important, and you can't pull it out into a top-level function or script specifically designed for a purpose, make sure that the user can opt-out, with a clear confirmation message.
+If you believe the spooky action is important, and you can't pull it out into a top-level function or script specifically designed for a purpose, make sure that that you confirm with the user that it's ok. 
+
+The code below shows how you might do so when installing a package:
 
 ```{r}
 install_if_needed <- function(package) {
@@ -101,13 +116,13 @@ install_if_needed <- function(package) {
 }
 ```
 
-Note the use of `interactive()` here: if the user is not in an interactive setting (i.e. the code is being run with `Rscript`) we should be conservative.
+Note the use of `interactive()` here: if the user is not in an interactive setting (i.e. the code is being run with `Rscript`) and we can not get explicit confirmation, we shouldn't make any changes. Also that all failures are errors: this ensures that the remainder of the function or script does not run if the user doesn't confirm.
 
-Also note that the function errors if the user chooses not to install. This ensures that the remainder of the code does not run.
-
-Ideally this function would also advertise what exactly the consequences of this decision would be. For example, it would be nice to know if it would have to download a significant amount of data (since you might want to wait until your at a fast connection if downloading a Gb sized data set), and if it's going to upgrade existing packages. However, this information is very difficult to access so is out of scope for this case.
+Ideally this function would also clearly describe the consequences of your decision. For example, it would be nice to know if it will download a significant amount of data (since you might want to wait until your at a fast connection if downloading a 1 Gb data package), or if it will upgrade existing packages (since that might break other code).
 
 ### Advertise the side-effects
+
+If you can't get explicit confirmation from the user, at the very minimum you should clearly advertise what is happening. For example, when you call `install.packages()` it notifies you:
 
 ```{r, eval = FALSE}
 install.packages("dplyr")
@@ -119,19 +134,117 @@ install.packages("dplyr")
 #> downloaded 6.3 MB
 ```
 
+However, this message could do with some work:
+
 * It says installing "package", without specifying which package (so if
   this is called inside another function it won't be informative).
   
 * It doesn't notify me which dependencies it's also going to update.
 
-* It notifies me of the url it's downloading from, which I don't carry about.
-  It only notifies me about the size when it's too late to stop it.
+* It notifies me of the url it's downloading from, which I don't care about,
+  and it only notifies me about the size when it's finished downloading, 
+  by which time it too late to stop it.
 
-## Talking points
+I would instead write something like this:
 
-* `library(usethis)`: all the functions in usethis are specifically for modifying your computing environment. They designed to be used interactively, but shouldn't be called automatically (i.e. it's fine to wrap them in a function that is then called by the user, but you shouldn't generally run them in a script)
+```{r, eval = FALSE}
+install.packages("dplyr")
+#> Installing package dplyr to `/Users/hadley/R`
+#> Also installing 3 dependencies: glue, rlang, R6
+```
 
-* Assigning multiple objects in a for loop — generally this pattern does not set you up for success because once you have the objects in the environment, how do you work with them? It's better to put them in a list and then you can use the same techniques you would for iterating over values in a vector or columns in a data frame.
+We'll come back to the issue of informing the user in ...
+
+## Case studies
+
+### `save()` and `load()`
+
+`load()` is one of the few functions in base R that have spooky action.
+
+```{r, include = FALSE}
+if (!file.exists("spooky-action.rds")) {
+  x <- 10
+  y <- 100
+  save(x, y, file = "spooky-action.rds")
+  rm(x, y)
+}
+```
+
+```{r}
+x <- 1
+load("spooky-action.rds")
+x
+```
+
+You can make it less spooky by supplying `verbose = TRUE`. Here we now learn that it also loaded a `y` object
+
+```{r}
+load("spooky-action.rds", verbose = TRUE)
+y
+```
+
+But generally, I'd avoid `save()` and `load()` altogether, and instead use `saveRDS()` and `readRDS()`, which read and write individual R objects to individual R files and work with `<-` so that assignment is no longer hidden.
+
+```{r}
+saveRDS(x, "x.rds")
+x <- readRDS("x.rds")
+```
+```{r}
+unlink("x.rds")
+```
+
+
+(readr provides `readr::read_rds()` and `readr::write_rds()` if the inconsistent naming conventions bother you like they bother me.)
+
+### usethis
+
+All the functions in usethis are specifically for modifying your computing environment. They designed to be used interactively, but shouldn't be called automatically (i.e. it's fine to wrap them in a function that is then called by the user, but you shouldn't generally run them in a script)
+
+This poses some challenges for internal reuse.
+
+### `assign()` in a for loop
+
+It's not uncommon for people to ask: how do you create multiple objects from for a loop? Maybe you have a vector of file names, and want to read them into individual objects:
+
+```{r, eval = FALSE}
+paths <- c("a.csv", "b.csv", "c.csv")
+names <- c("a", "b", "c")
+
+for (i in seq_along(paths)) {
+  assign(names[[i]], read.csv(paths[[i]]))
+}
+```
+
+The main problem with this approach is that it does not faciliate computation. Say you now wanted to figure out how many rows are in each of the data frames? You'd need to use `get()` to find the object:
+
+```{r, eval = FALSE}
+lengths <- numeric(length(names))
+for (i in seq_along(names)) {
+  lengths[[i]] <- nrow(get(names[[i]]))
+}
+```
+
+If you instead save the files into a list:
+
+```{r, eval = FALSE}
+library(purrr)
+
+files <- map(paths, read.csv)
+names(files) <- names
+```
+
+You can still access individual files easily (with e.g. `files$a`), but now when you come to compute the number of rows, you can use an existing helper:
+
+```{r, eval = FALSE}
+map_int(files, nrow)
+```
+
+This obviously requires that you learn some new tools - but learning `map()` and `map_int()` and going to pay off in many more situations than `assign()` and `get()` will.
+
+Wrapping a pattern like this up into a function is even more dangerous, because now you're assigning into an environment that you don't own, and you'll need to be very carefuly to avoid overriding existing objects. 
+
+### `<<-` with `lapply()`
 
 * `lapply()` + `<<-` vs `counter()`
   https://stackoverflow.com/questions/2656792
+  https://stackoverflow.com/questions/52565742
