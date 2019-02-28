@@ -1,54 +1,58 @@
 # Spooky action
 
-There is no limitation to what an R function or script can do. After you call `draw_plot()` or `source("analyse-data.R")`, you could discover that all the variables in your global environment might be deleted, or that 1000 new files have been created on your desktop. These actions are extremely surprising, because you don't expect a function or script to destructively modify the environment. 
+## What's the problem?
 
-Deleting variables and creating files on your desktop are obviously surprising even if you've only just started using R. But there are other actions that are less obviously destructive, and only start to become surprising as your mental model R matures. These include things like:
+There are no limits to what an function or script can do. After you call `draw_plot()` or `source("analyse-data.R")`, you _could_ discover that all the variables in your global environment have been deleted, or that 1000 new files have been created on your desktop. But these actions would be surprising, because generally you expect the impact of a function (or script) to be as limited as possible. Collectively, we call such side-effects "spooky actions" because the connection between action (calling a function or sourcing a script) and result (deleting objects or upgrading packages) is surprising. It's like flipping a light-switch and discovering that shower starts running, or having a poltergeist that rearranges the contents of your kitchen cupboards when you're not looking.
 
-* Attaching packages with `library()`. For example,
-  `ggplot2::geom_map()` used to call `library(maps)` in order
-  to get map data. This seems harmless, but if you were using purrr,
-  it breaks `map()` because it's now overridden by `maps::map()`
-  (which draws a map, rather than mapping a function over a vector).
+Deleting variables and creating files on your desktop are obviously surprising even if you've only just started using R. But there are other actions that are less obviously destructive, and only start to become surprising as your mental model of R matures. These include actions like:
+
+* __Attaching packages with `library()`__. For example, `ggplot2::geom_map()` used 
+  to call `library(maps)` in order to make map data available to the function. 
+  This seems harmless, but if you were using purrr, it would break `map()` 
+  `map()` would now refer to `maps::map()` rather than `purrr::map()`. 
+  Because of functions in different packages can have the same name, attaching 
+  a package can the behaviour of existing code.
   
-* Installing packages with `install.packages()`. If a script
-  needs dplyr to work, and it's not installed, it seems harmless to
-  install it on behalf of the user. But installing a new package can
-  upgrade existing packages, which might break code in other projects.
+* __Installing packages with `install.packages()`__. If a script needs dplyr to 
+  work, and it's not installed, it seem polite to install it on behalf of the 
+  user. But installing a new package can upgrade existing packages, which might 
+  break code in other projects. Install a package is a potentially destructive
+  operation which should be done with care.
 
-* Deleting objects in the global environment with `rm(list = ls())`. 
-  This might seem harmless to you because you who always runs scripts in a
-  new R session, and you always make sure that all objects can easily 
-  be re-created from a script. But not everyone works this way, and you
-  might cause pain for someone with a less polished workflow.
+* __Deleting objects in the global environment with `rm(list = ls())`__. 
+  This might seem like a good way to reset the environment so that you're 
+  script can run cleanly. But if someone else `source()`s your script, it will
+  delete objects that might be important to them. (Of course, you'd hope that
+  all of those objects could easily be recreated from another script, but that
+  is not always the case).
 
-Collectively, we call such side-effects "spooky actions" because the connection between action (calling a function or sourcing a script) and result (deleting objects or upgrading packages) is surprising. It's like flipping a light-switch and discovering that shower starts running, or having a poltergeist that rearranges the contents of your kitchen cupboards when you're not looking.
+Because R doesn't constrain the potential scope of functions and scripts, *you* have to. By avoiding these actions, you will create code that is less suprising to other R users. At first, this might seem like tedious busywork. You might find that spooky action is convenient in the moment, and you might convince yourself that it’s necessary or a good idea. But as you share your code with more people and run more code that has been shared with you[^teachers], you'll find spooky action to get more and more surprising and frustrating. 
 
-Because R doesn't constrain the potential scope of functions and scripts, *you* have to. By restraining your possible actions in functions and scripts, you will create code that is less suprising to other R user. At first, this might seem like tedious busywork. You might find that spooky action is convenient in the moment, and you might convince yourself that it’s necessary or a good idea. But as you share your code with more people and run more code that has been shared with you, you'll find spooky action to get more and more surprising and frustrating.
+[^teachers]: Spooky actions tend to be particularly frustrating to those who teach R, because they have to run scripts from many students, and those scripts can end up doing wacky things to their computers.
 
-## What is the underlying principle?
+## What precisely is a spooky action?
 
-We can make the notion of spooky action more precise by thinking about trees. There are important types of trees:
+We can make the notion of spooky action precise by thinking about trees. Code should only affect the tree beneath where it lives, so any action that reaches up, or across, the tree is a __spooky action__.
 
-* The tree formed by files and directories.
+There are two important types of trees to consider:
 
-* The tree of environments created by function calls.
-
-Generally, code should only affect the tree beneath where it lives. You should avoid modifying up the tree or across into a different branch:
-
-*   A script should only read from and write to directories beneath the
-    directory where it lives. This implies that installing packages is
-    a spooky action (unless it's a project specific package), and also
-    explains why you shouldn't create files in central locations.
+*   __The tree formed by files and directories.__
+    A script should only read from and write to directories beneath the
+    directory where it lives. This explains why you shouldn't install packages
+    (because the package library usually lives elsewhere), and also explains 
+    why you shouldn't create files on the desktop.
     
     This rule can be relaxed in two small ways. Firstly, if the script
     lives in a project, it's ok to read from and write to anywhere in the
     project (i.e. a file in `R/` can read from `data-raw/` and write to
-    `data/`). Secondly, it's always ok to write to the sessions specific
-    temporary directory accessed with `tempdir()`.
+    `data/`). Secondly, it's always ok to write to the session specific
+    temporary directory, `tempdir()`. This directory is automatically deleted
+    when R closes, so does not have any lasting effects.
 
-*   A function should only create and modify variables in its own 
-    environment or functions that it calls. This is explains why you shouldn't 
-    attach packages (because that changes environments in the 
+*   __The tree of environments created by function calls.__
+    A function should only create and modify variables in its own environment 
+    or environments that it creates (typically by calling other functions).
+    This explains why you shouldn't attach packages (because that the
     [search path](https://adv-r.hadley.nz/environments.html#search-path)),
     why you shouldn't delete variables with `rm(list = ls())`,
     or assign to variables that you didn't create with `<<-`.
@@ -57,27 +61,37 @@ Generally, code should only affect the tree beneath where it lives. You should a
 
 If you have read the above cautions, and still want to proceed, there are three ways you can make the spooky action as safe as possible:
 
-* Make the action less spooky by giving it a name that clearly implies it's 
-  action.
-  
-* Explicitly check with the user before proceeding.
+* Allow the user to control the scope.
 
-* Advertise what's happening so the action isn't silent.
+* Make the action less spooky by giving it a name that clearly describes
+  what it will do.
 
-### Make action clear
+* Explicitly check with the user before proceeding with the action.
 
-The easiest way to make actions not spooky is by making it clear what's going to happen from the outside. It is perfectly fine for function or script to have actions outside of its usual scope if that is it's explicit in its name:
+* Advertise what's happening, so while the action might still be spooky, 
+  at least it isn't surprising.
+
+### Parameterise the action
+
+The first technique is to allow the user to control where the action will occur. For example, instead of `save_output_desktop()`, you would write `save_output(path)`, and require that the user provide the path.
+
+### Advertise the action with a clear name
+
+If you can't parameterise the action, make it clear what's going to happen from the outside. It is fine for function or scripts to have actions outside of their usual trees as long as it is implicit in the name:
 
 * It's ok for `<-` to modify the global environment, because that is its one 
-  job. It's ok for `save_output(path)` to create files in path because it's 
-  clear from the name.
+  job, and it's obvious from the name (once you've learned about `<-`, which 
+  happens very early). Similarly, it's ok for `save_output_to_desktop()` to 
+  create files in on the desktop, or `copy_to_clipboard()` to copy text to
+  the clipboard, because the action is clear from the name.
 
 * It's fine for `install.packages()` to modify files outside of the current
   working directory because it's designed specifically to install packages.
+  Simlarly, it's ok for `source("class-setup.R")` to install packages because 
+  the intent of a setup script is to get your computer into the same state as
+  someone else's.
 
-* It's ok for `source("class-setup.R")` to install packages because the intent 
-  of a setup script is to get your computer into the same state as someone 
-  else's (but be aware by doing this, you might break other projects).
+Here, it's the name of the function or script that is really important. As soon as you 
 
 Note that it's the name that's important - it's fine for `install.packages()` to install packages, but it's not ok as soon as it's hidden behind even a very simple wrapper:
 
@@ -93,9 +107,7 @@ current_time()
 
 ### Ask for confirmation
 
-If you believe the spooky action is important, and you can't pull it out into a top-level function or script specifically designed for a purpose, make sure that that you confirm with the user that it's ok. 
-
-The code below shows how you might do so when installing a package:
+If you can't parameterise the operation, and need to perform it from somewhere deep within the cope, make sure to confirm with the user before performing the action. The code below shows how you might do so when installing a package:
 
 ```{r}
 install_if_needed <- function(package) {
@@ -119,6 +131,8 @@ install_if_needed <- function(package) {
 Note the use of `interactive()` here: if the user is not in an interactive setting (i.e. the code is being run with `Rscript`) and we can not get explicit confirmation, we shouldn't make any changes. Also that all failures are errors: this ensures that the remainder of the function or script does not run if the user doesn't confirm.
 
 Ideally this function would also clearly describe the consequences of your decision. For example, it would be nice to know if it will download a significant amount of data (since you might want to wait until your at a fast connection if downloading a 1 Gb data package), or if it will upgrade existing packages (since that might break other code).
+
+Writing code that checks with the user requires some care, and it's easy to get the details wrong. That's why it's better to prefer one of the prior techniques.
 
 ### Advertise the side-effects
 
@@ -159,7 +173,7 @@ We'll come back to the issue of informing the user in ...
 
 ### `save()` and `load()`
 
-`load()` is one of the few functions in base R that have spooky action.
+`load()` has a spooky action because it modifies variables in the current environment:
 
 ```{r, include = FALSE}
 if (!file.exists("spooky-action.rds")) {
@@ -176,14 +190,16 @@ load("spooky-action.rds")
 x
 ```
 
-You can make it less spooky by supplying `verbose = TRUE`. Here we now learn that it also loaded a `y` object
+You can make it less spooky by supplying `verbose = TRUE`. Here we learn that it also loaded a `y` object:
 
 ```{r}
 load("spooky-action.rds", verbose = TRUE)
 y
 ```
 
-But generally, I'd avoid `save()` and `load()` altogether, and instead use `saveRDS()` and `readRDS()`, which read and write individual R objects to individual R files and work with `<-` so that assignment is no longer hidden.
+(In an ideal world `verbose = TRUE` would be default)
+
+But generally, I'd avoid `save()` and `load()` altogether, and instead use `saveRDS()` and `readRDS()`, which read and write individual R objects to individual R files and work with `<-`. This eliminates all spooky action:
 
 ```{r}
 saveRDS(x, "x.rds")
@@ -193,58 +209,171 @@ x <- readRDS("x.rds")
 unlink("x.rds")
 ```
 
-
 (readr provides `readr::read_rds()` and `readr::write_rds()` if the inconsistent naming conventions bother you like they bother me.)
 
 ### usethis
 
-All the functions in usethis are specifically for modifying your computing environment. They designed to be used interactively, but shouldn't be called automatically (i.e. it's fine to wrap them in a function that is then called by the user, but you shouldn't generally run them in a script)
+The usethis package is designed to support the process of developing a package of R code. It automates many of tedious setup steps by providing function like `use_r()` or `use_test()`. Many usethis functions modify the `DESCRIPTION` and create other files. usethis makes these actions as pedestrian as possible by:
 
-This poses some challenges for internal reuse.
+*   Making it clear that the entire package is designed for the purpose of 
+    creating and modifying files, and the purpose of each function is clearly
+    encoded in its named.
+  
+*   For any potential risky operation, e.g. overwriting an existing file, usethis
+    explicitly asks for confirmation from the user. To make it harder to "click"
+    through prompts without reading them, usethis uses random prompts in a 
+    random ordering.
+
+    ```{r, eval = FALSE}
+    usethis::ui_yeah("Do you want to proceed?")
+    #> Do you want to proceed?
+    #> 
+    #> 1: Absolutely not
+    #> 2: Not now
+    #> 3: I agree
+    ```
+    
+    usethis also works in concert with git to make sure that change are captured
+    in a way that can easily be undone.
+    
+*   When you call it, every usethis function describes what it is doing as it
+    it doing it:
+    
+    ```{r, eval = FALSE}
+    usethis::create_package("mypackage", open = FALSE)
+    #> ✔ Creating 'mypackage'
+    #> ✔ Setting active project to 'mypackage'
+    #> ✔ Creating 'R/'
+    #> ✔ Writing 'DESCRIPTION'
+    #> ✔ Writing 'NAMESPACE'
+    #> ✔ Writing 'mypackage.Rproj'
+    #> ✔ Adding '.Rproj.user' to '.gitignore'
+    #> ✔ Adding '^mypackage\\.Rproj$', '^\\.Rproj\\.user$' to '.Rbuildignore'
+    ```
+    
+    This is important, but it's not clear how impactful it is because
+    many functions produce enough output that reading through it all seems
+    onerous and so generally most people don't read it.
+
+### `<<-`
+
+If you haven't heard of `<<-`, the super-assignment operator, before, feel free to skip this section as it's an advanced technique that has relatively limited applications. They're most important in the context of functionals, which you can read more about in [Advanced R](https://adv-r.hadley.nz/function-factories.html#stateful-funs).
+
+`<<-` is safe if you use it to modify a variable in an environment that you control. For example, the following code creates a function that counts the number of times it is called. The use of `<<-` is safe because it only affects the environmnent created by `make_counter()`, not an external environment.
+
+```{r}
+make_counter <- function() {
+  i <- 0
+  function() {
+    i <<- i + 1
+    i
+  }
+}
+c1 <- make_counter()
+c2 <- make_counter()
+c1()
+c1()
+c2()
+```
+
+A more common use of `<<-` is to break one of the limitations of `map()`[^lapply] and use it like a for loop to iteratively modify input. For example, imagine you want to compute a cumulative sum. That's straightforward to write with a for loop:
+
+[^lapply]: `purrr::map()` is basically interchangeable with `base::lapply()` so if you're more familiar with `lapply()`, you can mentally substitute it for `map()` in all the code here.
+
+```{r}
+x <- rpois(10, 10)
+
+out <- numeric(length(x))
+for (i in seq_along(x)) {
+  if (i == 1) {
+    out[[i]] <- x[[i]]
+  } else {
+    out[[i]] <- x[[i]] + out[[i - 1]]
+  }
+}
+
+rbind(x, out)
+```
+
+A simple transformation from to use `map()` doesn't work:
+
+```{r}
+library(purrr)
+out <- numeric(length(x))
+map_dbl(seq_along(x), function(i) {
+  if (i == 1) {
+    out[[i]] <- x[[i]]
+  } else {
+    out[[i]] <- x[[i]] + out[[i - 1]]
+  }
+})
+```
+
+Because the modification of `out` is happening inside of a function, R creates a copy of `out` (this is called [copy-on-modify principle](https://adv-r.hadley.nz/names-values.html#copy-on-modify)). Instead we need to use `<<-` to reach outside of the function to modify the outer `out`:
+
+```{r}
+map_dbl(seq_along(x), function(i) {
+  if (i == 1) {
+    out[[i]] <<- x[[i]]
+  } else {
+    out[[i]] <<- x[[i]] + out[[i - 1]]
+  }
+})
+```
+
+This use of `<<-` is a spooky action because we're reaching up the tree of environments to modify an object created outside of the function. In this case, however, there's no point in using `map()`: the point of those functions is to restrict what you can do compared to a for loop so that your code is easier to understand. [R for data science](https://r4ds.had.co.nz/iteration.html#for-loop-variations) has other examples of for loops that _could_ be rewritten with `map()`, but shouldn't be.
+
+Note that we could still wrap this code into a function to eliminate the spooky action:
+
+```{r}
+cumsum2 <- function(x) {
+  out <- numeric(length(x))
+  map_dbl(seq_along(x), function(i) {
+    if (i == 1) {
+      out[[i]] <<- x[[i]]
+    } else {
+      out[[i]] <<- x[[i]] + out[[i - 1]]
+    }
+  })
+  out
+}
+```
+
+This eliminates the spooky action because it's now modifying an object that the function "owns", but I still wouldn't recommend it, as the use of `map()` and `<<-` only increases complexity for no gain compared to the use of a for loop.
 
 ### `assign()` in a for loop
 
-It's not uncommon for people to ask: how do you create multiple objects from for a loop? Maybe you have a vector of file names, and want to read them into individual objects:
+It's not uncommon for people to ask how to create multiple objects from for a loop. For exampe, maybe you have a vector of file names, and want to read each file into an individual object. With some effort you typically discover `assign()`:
 
 ```{r, eval = FALSE}
 paths <- c("a.csv", "b.csv", "c.csv")
-names <- c("a", "b", "c")
+names(paths) <- c("a", "b", "c")
 
 for (i in seq_along(paths)) {
-  assign(names[[i]], read.csv(paths[[i]]))
+  assign(names(paths)[[i]], read.csv(paths[[i]]))
 }
 ```
 
-The main problem with this approach is that it does not faciliate computation. Say you now wanted to figure out how many rows are in each of the data frames? You'd need to use `get()` to find the object:
+The main problem with this approach is that it does not faciliate composition. For example, imagine that you now wanted to figure out how many rows are in each of the data frames. Now you need to learn how to loop over a series of objects, where the name of the object is stored in a character vector. With some work, you might discover `get()` and write:
 
 ```{r, eval = FALSE}
 lengths <- numeric(length(names))
-for (i in seq_along(names)) {
-  lengths[[i]] <- nrow(get(names[[i]]))
+for (i in seq_along(paths)) {
+  lengths[[i]] <- nrow(get(names(paths)[[i]]))
 }
 ```
 
-If you instead save the files into a list:
+This approach is not necessarily bad in and of itself[^reusing-names], but it tends to lead you down a high-friction path. Instead, if you learn a little about lists and functional programming techniques (e.g. with [purrr](http://purrr.tidyverse.org/)), you'll be able to write code like this:
+
+[^reusing-names]: However, if you take this approach in multiple places in your code, you'll need to make sure that you don't use the same name in multiple loops because `assign()` will silently overwrite an existing variable. This might not happen commonly but because it's silent, it will create a bug that is hard to detect.
 
 ```{r, eval = FALSE}
 library(purrr)
 
 files <- map(paths, read.csv)
-names(files) <- names
+lengths <- map_int(files, nrow)
 ```
 
-You can still access individual files easily (with e.g. `files$a`), but now when you come to compute the number of rows, you can use an existing helper:
+This obviously requires that you learn some new tools - but learning about `map()` and `map_int()` will pay off in many more situations than learning about `assign()` and `get()`. And because you can reuse `map()` and friends in many places, you'll find that they get easier and easier to use over time.
 
-```{r, eval = FALSE}
-map_int(files, nrow)
-```
-
-This obviously requires that you learn some new tools - but learning `map()` and `map_int()` and going to pay off in many more situations than `assign()` and `get()` will.
-
-Wrapping a pattern like this up into a function is even more dangerous, because now you're assigning into an environment that you don't own, and you'll need to be very carefuly to avoid overriding existing objects. 
-
-### `<<-` with `lapply()`
-
-* `lapply()` + `<<-` vs `counter()`
-  https://stackoverflow.com/questions/2656792
-  https://stackoverflow.com/questions/52565742
+It would certainly be possible to build tools in purrr to avoid having to learn about `assign()` and `get()` and to provide a polished interface for working with character vectors containing object names. But such functions would need to reach up the tree of environments, so would violate the "spooky action" principle, and thus I believe are best avoided.
