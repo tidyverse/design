@@ -1,5 +1,9 @@
 # Type-stability
 
+```{r, include = FALSE}
+source("common.R")
+```
+
 The less you need to know about a function's inputs to predict the type of its output, the better. Ideally, a function should either always return the same type of thing, or return something that can be trivially computed from its inputs.
 
 If a function is __type-stable__ it satisifes two conditions:

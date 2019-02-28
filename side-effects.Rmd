@@ -1,5 +1,9 @@
 # Side-effect soup
 
+```{r, include = FALSE}
+source("common.R")
+```
+
 Side-effect soup occurs when you mix side-effects and regular computation within the same function.
 
 ## What is a side-effect?

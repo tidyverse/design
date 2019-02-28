@@ -1,5 +1,9 @@
 # Spooky action
 
+```{r, include = FALSE}
+source("common.R")
+```
+
 ## What's the problem?
 
 There are no limits to what an function or script can do. After you call `draw_plot()` or `source("analyse-data.R")`, you _could_ discover that all the variables in your global environment have been deleted, or that 1000 new files have been created on your desktop. But these actions would be surprising, because generally you expect the impact of a function (or script) to be as limited as possible. Collectively, we call such side-effects "spooky actions" because the connection between action (calling a function or sourcing a script) and result (deleting objects or upgrading packages) is surprising. It's like flipping a light-switch and discovering that shower starts running, or having a poltergeist that rearranges the contents of your kitchen cupboards when you're not looking.

@@ -1,5 +1,9 @@
 # Dots
 
+```{r, include = FALSE}
+source("common.R")
+```
+
 * Allow S3 methods to take additional arguments.
 * Pass on to another function (particularly in functional programming).
 * Create data structures.

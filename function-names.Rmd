@@ -1,5 +1,9 @@
 # Function names
 
+```{r, include = FALSE}
+source("common.R")
+```
+
 Follow the style guide (i.e. use `snake_cake`).
 
 ## Nouns vs verbs

@@ -1,7 +1,7 @@
 # Names attribute
 
-```{r names-setup, include = FALSE, cache = FALSE}
-knitr::opts_chunk$set(collapse = TRUE, comment = "#>", error = TRUE)
+```{r, include = FALSE}
+source("common.R")
 ```
 
 ## Coverage in tidyverse style guide

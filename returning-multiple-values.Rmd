@@ -1,5 +1,9 @@
 # Returning multiple values
 
+```{r, include = FALSE}
+source("common.R")
+```
+
 ## Different sizes
 
 Use a list. Name it.

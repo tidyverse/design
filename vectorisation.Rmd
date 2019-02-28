@@ -1,5 +1,9 @@
 # Vectorisation
 
+```{r, include = FALSE}
+source("common.R")
+```
+
 Vectorisation has two meanings: it can refer to either the interface of a function, or its implementation. 
 We can make a precise statement about what a vectorised interface is. A function, `f`, is vectorised over a vector argument, `x`, iff `f(x)[[i]]` equals `f(x[[i]])`, i.e. we can exchange the order of subsetting and function application. This generalises naturally to more arguments: we say `f` is vectorised over `x` and `y` if `f(x[[i]], y[[i]])` equals `f(x, y)[[i]]`. A function can have some arguments that are vectorised and some that are not, `f(x, ...)[[i]]` equals `f(x[[i]], ...)`.
 

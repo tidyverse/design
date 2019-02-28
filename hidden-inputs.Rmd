@@ -1,5 +1,9 @@
 # Hidden inputs
 
+```{r, include = FALSE}
+source("common.R")
+```
+
 Functions are easier to understand if the results depend only on the values of the inputs. If this is not true, and result of a function depends might be different with the same input arguments, it has __hidden inputs__.
 
 #### Related patterns {-}
