@@ -4,21 +4,47 @@
 source("common.R")
 ```
 
-* Allow S3 methods to take additional arguments.
+The dots `...` are a powerful tool for R programming as they make it possible to pass along any additional arguments not otherwise used by the function. They have three primary uses:
+
 * Pass on to another function (particularly in functional programming).
-* Create data structures.
+  For example `purrr::map(x, f)` calls `f()` once for each element of `x`
+  (i.e. it returns `list(f(x[[1]]), f(x[[2]]), f(x[[3]])))`. What happens if
+  you want to pass arguments along to `f()`? You can use any function, so
+  there's no way for `map()` to possibly know the full set of arguments.
+  
+* Allow S3 methods to take additional arguments. As a general rule, the methods
+  of S3 generics must have the same argument as the parent. But what if you
+  need an argument that only applies to some data types? For example, 
+  the `print()` method for factors has an `max.levels` argument, which doesn't
+  apply to other data types. This works because the `print()` generic has 
+  `...`.
+
+* Create data structures. Finally, `...` is a powerful tool for creating new
+  datastructures and is what powers `list()` and `data.frame()`. It also
+  powers tools like `mutate()` and `summarise()`.
+
+`...` is very powerful and convenient but it comes with some major downsides: if you're not careful, mispelled argument names will be silently ignored, leading to incorrect code like the following:
+
+```{r}
+mean(1, 2, 3)
+weighted.mean(1:3, wt = c(0, 0, 1))
+```
 
 ### Avoiding false matches
 
-Place as far to the left as possible to force users to name arguments. Should come between data and details arguments.
+Place as far to the left as possible to force users to name arguments. Should come between data and details arguments. You can not rely on partial matching after ..., so this forces user to fully spell out argument names (which is generally good practice).
 
-Use `ellipsis::check_dots_unnamed()` or `ellipsis::check_dots_used()`
+Use `ellipsis::check_dots_used()`
 
 Ensure arguments to the right of the dots (i.e. details arguments) are prefixed with `.`. (The dots prefix is not considered part of the argument name so it's ok to have some functions with argument `f` and some with `.f`.)
 
-### Don't use just to avoid `c()` {#vectors-not-dots}
+### Avoid ... just to avoid `c()` {#vectors-not-dots}
 
-i.e. `forcats::fct_relevel()` as it makes future API changes quite difficult. 
+i.e. `forcats::fct_relevel()`
+
+It make future API changes quite difficult, and as above, can make misspellings give silently wrong outputs. If you do use it for this purpose make sure to call `ellipsis::check_dots_unnamed()` to ensure that no named arguments have been accidentally passed to `...`. 
+
+Reserve it for frequently used data creation functions where eliminating three keystrokes will pay off over time.
 
 ### Allow trailing dot
 
