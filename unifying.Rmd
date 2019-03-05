@@ -84,7 +84,7 @@ There are two ways that we make functions consistent that are so important that 
 
 But consistency also applies to data structures: we want to ensure we use the same data structures again and again and again. Principally, we expect data to be stored in [tidy](https://www.jstatsoft.org/article/view/v059i10) data frames or [tibbles](https://github.com/hadley/tibble/). This means that tools for converting other formats can be centralised in one place, and that packages development is simplified by assuming that data is already in a standard format. 
 
-Valuing consistency is a trade-off, and we explicitly value it over performance. There are cases where a difference data structure or a different interface might make a solution simpler to express or much faster. However, one off solutions create a much higher cognitive load.
+Valuing consistency is a trade-off, and we explicitly value it over performance. There are cases where a different data structure or a different interface might make a solution simpler to express or much faster. However, one-off solutions create a much higher cognitive load.
 
 ## Composable
 
@@ -102,7 +102,7 @@ For smaller domains, this means carefully designing functions so that the inputs
 
 We decompose large problems into smaller, more tractable ones by creating and combining functions that transform data rather than by creating objects whose state changes over time.
 
-Other techniques that tend to faciliate composability:
+Other techniques that tend to facilitate composability:
 
 * Functions are data: this leads some of the most impactful techniques for 
   functional programming, which allow you to reduce code duplication.
