@@ -50,7 +50,7 @@ Below we give more details and describe implementation.
 
 ## Minimal names
 
-**Minimal** names exist. The `names` attribute is not `NULL`. The name of an unnamed element is `""` (the empty string) and never `NA`. Examples:
+**Minimal** names exist. The `names` attribute is not `NULL`. The name of an unnamed element is `""` (the empty string) and never `NA`.
 
 Consider an unnamed vector, i.e. it has names attribute of `NULL`.
 
