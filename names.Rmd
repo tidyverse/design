@@ -2,6 +2,8 @@
 
 ```{r, include = FALSE}
 source("common.R")
+tibble_version <- paste0("v", as.character(packageVersion("tibble")))
+library(tidyverse)
 ```
 
 ## Coverage in tidyverse style guide
@@ -17,7 +19,7 @@ Existing name-related topics in <http://style.tidyverse.org>
 
 Here we address how to manage the `names` attribute of an object. Current content reflects recent thinking about how to handle the column or variable names of a tibble. This may inform a name-handling strategy for vectors, in general.
 
-The name repair described below is exposed to users via the `.name_repair` argument of [tibble::tibble()](https://tibble.tidyverse.org/reference/tibble.html) and [tibble::as_tibble()](https://tibble.tidyverse.org/reference/as_tibble.html). The workhorse functions are not (yet) exported. *describes tibble >= 2.0.1*
+The name repair described below is exposed to users via the `.name_repair` argument of [tibble::tibble()](https://tibble.tidyverse.org/reference/tibble.html) and [tibble::as_tibble()](https://tibble.tidyverse.org/reference/as_tibble.html). The workhorse functions are not (yet) exported. *Name repair was first introduced in [tibble v2.0.0](https://tibble.tidyverse.org/news/index.html#tibble-2-0-0) and this write-up is being rendered with tibble `r tibble_version`.*
 
 These are the kind of names we're talking about:
 
@@ -36,7 +38,7 @@ names(euro)
 We identify three nested levels of naminess that are practically useful:
 
   * Minimal: The `names` attribute is not `NULL`. The name of an unnamed element is `""` (empty string) and never `NA`.
-  * Unique: No element of `names` is `""`(empty string) or `"..."` or a duplicate.
+  * Unique: No element of `names` appears more than once. No element is `""` (the empty string) or `"..."` (R's ellipsis or "dots" construct).
     - All columns can be accessed by name via `df[["name"]]` or `` df$`name` ``.
   * Universal: The `names` are unique and syntactic.
     - Names work everywhere, without quoting: `df$name` and
@@ -46,17 +48,23 @@ Below we give more details and describe implementation.
 
 ## Minimal names
 
-**Minimal** names exist. The `names` attribute is not `NULL`. The name of an unnamed element is `""` (empty string) and never `NA`. Examples:
+**Minimal** names exist. The `names` attribute is not `NULL`. The name of an unnamed element is `""` (the empty string) and never `NA`. Examples:
 
-```
-Original names of a vector with length 3: NULL
-                           minimal names: "" "" ""
-                           
-                          Original names: "x" NA
-                           minimal names: "x" ""
+Consider an unnamed vector, i.e. it has names attribute of `NULL`.
+
+```{r}
+x <- letters[1:3]
+names(x)
 ```
 
-This appears to be a useful baseline requirement, if the `names` attribute of an object is going to be actively managed. Why? General name handling and repair can be implemented more simply if the baseline strategy guarantees that `names(x)` returns a character vector of the correct length with no `NA`s.
+Repair the names to make them minimal.
+
+```{r}
+x <- tibble:::set_minimal_names(x)
+names(x)
+```
+
+Minimal names appear to be a useful baseline requirement, if the `names` attribute of an object is going to be actively managed. Why? General name handling and repair can be implemented more simply if the baseline strategy guarantees that `names(x)` returns a character vector of the correct length with no `NA`s.
 
 This is also a reasonable interpretation of base R's *intent* for named vectors, based on the docs for [`names()`](https://stat.ethz.ch/R-manual/R-patched/library/base/html/names.html), although base R's implementation/enforcement of this is uneven. From `?names`:
   
@@ -67,18 +75,42 @@ This is also a reasonable interpretation of base R's *intent* for named vectors,
 > A name can be character `NA`, but such a name will never be matched and is
 > likely to lead to confusion.
 
-`tbl_df` objects created by [tibble::tibble()](https://tibble.tidyverse.org/reference/tibble.html) and [tibble::as_tibble()](https://tibble.tidyverse.org/reference/as_tibble.html) have variable names that are minimal, at the very least. *describes tibble >= 2.0.1*
+`tbl_df` objects created by [tibble::tibble()](https://tibble.tidyverse.org/reference/tibble.html) and [tibble::as_tibble()](https://tibble.tidyverse.org/reference/as_tibble.html) have variable names that are minimal, at the very least.
 
 The existing function [rlang::names2()](https://rlang.r-lib.org/reference/names2.html) returns the names of an object, after making them minimal.
+
+```{r}
+x <- letters[1:3]
+
+names(x)
+
+rlang::names2(x)
+```
 
 ## Unique names
 
 **Unique** names meet the requirements for minimal and have no duplicates. In the tidyverse, we go further and also assert that unique names are never empty -- literally, the empty string `""` is not allowed -- and don't contain R's special "dots" construct, `"..."`.
 
 Example of unique-ified names:
-```
-Original names:     ""     "x"     "" "y"     "x"
-  unique names: "...1" "x...2" "...3" "y" "x...5"
+
+```{r, echo = FALSE, message = FALSE, comment = NA}
+empty_stringify <- function(z) ifelse(z == "", '""', z)
+ascii_table <- function(z) {
+  z %>%
+    as_tibble() %>% 
+    mutate_all(empty_stringify) %>% 
+    mutate_all(~ format(.x, justify = "right"))
+}
+
+nms <- c("", "x", "", "y", "x")
+x <- cbind(
+  original = nms,
+  unique   = tibble:::unique_names(nms),
+  base     = make.unique(nms)
+)
+
+y <- rbind(c("original", "unique-ified"), x[, 1:2])
+glue::glue_data(ascii_table(y), "{original} {unique}")
 ```
 
 This augmented definition of "unique" has an important property: it ensures that each element can be identified by name: literally, `df[["name"]]` and `` df$`name` `` work. This has practical significance for variable names inside a tibble, because so many workflows rely on indexing by name. Note that uniqueness refers implicitly to a vector of names.
@@ -94,18 +126,17 @@ and dysfunctional names.
 names, i.e. if `foo` appears twice, both instances get repaired, not just the
 second occurrence.
 
-This level of naminess is regarded as normative for a tibble and a user must expressly request a tibble with names that violate this (but that is possible).  *describes tibble >= 2.0.1*
+This level of naminess is regarded as normative for a tibble and a user must expressly request a tibble with names that violate this (but that is possible).
 
 Base R's function for this is [make.unique()](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.unique.html). We revisit the example above, comparing the tidyverse strategy for making names unique vs. what `make.unique()` does.
 
-```
-Original  Unique names       Result of
-   names   (tidyverse)   make.unique()
-      ""          ...1              ""
-     "x"         x...2             "x"
-      ""          ...3            ".1"
-     "y"             y             "y"
-     "x"         x...5           "x.1"
+```{r, echo = FALSE, message = FALSE, comment = NA}
+y <- rbind(
+  c("Original", "Unique names",     "Result of"),
+  c(   "names",  "(tidyverse)", "make.unique()"),
+  x
+)
+glue::glue_data(ascii_table(y), "{original} {unique} {base}")
 ```
 
 ### Roundtrips
@@ -113,9 +144,15 @@ Original  Unique names       Result of
 When unique-ifying names, we assume that the input names have been repaired by the same strategy, i.e. that we are consuming dogfood. Therefore, pre-existing suffixes of the form `...j` are stripped, prior to (re-)constructing the suffixes. If this interacts poorly with your names, you need to take control of name repair.
 
 Example of re-unique-ified names:
-```
-Original names (bearing suffixes): "...5"     "x" "x...3"     ""
-                     unique names: "...1" "x...2" "x...3" "...4" 
+
+```{r, echo = FALSE, message = FALSE, comment = NA}
+nms <- c("...5", "x", "x...3", "")
+x <- cbind(
+  suffixed   = nms,
+  resuffixed = tibble:::unique_names(nms)
+)
+y <- rbind(c("original", "unique-ified"), x)
+glue::glue_data(ascii_table(y), "{suffixed} {resuffixed}")
 ```
 
 *JB: it is conceivable that this should be under the control of an argument, e.g. `dogfood = TRUE`, in the (currently unexported) function that does this*
@@ -190,20 +227,29 @@ There are many ways to fix a non-syntactic name. Here's how our logic compares t
    be regarded as a bug (?).
 
 Examples of the tidyverse approach to making individual names syntactic versus [`base::make.names()`](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html):
-```
-                Syntactic name      Result of
-Original name      (tidyverse)   make.names()
-           ""                .              X
-           NA                .            NA.
-        "(y)"              .y.           X.y.
-         "_z"              ._z            X_z
-       ".2fa"            ..2fa          X.2fa
-      "FALSE"           .FALSE         FALSE.
-        "..."             ....            ... <- not syntactic
-        "..3"             ...3            ..3 <- not syntactic
+
+```{r, echo = FALSE, message = FALSE, comment = NA}
+nms <- c("", NA, "(y)", "_z", ".2fa", "FALSE", "...", "..3")
+x <- cbind(
+  original = nms,
+  tidy_syn = tibble:::make_syntactic(nms),
+  base_syn = make.names(nms)
+)
+
+y <- rbind(
+  c("Original", "Syntactic name",    "Result of"),
+  c(    "name",    "(tidyverse)", "make.names()"),
+  x
+)
+y <- y %>% 
+  ascii_table()
+  #mutate(anno = ifelse(grepl("[.][.][.0-9]", base_syn), "<- not syntactic", NA))
+glue::glue_data(ascii_table(y), "{original} {tidy_syn} {base_syn}")
 ```
 
-Currently implemented in the unexported function `tibble:::make_syntactic()`.  *describes tibble >= 2.0.1*
+<!-- FIXME? point out the non-syntactic names returned by make.names() -->
+
+Currently implemented in the unexported function `tibble:::make_syntactic()`.
 
 ### Why universal?
 
@@ -211,7 +257,7 @@ Now we can state the motivation for universal names, which have the group-wise p
 
 In practice, if you want syntactic names, you probably also want them to be unique. You need both in order to refer to individual elements easily, without ambiguity and without quoting.
 
-Currently, universal names are only exposed in the tidyverse via `.name_repair = "universal"` inside `tibble::tibble()` and `tibble::as_tibble()` *describes tibble >= 2.0.1*. 
+Currently, universal names are only exposed in the tidyverse via `.name_repair = "universal"` inside `tibble::tibble()` and `tibble::as_tibble()`. 
 
 TO FILL IN: how exactly we make names unique and syntactic. Explain relative to a simple composition of two primitive operations.
 
@@ -219,18 +265,9 @@ TO FILL IN: how exactly we make names unique and syntactic. Explain relative to 
 
 Name repair should be communicated to the user. Here's how tibble messages:
 
-```{r eval = FALSE}
+```{r}
 x <- tibble::tibble(
   x = 1, x = 2, `a1:` = 3, `_x_y}` = 4,
   .name_repair = "universal"
 )
-#> New names:
-#> * x -> x...1
-#> * x -> x...2
-#> * `a1:` -> a1.
-#> * `_x_y}` -> ._x_y.
 ```
-
-<!-- replace static code above with real code after tibble release -->
-
-*describes tibble >= 2.0.1*
