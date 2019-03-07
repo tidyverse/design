@@ -37,8 +37,8 @@ names(euro)
 
 We identify three nested levels of naminess that are practically useful:
 
-  * Minimal: The `names` attribute is not `NULL`. The name of an unnamed element is `""` (empty string) and never `NA`.
-  * Unique: No element of `names` appears more than once. No element is `""` (the empty string) or `"..."` (R's ellipsis or "dots" construct).
+  * Minimal: The `names` attribute is not `NULL`. The name of an unnamed element is `""` (the empty string) and never `NA`.
+  * Unique: No element of `names` appears more than once. No element is `""` (the empty string) or `...` (R's ellipsis or "dots" construct).
     - All columns can be accessed by name via `df[["name"]]` and, more
       generally, by quoting with backticks: `` df$`name` ``,
       `` subset(df, select = `name`) ``, and `` dplyr::select(df, `name`) ``.
@@ -91,7 +91,7 @@ rlang::names2(x)
 
 ## Unique names
 
-**Unique** names meet the requirements for minimal and have no duplicates. In the tidyverse, we go further and disallow two specific names: `""`, the empty string,  and `"..."`, R's ellipsis or "dots" construct.
+**Unique** names meet the requirements for minimal and have no duplicates. In the tidyverse, we go further and disallow two specific names: `""`, the empty string,  and `...`, R's ellipsis or "dots" construct.
 
 Example of unique-ified names:
 
@@ -128,7 +128,7 @@ This has practical significance for variable names inside a data frame, because 
 
 ### Making names unique
 
-There are many ways to make names unique. We append a suffix of the form `...j` to any name that is a duplicate or `""` or `"..."`, where `j` is the position. Why?
+There are many ways to make names unique. We append a suffix of the form `...j` to any name that is a duplicate or `""` or `...`, where `j` is the position. Why?
 
   * An absolute position `j` is more helpful than numbering within the elements
 that share a name. Context: troubleshooting data import with lots of columns
@@ -241,7 +241,7 @@ There are many ways to fix a non-syntactic name. Here's how our logic compares t
    we first make names minimal. [base::make.names()](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html) turns `NA` into `"NA."` and `""` into `"X"`.
  * Different: We turn `...` into `....` and `..j` into `...j`, where `j` is a
    number. [base::make.names()](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html) does not modify `...` or `..j`, which could
-   be regarded as a bug (?).
+   be regarded as a bug (?). *FIXME: make sure to revisit & update this in light of current name repair refinements.*
 
 Examples of the tidyverse approach to making individual names syntactic versus [`base::make.names()`](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html):
 
