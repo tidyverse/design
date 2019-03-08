@@ -120,6 +120,7 @@ This augmented definition of unique has a specific motivation: it ensures that e
 ```{r, eval = FALSE}
 df[["name"]]
 df$`name`
+with(df, `name`)
 subset(df, select = `name`)
 dplyr::select(df, `name`)
 ```
@@ -139,7 +140,7 @@ Two dots followed by a number, `..j`, does need repair. The same goes for three 
 
 ```{r, error = TRUE}
 df <- tibble(`..1` = "not ok")
-subset(df, select = `..1`)
+with(df, `..1`)
 dplyr::select(df, `..1`)
 
 df <- tibble(`...` = "not ok")
