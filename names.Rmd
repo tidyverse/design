@@ -91,7 +91,7 @@ rlang::names2(x)
 
 ## Unique names
 
-**Unique** names meet the requirements for minimal and have no duplicates. In the tidyverse, we go further and repair a few specific names: `""` (the empty string), `...` (R's ellipsis or "dots" construct), and `..j` where `j` is a number.
+**Unique** names meet the requirements for minimal and have no duplicates. In the tidyverse, we go further and repair a few specific names: `""` (the empty string), `...` (R's ellipsis or "dots" construct), and `..j` where `j` is a number. They are basically all treated like `""`, which is always repaired.
 
 Example of unique-ified names:
 
@@ -126,38 +126,28 @@ dplyr::select(df, `name`)
 
 This has practical significance for variable names inside a data frame, because so many workflows rely on indexing by name. Note that uniqueness refers implicitly to a vector of names.
 
-Let's explore a few edge cases. A single dot followed by a number, `.j`, does not need repair.
+Let's explore a few edge cases: A single dot followed by a number, `.j`, does not need repair.
 
 ```{r}
 df <- tibble(`.1` = "ok")
 df$`.1`
 subset(df, select = `.1`)
 dplyr::select(df, `.1`)
-
-names(as_tibble(df, .name_repair = "unique"))
 ```
 
-Two dots followed by a number, `..j`, even if quoted, cannot always be used. This can be fixed by prepending another dot.
+Two dots followed by a number, `..j`, even if quoted, cannot always be used. The same goes for three dots, `...`, the ellipsis or "dots" construct.
 
 ```{r, error = TRUE}
-df <- tibble(`..1` = "ok")
-df$`..1`
+df <- tibble(`..1` = "not ok")
 subset(df, select = `..1`)
 dplyr::select(df, `..1`)
 
-names(as_tibble(df, .name_repair = "unique"))
-```
-
-Three dots, the ellipsis or "dots" construct, even if quoted, cannot always be used. This is treated like the empty string `""`.
-
-```{r, error = TRUE}
-df <- tibble(`...` = "ok")
-df$`...`
+df <- tibble(`...` = "not ok")
 subset(df, select = `...`)
 dplyr::select(df, `...`)
-
-names(as_tibble(df, .name_repair = "unique"))
 ```
+
+Both are repaired as if they were `""`.
 
 ### Making names unique
 
