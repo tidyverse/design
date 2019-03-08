@@ -9,8 +9,12 @@ Depends:
 Imports: 
     bookdown,
     dplyr,
+    glue,
     rmarkdown,
-    tibble,
+    tibble (>= 2.0.1),
+    tidyverse,
     vctrs
 URL: https://github.com/tidyverse/principles
 BugReports: https://github.com/tidyverse/principles/issues
+Remotes:
+    tidyverse/tibble
