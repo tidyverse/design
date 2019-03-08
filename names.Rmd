@@ -308,6 +308,10 @@ Currently, universal names are only exposed in the tidyverse via `.name_repair =
 
 TO FILL IN: how exactly we make names unique and syntactic. Explain relative to a simple composition of two primitive operations.
 
+### Making names universal
+
+Universal names are implemented as a variation on unique names. Basically, suffixes are stripped and `...` is replaced with `""`. These draft names are transformed with `tibble:::make_syntactic()` (this step is omitted for unique names). Then `...j` suffixes are appended as necessary.
+
 ## Messaging user about name repair
 
 Name repair should be communicated to the user. Here's how tibble messages:
