@@ -261,8 +261,8 @@ There are many ways to fix a non-syntactic name. Here's how our logic compares t
  * Different: We always fix a name by prepending a dot `.`. [base::make.names()](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html)
    sometimes prefixes with `X` and at other times appends a dot `.`.
    - This means we turn `...` into `....` and `..j` into `...j`, where `j` is a
-   number. [base::make.names()](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html) does not modify `...` or `..j`, which could
-   be regarded as a bug (?).
+   number. [base::make.names()](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html) does not modify `...` or `..j`, which could be
+   regarded as a bug (?).
  * Different: We treat `NA` and `""` the same: both become `.`. This is because
    we first make names minimal. [base::make.names()](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html) turns `NA` into `"NA."` and `""` into `"X"`.
 
@@ -302,8 +302,7 @@ TO FILL IN: how exactly we make names unique and syntactic. Explain relative to 
 
 Universal names are implemented as a variation on unique names. Basically, suffixes are stripped and `...` is replaced with `""`. These draft names are transformed with `tibble:::make_syntactic()` (this step is omitted for unique names). Then `...j` suffixes are appended as necessary.
 
-Note that suffix stripping and the substitution of `""` for `...` happens before the draft names are made syntactic. So, although `tibble:::make_syntactic`
-turns `...` into `....`, universal or unique name repair will turn `...` into something of the form `...j`.
+Note that suffix stripping and the substitution of `""` for `...` happens before the draft names are made syntactic. So, although `tibble:::make_syntactic` turns `...` into `....`, universal or unique name repair will turn `...` into something of the form `...j`.
 
 ## Messaging user about name repair
 
