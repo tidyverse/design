@@ -135,7 +135,7 @@ subset(df, select = `.1`)
 dplyr::select(df, `.1`)
 ```
 
-Two dots followed by a number, `..j`, even if quoted, cannot always be used. The same goes for three dots, `...`, the ellipsis or "dots" construct.
+Two dots followed by a number, `..j`, does need repair. The same goes for three dots, `...`, the ellipsis or "dots" construct. These can't function as names, even if quoted with backticks, so they have to be repaired.
 
 ```{r, error = TRUE}
 df <- tibble(`..1` = "not ok")
