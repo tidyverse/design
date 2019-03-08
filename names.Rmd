@@ -180,7 +180,7 @@ When unique-ifying names, we assume that the input names have been repaired by t
 Example of re-unique-ified names:
 
 ```{r, echo = FALSE, message = FALSE, comment = NA}
-nms <- c("...5", "x", "x...3", "")
+nms <- c("...5", "x", "x...3", "", "x...1...5")
 x <- cbind(
   suffixed   = nms,
   resuffixed = tibble:::unique_names(nms)
