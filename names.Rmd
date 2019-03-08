@@ -302,6 +302,9 @@ TO FILL IN: how exactly we make names unique and syntactic. Explain relative to 
 
 Universal names are implemented as a variation on unique names. Basically, suffixes are stripped and `...` is replaced with `""`. These draft names are transformed with `tibble:::make_syntactic()` (this step is omitted for unique names). Then `...j` suffixes are appended as necessary.
 
+Note that suffix stripping and the substitution of `""` for `...` happens before the draft names are made syntactic. So, although `tibble:::make_syntactic`
+turns `...` into `....`, universal or unique name repair will turn `...` into something of the form `...j`.
+
 ## Messaging user about name repair
 
 Name repair should be communicated to the user. Here's how tibble messages:
