@@ -38,7 +38,7 @@ names(euro)
 We identify three nested levels of naminess that are practically useful:
 
   * Minimal: The `names` attribute is not `NULL`. The name of an unnamed element is `""` (the empty string) and never `NA`.
-  * Unique: No element of `names` appears more than once. No element is `""` (the empty string) or `...` (R's ellipsis or "dots" construct).
+  * Unique: No element of `names` appears more than once. A couple specific names are also repaired, such as `""` (the empty string).
     - All columns can be accessed by name via `df[["name"]]` and, more
       generally, by quoting with backticks: `` df$`name` ``,
       `` subset(df, select = `name`) ``, and `` dplyr::select(df, `name`) ``.
@@ -91,7 +91,7 @@ rlang::names2(x)
 
 ## Unique names
 
-**Unique** names meet the requirements for minimal and have no duplicates. In the tidyverse, we go further and disallow two specific names: `""`, the empty string,  and `...`, R's ellipsis or "dots" construct.
+**Unique** names meet the requirements for minimal and have no duplicates. In the tidyverse, we go further and repair a few specific names: `""` (the empty string), `...` (R's ellipsis or "dots" construct), and `..j` where `j` is a number.
 
 Example of unique-ified names:
 
@@ -104,7 +104,7 @@ justify <- function(z) {
     mutate_all(~ format(.x, justify = "right"))
 }
 
-nms <- c("", "x", "", "y", "x")
+nms <- c("", "x", "", "...", "y", "x")
 x <- cbind(
   original = nms,
   unique   = tibble:::unique_names(nms),
@@ -115,7 +115,7 @@ y <- rbind(c("original", "unique-ified"), x[, c("original", "unique")])
 glue::glue_data(justify(y), "{original} {unique}")
 ```
 
-This augmented definition of unique has a specific motivation: it ensures that each element can be identified by name, possibly protected by backtick quotes. Literally, all of these work:
+This augmented definition of unique has a specific motivation: it ensures that each element can be identified by name, at least when protected by backtick quotes. Literally, all of these work:
 
 ```{r, eval = FALSE}
 df[["name"]]
@@ -125,6 +125,39 @@ dplyr::select(df, `name`)
 ```
 
 This has practical significance for variable names inside a data frame, because so many workflows rely on indexing by name. Note that uniqueness refers implicitly to a vector of names.
+
+Let's explore a few edge cases. A single dot followed by a number, `.j`, does not need repair.
+
+```{r}
+df <- tibble(`.1` = "ok")
+df$`.1`
+subset(df, select = `.1`)
+dplyr::select(df, `.1`)
+
+names(as_tibble(df, .name_repair = "unique"))
+```
+
+Two dots followed by a number, `..j`, even if quoted, cannot always be used. This can be fixed by prepending another dot.
+
+```{r, error = TRUE}
+df <- tibble(`..1` = "ok")
+df$`..1`
+subset(df, select = `..1`)
+dplyr::select(df, `..1`)
+
+names(as_tibble(df, .name_repair = "unique"))
+```
+
+Three dots, the ellipsis or "dots" construct, even if quoted, cannot always be used. This is treated like the empty string `""`.
+
+```{r, error = TRUE}
+df <- tibble(`...` = "ok")
+df$`...`
+subset(df, select = `...`)
+dplyr::select(df, `...`)
+
+names(as_tibble(df, .name_repair = "unique"))
+```
 
 ### Making names unique
 
@@ -241,7 +274,7 @@ There are many ways to fix a non-syntactic name. Here's how our logic compares t
    we first make names minimal. [base::make.names()](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html) turns `NA` into `"NA."` and `""` into `"X"`.
  * Different: We turn `...` into `....` and `..j` into `...j`, where `j` is a
    number. [base::make.names()](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html) does not modify `...` or `..j`, which could
-   be regarded as a bug (?). *FIXME: make sure to revisit & update this in light of current name repair refinements.*
+   be regarded as a bug (?).
 
 Examples of the tidyverse approach to making individual names syntactic versus [`base::make.names()`](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html):
 
