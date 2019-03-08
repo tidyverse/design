@@ -260,11 +260,11 @@ There are many ways to fix a non-syntactic name. Here's how our logic compares t
  * Same: An invalid character is replaced with a dot `.`.
  * Different: We always fix a name by prepending a dot `.`. [base::make.names()](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html)
    sometimes prefixes with `X` and at other times appends a dot `.`.
- * Different: We treat `NA` and `""` the same: both become `.`. This is because
-   we first make names minimal. [base::make.names()](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html) turns `NA` into `"NA."` and `""` into `"X"`.
- * Different: We turn `...` into `....` and `..j` into `...j`, where `j` is a
+   - This means we turn `...` into `....` and `..j` into `...j`, where `j` is a
    number. [base::make.names()](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html) does not modify `...` or `..j`, which could
    be regarded as a bug (?).
+ * Different: We treat `NA` and `""` the same: both become `.`. This is because
+   we first make names minimal. [base::make.names()](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html) turns `NA` into `"NA."` and `""` into `"X"`.
 
 Examples of the tidyverse approach to making individual names syntactic versus [`base::make.names()`](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html):
 
