@@ -35,7 +35,7 @@ These principles are inspired by writings about the design of other systems: suc
 > 
 > --- Hal Abelson
 
-Programming is a task performed by humans. To create effective programming tools we must must explicitly recognise and acknowledge the role played by cognitive psychology. This is particularly important for R, because it's a language that's used primarily by non-programmers, and we want to make it as easier as possible for first-time and end-user programmers to learn the tidyverse. 
+Programming is a task performed by humans. To create effective programming tools we must must explicitly recognise and acknowledge the role played by cognitive psychology. This is particularly important for R, because it's a language that's used primarily by non-programmers, and we want to make it as easy as possible for first-time and end-user programmers to learn the tidyverse. 
 
 A particularly useful tool from cognitive psychology is "cognitive load theory"[^clt]: we have a limited working memory, and anything we can do to reduce extraneous cognitive load helps the learner and user of the tidyverse. This motivates the next two principles:
 
@@ -61,7 +61,7 @@ Other useful ideas come from design. One particularly powerful idea is that of "
 
 The most important API principle of the the tidyverse, it's to be consistent. We want to find the smallest possible set of key ideas and use them again and again. This is important because it makes the tidyverse easier to learn and remember. 
 
-(Another framing of this principle is [Less Volume, More Creativity][less-volume], which comes from Mike McCarthy, the head coach of the Green Bay Parkers, and popularised in Statistics Education by [Randall Pruim][randy-pruim])
+(Another framing of this principle is [Less Volume, More Creativity][less-volume], which comes from Mike McCarthy, the head coach of the Green Bay Packers, and popularised in Statistics Education by [Randall Pruim][randy-pruim])
 
 This is related to one of my favourite saying from the Python community:
 
