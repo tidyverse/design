@@ -1,0 +1,26 @@
+# Data, dots, details {#dots-lhs}
+
+When you use `...` in a function where should you put it? The "data, dots, details" pattern tells you: place `...` in between data and `...` arguments. This placement has two advantages:
+
+* It forces the user of your function to fully name the detail arguments, 
+  because arguments that come after `...` after never matched by position
+  or by partial name. Using full names for details arguments is good practice.
+  
+* When coupled with "inspect the dots" (Chapter \@ref(inspect-the-dots)), it
+  minimises the chances that misspelled arguments names will silently go astray.
+
+## Case study
+
+```{r, eval = FALSE}
+median(x, na.rm = FALSE, ...)
+```
+
+Both of these are suboptimal, because if you accidentally supply a sequence of values rather than a wrapper value, (as you might expect from `sum()` and `prod()`.), the named arguments will silently swallow the extra values. This is probably not a general rule, but I think it helps to force people to fully spell out the detail argument names. Bigger problem is mismatch of API design between `
+
+```{r}
+args(sum)
+args(mean)
+args(getS3method("mean", "default"))
+args(weighted.mean)
+args(getS3method("weighted.mean", "default"))
+```

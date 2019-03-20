@@ -14,7 +14,11 @@ rmd_files:
     "hidden-inputs.Rmd",
     "spooky-action.Rmd",
     "vectorisation.Rmd",
+    
     "dots.Rmd",
+    "dots-inspect.Rmd",
+    "data-dots-details.Rmd",
+    "dots-prefix.Rmd",
     
     "glossary.Rmd",
   ]

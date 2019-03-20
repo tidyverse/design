@@ -1,0 +1,51 @@
+# Inspect the dots
+
+```{r, include = FALSE}
+source("common.R")
+```
+
+```{r setup}
+library(purrr)
+```
+
+To avoid this problem you should always __inspect the dots__ checking that they are empty when you expect them to be (`mean()` has another problem that discussed in Section \@ref(dots-lhs)). In this chapter, you'll see how to use functions from the ellipsis package to check. 
+
+## Pass to a helper
+
+```{r}
+points.default
+```
+
+```{r}
+sort.default
+```
+
+Might be technically knowable at one point in time, but makes it possible to decouple.
+
+Make sure the funtion that eventually gets called checks for unnused dots. 
+
+`stringr::str_sort()` -> `stringi::stri_opts_collator()`
+
+`install_github()` -> `install.packages()` -> `download.file()`. https://github.com/r-lib/ellipsis/issues/10#issuecomment-469915847. If not, call `ellipsis::check_used_dots()`.
+
+## Functional programming
+
+Have to assume that `.f` will report on incorrectly supplied arguments.
+
+## Data structure creation
+
+Generally, avoid taking ... just to alleviating the user from having to call `c()`. Only use this pattern when the primary intent of the function is to create data. Avoid using it if you're all your doing is eliminating a call to `...`, and reserve it for frequently used data creation functions where eliminating three keystrokes will pay off over time.
+
+i.e. `forcats::fct_relevel()`, `sum()`, `order()`
+
+However, if you do use it for this purpose make sure to call `ellipsis::check_dots_unnamed()` to ensure that no named arguments have been accidentally passed to `...`. 
+
+## S3 methods
+
+Use `ellipsis::check_dots_used()`
+
+Example of why it has to be this complicated (because you don't know what arguments the method of a subclass will take.)
+
+`dplyr::filter()` as example of custom error. `dplyr::group_by()` as example of bad name `add` (not `.add`), and `.drp = TRUE` does not give an error. It will create a column, but you might miss that. You could throw an error if any column names starts with a `.`, but that seems overly restrictive, since it's otherwise a good column name. `:=` as a general way out.
+
+What about `mutate()`? 

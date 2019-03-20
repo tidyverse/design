@@ -1,0 +1,10 @@
+# Dot prefix
+
+When using `...` to create a data structure, or when passing `...` to a user-supplied function, add a `.` prefix to all details arguments.
+
+Two primary use cases:
+
+* functionals, i.e. functions that take functions as an argument
+* data structure creation
+
+Don't need it for S3 methods.
