@@ -1,13 +1,24 @@
 # Data, dots, details {#dots-lhs}
 
+```{r, include = FALSE}
+source("common.R")
+```
+
 When you use `...` in a function where should you put it? The "data, dots, details" pattern tells you: place `...` in between data and `...` arguments. This placement has two advantages:
 
 * It forces the user of your function to fully name the detail arguments, 
   because arguments that come after `...` after never matched by position
   or by partial name. Using full names for details arguments is good practice.
   
-* When coupled with "inspect the dots" (Chapter \@ref(inspect-the-dots)), it
-  minimises the chances that misspelled arguments names will silently go astray.
+* When coupled with "inspect the dots" (Chapter \@ref(inspect-the-dots)), 
+  and "dot prefix" (Chapter \@ref(dot-prefix)) it minimises the chances that
+  misspelled arguments names will silently go astray.
+
+```{r}
+args(attr.all.equal)
+args(glue::glue)
+```
+
 
 ## Case study
 

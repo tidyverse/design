@@ -1,10 +1,76 @@
 # Dot prefix
 
-When using `...` to create a data structure, or when passing `...` to a user-supplied function, add a `.` prefix to all details arguments.
+```{r, include = FALSE}
+source("common.R")
+```
 
-Two primary use cases:
+When using `...` to create a data structure, or when passing `...` to a user-supplied function, add a `.` prefix to all named arguments. This reduces (but does not eliminate) the chances of matching an argument at the wrong level. Additionally, you should always provide some mechanism that allows you to escape and use that name if needed.
 
-* functionals, i.e. functions that take functions as an argument
-* data structure creation
+```{r setup}
+library(purrr)
+```
 
-Don't need it for S3 methods.
+(Not important if you ignore names: e.g. `cat()`.)
+
+## Case study: purrr functions
+
+Look at the arguments to some functions in purrr:
+
+```{r}
+args(map)
+args(reduce)
+args(detect)
+```
+
+Notice that all named arguments start with `.`. This reduces the chance that you will incorrectly match an argument to `map()`, rather than to an argument of `.f`. Obviously it can't eliminate it.
+
+Escape mechanism is the anonymous function. Little easier to access in `purrr::map()` since you can create with `~`, which is much less typing than `function() {}`. For example, imagine you want to...
+
+Example: https://jennybc.github.io/purrr-tutorial/ls02_map-extraction-advanced.html#list_inside_a_data_frame
+
+## Case study: dplyr verbs
+
+```{r}
+args(dplyr::filter)
+args(dplyr::group_by)
+```
+
+Escape hatch is `:=`.
+
+Ooops:
+
+```{r}
+args(dplyr::left_join)
+```
+
+## Other approaches in base R
+
+Base R uses two alternative methods: uppercase and `_` prefix.
+
+The apply family tends to use uppercase function names for the same reason. Unfortunately the functions are a little inconsitent which makes it hard to see this pattern. I think a dot prefix is better because it's easier to type (you don't have to hold down the shift-key with one finger).
+
+```{r}
+args(lapply)
+args(sapply)
+args(apply)
+args(mapply)
+args(tapply)
+```
+
+`Reduce()` and friends avoid the problem altogether by not accepting `...`, and requiring that the user creates anonymous functions. But this is verbose, particularly without shortcuts to create functions.
+
+`transform()` goes a step further and uses an non-syntactic variable name.
+
+```{r}
+args(transform)
+```
+
+Using a non-syntactic variable names means that it must always be surrounded in `` ` ``.  This means that a user is even less likely to use it that with `.`, but it increases friction when writing the function. In my opinion, this trade-off is not worth it.
+
+## Other cases where it's ok
+
+*  `tryCatch()`: the names give classes so, as long as you don't create a 
+    condition class called `expr` or `finally` (which would be weird!) you
+    don't need to worry about matches
+
+*   
