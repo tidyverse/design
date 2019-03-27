@@ -4,52 +4,57 @@
 source("common.R")
 ```
 
-When you use `...` in a function where should you put it? The "data, dots, details" pattern tells you to place `...` in between the data arguments (the required arguments that supply the key "data" to the function) and the details arguments (optional additional argument that control the finer details of the function). This placement has two advantages:
+When you use `...` in a function, where should you put it? The "data, dots, details" pattern tells you to place `...` in between the data arguments (the required arguments that supply the key "data" to the function) and the details arguments (optional additional arguments that control the finer details of the function). This placement has two advantages:
 
 * It forces the user of your function to fully name the detail arguments, 
-  because arguments that come after `...` after never matched by position
+  because arguments that come after `...` are never matched by position
   or by partial name. Using full names for details arguments is good practice.
   
 * When coupled with "inspect the dots" (Chapter \@ref(inspect-the-dots)), 
   and "dot prefix" (Chapter \@ref(dot-prefix)) it minimises the chances that
   misspelled arguments names will silently go astray.
 
-The pay off of this pattern is not huge: it protects against a fairly unlikely failure mode. However, the failure mode is silent (so easier to miss), and the pattern is very easy to apply, so I think payoff is still worth it.
+The payoff of this pattern is not huge: it protects against a fairly unlikely failure mode. However, the failure mode is silent (so easy to miss), and the pattern is very easy to apply, so I think the payoff is still worth it.
 
 ## Motivation
 
-It's obvious that the data arguments must come first. But which should come next, the dots or the details? Many functions and S3 method in base R dot data, details, dots:
+It's obvious that the data arguments must come first. But which should come next, the dots or the details? Many functions and S3 methods in base R take data, details, then dots:
 
 ```{r}
 args(unique)
 args(median)
 ```
 
-This doesn't cause many problem because most people will fully spell out the names of details arguments. However, it's rather dangerous in summary functions because some summaries take any number of input vectors:
+This doesn't cause many problems because most people will fully spell out the names of details arguments. However, there are other summary functions that take the data *via dots*, then details. 
 
 ```{r}
 sum(2, 3, 10)
 prod(2, 3, 10)
+
+args(sum)
+args(prod)
 ```
 
-While others, like `mean()` and `median()`, expect a single vector:
+This allows these functions to take any number of input vectors, but these two  different interfaces make it very easy for users to construct calls that are technically valid, but that don't return the desired result.
 
-```{r}
-mean(c(2, 3, 10))
-median(c(2, 3, 10))
-```
-
-If you're expecting `median()` to work like `sum()` you might call it the same way:
+If you're expecting `median()` to work like `sum()`, you might call it the same way:
 
 ```{r}
 median(2, 3, 10)
 ```
 
-This silently returns an incorrect result because `median()` has arguments `x`, `na.rm`, and `...`. We need to do two things to make a safer version of `median()` that throws an error if you call it the wrong way:
+This silently returns an incorrect result because `median()` has arguments `x`, `na.rm`, and `...`. The user must remember that `median()` -- and `mean()` too! -- require data that is packaged as a single vector.
+
+```{r}
+median(c(2, 3, 10))
+mean(c(2, 3, 10))
+```
+
+We need to do two things to make a safer version of `median()` that throws an error if you call it the wrong way:
 
 * Use "data-dots-details" to improve the argument order.
 
-* Use "inspect the dots" (Chapter \@ref(inspect-the-dots)) to check every
+* Use "inspect the dots" (Chapter \@ref(inspect-the-dots)) to check that every
   element of `...` is used.
 
 ```{r, error = TRUE}
@@ -61,6 +66,6 @@ safe_median <- function(x, ..., na.rm = FALSE) {
 safe_median(2, 3, 10)
 ```
 
-Neither of these techniques alone is sufficient. If you only use `check_dots_used()`, `median(1, 2)` would still silently return an incorrect result because it is equivalent to `median(x = 1, na.rm = 2)`. If you only improve the argument order `median(1, 2)` will silently return 1 because `...` swallows the `2`.
+Neither of these techniques alone is sufficient. If you only use `check_dots_used()`, `median(1, 2)` will still silently return an incorrect result because it is equivalent to `median(x = 1, na.rm = 2)`. If you only improve the argument order `median(1, 2)` will silently return 1 because `...` swallows the `2`.
 
 Another good practice here would be to check that `na.rm` is a single `TRUE` or `FALSE`.
