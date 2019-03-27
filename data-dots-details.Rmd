@@ -4,7 +4,7 @@
 source("common.R")
 ```
 
-When you use `...` in a function where should you put it? The "data, dots, details" pattern tells you: place `...` in between data and `...` arguments. This placement has two advantages:
+When you use `...` in a function where should you put it? The "data, dots, details" pattern tells you to place `...` in between the data arguments (the required arguments that supply the key "data" to the function) and the details arguments (optional additional argument that control the finer details of the function). This placement has two advantages:
 
 * It forces the user of your function to fully name the detail arguments, 
   because arguments that come after `...` after never matched by position
@@ -14,24 +14,53 @@ When you use `...` in a function where should you put it? The "data, dots, detai
   and "dot prefix" (Chapter \@ref(dot-prefix)) it minimises the chances that
   misspelled arguments names will silently go astray.
 
-```{r}
-args(attr.all.equal)
-args(glue::glue)
-```
+The pay off of this pattern is not huge: it protects against a fairly unlikely failure mode. However, the failure mode is silent (so easier to miss), and the pattern is very easy to apply, so I think payoff is still worth it.
 
+## Motivation
 
-## Case study
-
-```{r, eval = FALSE}
-median(x, na.rm = FALSE, ...)
-```
-
-Both of these are suboptimal, because if you accidentally supply a sequence of values rather than a wrapper value, (as you might expect from `sum()` and `prod()`.), the named arguments will silently swallow the extra values. This is probably not a general rule, but I think it helps to force people to fully spell out the detail argument names. Bigger problem is mismatch of API design between `
+It's obvious that the data arguments must come first. But which should come next, the dots or the details? Many functions and S3 method in base R dot data, details, dots:
 
 ```{r}
-args(sum)
-args(mean)
-args(getS3method("mean", "default"))
-args(weighted.mean)
-args(getS3method("weighted.mean", "default"))
+args(unique)
+args(median)
 ```
+
+This doesn't cause many problem because most people will fully spell out the names of details arguments. However, it's rather dangerous in summary functions because some summaries take any number of input vectors:
+
+```{r}
+sum(2, 3, 10)
+prod(2, 3, 10)
+```
+
+While others, like `mean()` and `median()`, expect a single vector:
+
+```{r}
+mean(c(2, 3, 10))
+median(c(2, 3, 10))
+```
+
+If you're expecting `median()` to work like `sum()` you might call it the same way:
+
+```{r}
+median(2, 3, 10)
+```
+
+This silently returns an incorrect result because `median()` has arguments `x`, `na.rm`, and `...`. We need to do two things to make a safer version of `median()` that throws an error if you call it the wrong way:
+
+* Use "data-dots-details" to improve the argument order.
+
+* Use "inspect the dots" (Chapter \@ref(inspect-the-dots)) to check every
+  element of `...` is used.
+
+```{r, error = TRUE}
+safe_median <- function(x, ..., na.rm = FALSE) {
+  ellipsis::check_dots_used()
+  median(x, ..., na.rm = na.rm)
+}
+
+safe_median(2, 3, 10)
+```
+
+Neither of these techniques alone is sufficient. If you only use `check_dots_used()`, `median(1, 2)` would still silently return an incorrect result because it is equivalent to `median(x = 1, na.rm = 2)`. If you only improve the argument order `median(1, 2)` will silently return 1 because `...` swallows the `2`.
+
+Another good practice here would be to check that `na.rm` is a single `TRUE` or `FALSE`.
