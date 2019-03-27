@@ -18,6 +18,7 @@ rmd_files:
     "dots.Rmd",
     "dots-inspect.Rmd",
     "data-dots-details.Rmd",
+    "dots-data.Rmd",
     "dots-prefix.Rmd",
     
     "glossary.Rmd",

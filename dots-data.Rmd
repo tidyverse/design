@@ -1,0 +1,18 @@
+# Making data with ...
+
+```{r, include = FALSE}
+source("common.R")
+```
+
+Generally, avoid taking ... just to alleviating the user from having to call `c()`. Only use this pattern when the primary intent of the function is to create data. Avoid using it if you're all your doing is eliminating a call to `...`, and reserve it for frequently used data creation functions where eliminating three keystrokes will pay off over time.
+
+i.e. `forcats::fct_relevel()`, `sum()`, `order()`
+
+However, if you do use it for this purpose make sure to call `ellipsis::check_dots_unnamed()` to ensure that no named arguments have been accidentally passed to `...`. 
+
+
+## Related methods
+
+`dplyr::group_by()` as example of bad name `add` (not `.add`), and `.drp = TRUE` does not give an error. It will create a column, but you might miss that. You could throw an error if any column names starts with a `.`, but that seems overly restrictive, since it's otherwise a good column name. `:=` as a general way out.
+
+What about `mutate()`? 

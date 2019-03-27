@@ -4,48 +4,116 @@
 source("common.R")
 ```
 
-```{r setup}
-library(purrr)
-```
-
-To avoid this problem you should always __inspect the dots__ checking that they are empty when you expect them to be (`mean()` has another problem that discussed in Section \@ref(dots-lhs)). In this chapter, you'll see how to use functions from the ellipsis package to check. 
-
-## Pass to a helper
+An important application of `...` is in S3 generics. If a generic has `...` in its arguments, methods can add additional arguments. This adds considerably flexibility, but comes at a price: misspelling an argument name will cause it to be silently ignored. For example:
 
 ```{r}
-points.default
+weighted.mean(c(1, 0, -1), wt = c(10, 0, 0))
+```
+
+Accurately detecting this problem is hard because no one place has all the information needed to tell if an argument is superfluous or not (the precise details are beyond the scope of this text). Instead the ellipsis package takes advantage of R's [lazy evaluation][lazy-eval] and inspects the internal components of `...` to see if their evaluation has been forced.
+
+```{r, error = TRUE}
+weighted_mean <- function(x, w, ...) {
+  ellipsis::check_dots_used()
+  UseMethod("weighted_mean")
+}
+
+weighted_mean.numeric <- function(x, w = NULL, ..., na.rm = FALSE) {
+  if (is.null(w)) {
+    return(mean(x))
+  }
+  
+  keep <- w != 0
+  if (na.rm) {
+    keep <- keep & !is.na(x)
+  }
+  
+  w <- w[keep]
+  x <- x[keep]
+
+  sum(x * w) / sum(w)
+}
+
+weighted_mean(c(1, 0, -1), wt = c(10, 0, 0))
+```
+
+
+```{r}
+safe_cut <- function(x, breaks, ..., right = TRUE) {
+  ellipsis::check_dots_used()
+  UseMethod("safe_cut")
+}
+
+safe_cut.numeric <- function(x, breaks, ..., right = TRUE, include.lowest = FALSE) {
+  cut(x, breaks = breaks, right = right, include.lowest = include.lowest)
+}
+
+safe_cut.Date <- function(x, breaks, ...., right = TRUE, start.on.monday = TRUE) {
+  cut(x, breaks = breaks, right = right, start.on.monday = start.on.monday)
+  
+}
+```
+
+Note that this technique will not work if a method doesn't evaluated its arguments (i.e. it quotes them using `rlang::enquo()` or similar). However, quoting vs. evaluating is part of the overall interface of the function, so it's fine for the author of the generic to make that decision for all method authors. (And this is a relatively rare case anyway.)
+
+## Wrapper functions
+
+This same technique can also be used when you are wrapping other functions. For example, `stringr::str_sort()` takes `...` and passes it on to `stringi::stri_opts_collator()`. As of March 2019, `str_sort()` looked like this:
+
+```{r}
+str_sort <- function(x, decreasing = FALSE, na_last = TRUE, locale = "en",  numeric = FALSE, ...) 
+{
+    stringi::stri_sort(x, 
+      decreasing = decreasing, 
+      na_last = na_last, 
+      opts_collator = stringi::stri_opts_collator(
+        locale, 
+        numeric = numeric, 
+        ...
+      )
+    )
+}
 ```
 
 ```{r}
-sort.default
+x <- c("x1", "x100", "x2")
+str_sort(x)
+str_sort(x, numeric = TRUE)
 ```
 
-Might be technically knowable at one point in time, but makes it possible to decouple.
+This is wrapper is useful because it decouples `str_sort()` from the `stri_opts_collator()` meaning that if `stri_opts_collator()` gains new arguments users of `str_sort()` can take advantage of them immediately. But most of the arguments in `stri_opts_collator()` are sufficiently arcane that they don't need to be exposed directly in stringr, which is designed to minimise the cognitive load of the user, by hiding some of the full complexity of string handling.
 
-Make sure the funtion that eventually gets called checks for unnused dots. 
+(The importance of the `locale` argument comes up in "hidden inputs", Chapter \@ref(hidden-inputs).)
 
-`stringr::str_sort()` -> `stringi::stri_opts_collator()`
+However, `stri_opts_collator()` deliberately ignores any arguments in `...`. This means that misspellings are silently ignored:
+
+```{r}
+str_sort(x, numric = TRUE)
+```
+
+We can work around this behaviour by adding `check_dots_used()` to `str_sort()`:
+
+```{r, error = TRUE}
+str_sort <- function(x, decreasing = FALSE, na_last = TRUE, locale = "en",  numeric = FALSE, ...) 
+{
+    ellipsis::check_dots_used()
+  
+    stringi::stri_sort(x, 
+      decreasing = decreasing, 
+      na_last = na_last, 
+      opts_collator = stringi::stri_opts_collator(
+        locale, 
+        numeric = numeric, 
+        ...
+      )
+    )
+}
+
+str_sort(x, numric = TRUE)
+```
+
+In this case it's slightly better to figure out why `stri_opts_collator()` ignores `...` in the first place. You can see that discussion at <https://github.com/gagolews/stringi/issues/347>.
 
 `install_github()` -> `install.packages()` -> `download.file()`. https://github.com/r-lib/ellipsis/issues/10#issuecomment-469915847. If not, call `ellipsis::check_used_dots()`.
 
-## Functional programming
-
-Have to assume that `.f` will report on incorrectly supplied arguments.
-
-## Data structure creation
-
-Generally, avoid taking ... just to alleviating the user from having to call `c()`. Only use this pattern when the primary intent of the function is to create data. Avoid using it if you're all your doing is eliminating a call to `...`, and reserve it for frequently used data creation functions where eliminating three keystrokes will pay off over time.
-
-i.e. `forcats::fct_relevel()`, `sum()`, `order()`
-
-However, if you do use it for this purpose make sure to call `ellipsis::check_dots_unnamed()` to ensure that no named arguments have been accidentally passed to `...`. 
-
-## S3 methods
-
-Use `ellipsis::check_dots_used()`
-
-Example of why it has to be this complicated (because you don't know what arguments the method of a subclass will take.)
-
-`dplyr::filter()` as example of custom error. `dplyr::group_by()` as example of bad name `add` (not `.add`), and `.drp = TRUE` does not give an error. It will create a column, but you might miss that. You could throw an error if any column names starts with a `.`, but that seems overly restrictive, since it's otherwise a good column name. `:=` as a general way out.
-
-What about `mutate()`? 
+[lazy-eval]: https://adv-r.hadley.nz/functions.html#lazy-evaluation
