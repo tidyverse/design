@@ -47,7 +47,7 @@ In general, I think it is best to avoid using `...` in this way. It has a relati
     vector, and another thing if it's a function. However, because
     `fct_relevel()` uses dots, the implementation needs to be more complicated:
 
-    ```{r}
+    ```{r, eval = FALSE}
     old_levels <- levels(f)
     if (dots_n(...) == 1L && (is.function(..1) || is_formula(..1))) {
       fun <- as_function(..1)
