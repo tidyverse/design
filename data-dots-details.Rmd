@@ -4,7 +4,15 @@
 source("common.R")
 ```
 
-When you use `...` in a function, where should you put it? The "data, dots, details" pattern tells you to place `...` in between the data arguments (the required arguments that supply the key "data" to the function) and the details arguments (optional additional arguments that control the finer details of the function). This placement has two advantages:
+## What's the pattern?
+
+When you use `...` in a function, where should you put it? It's obvious that the data arguments must come first. But which should come next, the dots or the details? 
+
+The "data, dots, details" pattern tells you to place `...` in between the data arguments (the required arguments that supply the key "data" to the function) and the details arguments (optional additional arguments that control the finer details of the function). 
+
+## What are the advantages?
+
+This placement has two advantages:
 
 * It forces the user of your function to fully name the detail arguments, 
   because arguments that come after `...` are never matched by position
@@ -16,9 +24,11 @@ When you use `...` in a function, where should you put it? The "data, dots, deta
 
 The payoff of this pattern is not huge: it protects against a fairly unlikely failure mode. However, the failure mode is silent (so easy to miss), and the pattern is very easy to apply, so I think the payoff is still worth it.
 
-## Motivation
+## How do I do it?
 
-It's obvious that the data arguments must come first. But which should come next, the dots or the details? Many functions and S3 methods in base R take data, details, then dots:
+## What happens if I don't do it?
+
+Many functions and S3 methods in base R take data, then details, then dots:
 
 ```{r}
 args(unique)

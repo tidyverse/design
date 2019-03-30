@@ -4,11 +4,24 @@
 source("common.R")
 ```
 
+## What's the pattern?
+
+Whenever you use `...` in an S3 generic, you should inspect the dots to make sure that every argument is used.
+
+The same approach can also be used when passing `...` on down to another function that 
+
+## What happens if I don't do it?
+
 An important application of `...` is in S3 generics. If a generic has `...` in its arguments, methods can add additional arguments. This adds considerably flexibility, but comes at a price: misspelling an argument name will cause it to be silently ignored. For example:
 
 ```{r}
 weighted.mean(c(1, 0, -1), wt = c(10, 0, 0))
 ```
+
+## What are the advantages?
+
+
+## How do I do it?
 
 Accurately detecting this problem is hard because no one place has all the information needed to tell if an argument is superfluous or not (the precise details are beyond the scope of this text). Instead the ellipsis package takes advantage of R's [lazy evaluation][lazy-eval] and inspects the internal components of `...` to see if their evaluation has been forced.
 
@@ -56,7 +69,7 @@ safe_cut.Date <- function(x, breaks, ...., right = TRUE, start.on.monday = TRUE)
 
 Note that this technique will not work if a method doesn't evaluated its arguments (i.e. it quotes them using `rlang::enquo()` or similar). However, quoting vs. evaluating is part of the overall interface of the function, so it's fine for the author of the generic to make that decision for all method authors. (And this is a relatively rare case anyway.)
 
-## Wrapper functions
+## What are other uses?
 
 This same technique can also be used when you are wrapping other functions. For example, `stringr::str_sort()` takes `...` and passes it on to `stringi::stri_opts_collator()`. As of March 2019, `str_sort()` looked like this:
 

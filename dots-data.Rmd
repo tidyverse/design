@@ -5,7 +5,9 @@ source("common.R")
 library(tidyverse)
 ```
 
-A number of functions take `...` to save the user from having to create a single vector themselves:
+## What's the problem?
+
+A number of functions take `...` to save the user from having to create a vector themselves:
 
 ```{r}
 sum(c(1, 1, 1))
@@ -19,7 +21,11 @@ fct_relevel(f, c("b", "a"))
 fct_relevel(f, "b", "a")
 ```
 
-In general, I think it is best to avoid using `...` in this way. It has a relatively small benefit, only reducing typing by three letters `c()`, but has a number of costs:
+In general, I think it is best to avoid using `...` for this purpose. 
+
+## What are the downsides?
+
+It has a relatively small benefit, only reducing typing by three letters `c()`, but has a number of costs:
 
 *   It can give the misleading impression that other functions in the same
     family work the same way. For example, if you're internalised how `sum()`
@@ -57,7 +63,23 @@ In general, I think it is best to avoid using `...` in this way. It has a relati
     }
     ```
 
-## Amelioration
+## How can undo it?
+
+If you've already publicised a function where you've used `...` for this purpose you can deprecated it as follows:
+
+```{r}
+old_foo <- function(x, ...) {
+}
+
+new_foo <- function(x, y, ...) {
+  if (rlang::dots_n(...) > 0) {
+    warning("Use of `...` is now deprecated. Please put all arguments in `y`")
+    y <- c(y, ...)
+  }
+}
+```
+
+## How can I protect myself?
 
 If you do feel that the tradeoff is worth it (i.e. it's an extremely frequently used function and the savings over time will be considerable), you need to take some steps to minimise the downsides.
 
@@ -131,9 +153,3 @@ ggplot2::facet_grid(rows = drv, cols = c(vs, am))
 ```
 
 That said, it is unlikely we will ever change functions, because the benefit is smaller (primarily improved consistency) and the costs are high, as it impossible to switch from an evaluated argument to a quoted argument without breaking backward compatibility in some small percentage of cases.
-
-## Related methods
-
-`dplyr::group_by()` as example of bad name `add` (not `.add`), and `.drp = TRUE` does not give an error. It will create a column, but you might miss that. You could throw an error if any column names starts with a `.`, but that seems overly restrictive, since it's otherwise a good column name. `:=` as a general way out.
-
-What about `mutate()`? 

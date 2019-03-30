@@ -1,7 +1,5 @@
 # Dots (...)
 
-## Motivation
-
 The dots `...` are a powerful tool for R programming as they make it possible to pass along any number of additional arguments. They have three primary ues:
 
 *   Passing on to another function. For example, `purrr::map()` uses
