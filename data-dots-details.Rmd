@@ -18,10 +18,10 @@ There are two primary advantages:
   because it makes code easier to read.
   
 * When coupled with "inspect the dots" (Chapter \@ref(inspect-the-dots)), 
-  and "dot prefix" (Chapter \@ref(dot-prefix)) it minimises the chances that
+  or "dot prefix" (Chapter \@ref(dot-prefix)) it minimises the chances that
   misspelled arguments names will silently go astray.
 
-The payoff of this pattern is not huge: it protects against a fairly rare failure mode. However, the failure mode is silent (so easy to miss), and the pattern is very easy to apply, so I think the payoff is still worth it.
+The payoff of this pattern is not huge: it protects against a fairly unusual failure mode. However, the failure mode is silent (so easy to miss), and the pattern is very easy to apply, so I think the payoff is still worth it.
 
 ## How do I do it?
 
@@ -63,23 +63,18 @@ mean(c(2, 3, 10))
 
 ## How do I recover?
 
-If you've already published a function where you've used `...` for this purpose you can fix it by changing the argument order. You'll need to use function from the ellipsis package to check that `...` is as expected (e.g. from Chapters \@ref(inspect-the-dots) or \@ref(dots-data)). Since using the full names for details arguments is good practice, making this change will typically affect little existing code, but it is an interface change so should be advertised prominently.
+If you've already published a function where you've put `...` in the wrong place, it's easy to fix. You'll need to use function from the ellipsis package to check that `...` is as expected (e.g. from Chapters \@ref(inspect-the-dots) or \@ref(dots-data)). Since using the full names for details arguments is good practice, making this change will typically affect little existing code, but it is an interface change so should be advertised prominently.
 
 ```{r}
-old_foo <- function(x, data1 = 1, data2 = 2, ...) {
+old_interface <- function(x, data1 = 1, data2 = 2, ...) {
 }
 
-new_foo <- function(x, ..., data1 = 1, data2 = 2) {
+new_interace <- function(x, ..., data1 = 1, data2 = 2) {
   ellipsis::check_dots_used()
 }
 ```
 
-We can use this approach to make a safer version of `median()` that throws an error if you call it the wrong way:
-
-* Use "data-dots-details" to improve the argument order.
-
-* Use "inspect the dots" (Chapter \@ref(inspect-the-dots)) to check that every
-  element of `...` is used.
+We can use this approach to make a safer version of `median()`:
 
 ```{r, error = TRUE}
 safe_median <- function(x, ..., na.rm = FALSE) {
@@ -89,5 +84,3 @@ safe_median <- function(x, ..., na.rm = FALSE) {
 
 safe_median(2, 3, 10)
 ```
-
-Neither of these techniques alone is sufficient. If you only use `check_dots_used()`, `median(1, 2)` will still silently return an incorrect result because it is equivalent to `median(x = 1, na.rm = 2)`. If you only improve the argument order `median(1, 2)` will silently return 1 because `...` swallows the `2`.
