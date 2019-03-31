@@ -6,29 +6,30 @@ source("common.R")
 
 ## What's the pattern?
 
-When you use `...` in a function, where should you put it? It's obvious that the data arguments must come first. But which should come next, the dots or the details? 
-
-The "data, dots, details" pattern tells you to place `...` in between the data arguments (the required arguments that supply the key "data" to the function) and the details arguments (optional additional arguments that control the finer details of the function). 
+When you use `...` in a function, where should you put it? It's obvious that the data arguments must come first. But which should come next, the dots or the details? This patter tells you to place `...` between the data arguments (the required arguments that supply the key "data" to the function) and the details arguments (optional additional arguments that control the finer details of the function). 
 
 ## What are the advantages?
 
-This placement has two advantages:
+There are two primary advantages:
 
 * It forces the user of your function to fully name the detail arguments, 
   because arguments that come after `...` are never matched by position
-  or by partial name. Using full names for details arguments is good practice.
+  or partially by name. Using full names for details arguments is good practice,
+  because it makes code easier to read.
   
 * When coupled with "inspect the dots" (Chapter \@ref(inspect-the-dots)), 
   and "dot prefix" (Chapter \@ref(dot-prefix)) it minimises the chances that
   misspelled arguments names will silently go astray.
 
-The payoff of this pattern is not huge: it protects against a fairly unlikely failure mode. However, the failure mode is silent (so easy to miss), and the pattern is very easy to apply, so I think the payoff is still worth it.
+The payoff of this pattern is not huge: it protects against a fairly rare failure mode. However, the failure mode is silent (so easy to miss), and the pattern is very easy to apply, so I think the payoff is still worth it.
 
 ## How do I do it?
 
+Following this pattern is simple: just identity which arguments are data, and which arguments are details and then put the ... in between.
+
 ## What happens if I don't do it?
 
-Many functions and S3 methods in base R take data, then details, then dots:
+Many functions in base R take data, then details, then dots:
 
 ```{r}
 args(unique)
@@ -53,14 +54,27 @@ If you're expecting `median()` to work like `sum()`, you might call it the same 
 median(2, 3, 10)
 ```
 
-This silently returns an incorrect result because `median()` has arguments `x`, `na.rm`, and `...`. The user must remember that `median()` -- and `mean()` too! -- require data that is packaged as a single vector.
+This silently returns an incorrect result because `median()` has arguments `x`, `na.rm`, and `...`. The user must remember that `median()` -- and `mean()` too! -- require data that is packed into a single vector.
 
 ```{r}
 median(c(2, 3, 10))
 mean(c(2, 3, 10))
 ```
 
-We need to do two things to make a safer version of `median()` that throws an error if you call it the wrong way:
+## How do I recover?
+
+If you've already published a function where you've used `...` for this purpose you can fix it by changing the argument order. You'll need to use function from the ellipsis package to check that `...` is as expected (e.g. from Chapters \@ref(inspect-the-dots) or \@ref(dots-data)). Since using the full names for details arguments is good practice, making this change will typically affect little existing code, but it is an interface change so should be advertised prominently.
+
+```{r}
+old_foo <- function(x, data1 = 1, data2 = 2, ...) {
+}
+
+new_foo <- function(x, ..., data1 = 1, data2 = 2) {
+  ellipsis::check_dots_used()
+}
+```
+
+We can use this approach to make a safer version of `median()` that throws an error if you call it the wrong way:
 
 * Use "data-dots-details" to improve the argument order.
 
@@ -77,5 +91,3 @@ safe_median(2, 3, 10)
 ```
 
 Neither of these techniques alone is sufficient. If you only use `check_dots_used()`, `median(1, 2)` will still silently return an incorrect result because it is equivalent to `median(x = 1, na.rm = 2)`. If you only improve the argument order `median(1, 2)` will silently return 1 because `...` swallows the `2`.
-
-Another good practice here would be to check that `na.rm` is a single `TRUE` or `FALSE`.

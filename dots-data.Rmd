@@ -1,4 +1,4 @@
-# Making data with ...
+# Making data with ... {#dots-data}
 
 ```{r, include = FALSE}
 source("common.R")
@@ -21,11 +21,9 @@ fct_relevel(f, c("b", "a"))
 fct_relevel(f, "b", "a")
 ```
 
-In general, I think it is best to avoid using `...` for this purpose. 
-
 ## What are the downsides?
 
-It has a relatively small benefit, only reducing typing by three letters `c()`, but has a number of costs:
+In general, I think it is best to avoid using `...` for this purpose because it has a relatively small benefit, only reducing typing by three letters `c()`, but has a number of costs:
 
 *   It can give the misleading impression that other functions in the same
     family work the same way. For example, if you're internalised how `sum()`
@@ -40,32 +38,40 @@ It has a relatively small benefit, only reducing typing by three letters `c()`, 
     (See "data-dots-details", Chapter \@ref(dots-lhs), to learn why this
     doesn't give an error message).
 
-*   It makes it harder to change the interface if you realise that the function
-    should take other types of input. For example, `fct_relevel()` can also be
-    called with a function:
+*   It makes it harder to adapt the function for new uses. For example, 
+    `fct_relevel()` can also be called with a function:
     
     ```{r}
     fct_relevel(f, sort)
     ```
     
-    If `fct_relevel()` took a single argument, it would be easy to condition
-    based on the type of this argument: do one thing if it's a character
-    vector, and another thing if it's a function. However, because
-    `fct_relevel()` uses dots, the implementation needs to be more complicated:
+    If `fct_relevel()` took its input as a single vector, you could easily 
+    extend it to also work with functions:
+    
+    ```{r}
+    fct_relevel <- function(f, x) {
+      if (is.function(x)) {
+        x <- f(levels(x))
+      }
+    }
+    ```
+    
+    However, because `fct_relevel()` uses dots, the implementation needs to be 
+    more complicated:
 
     ```{r, eval = FALSE}
-    old_levels <- levels(f)
-    if (dots_n(...) == 1L && (is.function(..1) || is_formula(..1))) {
-      fun <- as_function(..1)
-      first_levels <- fun(old_levels)
-    } else {
-      first_levels <- chr(...)
+    fct_relevel <- function(f, ...) {
+      if (dots_n(...) == 1L && is.function(..1)) {
+        levels <- fun(levels(x))
+      } else {
+        levels <- c(...)
+      }
     }
     ```
 
 ## How can undo it?
 
-If you've already publicised a function where you've used `...` for this purpose you can deprecated it as follows:
+If you've already published a function where you've used `...` for this purpose you can change the interface by adding a new argument in front of `...`, and then warning if anything ends up in `...`.
 
 ```{r}
 old_foo <- function(x, ...) {
@@ -78,6 +84,8 @@ new_foo <- function(x, y, ...) {
   }
 }
 ```
+
+Because this is a interface change, it should be prominently advertised in packages.
 
 ## How can I protect myself?
 
@@ -99,7 +107,7 @@ If you want your vector to have names, the problem is harder, and there's relati
 
 ## Selecting variables
 
-A number of funtions in the tidyverse use `...` in a similar way for selecting variables. For example, `tidyr::fill()` lets you fill in missing values based on the previous row:
+A number of funtions in the tidyverse use `...` for selecting variables. For example, `tidyr::fill()` lets you fill in missing values based on the previous row:
 
 ```{r}
 df <- tribble(
@@ -112,7 +120,7 @@ df <- tribble(
 df %>% fill(year, month)
 ```
 
-All functions that work like this include a call to `tidyselect::vars_select()` that looks somethin like this:
+All functions that work like this include a call to `tidyselect::vars_select()` that looks something like this:
 
 ```{r}
 find_vars <- function(data, ...) {
@@ -122,7 +130,7 @@ find_vars <- function(data, ...) {
 find_vars(df, year, month)
 ```
 
-I now think that this interface is a mistake, because it suffers from the same problem as `sum()`: we're using a complex interface that only save a little typing. We can eliminate the use of dots by requiring the user to use `c()`. (This change also requires explicit quoting and unquoting of `vars` since we're no longer using `...`.)
+I now think that this interface is a mistake because it suffers from the same problem as `sum()`: we're using `...` to only save a little typing. We can eliminate the use of dots by requiring the user to use `c()`. (This change also requires explicit quoting and unquoting of `vars` since we're no longer using `...`.)
 
 ```{r}
 foo <- function(data, vars) {
@@ -138,17 +146,17 @@ In other words, I believe that better interface to `fill()` would be:
 df %>% fill(c(year, month))
 ```
 
-Other functions in tidyverse, like dplyr's scoped verbs `ggplot2::facet_grid()`, use a different approach, requiring the user to explicitly quote the input. I now believe that this is also a suboptimal interface because it is more typing (`var()` is longer than `c()`, and you must quote even single variables), and arguments that require their inputs to be explicitly quoted are rare in the tidyverse. 
+Other tidyverse functions like dplyr's scoped verbs and `ggplot2::facet_grid()` require the user to explicitly quote the input. I now believe that this is also a suboptimal interface because it is more typing (`var()` is longer than `c()`, and you must quote even single variables), and arguments that require their inputs to be explicitly quoted are rare in the tidyverse. 
 
 ```{r, eval = FALSE}
-# current interface
+# existing interface
 dplyr::mutate_at(mtcars, vars(cyl:vs), mean)
-# now preferred
+# what I would create today
 dplyr::mutate_at(mtcars, c(cyl:vs), mean)
 
-# current interface
+# existing interface
 ggplot2::facet_grid(rows = vars(drv), cols = vars(vs, am))
-# now preferred
+# what I would create today
 ggplot2::facet_grid(rows = drv, cols = c(vs, am))
 ```
 
