@@ -107,46 +107,7 @@ If you want your vector to have names, the problem is harder, and there's relati
 
 ## Selecting variables
 
-A number of funtions in the tidyverse use `...` for selecting variables. For example, `tidyr::fill()` lets you fill in missing values based on the previous row:
-
-```{r}
-df <- tribble(
-  ~year,  ~month, ~day,
-  2020,  1,       1,
-  NA,    NA,      2,
-  NA,    NA,      3,
-  NA,    2,       1
-)
-df %>% fill(year, month)
-```
-
-All functions that work like this include a call to `tidyselect::vars_select()` that looks something like this:
-
-```{r}
-find_vars <- function(data, ...) {
-  tidyselect::vars_select(names(data), ...)
-}
-
-find_vars(df, year, month)
-```
-
-I now think that this interface is a mistake because it suffers from the same problem as `sum()`: we're using `...` to only save a little typing. We can eliminate the use of dots by requiring the user to use `c()`. (This change also requires explicit quoting and unquoting of `vars` since we're no longer using `...`.)
-
-```{r}
-foo <- function(data, vars) {
-  tidyselect::vars_select(names(data), !!enquo(vars))
-}
-
-find_vars(df, c(year, month))
-```
-
-In other words, I believe that better interface to `fill()` would be:
-
-```{r, eval = FALSE}
-df %>% fill(c(year, month))
-```
-
-Other tidyverse functions like dplyr's scoped verbs and `ggplot2::facet_grid()` require the user to explicitly quote the input. I now believe that this is also a suboptimal interface because it is more typing (`var()` is longer than `c()`, and you must quote even single variables), and arguments that require their inputs to be explicitly quoted are rare in the tidyverse. 
+A number of funtions in the tidyverse, like dplyr's scoped verbs and `ggplot2::facet_grid()`, require the user to explicitly quote the input. I now believe that this is a suboptimal interface because it is more typing (`var()` is longer than `c()`, and you must quote even single variables), and arguments that require their inputs to be explicitly quoted are rare in the tidyverse. 
 
 ```{r, eval = FALSE}
 # existing interface
@@ -160,4 +121,49 @@ ggplot2::facet_grid(rows = vars(drv), cols = vars(vs, am))
 ggplot2::facet_grid(rows = drv, cols = c(vs, am))
 ```
 
+The `vars()` function is a simple wrapper around `quos()`, and adds no value compared to using `c()` directly, which requires quoting by the called function.
+
+Many other functions use `...` for selecting variables. For example, `tidyr::fill()` lets you fill in missing values based on the previous row:
+
+```{r}
+df <- tribble(
+  ~year,  ~month, ~day,
+  2020,  1,       1,
+  NA,    NA,      2,
+  NA,    NA,      3,
+  NA,    2,       1
+)
+df %>% fill(year, month)
+```
+
+This interface is inconsistent with e.g. `mutate_at()` and suffers from the same problem as `sum()`: we're using `...` to only save a little typing. 
+In other words, I believe that better interface to `fill()` would be:
+
+```{r, eval = FALSE}
+df %>% fill(c(year, month))
+```
+
 That said, it is unlikely we will ever change functions, because the benefit is smaller (primarily improved consistency) and the costs are high, as it impossible to switch from an evaluated argument to a quoted argument without breaking backward compatibility in some small percentage of cases.
+
+### Implementation
+
+All functions that work like `fill()` include a call to `tidyselect::vars_select()` that looks something like this:
+
+```{r}
+find_vars <- function(data, ...) {
+  tidyselect::vars_select(names(data), ...)
+}
+
+find_vars(df, year, month)
+```
+
+
+We can eliminate the use of dots by requiring the caller to use `c()`. (This change also requires explicit quoting and unquoting of `vars` since we're no longer using `...`.)
+
+```{r}
+foo <- function(data, vars) {
+  tidyselect::vars_select(names(data), !!enquo(vars))
+}
+
+find_vars(df, c(year, month))
+```
