@@ -1,0 +1,70 @@
+# Magical default arguments
+
+```{r, include = FALSE}
+source("common.R")
+```
+
+## What's the problem?
+
+Some functions have default values that return different things when you run them interactively:
+
+* In `hist()`, the default value of `xlim` is `range(breaks)`, and the default
+  value for `breaks` is `"Sturges"`.
+  
+* In `abind::abind()` the default value of `along` is `N`, which is computed
+  inside the function.
+  
+* In `sample()` neither `x` not `size` has a default value, suggesting that
+  both are required, and the function would error if you didn't supply them.
+  But `size` is in fact optional.
+  
+* In previous versions of readr, `read_csv(progress = show_progress())`
+  
+* When subsetting a data frame `df[1]` returns a data frame, but `df[1, ]` 
+  returns a vector.
+
+If an argument depends on a value calculated inside the function, on an function that isn't available to the user, or has a default argument calculated in some non-standard way, we say it has a __magical default__.
+
+## How do I fix it?
+
+The typically fix for all these problems is simple: set the default value to `NULL` and conditionally perform the calculation inside the function. Using a default argument signals to the user that the argument is optional, and that the default value is not a constant, but requires some calculation.
+
+If the calculation is complex, but the user might find it useful in other scenarios, compute it with an exported function. A good example is `readr::show_progress()`: it's used in every `read_` function and it's sufficiently complicated that you don't want to copy and paste it between functions. It's also nice to document it in its own file, rather than cluttering up file reading functions with incidental details.
+
+This change does not alter the interface of the function so it can be made with changing the behaiour of any existing code.
+
+## Exceptions to the rule
+
+Sometimes, using a missing argument is the best you can do. 
+
+*   `purrr::reduce()` has an optional details argument called `init`. When 
+    supplied, it serves as the initial value for the computation. But any value 
+    (including `NULL`) can a valid value. Sometimes using a sentinel value 
+    can be the right approach.
+
+*   Must supply one of a pair of arguments. `rvest::html_node(css, xpath)`
+    `fct_other(keep, drop)`. `fct_lump(n, prop)`, `seq_range(n, by)`.
+    
+    Possibly too clever? Using `NULL` doesn't improve things because it would 
+    imply that neither argument is needed. Maybe should be separate functions?
+    That reduces typing `_prop` vs `, prop = `. Definitely true for `fct_lump()`
+    which time has shown to need much greater extensibility.
+    
+    `rep()` as counter-counter example. It's really three functions.
+
+*   `geom_abline()` - probably a sign that it should actually be two functions.
+
+    ```{r, eval = FALSE}
+    if (missing(mapping) && missing(slope) && missing(intercept)) {
+      slope <- 1
+      intercept <- 0
+    }
+    ```
+    
+    `geom_jitter()`, `geom_label()`. Use to add new interface on top of old.
+    
+*   `stringr::str_replace()` ?
+    
+*   `readr::locale()`.
+
+
