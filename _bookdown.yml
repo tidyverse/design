@@ -15,6 +15,8 @@ rmd_files:
     "spooky-action.Rmd",
     "vectorisation.Rmd",
     
+    "args-data-details.Rmd",
+    
     "data-dots-details.Rmd",
     "dots-data.Rmd",
     "dots-prefix.Rmd",

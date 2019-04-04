@@ -1,0 +1,38 @@
+# Data and details arguments {#args-data-details}
+
+```{r, include = FALSE}
+source("common.R")
+```
+
+The arguments to a function typically fall into two broad sets: one set supplies the __data__ to compute on, and the other supplies arguments that control the __details__ of the computation. For example:
+
+* In `log()`, the data is `x`, and the detail is the `base` of the logarithm.
+
+* In `mean()`, the data is `x`, and the details are how much data to trim
+  from the ends (`trim`) and how to handle missing values (`na.rm`).
+
+* In `t.test()`, the data are `x` and `y`, and the details of the test are
+  `alternative`, `mu`, `paired`, `var.equal`, and `conf.level`.
+  
+It's possible for the data arguments to be `...`, which means the function can take an arbitrary number of details arguments. For example, `paste()` allows you to supply any number of strings to `...`, and the details of the concatenation are controlled by `sep` and `collapse`. This pattern is best using sparingly, and is described in more detail in Chapter \@ref(dots-data).
+  
+## What's the pattern?
+
+When __creating__ a function, put data arguments should come before details arguments. Data arguments usually don't have default values; details usually do.
+
+When __calling__ a function, data arguments should be unnamed, and details arguments should have their full names. 
+
+```{r, eval = FALSE}
+# Good
+mean(1:10, na.rm = TRUE)
+
+# Bad
+mean(x = 1:10, , FALSE)
+mean(, TRUE, x = c(1:10, NA))
+```
+
+It is possible to refer to an argument by its unique prefix (e.g. `mean(x, n = TRUE)`), but you should should avoid it, because of the possibilities for confusion. You can make R give you are warning that you're using a partially named argument by setting:
+
+```{r}
+options(warnPartialMatchArgs = TRUE)
+```

@@ -69,6 +69,10 @@ In general, I think it is best to avoid using `...` for this purpose because it 
     }
     ```
 
+## What's the exception?
+
+Note that in all the examples above, the `...` are used to collect a single details argument. It's ok to use `...` to collect _data_, as in `paste()`, `data.frame()`, or `list()`.
+
 ## How can undo it?
 
 If you've already published a function where you've used `...` for this purpose you can change the interface by adding a new argument in front of `...`, and then warning if anything ends up in `...`.
