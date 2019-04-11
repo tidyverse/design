@@ -1,4 +1,4 @@
-# Inspect the dots
+# Inspect the dots {#dots-inspect}
 
 ```{r, include = FALSE}
 source("common.R")

@@ -1,8 +1,10 @@
-# Data and details arguments {#args-data-details}
+# Data, then details {#args-data-details}
 
 ```{r, include = FALSE}
 source("common.R")
 ```
+
+## What are data and details arguments?
 
 The arguments to a function typically fall into two broad sets: one set supplies the __data__ to compute on, and the other supplies arguments that control the __details__ of the computation. For example:
 
@@ -12,27 +14,43 @@ The arguments to a function typically fall into two broad sets: one set supplies
   from the ends (`trim`) and how to handle missing values (`na.rm`).
 
 * In `t.test()`, the data are `x` and `y`, and the details of the test are
-  `alternative`, `mu`, `paired`, `var.equal`, and `conf.level`.
+  specified by the `alternative`, `mu`, `paired`, `var.equal`, and `conf.level`
+  arguments.
   
-It's possible for the data arguments to be `...`, which means the function can take an arbitrary number of details arguments. For example, `paste()` allows you to supply any number of strings to `...`, and the details of the concatenation are controlled by `sep` and `collapse`. This pattern is best using sparingly, and is described in more detail in Chapter \@ref(dots-data).
-  
+Data arguments usually don't have default values; details usually do. Data arguments are typically vectorised, whereas details arguments usually aren't. 
+
 ## What's the pattern?
 
-When __creating__ a function, put data arguments should come before details arguments. Data arguments usually don't have default values; details usually do.
+* When __creating__ a function, put data arguments before details arguments. 
 
-When __calling__ a function, data arguments should be unnamed, and details arguments should have their full names. 
+* When __calling__ a function, data arguments come first, specified by position,
+  followed by details arguments specified by name.
 
-```{r, eval = FALSE}
+```{r}
+y <- c(1:10, NA)
 # Good
-mean(1:10, na.rm = TRUE)
+mean(y, na.rm = TRUE)
 
 # Bad
-mean(x = 1:10, , FALSE)
-mean(, TRUE, x = c(1:10, NA))
+mean(x = y, , TRUE)
+mean(, TRUE, x = y)
 ```
 
-It is possible to refer to an argument by its unique prefix (e.g. `mean(x, n = TRUE)`), but you should should avoid it, because of the possibilities for confusion. You can make R give you are warning that you're using a partially named argument by setting:
+It is possible to refer to an argument by its unique prefix, e.g. `mean(x, n = TRUE)`. This is called partial matching, and should be avoided because it creates code that is harder to read. You can make R give you are warning that you're using a partially named argument with a special option. Call `usethis::use_partial_warnings()` to make this the default for all R sessions.
 
 ```{r}
 options(warnPartialMatchArgs = TRUE)
+mean(x = 1:10, n = FALSE)
 ```
+
+### Related patterns
+
+It's also possible for the data arguments to be `...`, which means the function can take any number of data arguments. For example, `paste()` allows you to supply any number of strings to `...`, and the details of the concatenation are controlled by `sep` and `collapse`. This pattern is best using sparingly, and is described in more detail in Chapter \@ref(dots-data). 
+
+`...` can also be used to capture details arguments and pass them on to other functions. See Chapters \@ref(dots-lhs) and \@ref(dots-inspect) to how to use `...` as safely as possible.
+
+## What happens if I don't do it?
+
+The base string function `grepl(pattern, x)` returns a logical vector the same length as `x` containing `TRUE` wherever `pattern` is matched. Here, `x` is the data argument (it's the character vector of strings to compare), and `pattern` is the data argument.
+
+## How do I recover?
