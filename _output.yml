@@ -4,6 +4,7 @@ bookdown::gitbook:
   css: style.css
   config:
     toc:
+      collapse: section
       before: |
         <li><a href="./">tidyverse design principles</a></li>
     edit: https://github.com/tidyverse/principles/edit/master/%s

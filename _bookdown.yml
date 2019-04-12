@@ -5,6 +5,9 @@ rmd_files:
     "index.Rmd",
     "unifying.Rmd",
     "names.Rmd",
+    
+    "implementation.Rmd",    
+    "call-data-details.Rmd",
 
     "function-interface.Rmd",
     "function-names.Rmd",

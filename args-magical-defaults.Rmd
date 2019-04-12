@@ -37,11 +37,6 @@ This change does not alter the interface of the function so it can be made with 
 
 Sometimes, using a missing argument is the best you can do. 
 
-*   `purrr::reduce()` has an optional details argument called `init`. When 
-    supplied, it serves as the initial value for the computation. But any value 
-    (including `NULL`) can a valid value. Sometimes using a sentinel value 
-    can be the right approach.
-
 *   Must supply one of a pair of arguments. `rvest::html_node(css, xpath)`
     `fct_other(keep, drop)`. `fct_lump(n, prop)`, `seq_range(n, by)`.
     

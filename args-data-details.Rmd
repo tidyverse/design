@@ -4,53 +4,36 @@
 source("common.R")
 ```
 
-## What are data and details arguments?
-
-The arguments to a function typically fall into two broad sets: one set supplies the __data__ to compute on, and the other supplies arguments that control the __details__ of the computation. For example:
-
-* In `log()`, the data is `x`, and the detail is the `base` of the logarithm.
-
-* In `mean()`, the data is `x`, and the details are how much data to trim
-  from the ends (`trim`) and how to handle missing values (`na.rm`).
-
-* In `t.test()`, the data are `x` and `y`, and the details of the test are
-  specified by the `alternative`, `mu`, `paired`, `var.equal`, and `conf.level`
-  arguments.
-  
-Data arguments usually don't have default values; details usually do. Data arguments are typically vectorised, whereas details arguments usually aren't. 
+(If you're not familiar with the terms "data argument" and "details argument", read Chapter \@ref(call-data-details) before continuing.)
 
 ## What's the pattern?
 
-* When __creating__ a function, put data arguments before details arguments. 
+When creating a function, put data arguments before details arguments. 
 
-* When __calling__ a function, data arguments come first, specified by position,
-  followed by details arguments specified by name.
 
-```{r}
-y <- c(1:10, NA)
-# Good
-mean(y, na.rm = TRUE)
-
-# Bad
-mean(x = y, , TRUE)
-mean(, TRUE, x = y)
-```
-
-It is possible to refer to an argument by its unique prefix, e.g. `mean(x, n = TRUE)`. This is called partial matching, and should be avoided because it creates code that is harder to read. You can make R give you are warning that you're using a partially named argument with a special option. Call `usethis::use_partial_warnings()` to make this the default for all R sessions.
-
-```{r}
-options(warnPartialMatchArgs = TRUE)
-mean(x = 1:10, n = FALSE)
-```
 
 ### Related patterns
 
-It's also possible for the data arguments to be `...`, which means the function can take any number of data arguments. For example, `paste()` allows you to supply any number of strings to `...`, and the details of the concatenation are controlled by `sep` and `collapse`. This pattern is best using sparingly, and is described in more detail in Chapter \@ref(dots-data). 
+It's possible for the data argument to be `...` (i.e. there's an arbitrary number of data arguments). For example, `paste()` allows you to supply any number of strings to `...`, and the details of the concatenation are controlled by `sep` and `collapse`. This pattern is best using sparingly, and is described in more detail in Chapter \@ref(dots-data). 
 
-`...` can also be used to capture details arguments and pass them on to other functions. See Chapters \@ref(dots-lhs) and \@ref(dots-inspect) to how to use `...` as safely as possible.
+`...` can also be used to capture details arguments and pass them on to other functions. See Chapters \@ref(dots-lhs) and \@ref(dots-inspect) to how to use `...` as safely as possible in this situation.
 
 ## What happens if I don't do it?
 
-The base string function `grepl(pattern, x)` returns a logical vector the same length as `x` containing `TRUE` wherever `pattern` is matched. Here, `x` is the data argument (it's the character vector of strings to compare), and `pattern` is the data argument.
+One larger family of functions in base R are the functions that tend not to follow this are the string manipulation functions. For example, `grepl(pattern, x)` returns a logical vector the same length as `x` containing `TRUE` wherever `pattern` is matched. Here, `x` is the data argument (it's the character vector of strings to compare), and `pattern` is the data argument. 
+
+`lm()`
+
+`replicate()`
+
+`setNames()`
+
+`purrr::reduce()` has an optional details argument called `init`. When supplied, it serves as the initial value for the computation. But any value (including `NULL`) can a valid value. Sometimes using a sentinel value can be the right approach.
+
+
+## Case study: `mapply()` vs. `pmap()`
+
+`mapply()` and `Map()` - take arguments in `...` so have to either put `FUN` first so it can be used unnamed, or force the use always name it.
 
 ## How do I recover?
+
