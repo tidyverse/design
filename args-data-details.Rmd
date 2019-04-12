@@ -10,32 +10,57 @@ source("common.R")
 
 When creating a function, put data arguments before details arguments. 
 
-
-
 ### Related patterns
 
 It's possible for the data argument to be `...` (i.e. there's an arbitrary number of data arguments). For example, `paste()` allows you to supply any number of strings to `...`, and the details of the concatenation are controlled by `sep` and `collapse`. This pattern is best using sparingly, and is described in more detail in Chapter \@ref(dots-data). 
 
 `...` can also be used to capture details arguments and pass them on to other functions. See Chapters \@ref(dots-lhs) and \@ref(dots-inspect) to how to use `...` as safely as possible in this situation.
 
-## What happens if I don't do it?
+Convention for calling Chapter \@ref(call-data-details).
+
+## Why bother?
+
+Works naturally with the pipe.
+
+Convention makes it easier to understand structure of function at a glance - know that the most important arguments come first.
+
+## What functions violate this pattern?
 
 One larger family of functions in base R are the functions that tend not to follow this are the string manipulation functions. For example, `grepl(pattern, x)` returns a logical vector the same length as `x` containing `TRUE` wherever `pattern` is matched. Here, `x` is the data argument (it's the character vector of strings to compare), and `pattern` is the data argument. 
 
-`lm()`
+Another important example is `lm()`: I think it's fairly obvious that the primary data argument is `data` and one of the key details is the model specification in the `formula` argument. This is partly a historic accident, because having `lm()` work with data frames (rather than individual vectors in the current environment), did become important until later. 
 
-`replicate()`
+`replicate()` takes the number of replicates as the first argument, whereas that seems more like a detail of the computation.
 
-`setNames()`
+```{r}
+replicate(3, rnorm(4))
+replicate(rnorm(4), n = 3)
+```
+
+`setNames()` has a very unusual function:
+
+```{r}
+setNames <- function(object = nm, nm) {
+  names(object) <- nm
+  object
+}
+```
+
+The purrr equivalent, `set_names()` adopts the more obvious specification:
+
+```{r}
+set_names <- function(x, nm = x) {
+  names(x) <- nm
+  x
+}
+```
+
+(`set_names()` is actually a bit more complicated because the second argument can be a function used to transform existing names.)
 
 See also `mapply()` vs. `pmap()` as discussed in Chapter \@ref(mapply-pmap).
 
 `purrr::reduce()` has an optional details argument called `init`. When supplied, it serves as the initial value for the computation. But any value (including `NULL`) can a valid value. Sometimes using a sentinel value can be the right approach.
 
-
-## Case study: `mapply()` vs. `pmap()`
-
-`mapply()` and `Map()` - take arguments in `...` so have to either put `FUN` first so it can be used unnamed, or force the use always name it.
-
 ## How do I recover?
 
+If you have an exported function with this problem, there's no way to fix it. You'll need to deprecate the function and come up with a new replacement without the problem.
