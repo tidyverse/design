@@ -28,6 +28,8 @@ One larger family of functions in base R are the functions that tend not to foll
 
 `setNames()`
 
+See also `mapply()` vs. `pmap()` as discussed in Chapter \@ref(mapply-pmap).
+
 `purrr::reduce()` has an optional details argument called `init`. When supplied, it serves as the initial value for the computation. But any value (including `NULL`) can a valid value. Sometimes using a sentinel value can be the right approach.
 
 
