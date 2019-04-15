@@ -5,29 +5,37 @@
 The interface (aka API) of a function describes its external interface, independent of its internal implementation. The interface of a function has the following main components:
 
 * Name
-* Inputs, i.e. the names and types of its arguments.
-* Output, i.e. its return value.
+* Inputs
+* Output value
 * Errors
-* Other side-effects
+* Side effects
 
 ## Inputs
 
 ### Default values
 
-* Data arguments should come before details arguments.
-  Arguments without defaults should come before arguments with defaults.
+* Chapter \@ref(args-data-details): Data arguments should come before details 
+  arguments. Arguments without defaults should come before arguments with 
+  defaults.
 
-* If an argument doesn't have a default, it should error when absent.
+* Chapter \@ref(args-required): If an argument doesn't have a default, it is
+  required and should error when absent. A limited exception occurs when a
+  function has two mutually exclusive arguments.
 
-* Defaults should return the same answer when run interactively.
+* Chapter \@ref(args-magical-defaults): Default values should return the same 
+  answer when run interactively.
 
 ### Dots
 
-* `...` should come in between data and details arguments.
+* Chapter \@ref(dots-position): `...` should be placed between the data and 
+  details arguments.
 
-* Avoid using `...` to save the user from typing `c()`
+* Chapter \@ref(dots-data): don't use `...` just to save the user from typing 
+  `c()` (unless the function is purely for data structure creation).
 
-* Consider if other arguments need `.` prefix
+* Chapter \@ref(dots-prefix): carefully consider if all other arguments need a 
+  `.` prefix in order to reduce the chance of spurious matches.
 
-* In S3 methods (and select other problems), ensure that all inputs
-  in `...` are evaluated.
+* Chapter \@ref(dots-inspect): when using `...` with S3 methods, or passing on 
+  to other functions that silently ignore mismatches, check that all inputs in 
+  `...` are evaluated.
