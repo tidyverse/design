@@ -3,3 +3,70 @@
 ```{r, include = FALSE}
 source("common.R")
 ```
+
+## What's the problem?
+
+Avoid creating dependencies between details arguments so that only certain combinations are permitted.
+
+## What's an example?
+
+<!-- 
+https://github.com/wch/r-source/blob/trunk/src/main/grep.c#L891-L1151 -->
+
+`grepl()`, has three arguments that take either `FALSE` or `TRUE`: `ignore.case`, `perl`, `fixed`, which might suggest that there are 2 ^ 3 = 16 possible invocations. However, a number of combinations are not allowed:
+
+```{r}
+x <- grepl("a", letters, fixed = TRUE, ignore.case = TRUE)
+x <- grepl("a", letters, fixed = TRUE, perl = TRUE)
+```
+
+Part of this problem could be resolved by making it more clear that one important choice is the matching engine to use:  POSIX 1003.2 extended regular expressions (the default), Perl-style regular expressions (`perl = TRUE`)
+
+or fixed matching (`fixed = TRUE`). A better approach would be to use the pattern in Chapter \@ref(arg-enum)
+
+And create a new argument called something like `engine = c("POSIX", "perl", "fixed")`.
+
+The other problem is that `ignore.case` is can only control two of the three engines: POSIX and perl. 
+
+stringr takes a different approach, encoding the engine as an attribute of the pattern:
+
+```{r}
+library(stringr)
+
+x <- str_detect(letters, "a")
+# short for:
+x <- str_detect(letters, regex("a"))
+x <- str_detect(letters, fixed("a"))
+x <- str_detect(letters, coll("a"))
+```
+
+This has the advantage that each engine can take different arguments. 
+
+An alternative approach would be to have a separate engine argument:
+
+```{r, eval = FALSE}
+x <- str_detect(letters, "a", engine = regex())
+x <- str_detect(letters, "a", engine = fixed())
+x <- str_detect(letters, "a", engine = coll())
+```
+
+I think this is probably a nicer approach, but it's slightly less general, because of the `boundary()` engine, which doesn't match patterns but boundaries:
+
+```{r, eval = FALSE}
+x <- str_detect(letters, boundary("word"))
+# Seems confusing - since bounarY() modifies the meaning of "word"
+# significantly
+x <- str_detect(letters, "word", engine = boundary())
+```
+
+Appealing to have all the details of the pattern matching engine wrapped up into a single object.
+
+Another example from within the tidyverse is `geom_histogram()`. Here you can specify the histogram breaks in three ways: a number of `bins` or `binwidth` (plus `center` and `boundary`), or specifically as breaks. But you can only pick one. 
+
+The bad interface arises for the same reason in both cases: when the functions were originally designed the scope was much smaller. It grew gradually over time, and no point did it seem worth the additional effort to refactor to a new design.
+
+## How do I recover?
+
+Create new argument. Deprecate old args with warnings that tell you how to use the new (preferrably with code to copy and paste).
+
+Show how I'd rewrite `geom_histogram()` today. (Probably actually pull out into its own simple package. It's actually quite difficult to get all the details correct and then the calculations could easily be reused elsewhere without having to take a dependency on the (heavy) ggplot2.)
