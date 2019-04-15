@@ -10,6 +10,7 @@ Imports:
     bookdown,
     dplyr,
     glue,
+    nycflights13,
     rmarkdown,
     tibble (>= 2.0.1),
     tidyverse,

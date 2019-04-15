@@ -3,3 +3,97 @@
 ```{r, include = FALSE}
 source("common.R")
 ```
+
+```{r setup, message = FALSE}
+library(tidyverse)
+```
+
+## What's the pattern?
+
+If a default value is important, and the computation is non-trivial, explain it to the user. The message should be silenced when a default value is provided. Where possible, the message should include code to copy and paste to avoid the message in future.
+
+The message should be mildly annoying to encourage the user to provide a default value after the initial period of pure exploration is passed.
+
+
+## Where can I see it used?
+
+*   `ggplot2::geom_histogram()` - `binwidth` is an important parameter and 
+    something that you should always experiment with, which suggests that it 
+    should be a required argument. However, it's hard to know what plausible 
+    values are until you've seen an initial plot, so ggplot2 provides a 
+    suboptimal default that at least gets you started. By default, it uses 30 
+    bins - this is not optimal in any sense, but gets to you a plot quickly. 
+  
+    ```{r}
+    ggplot(diamonds, aes(carat)) + geom_histogram()
+    ```
+
+*   `dplyr::left_join()` and friends automatically fill in `by` with the 
+    variables that occur in both inputs (this is called a natural join in SQL).
+    This is convenient, but somewhat unsafe, so dplyr messages about it.
+    
+    ```{r, error = TRUE}
+    library(nycflights13)
+    
+    # Correct    
+    out <- left_join(flights, airlines)
+    
+    # Incorrect
+    out <- left_join(flights, planes)
+    
+    # Error
+    out <- left_join(flights, airports)
+    ```
+
+*   `readr::read_col()` reads a csv file into a data frame. Because csv files 
+    don't store the type of each variable, readr must guess the types. And in
+    order to be fast, it uses some heuristics, so it might guess wrong. Or it
+    might guess correctly today, but when your automated script runs in two 
+    months time when the data format has changed, it might guess incorrectly
+    and give weird downstream errors.
+
+    ```{r}
+    mtcars <- read_csv(readr_example("mtcars.csv"))
+    ```
+
+## How can I use it?
+
+Create a helper function that computes the default value, and generates a `message()`.
+
+```{r}
+common_by <- function(x, y) {
+  common <- intersect(names(x), names(y))
+  if (length(common) == 0) {
+    stop("No common variables in `x` and `y`", call. = FALSE)
+  }
+  
+  message("Computing default: `by = ", deparse(common), "`")
+  common
+}
+
+common_by(flights, planes)
+```
+
+If you reuse in multiple places, it may be helpful to parameterise the argument name:
+
+```{r}
+common_by <- function(x, y, arg = "by") {
+  common <- intersect(names(x), names(y))
+  if (length(common) == 0) {
+    stop("No common variables in `x` and `y`", call. = FALSE)
+  }
+  
+  message(glue::glue("Computing default: `{arg} = {deparse(common)}`"))
+  common
+}
+
+common_by(flights, planes)
+```
+
+Then use that as the default `by = common_by(x, y)`. If you want to avoid exporting `common_by()` or your function needs to take more arguments making the formals of the function verbose, you might do the following. See Chapter \@ref(args-magical-defaults) for more details.
+
+```{r}
+left_join <- function(x, y, by = NULL) {
+  by <- by %||% common_by(x, y)
+}
+```
