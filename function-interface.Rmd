@@ -17,6 +17,9 @@ The interface (aka API) of a function describes its external interface, independ
 * Chapter \@ref(args-data-details): Data arguments should come before details 
   arguments. Arguments without defaults should come before arguments with 
   defaults.
+  
+* Chapter \@ref(args-independence): Avoid complex interdependencies between
+  details arguments.
 
 * Chapter \@ref(args-required): If an argument doesn't have a default, it is
   required and should error when absent. A limited exception occurs when a
@@ -24,6 +27,9 @@ The interface (aka API) of a function describes its external interface, independ
 
 * Chapter \@ref(args-magical-defaults): Default values should return the same 
   answer when run interactively.
+
+* Chapters \@ref(args-explain): If a default value is particularly important,
+  as has non-trivial calculation, let the user know what it is.
 
 ### Dots
 

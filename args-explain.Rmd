@@ -1,0 +1,5 @@
+# Explain important defaults {#args-explain}
+
+```{r, include = FALSE}
+source("common.R")
+```

@@ -1,0 +1,5 @@
+# Avoid dependencies amongst details arguments {#args-independence}
+
+```{r, include = FALSE}
+source("common.R")
+```

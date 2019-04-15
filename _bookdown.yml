@@ -19,7 +19,9 @@ rmd_files:
     "vectorisation.Rmd",
     
     "args-data-details.Rmd",
+    "args-independence.Rmd",
     "args-required.Rmd",
+    "args-explain.Rmd",
     "args-magical-defaults.Rmd",
     
     "dots-position.Rmd",
