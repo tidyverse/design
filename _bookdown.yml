@@ -20,6 +20,7 @@ rmd_files:
     
     "args-data-details.Rmd",
     "args-independence.Rmd",
+    "args-enum.Rmd",
     "args-required.Rmd",
     "args-explain.Rmd",
     "args-magical-defaults.Rmd",

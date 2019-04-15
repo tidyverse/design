@@ -17,6 +17,10 @@ The interface (aka API) of a function describes its external interface, independ
 * Chapter \@ref(args-data-details): Data arguments should come before details 
   arguments. Arguments without defaults should come before arguments with 
   defaults.
+
+* Chapter \@ref(args-enum): If an argument can take one of a fixed set of 
+  possible strings, record in the default value and use `match.arg()` inside
+  the function.
   
 * Chapter \@ref(args-independence): Avoid complex interdependencies between
   details arguments.
