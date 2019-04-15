@@ -22,7 +22,7 @@ rmd_files:
     "args-required.Rmd",
     "args-magical-defaults.Rmd",
     
-    "data-dots-details.Rmd",
+    "dots-position.Rmd",
     "dots-data.Rmd",
     "dots-prefix.Rmd",
     "dots-inspect.Rmd",

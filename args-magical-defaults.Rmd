@@ -1,4 +1,4 @@
-# Magical default arguments
+# Magical default arguments {#args-magical-defaults}
 
 ```{r, include = FALSE}
 source("common.R")

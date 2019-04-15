@@ -48,8 +48,4 @@ purrr::pmap_chr(list(pattern, replacement, x), gsub, fixed = TRUE)
 
 There's a subtle difference here that doesn't matter in most cases - in the `mapply()` `fixed` is recycled to the same length as `pattern` whereas it is not `pmap()`. TODO: figure out example where that's more clear.
 
-
-
-
-
-(Also note that `pmap()` uses the `.` prefix to avoid the problem described in Chapter \@ref(dot-prefix).)
+(Also note that `pmap()` uses the `.` prefix to avoid the problem described in Chapter \@ref(dots-prefix).)

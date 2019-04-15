@@ -16,7 +16,7 @@ Arguments with defaults should always come after arguments without defaults (i.e
 
 It's possible for the data argument to be `...` (i.e. there's an arbitrary number of data arguments). For example, `paste()` allows you to supply any number of strings to `...`, and the details of the concatenation are controlled by `sep` and `collapse`. This pattern is best using sparingly, and is described in more detail in Chapter \@ref(dots-data). 
 
-`...` can also be used to capture details arguments and pass them on to other functions. See Chapters \@ref(dots-lhs) and \@ref(dots-inspect) to how to use `...` as safely as possible in this situation.
+`...` can also be used to capture details arguments and pass them on to other functions. See Chapters \@ref(dots-position) and \@ref(dots-inspect) to how to use `...` as safely as possible in this situation.
 
 Convention for calling Chapter \@ref(call-data-details).
 

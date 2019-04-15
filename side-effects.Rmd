@@ -165,7 +165,7 @@ There are two key ideas that make these functions easy to undo:
     (I wouldn't recommend copying this technique, but I'd instead recommend
     always taking a single named list. This makes the function because it 
     has a single way to call it and makes it easy to extend the API in the 
-    future, as discussed in Section \@ref(vectors-not-dots))
+    future, as discussed in Chapter \@ref(dots-data))
 
 Together, this means that you easily can set options temporarily.:
 
