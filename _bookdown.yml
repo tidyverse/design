@@ -19,6 +19,7 @@ rmd_files:
     "vectorisation.Rmd",
     
     "args-data-details.Rmd",
+    "args-required.Rmd",
     "args-magical-defaults.Rmd",
     
     "data-dots-details.Rmd",

@@ -10,6 +10,8 @@ source("common.R")
 
 When creating a function, put data arguments before details arguments. 
 
+Arguments with defaults should always come after arguments without defaults (i.e. required arguments).
+
 ### Related patterns
 
 It's possible for the data argument to be `...` (i.e. there's an arbitrary number of data arguments). For example, `paste()` allows you to supply any number of strings to `...`, and the details of the concatenation are controlled by `sep` and `collapse`. This pattern is best using sparingly, and is described in more detail in Chapter \@ref(dots-data). 
@@ -55,11 +57,11 @@ set_names <- function(x, nm = x) {
 }
 ```
 
-(`set_names()` is actually a bit more complicated because the second argument can be a function used to transform existing names.)
+(Here `x` is a better name than `object`, because only vectors can have names, and `x` is a convential argument name for a vector.)
+
+(`set_names()` is actually a bit more complicated because the second argument can be a function used to transform existing names. See the documentation for more details.)
 
 See also `mapply()` vs. `pmap()` as discussed in Chapter \@ref(mapply-pmap).
-
-`purrr::reduce()` has an optional details argument called `init`. When supplied, it serves as the initial value for the computation. But any value (including `NULL`) can a valid value. Sometimes using a sentinel value can be the right approach.
 
 ## How do I recover?
 

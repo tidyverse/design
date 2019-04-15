@@ -9,3 +9,25 @@ The interface (aka API) of a function describes its external interface, independ
 * Output, i.e. its return value.
 * Errors
 * Other side-effects
+
+## Inputs
+
+### Default values
+
+* Data arguments should come before details arguments.
+  Arguments without defaults should come before arguments with defaults.
+
+* If an argument doesn't have a default, it should error when absent.
+
+* Defaults should return the same answer when run interactively.
+
+### Dots
+
+* `...` should come in between data and details arguments.
+
+* Avoid using `...` to save the user from typing `c()`
+
+* Consider if other arguments need `.` prefix
+
+* In S3 methods (and select other problems), ensure that all inputs
+  in `...` are evaluated.
