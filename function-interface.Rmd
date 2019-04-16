@@ -1,6 +1,6 @@
 # (PART) Function interface {-}
 
-# Introduction  {#function-interface  .unnumbered}
+# Introduction  {#function-interface}
 
 The interface (aka API) of a function describes its external interface, independent of its internal implementation. The interface of a function has the following main components:
 
