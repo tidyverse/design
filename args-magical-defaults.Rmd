@@ -30,4 +30,13 @@ This change does not alter the interface of the function so it can be made with 
 
 ## What if `NULL` is a valid value?
 
-`ggplot2::waiver()`, `rlang::done()`.
+Sometimes a default argument has a complex calculation that you don't want to include in arguments list. You'd normally use `NULL` to indicate that it's calculated by default, but `NULL` is a meaningful option. In that case, you can use a __sentinel__ object.
+
+```{r}
+str(ggplot2::waiver())
+
+str(purrr::done())
+
+str(rlang::zap())
+```
+
