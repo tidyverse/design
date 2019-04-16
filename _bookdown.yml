@@ -14,15 +14,16 @@ rmd_files:
     "type-stability.Rmd",
     "returning-multiple-values.Rmd",
     "side-effects.Rmd",
-    "hidden-inputs.Rmd",
     "spooky-action.Rmd",
     "vectorisation.Rmd",
     
+    "args-hidden.Rmd",
     "args-data-details.Rmd",
     "args-enum.Rmd",
     "args-independence.Rmd",
     "args-required.Rmd",
     "args-explain.Rmd",
+    "args-user-defaults.Rmd",
     "args-magical-defaults.Rmd",
     
     "dots-position.Rmd",

@@ -22,7 +22,7 @@ x <- grepl("a", letters, fixed = TRUE, perl = TRUE)
 
 Part of this problem could be resolved by making it more clear that one important choice is the matching engine to use:  POSIX 1003.2 extended regular expressions (the default), Perl-style regular expressions (`perl = TRUE`)
 
-or fixed matching (`fixed = TRUE`). A better approach would be to use the pattern in Chapter \@ref(arg-enum)
+or fixed matching (`fixed = TRUE`). A better approach would be to use the pattern in Chapter \@ref(args-enum)
 
 And create a new argument called something like `engine = c("POSIX", "perl", "fixed")`.
 

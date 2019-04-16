@@ -14,6 +14,9 @@ The interface (aka API) of a function describes its external interface, independ
 
 ### Default values
 
+* Chapter \@ref(args-hidden): All inputs to a function should be explicit.
+  Avoid functions that can return different results for the same inputs.
+
 * Chapter \@ref(args-data-details): Data arguments should come before details 
   arguments. Arguments without defaults should come before arguments with 
   defaults.
@@ -31,6 +34,9 @@ The interface (aka API) of a function describes its external interface, independ
 
 * Chapter \@ref(args-magical-defaults): Default values should return the same 
   answer when run interactively.
+  
+* Chapter \@ref(args-user-defaults): Use `getOption()` to allow the user to
+  pick their own defaults.
 
 * Chapters \@ref(args-explain): If a default value is particularly important,
   as has non-trivial calculation, let the user know what it is.

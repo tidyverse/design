@@ -78,7 +78,7 @@ str_sort(x, numeric = TRUE)
 
 This is wrapper is useful because it decouples `str_sort()` from the `stri_opts_collator()` meaning that if `stri_opts_collator()` gains new arguments users of `str_sort()` can take advantage of them immediately. But most of the arguments in `stri_opts_collator()` are sufficiently arcane that they don't need to be exposed directly in stringr, which is designed to minimise the cognitive load of the user, by hiding some of the full complexity of string handling.
 
-(The importance of the `locale` argument comes up in "hidden inputs", Chapter \@ref(hidden-inputs).)
+(The importance of the `locale` argument comes up in "hidden inputs", Chapter \@ref(args-hidden).)
 
 However, `stri_opts_collator()` deliberately ignores any arguments in `...`. This means that misspellings are silently ignored:
 

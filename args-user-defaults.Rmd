@@ -1,0 +1,25 @@
+# User settable defaults {#args-user-defaults}
+
+```{r, include = FALSE}
+source("common.R")
+```
+
+## What's the pattern?
+
+It's sometimes useful to give the user control over default values, so that they can set once per session or once for every session in their `.Rprofile`. To do so, use `getOption()` in the default value.
+
+Note that this pattern should general only be used to control the display of a function. If the computed values are different, you have an example of Chapter \@ref(args-hidden).
+
+## What are some examples?
+
+`dplyr.show_progress`
+
+`scale_colour_continuous()`  - `type = getOption("ggplot2.continuous.colour", default = "gradient"))`
+
+`getOption("width")`, ` getOption("digits")`
+
+`usethis::use_description_defaults()`
+
+## What are some counter-examples?
+
+`lubridate::wday()`: `week_start = getOption("lubridate.week.start", 7)`
