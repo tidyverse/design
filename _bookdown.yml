@@ -22,9 +22,9 @@ rmd_files:
     "args-enum.Rmd",
     "args-independence.Rmd",
     "args-required.Rmd",
-    "args-explain.Rmd",
-    "args-user-defaults.Rmd",
     "args-magical-defaults.Rmd",
+    "args-user-defaults.Rmd",
+    "args-explain.Rmd",
     
     "dots-position.Rmd",
     "dots-data.Rmd",
