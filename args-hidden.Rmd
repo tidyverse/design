@@ -62,6 +62,8 @@ Other functions depend on hidden inputs to control side-effects
 
 * `install.packages()` + `options(repos)`
 
+This is fine - it gives the user control over appearance without affecting the computed values, and is discussed more in Chapter \@ref(args-user-defaults).
+
 ## Why is it bad?
 
 Hidden inputs are bad because they make it much harder to predict the output of a fuction. The worst offender by far is the `stringsAsFactors` option which changes how a number of functions (including `data.frame()`, `as.data.frame()`, `expand.grid()`, and `read.csv()`) treat character vectors. This exists mostly for historical reasons, as described in recommend [*stringsAsFactors: An unauthorized biography*](http://simplystatistics.org/2015/07/24/stringsasfactors-an-unauthorized-biography/) by Roger Peng and [*stringsAsFactors = \<sigh\>*](http://notstatschat.tumblr.com/post/124987394001/stringsasfactors-sigh)
