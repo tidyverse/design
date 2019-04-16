@@ -6,7 +6,7 @@ source("common.R")
 
 ## What's the pattern?
 
-If an argument can take one of a relatively small set of known values, specify all possible values in the default argument, and then use `match.arg()` or `rlang::arg_match()` to pick. This patter is often naturally paired with a `switch()` to take action.
+If an argument can take one of a relatively small set of known values, specify all possible values in the default argument, and then use `match.arg()` or `rlang::arg_match()` to pick. This pattern is often naturally paired with a `switch()` to take action.
 
 (See ???? for a similar pattern that can be extended by others.)
 
@@ -68,17 +68,22 @@ rank2(x, ties.method = "r")
 
 ## When to avoid it?
 
-Best used when the set of possible values is short. You can see in the `rank()` example it's already getting unwieldy and makes it difficult to nicely format. Instead, you can set the `default` value to `NULL` and use the second argument of `arg_match()` or `match.arg()`
+Best used when the set of possible values is short. You can see in the `rank()` example it's already getting unwieldy and makes it difficult to nicely format. The easiest way to resolve is to extract the possible values into its own function:
 
 ```{r}
-rank2 <- function(x, ties.method = NULL) {
-
-  ties.method <- rlang::arg_match(
-    ties.method,
-    c("average", "first", "last", "random", "max", "min")
-  )
-  rank(x, ties.method = ties.method)
+ties_method <- function() {
+  c("average", "first", "last", "random", "max", "min")
 }
 ```
 
-You will need to make sure to carefully document the options as they will no longer be directly visible in the formals.
+(If in a package, this function should be exported and documented with the function that uses it.)
+
+Then you can use that as a default argument:
+
+```{r}
+rank2 <- function(x, ties.method = ties_method()) {
+  ...
+}
+```
+
+This is not quite as good as inlining all possible values, since there's some indirection, so you can't see the possible values in tooltips, but you can still access programmatically.
