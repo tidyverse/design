@@ -26,6 +26,8 @@ When you scan the arguments of a function, it should be easy to tell which argum
     
     `geom_jitter()`, `geom_label()`. Use to add new interface on top of old.
 
+*   `.Deprecated()`
+
 ## Pair of mututally exclusive arguments
 
 Must supply one of a pair of arguments. `rvest::html_node(css, xpath)` `fct_other(keep, drop)`. `fct_lump(n, prop)`, `seq_range(n, by)`.
@@ -47,6 +49,39 @@ if (!xor(missing(css), missing(xpath))) {
 `stringr::str_replace()`, `scale_*_manual()` - one richer argument can sometimes serve the role of two simpler arguments. Here you can either supply two vectors, or one vector with names.
 
 Another example is `str_sub()`. You can either call `str_sub(x, start, stop)` or `str_sub(x, cbind(start, stop))`. I'm still not 100% sure of this pattern, but it has the desirable property that the output of `str_locate()` can be fed directly into `str_sub()`.
+
+### `rgb`
+
+```{r, error = TRUE}
+library(rlang)
+
+rgba <- function(r, g, b, a = NULL) {
+  if (is.data.frame(r)) {
+    df <- r
+    if (!ncol(df) %in% c(3L, 4L)) {
+      abort("If `r` is data frame, it must have 3 or 4 columns.")
+    }
+    
+    if (!missing(b) || !missing(g) || !missing(a)) {
+      abort("If `r` is a data frame, `b`, `g`, and `a` must not be set.")
+    }
+    
+    r <- df[[1L]]
+    g <- df[[2L]]
+    b <- df[[3L]]
+    if (ncol(df) == 4) {
+      a <- df[[4L]]
+    }
+  }
+  
+  rgb(r, g, b, alpha = a, maxColorValue = 255)
+}
+
+rgba(16, 16, 16)
+rgba(data.frame(16, 16, 16))
+rgba(data.frame(16, 16))
+rgba(data.frame(16, 16, 16), 1)
+```
 
 ## Other exceptions
 

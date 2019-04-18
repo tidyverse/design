@@ -68,7 +68,7 @@ rank2(x, ties.method = "r")
 
 ## When to avoid it?
 
-Best used when the set of possible values is short. You can see in the `rank()` example it's already getting unwieldy and makes it difficult to nicely format. The easiest way to resolve is to extract the possible values into its own function:
+Best used when the set of possible values is short. You can see in the `rank()` example it's already getting unwieldy and makes it difficult to nicely format. The easiest way to follow Chapter \@ref(args-defaults-short) and extract the possible values into its own function:
 
 ```{r}
 ties_method <- function() {

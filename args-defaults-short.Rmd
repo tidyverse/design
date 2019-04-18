@@ -1,0 +1,54 @@
+# Keep defaults short and sweet {#args-magical-short}
+
+```{r, include = FALSE}
+source("common.R")
+```
+
+## What's the pattern?
+
+Default values should be short and simple.
+
+This makes the function easier to read.
+
+## How do I use it?
+
+There are three approaches:
+
+* Set the default value to `NULL` and conditionally perform the calculation 
+  inside the function using `%||%`. Using a default of `NULL` signals to the
+  user that the argument is optional, and that the default value is not a 
+  constant, but requires some calculation.
+
+* If `NULL` is meaningful, use a sentinel object.
+
+* If the calculation is complex, but the user might find it useful in other 
+  scenarios, compute it with a function. If the function is in a package,
+  export and document it.
+
+### `NULL`
+
+```{r}
+`%||%` <- function(x, y) if (is.null(x)) y else x
+```
+
+(Not needed if you depend on rlang.)
+
+### Helper function
+
+A good example is `readr::show_progress()`: it's used in every `read_` function and it's sufficiently complicated that you don't want to copy and paste it between functions. It's also nice to document it in its own file, rather than cluttering up file reading functions with incidental details.
+
+### Sentinel value
+
+Sometimes a default argument has a complex calculation that you don't want to include in arguments list. You'd normally use `NULL` to indicate that it's calculated by default, but `NULL` is a meaningful option. In that case, you can use a __sentinel__ object.
+
+```{r}
+str(ggplot2::waiver())
+
+str(purrr::done())
+
+str(rlang::zap())
+```
+
+## Are there exceptions?
+
+Use of `getOption()`? How do you indiciate both the option use and the default value?

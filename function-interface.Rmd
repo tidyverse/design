@@ -34,7 +34,10 @@ The interface (aka API) of a function describes its external interface, independ
   function has two mutually exclusive arguments.
 
 * Chapter \@ref(args-magical-defaults): Default values should return the same 
-  answer when run interactively.
+  answer when run interactively, or set explicitly.
+
+* Chapter \@ref(args-defaults-short): Default values should be short. If
+  you have a complex calculation, either use `NULL` or an exported function.
   
 * Chapter \@ref(args-user-defaults): Use `getOption()` to allow the user to
   pick their own defaults.

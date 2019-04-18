@@ -23,6 +23,7 @@ rmd_files:
     "args-independence.Rmd",
     "args-required.Rmd",
     "args-magical-defaults.Rmd",
+    "args-defaults-short.Rmd",
     "args-user-defaults.Rmd",
     "args-explain.Rmd",
     
