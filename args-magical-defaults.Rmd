@@ -4,27 +4,34 @@
 source("common.R")
 ```
 
+```{r, eval = FALSE, include = FALSE}
+source("fun_def.R")
+
+funs <- c(pkg_funs("base"), pkg_funs("stats"), pkg_funs("utils"))
+funs %>% funs_formals_keep(~ is_symbol(.x) && !is_missing(.x))
+pkg_funs("base") %>% funs_body_keep(has_call, "missing")
+```
+
 ## What's the problem?
 
 Some functions have default values that return different things when you run them interactively:
 
-*   In `hist()`, the default value of `xlim` is `range(breaks)`, and the default
-    value for `breaks` is `"Sturges"`. `range("Sturges")` returns 
-    `c("Sturges", "Sturges")` which clearly doesn't make sense.
-  
-*   In previous versions of readr, `read_csv(progress = show_progress())`, 
-    and `show_progress()` was an internal function.
+*   In `hist()`, the default value of `xlim` is `range(breaks)`, and the
+    default value for `breaks` is `"Sturges"`. `range("Sturges")` returns 
+    `c("Sturges", "Sturges")` which doesn't work when supplied explicitly:
+    
+    ```{r, error = TRUE}
+    args(hist)
+    hist(1:10, xlim = c("Sturges", "Sturges"))
+    ```
 
-*   In `abind::abind()` the default value of `along` is `N`, which is computed
-    inside the function.
-  
-*   `diag()` shows another instance of the same underlying problem:
-    the default value for `x` is `1`, but you get a different
-    result if you set it explicitly:
+*   In `Vectorize()`, the default argument for `vectorize.args` is 
+    `arg.names`, but this is only defined inside the body of `Vectorize`.
+    If you supply it explicitly you get an error.
 
     ```{r, error = TRUE}
-    diag()
-    diag(x = 1)
+    args(Vectorize)
+    Vectorize(rep.int, vectorize.args = arg.names)
     ```
 
 If the default value of an argument behaves differently when supplied explicitly,  we say it has a __magical default__.
@@ -60,6 +67,22 @@ There are two main sources:
     f2()
     f2(y)
     ```
+
+## Are there exceptions?
+
+Sometimes it's useful to default one argument to the same value as another. 
+
+* `set_names()`. 
+* `merge()`
+* `sample.int()`, `factor()`
+
+Should always be argument that comes before, not after, unlike `file.copy()` where `overwrite = recursive` comes before the `recursive` argument is defined.
+
+```{r}
+args(file.copy)
+```
+
+`setNames()`.
 
 ## How do I remediate the problem?
 

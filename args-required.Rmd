@@ -15,6 +15,16 @@ When you scan the arguments of a function, it should be easy to tell which argum
     both are required, and the function would error if you didn't supply them.
     But `size` is in fact optional.
 
+*   `var()`
+
+*   In `diag()`, the argument `x` has a default `1`, but the function errors if 
+    you leave it off:
+    
+    ```{r, error = TRUE}
+    diag()
+    diag(x = 1)
+    ```
+
 *   `geom_abline()` - probably a sign that it should actually be two functions.
 
     ```{r, eval = FALSE}
@@ -96,3 +106,8 @@ Sometimes, using a missing argument is the best you can do.
     When supplied, it serves as the initial value for the computation. But any 
     value (including `NULL`) can a valid value. Sometimes using a sentinel 
     value can be the right approach.
+
+
+### Practice
+
+*   `dgamma()`
