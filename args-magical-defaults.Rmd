@@ -1,12 +1,11 @@
 # Magical default arguments {#args-magical-defaults}
 
-```{r, include = FALSE}
+```{r, include = FALSE, cache = FALSE}
 source("common.R")
+source("fun_def.R")
 ```
 
 ```{r, eval = FALSE, include = FALSE}
-source("fun_def.R")
-
 funs <- c(pkg_funs("base"), pkg_funs("stats"), pkg_funs("utils"))
 funs %>% funs_formals_keep(~ is_symbol(.x) && !is_missing(.x))
 pkg_funs("base") %>% funs_body_keep(has_call, "missing")
@@ -14,114 +13,128 @@ pkg_funs("base") %>% funs_body_keep(has_call, "missing")
 
 ## What's the problem?
 
-Some functions have default values that return different things when you run them interactively:
+Some functions have default values that give different results when you supply the same value explicitly:
 
+*   In `data.frame()`, the default argument for `row.names` is `NULL`, but
+    if you supply it directly you get a different result:
+
+    ```{r}
+    fun_call(data.frame)
+    
+    x <- setNames(nm = letters[1:3])
+    data.frame(x)
+    data.frame(x, row.names = NULL)
+    ```
+    
 *   In `hist()`, the default value of `xlim` is `range(breaks)`, and the
     default value for `breaks` is `"Sturges"`. `range("Sturges")` returns 
     `c("Sturges", "Sturges")` which doesn't work when supplied explicitly:
     
-    ```{r, error = TRUE}
-    args(hist)
+    ```{r, error = TRUE, fig.show = "hide"}
+    fun_call(hist.default)
+    
     hist(1:10, xlim = c("Sturges", "Sturges"))
     ```
 
-*   In `Vectorize()`, the default argument for `vectorize.args` is 
-    `arg.names`, but this is only defined inside the body of `Vectorize`.
-    If you supply it explicitly you get an error.
+*   In `Vectorize()`, the default argument for `vectorize.args` is `arg.names`, 
+    but this variable is defined inside of `Vectorize()`, so if you supply it
+    explicitly you get an error.
 
     ```{r, error = TRUE}
-    args(Vectorize)
+    fun_call(Vectorize)
+    
     Vectorize(rep.int, vectorize.args = arg.names)
     ```
 
-If the default value of an argument behaves differently when supplied explicitly,  we say it has a __magical default__.
+If a function behaves differently when the default value is suppled explicitly, we say it has a __magical default__.
 
 ## What causes the problem?
 
-There are two main sources: 
-
-*   Using `missing()`
-
-    ```{r}
-    f1 <- function(x = 1) {
-      if (missing(x)) {
-        2
-      } else {
-        x
-      }
-    }
-    
-    f1()
-    f1(1)
-    ```
-
-*   Using a default argument that is evaluated inside of the function:
-
-    ```{r}
-    f2 <- function(x = y) {
-      y <- 2
-      x
-    }
-    
-    y <- 1
-    f2()
-    f2(y)
-    ```
-
-## Are there exceptions?
-
-Sometimes it's useful to default one argument to the same value as another. 
-
-* `set_names()`. 
-* `merge()`
-* `sample.int()`, `factor()`
-
-Should always be argument that comes before, not after, unlike `file.copy()` where `overwrite = recursive` comes before the `recursive` argument is defined.
+The most common cause of this problem is the overuse of lazy evaluation of default values, which are evaluated in the environment of the function, as described in [Advanced R](https://adv-r.hadley.nz/functions.html#default-arguments). Here's a simple example:
 
 ```{r}
-args(file.copy)
+f1 <- function(x = y) {
+  y <- 2
+  x
+}
+
+y <- 1
+f1()
+f1(y)
 ```
 
-`setNames()`.
+When `x` takes the value `y` from its default, it's evaluated inside the function, yielding `1`. When `y` is supplied explicitly, it is evaluated in the caller environment, yielding `2`.
 
-## How do I remediate the problem?
-
-This problem is generally easy to avoid for new functions:
-
-* Never use `missing()`. (The only exception is described in Chapter
-  \@ref(args-missing)).
-  
-* Never use defaults that depend on variables defined inside the function.
-
-If you have a made a mistake in an older function you can generally remediate it by using an explicit `NULL`, as described in Chapter \@ref(arg-defaults-short).
+A rarer cause is to use `missing()` so that the default value is never consulted:
 
 ```{r}
-`%||%` <- function(x, y) if (is.null(x)) y else x
-
-f1_better <- function(x = NULL) {
-  if (is.null(x)) {
+f2 <- function(x = 1) {
+  if (missing(x)) {
     2
   } else {
     x
   }
 }
-f1_better()
-f1_better(1)
 
-f2_better <- function(x = NULL) {
+f2()
+f2(1)
+```
+
+## Is it ever ok to rely on lazily evaluated defaults?
+
+Yes: when you want the default value of one argument to be the same as another. For example, take `rlang::set_names()`, which allows you to create a named vector from two inputs:
+
+```{r}
+fun_call(set_names)
+
+set_names(1:3, letters[1:3])
+```
+
+The default value for the names is the vector itself. This provides a convenient shortcut for naming a vector with itself:
+
+```{r}
+set_names(letters[1:3])
+```
+
+You can see this same technique in `merge()`, where `all.x` and `all.y` default to the same value as `all`, and in `factor()` where `labels` defaults to the same value as `levels`.
+
+If you use this technique, make sure that you never use the value of an argument that comes later in the argument list. For example, take `file.copy()` where `overwrite` defaults to the same value as `recursive`, but the `recursive` argument is defined after `overwrite`:
+
+```{r}
+fun_call(file.copy)
+```
+
+This makes the defaults arguments harder to understand because you can't just read from left-to-right.
+
+It is also occassionally useful to use `missing()` when changing the interface of a function in backward compatible way. However, this should always be a temporary state and be reinforced by a deprecation warning encouraging the user to switch to the new interface.
+
+## How do I remediate the problem?
+
+This problem is generally easy to avoid for new functions:
+
+* Never use `missing()`[^missing-exceptions].
+  
+* Never use defaults that depend on variables defined inside the function.
+
+[^missing-exceptions]: The only exceptions are described in Sections \@ref(args-mutually-exclusive) and \@ref(args-compound).
+
+If you have a made a mistake in an older function you can remediate it by using an explicit `NULL`, as described in Chapter \@ref(args-defaults-short).
+
+```{r}
+`%||%` <- function(x, y) if (is.null(x)) y else x
+
+f3 <- function(x = NULL) {
   y <- 2
   x <- x %||% y
   
   x
 }
 
-f2_better()
-f2_better(1)
+f3()
+f3(1)
 ```
 
-These modifications generally don't affect the interface of the function, except that `NULL` is now a permissible input. This expands the API, so shouldn't break existing code.
-
-There's one exception: functions like `data.frame()` where `NULL` is a permissible value, and it does something different to the default:
+This modification expands the interface of the function, because all existing code will work, but `NULL` inputs will now also work (whereas they probably didn't before). This means that this change does not generally break existing code. The only exception is functions like `data.frame()` where `NULL` is a permissible value, and it does something different to the default:
 
 ```{r}
 x <- setNames(nm = letters[1:3])
@@ -129,7 +142,7 @@ data.frame(x)
 data.frame(x, row.names = NULL)
 ```
 
-To remediate a function of this nature, you'll need to use a sentinel object.
+To remediate a function of this nature, you'll need to use a sentinel object, as described in more detail in Section \@ref(args-default-sentinel).
 
 ```{r}
 sentinel <- function() structure(list(), class = "sentinel")

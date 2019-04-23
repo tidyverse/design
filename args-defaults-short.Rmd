@@ -1,4 +1,4 @@
-# Keep defaults short and sweet {#args-magical-short}
+# Keep defaults short and sweet {#args-defaults-short}
 
 ```{r, include = FALSE}
 source("common.R")
@@ -37,7 +37,7 @@ There are three approaches:
 
 A good example is `readr::show_progress()`: it's used in every `read_` function and it's sufficiently complicated that you don't want to copy and paste it between functions. It's also nice to document it in its own file, rather than cluttering up file reading functions with incidental details.
 
-### Sentinel value
+### Sentinel value {#args-default-sentinel}
 
 Sometimes a default argument has a complex calculation that you don't want to include in arguments list. You'd normally use `NULL` to indicate that it's calculated by default, but `NULL` is a meaningful option. In that case, you can use a __sentinel__ object.
 

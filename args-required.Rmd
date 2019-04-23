@@ -38,7 +38,7 @@ When you scan the arguments of a function, it should be easy to tell which argum
 
 *   `.Deprecated()`
 
-## Pair of mututally exclusive arguments
+## Pair of mututally exclusive arguments {#args-mutually-exclusive}
 
 Must supply one of a pair of arguments. `rvest::html_node(css, xpath)` `fct_other(keep, drop)`. `fct_lump(n, prop)`, `seq_range(n, by)`.
     
@@ -54,7 +54,7 @@ if (!xor(missing(css), missing(xpath))) {
 }
 ```
 
-## One complex argument vs two simple arguments
+## One complex argument vs two simple arguments {#args-compound}
 
 `stringr::str_replace()`, `scale_*_manual()` - one richer argument can sometimes serve the role of two simpler arguments. Here you can either supply two vectors, or one vector with names.
 

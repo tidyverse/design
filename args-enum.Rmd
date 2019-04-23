@@ -87,3 +87,5 @@ rank2 <- function(x, ties.method = ties_method()) {
 ```
 
 This is not quite as good as inlining all possible values, since there's some indirection, so you can't see the possible values in tooltips, but you can still access programmatically.
+
+This is also useful if you want to share the values across multiple functions. For example `stats::p.adjust()`, `stats::pairwise.prop.test()`, `stats::pairwise.t.test()`, `stats::pairwise.wilcox.test()` all use `p.adjust.method = p.adjust.methods`.

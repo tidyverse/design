@@ -15,26 +15,26 @@ The interface (aka API) of a function describes its external interface, independ
 ### Default values
 
 * Chapter \@ref(args-hidden): All inputs to a function should be explicit 
-  arguments. Avoid functions that return different results for the same inputs
-  in surprising ways.
+  arguments. Avoid functions that suprise the user by returning different 
+  results when the inputs look the same.
+
+* Chapter \@ref(args-required): Consistently use the absence of a default value
+  to indicate than an argument is required. There is one exception: when
+  there are two mutually exclusive arguments.
 
 * Chapter \@ref(args-data-details): Data arguments should come before details 
   arguments. Arguments without defaults should come before arguments with 
   defaults.
 
 * Chapter \@ref(args-enum): If a details argument can take one of a fixed set 
-  of possible strings, record in the default value and use `match.arg()`
+  of possible strings, record them in the default value and use `match.arg()`
   or `rlang::arg_match()` inside the function.
   
-* Chapter \@ref(args-independence): Strive to make details arguments as
-  orthogonal as possible. Avoid complex interdependencies.
-
-* Chapter \@ref(args-required): If an argument doesn't have a default, it is
-  required and should error when absent. A limited exception occurs when a
-  function has two mutually exclusive arguments.
+* Chapter \@ref(args-independence): Make details arguments as orthogonal as
+  possible. Avoid complex interdependencies.
 
 * Chapter \@ref(args-magical-defaults): Default values should return the same 
-  answer when run interactively, or set explicitly.
+  answer when set directly.
 
 * Chapter \@ref(args-defaults-short): Default values should be short. If
   you have a complex calculation, either use `NULL` or an exported function.
