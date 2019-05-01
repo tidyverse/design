@@ -17,7 +17,8 @@ When you scan the arguments of a function, it should be easy to tell which argum
 
 *   `lm()` does not have defaults for `formula`, `data`,
     `subset`, `weights`, `na.action`, or `offset`. But only
-    `formula` is actually required.
+    `formula` is actually required, although the error you
+    get if you omit it is not the usual.
 
 *   `var()`
 
