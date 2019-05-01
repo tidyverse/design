@@ -15,6 +15,10 @@ When you scan the arguments of a function, it should be easy to tell which argum
     both are required, and the function would error if you didn't supply them.
     But `size` is in fact optional.
 
+*   `lm()` does not have defaults for `formula`, `data`,
+    `subset`, `weights`, `na.action`, or `offset`. But only
+    `formula` is actually required.
+
 *   `var()`
 
 *   In `diag()`, the argument `x` has a default `1`, but the function errors if 
