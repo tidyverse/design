@@ -33,5 +33,7 @@ rmd_files:
     "dots-inspect.Rmd",
     "mapply-pmap.Rmd",
     
+    "err-constructor.Rmd",
+    
     "glossary.Rmd",
   ]
