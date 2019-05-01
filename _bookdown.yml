@@ -3,15 +3,17 @@ new_session: yes
 rmd_files:
   [
     "index.Rmd",
-    "unifying.Rmd",
-    "names.Rmd",
+    "structure.Rmd",
     
-    "implementation.Rmd",    
+    "unifying.Rmd",
+    
+    "implementation.Rmd",
+    "names.Rmd",
     "call-data-details.Rmd",
 
-    "function-interface.Rmd",
     "function-names.Rmd",
     
+    "args.Rmd",
     "args-hidden.Rmd",
     "args-required.Rmd",
     "args-data-details.Rmd",
@@ -28,13 +30,17 @@ rmd_files:
     "dots-inspect.Rmd",
     "mapply-pmap.Rmd",
     
+    "out.Rmd",
     "out-multi.Rmd",
     "out-type-stability.Rmd",
     "out-vectorisation.Rmd",
 
+    "err.Rmd",
+    "err-constructor.Rmd",
+    
+    "side.Rmd",
     "side-effects.Rmd",
     "spooky-action.Rmd",
-    "err-constructor.Rmd",
     
     "glossary.Rmd",
   ]
