@@ -11,21 +11,16 @@ rmd_files:
 
     "function-interface.Rmd",
     "function-names.Rmd",
-    "type-stability.Rmd",
-    "returning-multiple-values.Rmd",
-    "side-effects.Rmd",
-    "spooky-action.Rmd",
-    "vectorisation.Rmd",
     
     "args-hidden.Rmd",
-    "args-data-details.Rmd",
-    "args-enum.Rmd",
-    "args-independence.Rmd",
     "args-required.Rmd",
+    "args-data-details.Rmd",
+    "args-independence.Rmd",
+    "args-enum.Rmd",
     "args-magical-defaults.Rmd",
     "args-defaults-short.Rmd",
-    "args-user-defaults.Rmd",
     "args-explain.Rmd",
+    "args-user-defaults.Rmd",
     
     "dots-position.Rmd",
     "dots-data.Rmd",
@@ -33,6 +28,12 @@ rmd_files:
     "dots-inspect.Rmd",
     "mapply-pmap.Rmd",
     
+    "out-multi.Rmd",
+    "out-type-stability.Rmd",
+    "out-vectorisation.Rmd",
+
+    "side-effects.Rmd",
+    "spooky-action.Rmd",
     "err-constructor.Rmd",
     
     "glossary.Rmd",
