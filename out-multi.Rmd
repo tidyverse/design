@@ -1,4 +1,4 @@
-# Returning multiple values
+# Returning multiple values {#out-multi}
 
 ```{r, include = FALSE}
 source("common.R")

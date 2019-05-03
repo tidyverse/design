@@ -1,4 +1,4 @@
-# Type-stability
+# Type-stability {#out-type-stability}
 
 ```{r, include = FALSE}
 source("common.R")
