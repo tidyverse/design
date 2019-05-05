@@ -10,6 +10,28 @@ Avoid creating dependencies between details arguments so that only certain combi
 
 ## What's an example?
 
+* In `var()`, `na.rm` is only used if `use` is not set. If you supply both 
+  `use` and `na.rm`, `na.rm` is silently ignored.
+
+* In `ggplot2::geom_histogram()` you can specify the histogram breaks in 
+  three ways: as a number of `bins`,  as the width of each bin (`binwidth`, 
+  plus `center` and `boundary`), or the exact `breaks`. You can only pick 
+  one of the three options, which is hard to convey in the documentation.
+  There's also an implied precedence so that if more than one option is 
+  supplied, one will silently win.
+
+* `grepl()` has `perl`, `fixed,` and `ignore.case` arguments which can
+  either be `TRUE` or `FALSE`. But `fixed = TRUE` overrides `perl = TRUE`, 
+  and `ignore.case` only works if `fixed = FALSE`.
+
+Often these problems arise because when the functions were originally designed the scope was much smaller. It grew gradually over time, and no point did it seem worth the additional effort to refactor to a new design.
+
+## How do I remediate?
+
+Create new argument. Deprecate old args with warnings that tell you how to use the new (preferrably with code to copy and paste).
+
+### Case study: `grepl()` vs `stringr::str_detect()`
+
 <!-- 
 https://github.com/wch/r-source/blob/trunk/src/main/grep.c#L891-L1151 -->
 
@@ -20,13 +42,9 @@ x <- grepl("a", letters, fixed = TRUE, ignore.case = TRUE)
 x <- grepl("a", letters, fixed = TRUE, perl = TRUE)
 ```
 
-Part of this problem could be resolved by making it more clear that one important choice is the matching engine to use:  POSIX 1003.2 extended regular expressions (the default), Perl-style regular expressions (`perl = TRUE`)
+Part of this problem could be resolved by making it more clear that one important choice is the matching engine to use:  POSIX 1003.2 extended regular expressions (the default), Perl-style regular expressions (`perl = TRUE`) or fixed matching (`fixed = TRUE`). A better approach would be to use the pattern in Chapter \@ref(args-enum), and create a new argument called something like `engine = c("POSIX", "perl", "fixed")`.
 
-or fixed matching (`fixed = TRUE`). A better approach would be to use the pattern in Chapter \@ref(args-enum)
-
-And create a new argument called something like `engine = c("POSIX", "perl", "fixed")`.
-
-The other problem is that `ignore.case` is can only control two of the three engines: POSIX and perl. 
+The other problem is that `ignore.case` can only affect two of the three engines: POSIX and perl. This is hard to remedy without creating a completely new matching engine. Anything to do with case is always harder than you might expect because different languages have different rules.
 
 stringr takes a different approach, encoding the engine as an attribute of the pattern:
 
@@ -50,23 +68,17 @@ x <- str_detect(letters, "a", engine = fixed())
 x <- str_detect(letters, "a", engine = coll())
 ```
 
-I think this is probably a nicer approach, but it's slightly less general, because of the `boundary()` engine, which doesn't match patterns but boundaries:
+This approach is a bit more discoverable (because there's clearly another argument that affects the pattern), but it's slightly less general, because of the `boundary()` engine, which doesn't match patterns but boundaries:
 
 ```{r, eval = FALSE}
 x <- str_detect(letters, boundary("word"))
-# Seems confusing - since bounarY() modifies the meaning of "word"
-# significantly
-x <- str_detect(letters, "word", engine = boundary())
+# Seems confusing: now you can omit the pattern argument?
+x <- str_detect(letters, engine = boundary("word"))
 ```
 
-Appealing to have all the details of the pattern matching engine wrapped up into a single object.
+It's appealing to all the details of the match wrapped up into a single object. 
 
-Another example from within the tidyverse is `geom_histogram()`. Here you can specify the histogram breaks in three ways: a number of `bins` or `binwidth` (plus `center` and `boundary`), or specifically as breaks. But you can only pick one. 
+### Case study: `ggplot2::geom_histogram()`
 
-The bad interface arises for the same reason in both cases: when the functions were originally designed the scope was much smaller. It grew gradually over time, and no point did it seem worth the additional effort to refactor to a new design.
 
-## How do I recover?
 
-Create new argument. Deprecate old args with warnings that tell you how to use the new (preferrably with code to copy and paste).
-
-Show how I'd rewrite `geom_histogram()` today. (Probably actually pull out into its own simple package. It's actually quite difficult to get all the details correct and then the calculations could easily be reused elsewhere without having to take a dependency on the (heavy) ggplot2.)
