@@ -1,0 +1,9 @@
+# Error call {#err-call}
+
+```{r, include = FALSE}
+source("common.R")
+```
+
+Don't display the call when generating an error message. Either use `stop(call. = FALSE)` or `rlang::abort()` to avoid it. 
+
+Why not? Typically doesn't display enough information to find the source of the call (since most errors are not from top-level function calls), and you can expect the most people to either use RStudio, or know how to call `traceback()`.

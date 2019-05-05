@@ -36,6 +36,7 @@ rmd_files:
     "out-vectorisation.Rmd",
 
     "err.Rmd",
+    "err-call.Rmd",
     "err-constructor.Rmd",
     
     "side.Rmd",
