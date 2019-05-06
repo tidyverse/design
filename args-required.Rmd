@@ -1,4 +1,4 @@
-# Required arguments don't have default values {#args-required}
+# Required args shouldn't have defaults {#args-required}
 
 ```{r, include = FALSE}
 source("common.R")
