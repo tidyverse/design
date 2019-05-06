@@ -1,4 +1,4 @@
-# Magical default arguments {#args-magical-defaults}
+# Avoid magical defaults {#args-magical-defaults}
 
 ```{r, include = FALSE, cache = FALSE}
 source("common.R")
@@ -46,9 +46,35 @@ Some functions have default values that give different results when you supply t
     Vectorize(rep.int, vectorize.args = arg.names)
     ```
 
-If a function behaves differently when the default value is suppled explicitly, we say it has a __magical default__.
+If a function behaves differently when the default value is suppled explicitly, we say it has a __magical default__. Magical defaults are best avoided because they make it harder to interpret the function interface.
 
-## What causes the problem?
+## Are there exceptions?
+
+Yes: it's ok to use this behaviour when you want the default value of one argument to be the same as another. For example, take `rlang::set_names()`, which allows you to create a named vector from two inputs:
+
+```{r}
+fun_call(set_names)
+
+set_names(1:3, letters[1:3])
+```
+
+The default value for the names is the vector itself. This provides a convenient shortcut for naming a vector with itself:
+
+```{r}
+set_names(letters[1:3])
+```
+
+You can see this same technique in `merge()`, where `all.x` and `all.y` default to the same value as `all`, and in `factor()` where `labels` defaults to the same value as `levels`.
+
+If you use this technique, make sure that you never use the value of an argument that comes later in the argument list. For example, in `file.copy()` `overwrite` defaults to the same value as `recursive`, but the `recursive` argument is defined after `overwrite`:
+
+```{r}
+fun_call(file.copy)
+```
+
+This makes the defaults arguments harder to understand because you can't just read from left-to-right.
+
+## What's the underlying cause?
 
 The most common cause of this problem is the overuse of lazy evaluation of default values, which are evaluated in the environment of the function, as described in [Advanced R](https://adv-r.hadley.nz/functions.html#default-arguments). Here's a simple example:
 
@@ -80,34 +106,6 @@ f2()
 f2(1)
 ```
 
-## Is it ever ok to rely on lazily evaluated defaults?
-
-Yes: when you want the default value of one argument to be the same as another. For example, take `rlang::set_names()`, which allows you to create a named vector from two inputs:
-
-```{r}
-fun_call(set_names)
-
-set_names(1:3, letters[1:3])
-```
-
-The default value for the names is the vector itself. This provides a convenient shortcut for naming a vector with itself:
-
-```{r}
-set_names(letters[1:3])
-```
-
-You can see this same technique in `merge()`, where `all.x` and `all.y` default to the same value as `all`, and in `factor()` where `labels` defaults to the same value as `levels`.
-
-If you use this technique, make sure that you never use the value of an argument that comes later in the argument list. For example, take `file.copy()` where `overwrite` defaults to the same value as `recursive`, but the `recursive` argument is defined after `overwrite`:
-
-```{r}
-fun_call(file.copy)
-```
-
-This makes the defaults arguments harder to understand because you can't just read from left-to-right.
-
-It is also occassionally useful to use `missing()` when changing the interface of a function in backward compatible way. However, this should always be a temporary state and be reinforced by a deprecation warning encouraging the user to switch to the new interface.
-
 ## How do I remediate the problem?
 
 This problem is generally easy to avoid for new functions:
@@ -134,7 +132,7 @@ f3()
 f3(1)
 ```
 
-This modification expands the interface of the function, because all existing code will work, but `NULL` inputs will now also work (whereas they probably didn't before). This means that this change does not generally break existing code. The only exception is functions like `data.frame()` where `NULL` is a permissible value, and it does something different to the default:
+This modification expands the interface of the function, because all existing code will work, but `NULL` inputs will now also work (where they probably didn't before). This means that this change does not generally break existing code. The only exception is functions like `data.frame()` where `NULL` is a permissible value, and it does something different to the default:
 
 ```{r}
 x <- setNames(nm = letters[1:3])
