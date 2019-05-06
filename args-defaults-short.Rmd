@@ -21,13 +21,21 @@ Default values should be short and sweet. This makes the function specification 
 
 ### What are some examples?
 
-* `sample.int(useHash = (!replace && is.null(prob) && size <= n/2 && n > 1e+07))`
+The following examples, drawn from base R, illustrate some functions that don't follow this pattern:
 
-* `exists(if (missing(frame)) as.environment(where) else sys.frame(frame))`
-  (note that `?exists` cheats and hides the long default from the 
-  documentation.)
+* `sample.int()` uses a complicated rule to determine whether or not to use
+  a faster hash based method that's only applicable in some circumstances:
+  `useHash = (!replace && is.null(prob) && size <= n/2 && n > 1e+07))`
 
-*  `reshape()` has the longest default argument in the base and stats packages:
+* `exists()`, which figures out if a variable exists in a given environment,
+  uses a complex default to determine which environment to look in if not
+  specifically provided: 
+  `envir = (if (missing(frame)) as.environment(where) else sys.frame(frame))`
+  (NB: `?exists` cheats and hides the long default in the documentation.)
+
+*  `reshape()` has the longest default argument in the base and stats packages.
+   The `split` argument is one of two possible lists depending on the value
+   of the `sep` argument:
 
     ```{r, eval = FALSE}
     reshape(
@@ -52,7 +60,8 @@ There are three approaches:
   scenarios, compute it with an exported function that documents exactly
   what happens.
 
-* If `NULL` is meaningful, use a sentinel object.
+* If `NULL` is meaningful, so you can't use the first approach, use a 
+  "sentinel" object instead.
 
 ### `NULL` default
 
@@ -91,11 +100,13 @@ if (is.null(split)) {
 }
 ```
 
+(I would probably also switch on `is.null(sep)` too, to make it more clear that there is special behaviour.)
+
 ### Helper function
 
 For more complicated cases, you'll probably want to pull the code that computes the default out into a separate function, and in many cases you'll want to export (and document) the function.
 
-A good example is `readr::show_progress()`: it's used in every `read_` function and it's sufficiently complicated that you don't want to copy and paste it between functions. It's also nice to document it in its own file, rather than cluttering up file reading functions with incidental details.
+A good example of this pattern is `readr::show_progress()`: it's used in every `read_` function in readr and it's sufficiently complicated that you don't want to copy and paste it between functions. It's also nice to document it in its own file, rather than cluttering up file reading functions with incidental details.
 
 ### Sentinel value {#args-default-sentinel}
 
@@ -111,4 +122,36 @@ str(rlang::zap())
 
 ## How do I remediate existing values?
 
-If you've used a long 
+If you have a function with a long default, you can use any of the three approaches above to remediate it. As long as you don't accidentally change the default value, this does not affect the function interface. Make sure you have a test for the default operation of the function before embarking on this change.
+
+```{r}
+# BEFORE
+sample.int <- function(n, 
+                       size = n, 
+                       replace = FALSE, 
+                       prob = NULL, 
+                       useHash = (!replace && is.null(prob) && size <= n/2 && n > 1e+07)
+                       ) {
+    if (useHash) {
+      .Internal(sample2(n, size))
+    } else {
+      .Internal(sample(n, size, replace, prob))
+    }
+}
+
+# AFTER
+sample.int <- function(n, 
+                       size = n, 
+                       replace = FALSE, 
+                       prob = NULL, 
+                       useHash = NULL) {
+  useHash <- useHash %||% !replace && is.null(prob) && size <= n/2 && n > 1e+07
+
+  if (useHash) {
+    .Internal(sample2(n, size))
+  } else {
+    .Internal(sample(n, size, replace, prob))
+  }
+}
+```
+
