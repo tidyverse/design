@@ -1,4 +1,4 @@
-# Show possible options {#args-enum}
+# Enumerate possible options {#args-enum}
 
 ```{r, include = FALSE}
 source("common.R")
