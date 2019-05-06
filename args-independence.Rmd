@@ -1,4 +1,4 @@
-# Avoid dependencies amongst details arguments {#args-independence}
+# Avoid dependencies between arguments {#args-independence}
 
 ```{r, include = FALSE}
 source("common.R")
@@ -10,18 +10,13 @@ Avoid creating dependencies between details arguments so that only certain combi
 
 ## What's an example?
 
-*   `rep()` has mutually exclusive `length.out` and `times` arguments. If you
-    set them both, `length.out` silently wins.
-
-    ```{r}
-    rep(1:3, length.out = 3)
-    rep(1:3, times = 3)
-    ```
-
 * In `var()`, `na.rm` is only used if `use` is not set. If you supply both 
   `use` and `na.rm`, `na.rm` is silently ignored.
 
-* `grepl()` has `perl`, `fixed,` and `ignore.case` arguments which can
+* `forcats::fct_lump()` decides which algorithm to use based on a 
+  combination of the `n` and `prop` arguments.
+
+* `grepl()` has `perl`, `fixed`, and `ignore.case` arguments which can
   either be `TRUE` or `FALSE`. But `fixed = TRUE` overrides `perl = TRUE`, 
   and `ignore.case` only works if `fixed = FALSE`.
 
@@ -32,9 +27,7 @@ Avoid creating dependencies between details arguments so that only certain combi
   There's also an implied precedence so that if more than one option is 
   supplied, one will silently win.
 
-## What are exceptions?
-
-* Sections \@ref(args-mutually-exclusive) and \@ref(args-compound).
+See Sections \@ref(args-mutually-exclusive) and \@ref(args-compound) for a specific exceptions where the dependency is via specific missing argument patterns.
 
 ## How do I avoid?
 
@@ -42,25 +35,24 @@ Often these problems arise because when the functions were originally designed t
 
 ## How do I remediate?
 
-Generally, you'll need to reconsider the complete interface. There are two common results:
+Generally, you'll need to reconsider the complete interface. There are two common outcomes which are illustrated in the case studies below:
 
 * Splitting the function into multiple functions that each do one thing.
 
 * Encapulsating related details arguments into a single object created by 
   a new function.
 
-These are illustrated in the case studies below.
+See also larger case study in Chapter \@ref(cs-rep) where this problem is tangled up with other problems.
 
 If these changes to the interface occur to exported functions in a package, you'll need to consider how to preserve the interface with deprecation warnings. For important functions, it is worth generating an message that includes new code to c?fcopy and paste.
 
 ### Case study: `fct_lump()` {#cs-fct-lump}
 
-There are many different ways to decided how to lump uncommon factor levels together, and initially I attempted to encode these through arguments to `fct_lump()`. However, over time as the number of arguments increased, it gets harder and harder to tell what the options are. Now, we're growing `fct_lump()` capabilities by adding new functions, like `fct_lump_min()`.
-
-Three behaviours:
+There are many different ways to decide how to lump uncommon factor levels together, and initially we attempted to encode these through arguments to `fct_lump()`. However, over time as the number of arguments increased, it gets harder and harder to tell what the options are. Currently there are three behaviours:
 
 * Both `n` and `prop` missing - merge together the least
   frequent levels, ensuring that `other` is still the smallest level.
+  (For this case, the `ties.method` argument is ignored.)
   
 * Only `n` supplied: if positive, preserves `n` most common values. 
 
@@ -68,8 +60,6 @@ Three behaviours:
 
 * Both `n` and `prop` supplied: due to a bug in the code, this is treated
   the same way as both `n` and `prop` mmissing!
-  
-`ties.method()` only applies if either `n` or `prop`  is supplied.
 
 Would be better to break into three functions:
 
