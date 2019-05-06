@@ -46,7 +46,7 @@ Some functions have default values that give different results when you supply t
     Vectorize(rep.int, vectorize.args = arg.names)
     ```
 
-If a function behaves differently when the default value is suppled explicitly, we say it has a __magical default__. Magical defaults are best avoided because they make it harder to interpret the function interface.
+If a function behaves differently when the default value is suppled explicitly, we say it has a __magical default__. Magical defaults are best avoided because they make it harder to interpret the function specification.
 
 ## Are there exceptions?
 

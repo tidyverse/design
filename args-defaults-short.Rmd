@@ -4,36 +4,96 @@
 source("common.R")
 ```
 
+```{r, eval = FALSE, include = FALSE}
+source("fun_def.R")
+funs <- c(pkg_funs("base"), pkg_funs("stats"))
+
+arg_length <- function(x) map_int(x$formals, ~ nchar(expr_text(.x)))
+args <- map(funs, arg_length)
+args_max <- map_dbl(args, ~ if (length(.x) == 0) 0 else max(.x))
+
+funs[args_max > 50] %>% discard(~ grepl("as.data.frame", .x$name, fixed = TRUE))
+```
+
 ## What's the pattern?
 
-Default values should be short and simple.
+Default values should be short and sweet. This makes the function specification easier to scan.
 
-This makes the function easier to read.
+### What are some examples?
+
+* `sample.int(useHash = (!replace && is.null(prob) && size <= n/2 && n > 1e+07))`
+
+* `exists(if (missing(frame)) as.environment(where) else sys.frame(frame))`
+  (note that `?exists` cheats and hides the long default from the 
+  documentation.)
+
+*  `reshape()` has the longest default argument in the base and stats packages:
+
+    ```{r, eval = FALSE}
+    reshape(
+      split = if (sep == "") {
+        list(regexp = "[A-Za-z][0-9]", include = TRUE)
+      } else {
+        list(regexp = sep, include = FALSE, fixed = TRUE)
+      })
+    )
+    ```
 
 ## How do I use it?
 
 There are three approaches:
 
-* Set the default value to `NULL` and conditionally perform the calculation 
-  inside the function using `%||%`. Using a default of `NULL` signals to the
-  user that the argument is optional, and that the default value is not a 
-  constant, but requires some calculation.
+* Set the default value to `NULL` and calculate the default only when the 
+  argument is `NULL`. Providing a default of `NULL` signals that the argument 
+  is optional (Chapter \@ref(args-required)) but that the default requires
+  some calculation.
+
+* If the calculation is complex, and the user might find it useful in other 
+  scenarios, compute it with an exported function that documents exactly
+  what happens.
 
 * If `NULL` is meaningful, use a sentinel object.
 
-* If the calculation is complex, but the user might find it useful in other 
-  scenarios, compute it with a function. If the function is in a package,
-  export and document it.
+### `NULL` default
 
-### `NULL`
+The most common approach is to use `NULL` as a sentinel value that indicates that the argument is optional, but non-trivial. This pattern is made substantially more elegant with the infix `%||%` operator. You can either get it by importing it from rlang, or copying and pasting it in to your `utils.R`:
 
 ```{r}
 `%||%` <- function(x, y) if (is.null(x)) y else x
 ```
 
-(Not needed if you depend on rlang.)
+This allows you to write code like this (extracted from `ggplot2::geom_bar()`). It computes the width by first looking at the data, then in the paramters, finally falling back to computing it from the resolution of the `x` variable:
+
+```{r, eval = FALSE}
+width <- data$width %||% params$width %||% (resolution(data$x, FALSE) * 0.9)
+```
+
+Or this code from the colourbar legend: it finds the horizontal justification by first looking in the guide settings, then in the specific theme setting, then then title element, finally using `0` if  nothing else is set:
+
+```{r, eval = FALSE}
+title.hjust <- guide$title.hjust %||% 
+  theme$legend.title.align %||% 
+  title.theme$hjust %||% 
+  0
+```
+
+As you can see, `%||%` is particularly well suited to arguments where the default value is found through a cascading system of fallbacks.
+
+Don't use `%||%` for more complex examples. For example in `reshape()` I would set `split = NULL` and then write:
+
+```{r, eval = FALSE}
+if (is.null(split)) {
+  if (sep == "") {
+    split <- list(regexp = "[A-Za-z][0-9]", include = TRUE)
+  } else {
+    split <- list(regexp = sep, include = FALSE, fixed = TRUE)
+  }
+}
+```
 
 ### Helper function
+
+For more complicated cases, you'll probably want to pull the code that computes the default out into a separate function, and in many cases you'll want to export (and document) the function.
 
 A good example is `readr::show_progress()`: it's used in every `read_` function and it's sufficiently complicated that you don't want to copy and paste it between functions. It's also nice to document it in its own file, rather than cluttering up file reading functions with incidental details.
 
@@ -49,6 +109,6 @@ str(purrr::done())
 str(rlang::zap())
 ```
 
-## Are there exceptions?
+## How do I remediate existing values?
 
-Use of `getOption()`? How do you indiciate both the option use and the default value?
+If you've used a long 
