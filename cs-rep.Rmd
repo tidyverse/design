@@ -1,0 +1,91 @@
+# Case study: `rep()` {#cs-rep}
+
+```{r, include = FALSE}
+source("common.R")
+```
+
+## What does `rep()` do?
+
+`rep()` is an extremely useful base R function that repeats a vector `x` in various ways. It has three details arguments: `times`, `each`, and `length.out` that interact in complicated ways. Let's explore the basics first:
+
+```{r}
+x <- c(1, 2, 4)
+
+rep(x, times = 3)
+rep(x, length.out =  10)
+
+rep(x, times = 3, length.out =  10)
+```
+
+`times` and `length.out` both replicate the vector in the same way, but `length.out` allows you to specify a non-integer number of replications. If you specify both, `length.out` wins.
+
+The `each` argument repeats individual components of the vector rather than the whole vector:
+
+```{r}
+rep(x, each = 3)
+```
+
+And you can combine that with `times`:
+
+```{r}
+rep(x, each = 3, times = 2)
+```
+
+If you supply a vector to `times` it works a similar way to `each`, repeating each component the specified number of times:
+
+```{r}
+rep(x, times = x)
+```
+
+## What are the problems?
+
+* `times` with vector is misleading as it behaves more like vectorised `each`.
+* complicated dependency between `times`, `length.out`, and `each`.
+
+## How might we resolve?
+
+Rather than trying to do everything in one function with complicated dependencies between the arguments, I think there are two underlying functions:
+
+* `rep_each(x, times)` which replicates each `times` times element.
+* `rep_full(x, times)` which replicates the entire vector `times` times.
+
+```{r}
+library(vctrs)
+
+rep_each <- function(x, times) {
+  vec_assert(times, numeric())
+  times <- vec_recycle(times, vec_size(x))
+  
+  rep.int(x, times)
+}
+
+rep_full <- function(x, times, length) {
+  if (!xor(missing(times), missing(length))) {
+    stop("Must supply exactly one of `times` and `length`", call. = FALSE)
+  } else if (!missing(times)) {
+    vec_assert(times, numeric(), 1L)
+    length <- times * base::length(x)
+  } else if (!missing(length)) {
+    vec_assert(length, numeric(), 1L)
+  }
+  
+  rep_len(x, length)
+}
+```
+
+(note the downside of using `length` as the argument name: we have to call `base::length()` to avoid evaluating the missing `length` when times is supplied.)
+
+```{r}
+rep_each(x, 2)
+rep_each(x, x)
+rep_full(x, 2)
+```
+
+If you want to both replicate each component _and_ the entire vector, you use two function calls. This is obviously more verbose than `rep()`, but I don't think it's a terribly common use case. However, one argument for a single rep function is that `rep_each()` and `rep_full()` return the same result if you change their order (i.e. they're commutative):
+
+```{r}
+rep_full(rep_each(x, 2), 3)
+rep_each(rep_full(x, 3), 2) 
+```
+
+The implementation of `rep_full()` and `rep_each()` in terms of `rep.int()` and `rep_len()` suggests that R-core members are aware of the problem.

@@ -18,6 +18,7 @@ rmd_files:
     "args-required.Rmd",
     "args-data-details.Rmd",
     "args-independence.Rmd",
+    "cs-rep.Rmd",
     "args-enum.Rmd",
     "args-magical-defaults.Rmd",
     "args-defaults-short.Rmd",

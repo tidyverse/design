@@ -66,7 +66,7 @@ There are a number of functions that allow you to supply exactly one of two poss
   specifying the length of the sequence (with `n`) or the distance between 
   values (with `by`).
   
-Only use this technique if there are exactly two possible arguments. If there are more than two, that is generally a sign you should create more functions. You can see an example of this in `forcats::fct_lump()`. There are many different ways to decided how to lump uncommon factor levels together, and initially I attempted to encode these through arguments to `fct_lump()`. However, over time as the number of arguments increased, it gets harder and harder to tell what the options are. Now, we're growing `fct_lump()` capabilities by adding new functions, like `fct_lump_min()`.
+Only use this technique if there are exactly two possible arguments. If there are more than two, that is generally a sign you should create more functions. See case studies in Chapter \@ref(cs-rep) and Section \@ref(cs-fct-lump) for examples.
  
 If you use this technique, use `xor()` and `missing()` to check that exactly one is supplied:
 
