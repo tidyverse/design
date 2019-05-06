@@ -23,6 +23,7 @@ rmd_files:
     "args-defaults-short.Rmd",
     "args-explain.Rmd",
     "args-user-defaults.Rmd",
+    "cs-rgb.Rmd",
     
     "dots-position.Rmd",
     "dots-data.Rmd",

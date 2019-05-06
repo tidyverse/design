@@ -1,102 +1,121 @@
 # Required arguments don't have default values {#args-required}
 
+```{r, include = FALSE}
+source("common.R")
+```
+
 ## What's the pattern?
 
-Arguments without a default should be required; required arguments shouldn't have a default. And conversely, arguments with a default are not required; arguments that are not required should have a default.
+The absence of a default value should imply than an argument is required; the presence of a default should imply that an argument is optional.
 
-## Why is this important?
-
-When you scan the arguments of a function, it should be easy to tell which arguments must be supplied and which are optional.
-
+When reading a function, it's important to be able to tell at a glance which arguments must be supplied and which are optional. Otherwise you need to rely on the user having carefully read the documentation.
 
 ## What are some examples?
 
 *   In `sample()` neither `x` not `size` has a default value, suggesting that
     both are required, and the function would error if you didn't supply them.
-    But `size` is in fact optional.
+    But `size` is optional, determined by a complex conditional.
+    
+    ```{r}
+    sample(1:4)
+    sample(4)
+    ```
 
-*   `lm()` does not have defaults for `formula`, `data`,
-    `subset`, `weights`, `na.action`, or `offset`. But only
-    `formula` is actually required, although the error you
-    get if you omit it is not the usual.
+*   `lm()` does not have defaults for `formula`, `data`, `subset`, `weights`, 
+    `na.action`, or `offset`. Only `formula` is actually required, and even
+    then you get a confusing error message:
+    
+    ```{r, error = TRUE}
+    lm()
+    ```
+    
+*   In `var()`, `use` has no default, but is optional: it's automatically 
+    calculated based on the `na.rm` argument.
 
-*   `var()`
-
-*   In `diag()`, the argument `x` has a default `1`, but the function errors if 
-    you leave it off:
+*   In `diag()`, the argument `x` has a default `1`, but it's required: if 
+    you don't supply it you get an error:
     
     ```{r, error = TRUE}
     diag()
     diag(x = 1)
     ```
-
-*   `geom_abline()` - probably a sign that it should actually be two functions.
-
-    ```{r, eval = FALSE}
-    if (missing(mapping) && missing(slope) && missing(intercept)) {
-      slope <- 1
-      intercept <- 0
-    }
-    ```
     
-    `geom_jitter()`, `geom_label()`. Use to add new interface on top of old.
+    Conversely, `nrow` and `ncol` don't have defaults but aren't required.
 
-*   `.Deprecated()`
+*   In `ggplot2::geom_abline()`, `slope` and `intercept` don't have defaults 
+    but are not required. If you don't supply them they default to `slope = 1` 
+    and `intercept = 0`, *or* are taken from `aes()` if they're supplied
+    there.
 
-## Pair of mututally exclusive arguments {#args-mutually-exclusive}
+A common warning sign is the use of `missing()` inside the function.
 
-Must supply one of a pair of arguments. `rvest::html_node(css, xpath)` `fct_other(keep, drop)`. `fct_lump(n, prop)`, `seq_range(n, by)`.
-    
-Possibly too clever? Using `NULL` doesn't improve things because it would imply that neither argument is needed. Maybe should be separate functions? That reduces typing `_prop` vs `, prop = `. Definitely true for `fct_lump()` which time has shown to need much greater extensibility. But seems like overkill for `html_node()`, `fct_other()`, and `seq_range()`
+## When is it ok to violate this pattern?
 
-Definitely avoid this technique for greater than two mutually exclusive arguments. e.g. `rep()`: it's really three functions.
+There are two exceptions to this rule where in my opionion the benefits outweigh the costs of violating a standard pattern.
 
-Document the arguments together (i.e. `@param css,xpath`) and make it clear that only one can be supplied. Check with something like:
+### Pair of mututally exclusive arguments {#args-mutually-exclusive}
+
+There are a number of functions that allow you to supply exactly one of two possible arguments:
+
+* `rvest::html_node()` allows you to select HTML nodes either with a `css` 
+  selector or an `xpath` expression.
+  
+* `fct_other()` allows you to either `keep` or `drop` specified factor values.
+
+* `seq_range(x)` allows you create a sequence over the range of `x` by either
+  specifying the length of the sequence (with `n`) or the distance between 
+  values (with `by`).
+  
+Only use this technique if there are exactly two possible arguments. If there are more than two, that is generally a sign you should create more functions. You can see an example of this in `forcats::fct_lump()`. There are many different ways to decided how to lump uncommon factor levels together, and initially I attempted to encode these through arguments to `fct_lump()`. However, over time as the number of arguments increased, it gets harder and harder to tell what the options are. Now, we're growing `fct_lump()` capabilities by adding new functions, like `fct_lump_min()`.
+ 
+If you use this technique, use `xor()` and `missing()` to check that exactly one is supplied:
 
 ```{r, eval = FALSE}
-if (!xor(missing(css), missing(xpath))) {
-  abort("Must supply one of `css` or `xpath`")
+if (!xor(missing(keep), missing(drop))) {
+  stop("Must supply exactly one of `keep` and `drop`", call. = FALSE)
 }
 ```
 
-## One complex argument vs two simple arguments {#args-compound}
+An in the documentation, make it clear that only one of the pair can be supplied:
 
-`stringr::str_replace()`, `scale_*_manual()` - one richer argument can sometimes serve the role of two simpler arguments. Here you can either supply two vectors, or one vector with names.
-
-Another example is `str_sub()`. You can either call `str_sub(x, start, stop)` or `str_sub(x, cbind(start, stop))`. I'm still not 100% sure of this pattern, but it has the desirable property that the output of `str_locate()` can be fed directly into `str_sub()`.
-
-### `rgb`
-
-```{r, error = TRUE}
-library(rlang)
-
-rgba <- function(r, g, b, a = NULL) {
-  if (is.data.frame(r)) {
-    df <- r
-    if (!ncol(df) %in% c(3L, 4L)) {
-      abort("If `r` is data frame, it must have 3 or 4 columns.")
-    }
-    
-    if (!missing(b) || !missing(g) || !missing(a)) {
-      abort("If `r` is a data frame, `b`, `g`, and `a` must not be set.")
-    }
-    
-    r <- df[[1L]]
-    g <- df[[2L]]
-    b <- df[[3L]]
-    if (ncol(df) == 4) {
-      a <- df[[4L]]
-    }
-  }
-  
-  rgb(r, g, b, alpha = a, maxColorValue = 255)
-}
-
-rgba(16, 16, 16)
-rgba(data.frame(16, 16, 16))
-rgba(data.frame(16, 16))
-rgba(data.frame(16, 16, 16), 1)
+```{r}
+#' @param keep,drop Pick one of `keep` and `drop`:
+#'   * `keep` will preserve listed levels, replacing all others with 
+#'     `other_level`.
+#'   * `drop` will replace listed levels with `other_level`, keeping all
+#'     as is.
 ```
+
+### One complex argument vs multiple simple arguments {#args-compound}
+
+Less commonly, it can be useful to either supply a single complex argument or mutliple smaller arguments. For example:
+
+* You can call `stringr::str_sub(x, start, end)` or 
+  `str_sub(x, cbind(start, end))`
+
+* You can call `stringr::str_replace_all(x, pattern, replacement)` or 
+  `str_replace_all(x, c(pattern = replacement))`.
+
+* You can either call `rgb(r, g, b)` or `rgb(cbind(r, g, b))`. See 
+  Chapter \@ref(cs-rgb) for more details in case study form.
+
+The most compelling reason to provide this sort of interface is when another function might return a complex output that you want to use as an input. For example, it seems reasonable that you should be able to feed the output of `str_locate()` directly into `str_sub()`:
+
+```{r}
+library(stringr)
+
+x <- c("aaaaab", "aaab", "ccccb")
+loc <- str_locate(x, "a+b")
+
+str_sub(x, loc)
+```
+
+If `str_sub()` didn't optionally accept a single matrix instead of two vector arguments, you'd need to do:
+
+```{r}
+str_sub(x, loc[, 1], loc[, 2])
+```
+
 
 ## Other exceptions
 
