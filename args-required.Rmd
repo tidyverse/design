@@ -29,9 +29,11 @@ When reading a function, it's important to be able to tell at a glance which arg
     lm()
     ```
     
-*   In `var()`, `use` has no default, but is optional: it's automatically 
-    calculated based on the `na.rm` argument.
-
+*   `help()` and `vignette()` have no default for their first argument, 
+    suggesting that they're required. But they're not: calling `help()` or
+    `vignette()` without any arguments lists all help files and vignettes 
+    respectively.
+ 
 *   In `diag()`, the argument `x` has a default `1`, but it's required: if 
     you don't supply it you get an error:
     
