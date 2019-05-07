@@ -47,6 +47,10 @@ When reading a function, it's important to be able to tell at a glance which arg
     and `intercept = 0`, *or* are taken from `aes()` if they're supplied
     there.
 
+*   `readr::locale()`. There's a complex dependency between `decimal_mark` and
+    `grouping_mark` because they can't be the same value, and the US and Europe
+    use different standards.
+
 A common warning sign is the use of `missing()` inside the function.
 
 ## When is it ok to violate this pattern?
@@ -116,22 +120,6 @@ If `str_sub()` didn't optionally accept a single matrix instead of two vector ar
 str_sub(x, loc[, 1], loc[, 2])
 ```
 
+### Other exceptions
 
-## Other exceptions
-
-Sometimes, using a missing argument is the best you can do. 
-
-*   `readr::locale()`. There's a complex dependency between `decimal_mark` and
-    `grouping_mark` because they can't be the same value. Use missing to 
-    automatically set `grouping_mark = "."` if `decimal_mark = ","` and
-    vice versa. 
-
-*   `purrr::reduce()` has an optional details argument called `init`. 
-    When supplied, it serves as the initial value for the computation. But any 
-    value (including `NULL`) can a valid value. Sometimes using a sentinel 
-    value can be the right approach.
-
-
-### Practice
-
-*   `dgamma()`
+I'm genuinely conflicted about `purrr::reduce()`: it has an optional details argument called `init`. When supplied, it serves as the initial value for the computation. But any value (including `NULL`) can a valid value. And using a sentinel value for this one case seemed like overkill.
