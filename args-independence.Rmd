@@ -10,28 +10,36 @@ Avoid creating dependencies between details arguments so that only certain combi
 
 ## What's an example?
 
-* In `var()`, `na.rm` is only used if `use` is not set. If you supply both 
-  `use` and `na.rm`, `na.rm` is silently ignored.
+*   In `var()`, `na.rm` is only used if `use` is not set. If you supply both 
+    `use` and `na.rm`, `na.rm` is silently ignored.
 
-* `forcats::fct_lump()` decides which algorithm to use based on a 
-  combination of the `n` and `prop` arguments.
+*   In `rgamma()` you can provide either `scale` or `rate`. If you supply both
+    you will get an error or a warning:
+  
+    ```{r, error = TRUE}
+    rgamma(5, shape = 1, rate = 2, scale = 1/2)
+    rgamma(5, shape = 1, rate = 2, scale = 2)
+    ```
 
-* `grepl()` has `perl`, `fixed`, and `ignore.case` arguments which can
-  either be `TRUE` or `FALSE`. But `fixed = TRUE` overrides `perl = TRUE`, 
-  and `ignore.case` only works if `fixed = FALSE`.
+*   `forcats::fct_lump()` decides which algorithm to use based on a 
+    combination of the `n` and `prop` arguments.
 
-* In `ggplot2::geom_histogram()` you can specify the histogram breaks in 
-  three ways: as a number of `bins`,  as the width of each bin (`binwidth`, 
-  plus `center` and `boundary`), or the exact `breaks`. You can only pick 
-  one of the three options, which is hard to convey in the documentation.
-  There's also an implied precedence so that if more than one option is 
-  supplied, one will silently win.
+*   `grepl()` has `perl`, `fixed`, and `ignore.case` arguments which can
+    either be `TRUE` or `FALSE`. But `fixed = TRUE` overrides `perl = TRUE`, 
+    and `ignore.case` only works if `fixed = FALSE`.
+
+*   In `ggplot2::geom_histogram()` you can specify the histogram breaks in 
+    three ways: as a number of `bins`, as the width of each bin (`binwidth`, 
+    plus `center` or `boundary`), or the exact `breaks`. You can only pick 
+    one of the three options, which is hard to convey in the documentation.
+    There's also an implied precedence so that if more than one option is 
+    supplied, one will silently win.
 
 See Sections \@ref(args-mutually-exclusive) and \@ref(args-compound) for a specific exceptions where the dependency is via specific missing argument patterns.
 
 ## How do I avoid?
 
-Often these problems arise because when the functions were originally designed the scope was much smaller. It grew gradually over time, and no point did it seem worth the additional effort to refactor to a new design. This can make them hard to avoid. 
+Often these problems arise because the scope of a function grows over time. When the function was initially designed, the scope was small, and it grows incrementally over time. Now, with hindsight It grew gradually over time, and no point did it seem worth the additional effort to refactor to a new design. This can make them hard to avoid. 
 
 ## How do I remediate?
 
@@ -39,8 +47,7 @@ Generally, you'll need to reconsider the complete interface. There are two commo
 
 * Splitting the function into multiple functions that each do one thing.
 
-* Encapulsating related details arguments into a single object created by 
-  a new function.
+* Encapulsating related details arguments into a single object.
 
 See also larger case study in Chapter \@ref(cs-rep) where this problem is tangled up with other problems.
 
@@ -59,13 +66,23 @@ There are many different ways to decide how to lump uncommon factor levels toget
 * Only `prop` supplied: if positive, preserves 
 
 * Both `n` and `prop` supplied: due to a bug in the code, this is treated
-  the same way as both `n` and `prop` mmissing!
+  the same way as both `n` and `prop` missing! (But it really should be an 
+  error)
 
 Would be better to break into three functions:
 
 * `fct_lump_n(f, n)`
 * `fct_lump_prop(f, prop)`
 * `fct_lump_smallest(f)`
+
+That has three advantages:
+
+* The name of function helps remind you of the purpose.
+
+* There's no way to supply both `n` and `prop`.
+
+* The `ties.method` argument would only appear in `fct_lump_n()` and `_prop()`,
+  not `_smallest()`.
 
 ### Case study: `grepl()` vs `stringr::str_detect()`
 
@@ -114,8 +131,3 @@ x <- str_detect(letters, engine = boundary("word"))
 ```
 
 It's appealing to all the details of the match wrapped up into a single object. 
-
-### Case study: `ggplot2::geom_histogram()`
-
-
-
