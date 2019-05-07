@@ -35,6 +35,10 @@ Avoid creating dependencies between details arguments so that only certain combi
     There's also an implied precedence so that if more than one option is 
     supplied, one will silently win.
 
+*   In `readr::locale()` there's a complex dependency between `decimal_mark` 
+    and `grouping_mark` because they can't be the same value, and the US and 
+    Europe use different standards.
+
 See Sections \@ref(args-mutually-exclusive) and \@ref(args-compound) for a specific exceptions where the dependency is via specific missing argument patterns.
 
 ## How do I avoid?

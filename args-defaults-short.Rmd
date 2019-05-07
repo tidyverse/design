@@ -122,6 +122,11 @@ str(purrr::done())
 str(rlang::zap())
 ```
 
+Or is this the wrong way around? Should the default always be `NULL` and we have a special value to use when you actually want a `NULL`?
+
+Take `purrr::reduce()`: it has an optional details argument called `init`. When supplied, it serves as the initial value for the computation. But any value (including `NULL`) can a valid value. And using a sentinel value for this one case seemed like overkill.
+
+
 ## How do I remediate existing problems?
 
 If you have a function with a long default, you can use any of the three approaches above to remediate it. As long as you don't accidentally change the default value, this does not affect the function interface. Make sure you have a test for the default operation of the function before embarking on this change.
