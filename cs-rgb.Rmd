@@ -39,3 +39,25 @@ rgba(data.frame(16, 16, 16))
 rgba(data.frame(16, 16))
 rgba(data.frame(16, 16, 16), 1)
 ```
+
+```{r}
+rgba <- function(r, g, b, a = NULL) {
+  if (is.data.frame(r)) {
+    df <- r
+    if (!all(c("r", "g", "b")) %in% names(df)) {
+      abort("If first argument is a data frame, it must have r, g, and b columns.")
+    }
+    
+    if (!missing(b) || !missing(g) || !missing(a)) {
+      abort("If `r` is a data frame, `b`, `g`, and `a` must not be set.")
+    }
+  } else {
+    # Handles vectorisation
+    df <- tibble(r = r, g = g, b = b, a = a) 
+  }
+  
+  # Assumes this function checks types and gives informative error messages
+  rgb(df$r, df$g, df$b, alpha = df$a, maxColorValue = 255)
+}
+```
+
