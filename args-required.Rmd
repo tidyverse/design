@@ -4,7 +4,7 @@
 source("common.R")
 ```
 
-## What's the pattern?
+## What's the problem?
 
 The absence of a default value should imply than an argument is required; the presence of a default should imply that an argument is optional.
 
@@ -53,7 +53,7 @@ When reading a function, it's important to be able to tell at a glance which arg
 
 A common warning sign is the use of `missing()` inside the function.
 
-## When is it ok to violate this pattern?
+## What are the exceptions?
 
 There are two exceptions to this rule where in my opionion the benefits outweigh the costs of violating a standard pattern.
 

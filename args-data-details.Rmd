@@ -8,38 +8,56 @@ source("common.R")
 
 ## What's the pattern?
 
-When creating a function, put data arguments before details arguments. 
+When creating a function, put data arguments before details arguments. Arguments with defaults should always come after arguments without defaults (i.e. required arguments).
 
-Arguments with defaults should always come after arguments without defaults (i.e. required arguments).
+Related patterns:
 
-### Related patterns
+* It's possible for the data argument to be `...` (i.e. there's an arbitrary 
+  number of data arguments). For example, `paste()` allows you to supply any 
+  number of strings to `...`, and the details of the concatenation are 
+  controlled by `sep` and `collapse`. This pattern is best using sparingly, 
+  and is described in more detail in Chapter \@ref(dots-data). 
 
-It's possible for the data argument to be `...` (i.e. there's an arbitrary number of data arguments). For example, `paste()` allows you to supply any number of strings to `...`, and the details of the concatenation are controlled by `sep` and `collapse`. This pattern is best using sparingly, and is described in more detail in Chapter \@ref(dots-data). 
+* `...` can also be used to capture details arguments and pass them on to 
+  other functions. See Chapters \@ref(dots-position) and \@ref(dots-inspect) to 
+  how to use `...` as safely as possible in this situation.
 
-`...` can also be used to capture details arguments and pass them on to other functions. See Chapters \@ref(dots-position) and \@ref(dots-inspect) to how to use `...` as safely as possible in this situation.
+## What are some examples?
 
-Convention for calling Chapter \@ref(call-data-details).
+*   `grepl(pattern, x)` returns a logical vector the same length as `x` 
+    containing `TRUE` wherever `pattern` is matched. Here, `x` is the data 
+    argument (it's the character vector of strings to compare), and `pattern` 
+    is the data argument. 
 
-## Why bother?
+*   In `lm()`, I think it's fairly obvious that the primary data argument is 
+    `data` and one of the key details is the model specification in the 
+    `formula` argument. This is partly a historic accident, because having 
+    `lm()` work with data frames (rather than individual vectors in the 
+    current environment), did become important until later. 
 
-Works naturally with the pipe.
+*   `replicate()` takes the number of replicates as the first argument, 
+    whereas that seems more like a detail of the computation.
+
+    ```{r}
+    replicate(3, rnorm(4))
+    replicate(rnorm(4), n = 3)
+    ```
+
+*   `mapply()` takes `FUN` as the first argument. This is different to all the 
+    other `apply()` functions which take the data as the first argument.
+    See Chapter \@ref(cs-mapply-pmap) for more details.
+
+## Why is it important?
 
 Convention makes it easier to understand structure of function at a glance - know that the most important arguments come first.
 
-## What functions violate this pattern?
+Pipe is designed to work with this convention.
 
-One larger family of functions in base R are the functions that tend not to follow this are the string manipulation functions. For example, `grepl(pattern, x)` returns a logical vector the same length as `x` containing `TRUE` wherever `pattern` is matched. Here, `x` is the data argument (it's the character vector of strings to compare), and `pattern` is the data argument. 
+## How do I remediate the problem?
 
-Another important example is `lm()`: I think it's fairly obvious that the primary data argument is `data` and one of the key details is the model specification in the `formula` argument. This is partly a historic accident, because having `lm()` work with data frames (rather than individual vectors in the current environment), did become important until later. 
+If you have an exported function with this problem, there's no way to fix it. You'll need to deprecate the function and come up with a new replacement without the problem.
 
-`replicate()` takes the number of replicates as the first argument, whereas that seems more like a detail of the computation.
-
-```{r}
-replicate(3, rnorm(4))
-replicate(rnorm(4), n = 3)
-```
-
-`setNames()` has a very unusual function:
+For example, `setNames()` has an unusual definition:
 
 ```{r}
 setNames <- function(object = nm, nm) {
@@ -61,8 +79,3 @@ set_names <- function(x, nm = x) {
 
 (`set_names()` is actually a bit more complicated because the second argument can be a function used to transform existing names. See the documentation for more details.)
 
-See also `mapply()` vs. `pmap()` as discussed in Chapter \@ref(cs-mapply-pmap).
-
-## How do I recover?
-
-If you have an exported function with this problem, there's no way to fix it. You'll need to deprecate the function and come up with a new replacement without the problem.

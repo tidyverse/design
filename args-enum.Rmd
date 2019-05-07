@@ -10,9 +10,17 @@ If an argument can take one of a relatively small set of known values, specify a
 
 (See ???? for a similar pattern that can be extended by others.)
 
-## Where is it used?
+## What are some examples?
 
-You can see an example of this in the `rank()` function. It has a `ties.method` that describes the method used to handle the rank of ties. It must be "average", "first", "last", "random", "max", or "min". `rank()` documents this restriction with the by including a vector of possible values as the default.
+* `rank()` has a `ties.method` that describes the method used to handle the 
+  rank of ties. It must be "average", "first", "last", "random", "max", or 
+  "min". 
+
+## Why is it important?
+
+## How do I use it?
+
+`rank()` documents this restriction with the by including a vector of possible values as the default.
 
 ```{r}
 rank <- function(x, 
@@ -66,7 +74,7 @@ rank2 <- function(x,
 rank2(x, ties.method = "r")
 ```
 
-## When to avoid it?
+### How to use it and keep defaults short?
 
 Best used when the set of possible values is short. You can see in the `rank()` example it's already getting unwieldy and makes it difficult to nicely format. The easiest way to follow Chapter \@ref(args-defaults-short) and extract the possible values into its own function:
 

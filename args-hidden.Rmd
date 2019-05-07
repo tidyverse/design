@@ -1,4 +1,4 @@
-# Hidden inputs {#args-hidden}
+# Avoid hidden inputs {#args-hidden}
 
 ```{r, include = FALSE}
 source("common.R")
@@ -8,7 +8,7 @@ source("common.R")
 
 Functions are easier to understand if the results depend only on the values of the inputs. If this is not true, and result of a function depends might be different with the same input arguments, it has __hidden inputs__.
 
-#### Related patterns {-}
+Related:
 
 * This pattern is about surprising inputs; [Spooky action] is about
   suprising outputs.
@@ -64,12 +64,12 @@ Other functions depend on hidden inputs to control side-effects
 
 This is fine - it gives the user control over appearance without affecting the computed values, and is discussed more in Chapter \@ref(args-user-defaults).
 
-## Why is it bad?
+## Why is it important?
 
 Hidden inputs are bad because they make it much harder to predict the output of a fuction. The worst offender by far is the `stringsAsFactors` option which changes how a number of functions (including `data.frame()`, `as.data.frame()`, `expand.grid()`, and `read.csv()`) treat character vectors. This exists mostly for historical reasons, as described in recommend [*stringsAsFactors: An unauthorized biography*](http://simplystatistics.org/2015/07/24/stringsasfactors-an-unauthorized-biography/) by Roger Peng and [*stringsAsFactors = \<sigh\>*](http://notstatschat.tumblr.com/post/124987394001/stringsasfactors-sigh)
 by Thomas Lumley. )
 
-## How can I avoid it?
+## How can I remediate the problem?
 
 Avoiding hidden inputs is simple: ensure that the results of your function only depend on its input arguments.
 
@@ -77,7 +77,7 @@ If you need to read from a setting external to the function or to R itself, it s
 
 If you have many options that the user might want to vary, consider an explicit `locale` object like in readr.
 
-You can also make the use of the input less hidden by explicitly notifying the user whenever they rely on the default value that might vary in surprising ways. `install.packges()` does this to notify you about it's use of the `.libPath()` option.
+You can also make the use of the input less hidden by explicitly notifying the user whenever they rely on the default value that might vary in surprising ways. `install.packages()` does this to notify you about it's use of the `.libPath()` option.
 
 ```{r, eval = FALSE}
 install.packages("forcats")

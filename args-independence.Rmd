@@ -8,7 +8,7 @@ source("common.R")
 
 Avoid creating dependencies between details arguments so that only certain combinations are permitted.
 
-## What's an example?
+## What are some examples?
 
 *   In `var()`, `na.rm` is only used if `use` is not set. If you supply both 
     `use` and `na.rm`, `na.rm` is silently ignored.

@@ -4,6 +4,8 @@
 source("common.R")
 ```
 
+## What's the pattern?
+
 When using `...` to create a data structure, or when passing `...` to a user-supplied function, add a `.` prefix to all named arguments. This reduces (but does not eliminate) the chances of matching an argument at the wrong level. Additionally, you should always provide some mechanism that allows you to escape and use that name if needed.
 
 ```{r setup}
@@ -12,7 +14,7 @@ library(purrr)
 
 (Not important if you ignore names: e.g. `cat()`.)
 
-## Case study: purrr functions
+## What are some examples?
 
 Look at the arguments to some functions in purrr:
 
@@ -67,7 +69,7 @@ args(transform)
 
 Using a non-syntactic variable names means that it must always be surrounded in `` ` ``.  This means that a user is even less likely to use it that with `.`, but it increases friction when writing the function. In my opinion, this trade-off is not worth it.
 
-## Other cases where it's ok
+## What are the exceptions?
 
 *  `tryCatch()`: the names give classes so, as long as you don't create a 
     condition class called `expr` or `finally` (which would be weird!) you

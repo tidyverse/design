@@ -9,6 +9,8 @@ library(tidyverse)
 
 A number of functions take `...` to save the user from having to create a vector themselves:
 
+## What are some examples?
+
 ```{r}
 sum(c(1, 1, 1))
 # can be shortened to:
@@ -21,7 +23,7 @@ fct_relevel(f, c("b", "a"))
 fct_relevel(f, "b", "a")
 ```
 
-## What are the downsides?
+## Why is it important?
 
 In general, I think it is best to avoid using `...` for this purpose because it has a relatively small benefit, only reducing typing by three letters `c()`, but has a number of costs:
 
@@ -69,11 +71,11 @@ In general, I think it is best to avoid using `...` for this purpose because it 
     }
     ```
 
-## What's the exception?
+## What are the exceptions?
 
 Note that in all the examples above, the `...` are used to collect a single details argument. It's ok to use `...` to collect _data_, as in `paste()`, `data.frame()`, or `list()`.
 
-## How can undo it?
+## How can remediate it?
 
 If you've already published a function where you've used `...` for this purpose you can change the interface by adding a new argument in front of `...`, and then warning if anything ends up in `...`.
 

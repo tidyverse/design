@@ -13,7 +13,9 @@ pkg_funs("base") %>% funs_body_keep(has_call, "missing")
 
 ## What's the problem?
 
-Some functions have default values that give different results when you supply the same value explicitly:
+If a function behaves differently when the default value is suppled explicitly, we say it has a __magical default__. Magical defaults are best avoided because they make it harder to interpret the function specification.
+
+## What are some examples?
 
 *   In `data.frame()`, the default argument for `row.names` is `NULL`, but
     if you supply it directly you get a different result:
@@ -46,11 +48,9 @@ Some functions have default values that give different results when you supply t
     Vectorize(rep.int, vectorize.args = arg.names)
     ```
 
-If a function behaves differently when the default value is suppled explicitly, we say it has a __magical default__. Magical defaults are best avoided because they make it harder to interpret the function specification.
+## What are the exceptions?
 
-## Are there exceptions?
-
-Yes: it's ok to use this behaviour when you want the default value of one argument to be the same as another. For example, take `rlang::set_names()`, which allows you to create a named vector from two inputs:
+It's ok to use this behaviour when you want the default value of one argument to be the same as another. For example, take `rlang::set_names()`, which allows you to create a named vector from two inputs:
 
 ```{r}
 fun_call(set_names)
@@ -74,9 +74,17 @@ fun_call(file.copy)
 
 This makes the defaults arguments harder to understand because you can't just read from left-to-right.
 
-## What's the underlying cause?
+## How do I remediate the problem?
 
-The most common cause of this problem is the overuse of lazy evaluation of default values, which are evaluated in the environment of the function, as described in [Advanced R](https://adv-r.hadley.nz/functions.html#default-arguments). Here's a simple example:
+This problem is generally easy to avoid for new functions:
+
+* Never use `missing()`[^missing-exceptions].
+  
+* Never use defaults that depend on variables defined inside the function.
+
+[^missing-exceptions]: The only exceptions are described in Sections \@ref(args-mutually-exclusive) and \@ref(args-compound).
+
+Typically, the problem arises from the overuse of lazy evaluation of default values, which are evaluated in the environment of the function, as described in [Advanced R](https://adv-r.hadley.nz/functions.html#default-arguments). Here's a simple example:
 
 ```{r}
 f1 <- function(x = y) {
@@ -105,16 +113,6 @@ f2 <- function(x = 1) {
 f2()
 f2(1)
 ```
-
-## How do I remediate the problem?
-
-This problem is generally easy to avoid for new functions:
-
-* Never use `missing()`[^missing-exceptions].
-  
-* Never use defaults that depend on variables defined inside the function.
-
-[^missing-exceptions]: The only exceptions are described in Sections \@ref(args-mutually-exclusive) and \@ref(args-compound).
 
 If you have a made a mistake in an older function you can remediate it by using an explicit `NULL`, as described in Chapter \@ref(args-defaults-short).
 

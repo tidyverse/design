@@ -19,7 +19,7 @@ funs[args_max > 50] %>% discard(~ grepl("as.data.frame", .x$name, fixed = TRUE))
 
 Default values should be short and sweet. This makes the function specification easier to scan.
 
-### What are some examples?
+## What are some examples?
 
 The following examples, drawn from base R, illustrate some functions that don't follow this pattern:
 
@@ -46,6 +46,8 @@ The following examples, drawn from base R, illustrate some functions that don't 
       })
     )
     ```
+
+## Why is it important?
 
 ## How do I use it?
 
@@ -120,7 +122,7 @@ str(purrr::done())
 str(rlang::zap())
 ```
 
-## How do I remediate existing values?
+## How do I remediate existing problems?
 
 If you have a function with a long default, you can use any of the three approaches above to remediate it. As long as you don't accidentally change the default value, this does not affect the function interface. Make sure you have a test for the default operation of the function before embarking on this change.
 

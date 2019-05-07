@@ -14,8 +14,7 @@ If a default value is important, and the computation is non-trivial, explain it 
 
 The message should be mildly annoying to encourage the user to provide a default value after the initial period of pure exploration is passed.
 
-
-## Where can I see it used?
+## What are some examples?
 
 *   `ggplot2::geom_histogram()` - `binwidth` is an important parameter and 
     something that you should always experiment with, which suggests that it 
@@ -55,6 +54,8 @@ The message should be mildly annoying to encourage the user to provide a default
     ```{r}
     mtcars <- read_csv(readr_example("mtcars.csv"))
     ```
+
+## Why is it important?
 
 ## How can I use it?
 

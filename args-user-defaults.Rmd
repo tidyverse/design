@@ -26,6 +26,10 @@ crayon/cli
 
 `usethis::use_description_defaults()`
 
-## What are some counter-examples?
+## Why is it important?
+
+## What are the exceptions?
 
 `lubridate::wday()`: `week_start = getOption("lubridate.week.start", 7)`
+
+## How do I use it?
