@@ -55,7 +55,7 @@ Generally, you'll need to reconsider the complete interface. There are two commo
 
 See also larger case study in Chapter \@ref(cs-rep) where this problem is tangled up with other problems.
 
-If these changes to the interface occur to exported functions in a package, you'll need to consider how to preserve the interface with deprecation warnings. For important functions, it is worth generating an message that includes new code to c?fcopy and paste.
+If these changes to the interface occur to exported functions in a package, you'll need to consider how to preserve the interface with deprecation warnings. For important functions, it is worth generating an message that includes new code to copy and paste.
 
 ### Case study: `fct_lump()` {#cs-fct-lump}
 
