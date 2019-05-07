@@ -61,7 +61,7 @@ set_names <- function(x, nm = x) {
 
 (`set_names()` is actually a bit more complicated because the second argument can be a function used to transform existing names. See the documentation for more details.)
 
-See also `mapply()` vs. `pmap()` as discussed in Chapter \@ref(mapply-pmap).
+See also `mapply()` vs. `pmap()` as discussed in Chapter \@ref(cs-mapply-pmap).
 
 ## How do I recover?
 

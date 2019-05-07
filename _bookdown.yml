@@ -30,7 +30,7 @@ rmd_files:
     "dots-data.Rmd",
     "dots-prefix.Rmd",
     "dots-inspect.Rmd",
-    "mapply-pmap.Rmd",
+    "cs-mapply-pmap.Rmd",
     
     "out.Rmd",
     "out-multi.Rmd",
