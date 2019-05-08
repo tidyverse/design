@@ -100,7 +100,7 @@ And in the documentation, make it clear that only one of the pair can be supplie
 
 This technique should only be used for are exactly two possible arguments. If there are more than two , that is generally a sign you should create more functions. See case studies in Chapter \@ref(cs-rep) and Section \@ref(cs-fct-lump) for examples.
 
-### One complex argument vs multiple simple arguments {#args-compound}
+### One compound argument vs multiple simple arguments {#args-compound}
 
 A related form, is less commonly useful form, is to allow the user to supply either a single complex argument or several smaller arguments. For example:
 
@@ -112,6 +112,8 @@ A related form, is less commonly useful form, is to allow the user to supply eit
   
 * `rgb(cbind(r, g, b))` is equivalent to `rgb(r, g, b)` (See Chapter 
   \@ref(cs-rgb) for more details).
+  
+* `options(list(a = 1, b = 2))` is equivalent to `options(a = 1, b = 2)`.
 
 The most compelling reason to provide this sort of interface is when another function might return a complex output that you want to use as an input. For example, it seems reasonable that you should be able to feed the output of `str_locate()` directly into `str_sub()`:
 
@@ -133,6 +135,8 @@ str_sub("Hadley", cbind(2, 4))
 So `str_sub()` allows either individual vectors supplied to `start` and `end`, or a two-colummn matrix supplied to `start`.
 
 To implement in your own functions, you should branch on the type of the first argument:
+
+(Why? Why not branch if the other arguments are missing? Or some combination?)
 
 ```{r}
 str_sub <- function(string, start = 1L, end = -1L) {

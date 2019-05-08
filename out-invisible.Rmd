@@ -1,0 +1,79 @@
+# Side-effect functions should return invisibly {#out-invisible}
+
+```{r, include = FALSE}
+source("common.R")
+```
+
+## What's the pattern?
+
+If a function is called primarily for its side-effects, it should invisibly return a useful output. If there's no obvious output, return the first argument. This makes it possible to use the function with in a pipeline.
+
+## What are some examples?
+
+```{r, eval = FALSE, include = FALSE}
+source("fun_def.R")
+pkg_funs("base") %>% 
+  funs_body_keep(has_call, "invisible") %>% 
+  discard(~ grepl("print", .x$name))
+```
+
+* `print(x)` invisibly returns the printed object.
+
+* `x <- y` invisible returns `y`. This is what makes it possible to chain
+  together multiple assignments `x <- y <- z <- 1`
+
+* `readr::write_csv()` invisibly returns the data frame that was saved.
+
+* `purrr::walk()` invisibly returns the vector iterated over.
+
+* `fs:file_copy(from, to)` returns `to`
+
+* `options()` and `par()` invisibly return the previous value so you can 
+  reset with `on.exit()`.
+
+## Why is it important?
+
+Invisibly returning the first argument allows to call the function mid-pipe for its side-effects while allow the primary data to continue flowing through the pipe. This is useful for generating intermediate diagnostics, or for saving multiple output formats.
+
+```{r}
+library(dplyr, warn.conflicts = FALSE)
+library(tibble)
+
+mtcars %>%
+  as_tibble() %>% 
+  filter(cyl == 6) %>% 
+  print() %>% 
+  group_by(vs) %>% 
+  summarise(mpg = mean(mpg))
+```
+
+```{r}
+library(readr)
+
+mtcars %>% 
+  write_csv("mtcars.csv") %>% 
+  write_tsv("mtcars.tsv")
+
+unlink(c("mtcars.csv", "mtcars.tsv"))
+```
+
+```{r}
+library(fs)
+
+paths <- file_temp() %>%
+  dir_create() %>%
+  path(letters[1:5]) %>%
+  file_create()
+paths
+```
+
+Functions that modify some global state, like `options()` or `par()`, should return the _previous_ value of the variables. This, in combination with Section \@ref(args-compound), makes it possible to easily reset the effect of the change:
+
+```{r}
+x <- runif(1)
+old <- options(digits = 3)
+x
+
+options(old)
+x
+```

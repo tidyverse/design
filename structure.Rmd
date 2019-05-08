@@ -57,6 +57,9 @@ The interface of a function describes how it interfaces with the world, independ
 
 ### Output
 
+* Chapter \@ref(out-invisible): functions called primarily for their 
+  side-effects should invisibly return a useful value.
+
 
 ### Errors
 
