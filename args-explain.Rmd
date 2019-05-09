@@ -16,6 +16,21 @@ The message should be mildly annoying to encourage the user to provide a default
 
 ## What are some examples?
 
+*  `install.packages()` does this to notify you about it's use of the 
+   `.libPath()` option.
+
+    ```{r, eval = FALSE}
+    install.packages("forcats")
+    # Installing package into ‘/Users/hadley/R’
+    # (as ‘lib’ is unspecified)
+    ```
+  
+    But it's easy to ignore this amongst the other output that
+    `install.packages()` produces, and the message doesn't refer to the 
+    mechanism that controls it: `.libPaths()`.
+
+*   `GITHUB_PAT`
+
 *   `ggplot2::geom_histogram()` - `binwidth` is an important parameter and 
     something that you should always experiment with, which suggests that it 
     should be a required argument. However, it's hard to know what plausible 

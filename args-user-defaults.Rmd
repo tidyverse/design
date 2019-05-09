@@ -14,17 +14,19 @@ If the computed values are different, you have an example of Chapter \@ref(args-
 
 ## What are some examples?
 
-`print`
+* `print()` + `options(digits, width)` 
 
-`dplyr.show_progress`
+* `install.packages()` + `options(repos)`
 
-`scale_colour_continuous()`  - `type = getOption("ggplot2.continuous.colour", default = "gradient"))`
+* `dplyr.show_progress`
 
-`getOption("width")`, ` getOption("digits")`
+* `scale_colour_continuous()`  - `type = getOption("ggplot2.continuous.colour", default = "gradient"))`
 
-crayon/cli
+* `getOption("width")`, ` getOption("digits")`
 
-`usethis::use_description_defaults()`
+* crayon/cli
+
+* `usethis::use_description_defaults()`
 
 ## Why is it important?
 
