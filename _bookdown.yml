@@ -15,10 +15,11 @@ rmd_files:
     
     "args.Rmd",
     "args-hidden.Rmd",
-    "args-required.Rmd",
     "args-data-details.Rmd",
     "args-independence.Rmd",
     "cs-rep.Rmd",
+    
+    "args-required.Rmd",
     "args-enum.Rmd",
     "args-magical-defaults.Rmd",
     "args-defaults-short.Rmd",

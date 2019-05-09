@@ -12,17 +12,17 @@ The interface of a function describes how it interfaces with the world, independ
   arguments. Avoid functions that suprise the user by returning different 
   results when the inputs look the same.
 
-#### Default values
-
-* Chapter \@ref(args-required): the absence of a default value should indicate
-  that an argument is required; the presence of a default value should indicate
-  that an argument is optional.
-
 * Chapter \@ref(args-data-details): Required arguments should come before
   optional arguments.
 
 * Chapter \@ref(args-independence): Make arguments as orthogonal as possible. 
   Avoid complex interdependencies.
+
+#### Default values
+
+* Chapter \@ref(args-required): the absence of a default value should indicate
+  that an argument is required; the presence of a default value should indicate
+  that an argument is optional.
 
 * Chapter \@ref(args-enum): If a details argument can take one of a fixed set 
   of possible strings, record them in the default value and use `match.arg()`

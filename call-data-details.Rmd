@@ -1,4 +1,4 @@
-# Data, then details {#call-data-details}
+# Name data arguments {#call-data-details}
 
 ```{r, include = FALSE}
 source("common.R")
