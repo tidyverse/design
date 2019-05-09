@@ -99,26 +99,28 @@ If you have an existing function with a hidden input, you'll need to take both s
 
 ```{r}
 as.POSIXct <- function(x, tz = "") {
-  base::as.POSIXct(as.POSIXlt(x, tz = tz), tz = tz)
+  base::as.POSIXct(x, tz = tz)
 }
+as.POSIXct("2020-01-01 09:00")
 ```
 
 The `tz` argument is present, but it's not obvious that `""` means take from the system timezone. Let's first make that explicit:
 
 ```{r}
 as.POSIXct <- function(x, tz = Sys.timezone()) {
-  base::as.POSIXct(as.POSIXlt(x, tz = tz), tz = tz)
+  base::as.POSIXct(x, tz = tz)
 }
+as.POSIXct("2020-01-01 09:00")
 ```
 
-This is an import argument coming from an environment variable, so we should also print it out if the user hasn't explicitly set it:
+This is an important argument coming (indirectly) from an environment variable, so we should also print it out if the user hasn't explicitly set it:
 
 ```{r}
 as.POSIXct <- function(x, tz = Sys.timezone()) {
   if (missing(tz)) {
     message("Using `tz = '", tz, "'`")
   }
-  base::as.POSIXct(as.POSIXlt(x, tz = tz), tz = tz)
+  base::as.POSIXct(x, tz = tz)
 }
 as.POSIXct("2020-01-01 09:00")
 ```
