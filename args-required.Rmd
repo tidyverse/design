@@ -21,6 +21,9 @@ When reading a function, it's important to be able to tell at a glance which arg
     sample(4)
     ```
 
+*   `rt()` (draw random numbers from the t-distribution) looks like it 
+    requires the `ncp` parameter but it doesn't.
+
 *   `lm()` does not have defaults for `formula`, `data`, `subset`, `weights`, 
     `na.action`, or `offset`. Only `formula` is actually required, but even 
     its absence fails to generate a clear error message:

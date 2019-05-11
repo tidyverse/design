@@ -4,6 +4,8 @@
 source("common.R")
 ```
 
+<!-- Rename to details in dots? dots-details -->
+
 ## What's the pattern?
 
 When you use `...` in a function, where should you put it? It's obvious that the data arguments must come first. But which should come next, the dots or the details? This patter tells you to place `...` between the data arguments (the required arguments that supply the key "data" to the function) and the details arguments (optional additional arguments that control the finer details of the function). 

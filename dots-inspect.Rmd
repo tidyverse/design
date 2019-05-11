@@ -4,6 +4,8 @@
 source("common.R")
 ```
 
+<!-- call dots-details-s3 ? -->
+
 ## What's the pattern?
 
 Whenever you use `...` in an S3 generic to allow methods to add custom arguments, you should inspect the dots to make sure that every argument is used. You can also use this same approach when passing `...` to an overly permissive function.

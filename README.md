@@ -15,6 +15,8 @@ Sections:
 
 * What are some examples? Bulleted list of existing functions. Can be both 
   positive and negative examples. Show results of code where useful.
+  Goal is to include enough variety that everyone recognises at least one 
+  function, and can look up the docs for the details of the others.
 
 * Why is it bad/useful? More detailed motivation.
 

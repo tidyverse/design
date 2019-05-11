@@ -1,7 +1,10 @@
 library(purrr)
 library(rlang)
 
-# Should return more complex function object with print method
+# TODO:
+# * way to print function with body
+# * way to highlight arguments
+
 pkg_funs <- function(pkg) {
   env <- pkg_env(pkg)
   funs <- keep(as.list(env, sorted = TRUE), is_closure)

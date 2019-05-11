@@ -1,59 +1,114 @@
-# Data, then details {#args-data-details}
+# Data, descriptors, details {#args-data-details}
 
 ```{r, include = FALSE}
 source("common.R")
 ```
 
-(If you're not familiar with the terms "data argument" and "details argument", read Chapter \@ref(call-data-details) before continuing.)
-
 ## What's the pattern?
 
-When creating a function, put data arguments before details arguments. Arguments with defaults should always come after arguments without defaults (i.e. required arguments).
+Function arguments should always come in the same order: data arguments, then descriptors, then details.
+
+* __Data__ arguments provide the core data. They are required, and are usually
+  vectors and often determine the type and size of the output. Data arguments
+  are often called `data`, `x`, or `y`. 
+
+* __Descriptor__ arguments describe essential details of the operation, and 
+  are usually required.
+  
+* __Details__ arguments control the details of the function. These arguments
+  should have defaults, so they become optional, and their values are 
+  typically scalars (e.g. `na.rm = TRUE`, `n = 10`, `prop = 0.1`).
+
+A standard argument order makes it easier to understand a function at a glance, and this order implies that required arguments always come before optional arguments.
 
 Related patterns:
 
-* It's possible for the data argument to be `...` (i.e. there's an arbitrary 
-  number of data arguments). For example, `paste()` allows you to supply any 
-  number of strings to `...`, and the details of the concatenation are 
-  controlled by `sep` and `collapse`. This pattern is best using sparingly, 
-  and is described in more detail in Chapter \@ref(dots-data). 
+* `...` can play the role of the data argument (i.e. when there are an 
+  arbitrary number of inputs), as in `paste()`. This pattern is best using
+  sparingly, and is described in more detail in Chapter \@ref(dots-data). 
 
 * `...` can also be used to capture details arguments and pass them on to 
-  other functions. See Chapters \@ref(dots-position) and \@ref(dots-inspect) to 
-  how to use `...` as safely as possible in this situation.
+  other functions. See Chapters \@ref(dots-position) and \@ref(dots-inspect) 
+  to how to use `...` as safely as possible in this situation.
+
+* If the descriptor has a deafult value, I think you should tell the use about 
+  it, as in Chapter \@ref(args-explain).
 
 ## What are some examples?
 
-*   `grepl(pattern, x)` returns a logical vector the same length as `x` 
-    containing `TRUE` wherever `pattern` is matched. Here, `x` is the data 
-    argument (it's the character vector of strings to compare), and `pattern` 
-    is the data argument. 
+*   `mean()` has one data argument (`x`) and two details (`trim` and `na.rm`).
 
-*   In `lm()`, I think it's fairly obvious that the primary data argument is 
-    `data` and one of the key details is the model specification in the 
-    `formula` argument. This is partly a historic accident, because having 
-    `lm()` work with data frames (rather than individual vectors in the 
-    current environment), did become important until later. 
+*   The mathematical (`+`, `-`, `*`, `/`, ...) and comparison (`<`, `>`, `==`,
+    ...) operators have two data arguments.
 
-*   `replicate()` takes the number of replicates as the first argument, 
-    whereas that seems more like a detail of the computation.
+*   `ifelse()` has three data arguments (`test`, `yes`, `no`).
 
+*   `merge()` has two data arguments (`x`, `y`), one descriptor (`by`), 
+    and a number of details (`all`, `no.dups`, `sort`, ...).
+
+*   `grepl()`, which returns a logical vector the same length as `x` 
+    containing `TRUE` whenever it matches a regular expression `pattern`. 
+    It has one data argument (`x`), one descrptor (`pattern`), and a number 
+    of details (`fixed`, `perl`, `ignore.case`, ...).
+    
+*   `rnorm()` has no data arguments and three descriptors (`n`, `mean`, `sd`).
+    `mean` and `sd` default to 0 and 1 respectively, which makes them feel 
+    more like details. I'd argue that they shouldn't have defaults to make it 
+    more clear that they're descriptors. This would have the side-effect of 
+    making `rnrorm()` more consistent with the other RNGs.
+    
+    In `rt(n, df, ncp)`, however, I think `ncp` should default to `0` to make 
+    it clear that the non-centrality parameter is detail of the t-distribution,
+    not a core part.
+    
+*   `stringr::str_sub()` has three data arguments (`string`, `start` and 
+    `end`). You might wonder what makes `start` and `end` data arguments, and
+    I admit it took me a while to figure this out too, but I think the
+    crucial factor is that you can give a single `string` and multiple 
+    `start`/`end` positions:
+    
     ```{r}
-    replicate(3, rnorm(4))
-    replicate(rnorm(4), n = 3)
+    stringr::str_sub("Hello", 1:5, -1)
     ```
+    
+    If I was to write `str_sub()` today, I'd call the first argument `x` (not
+    `string`), and I wouldn't give `start` and `end` default arguments to that 
+    they'd be required.
 
-*   `mapply()` takes `FUN` as the first argument. This is different to all the 
-    other `apply()` functions which take the data as the first argument.
-    See Chapter \@ref(cs-mapply-pmap) for more details.
+*   `ggplot2::ggplot()` has one data argument (`data`) and one descriptor 
+    (`mapping`). 
+
+*   `lm()` has one data argument (`data`), one descriptor (`formula`), and
+    many details (`weights`, `na.action`, `method`, ...). Unfortunately 
+    `formula` comes before `data`. This is a historical accident, because 
+    putting all model variables into a data frame is a relatively recent
+    innovation in the long life cycle of `lm()`.
+
+*   `purrr::map()` has one data argument (`.x`) and one descriptor (`.f`).
+    `purrr::map2()` has two data arguments (`.x`, `.y`) and one descrptor 
+     (`.f`).
+
+*   `mapply()` has any number of data arguments (...), one descriptor (`FUN`),
+    and a number of details (`SIMPLIFY`, `USE.NAMES`, ...). The descriptor
+    comes before the data arguments.
 
 ## Why is it important?
 
-Convention makes it easier to understand structure of function at a glance - know that the most important arguments come first.
+This convention makes it easy to understand the structure of a function at a glance, as when reading the arguments of a function, you know that they are roughly ordered in terms of importance. 
 
-Pipe is designed to work with this convention.
+As in Chapter \@ref(call-data-details), the distinction affects how you call functions: you should always name details arguments, and leave data and descriptors to be specified by position.
+
+Many families of functions are transformations: the output is the same type and size as the input. This includes dplyr (data frames), stringr (character vectors), and the map family (vectors) (and seen in a certain light ggplot2 also works the same way). Consistently placing the primary data first in the argument list makes it easy to generate pipelines of transformations.
 
 ## How do I remediate the problem?
+
+Data arguments are always required, and details arguments are always optional. Descriptors are usually required; if a function has multiple descriptor arguments and only some are required, they should come before the optional descriptors. The line between descriptor and details is often thin. And it's easy to make mistakes: giving a descriptor a default value often makes the function easier to use, and the cost of making the typically call less expressive.
+
+This categorisation is somewhat of a false trichotomy: there is really a continuous gradient of importance, where you want the arguments to be roughly in order of importance (although sometimes other concerns, like organising related arguments together, will dominate). The most important arguments are obviously those that you _must_ supply, and the least important are optional. Descriptors are somewhere in the middle. Despite being an approximation, I think these three terms are useful.
+
+To avoid the problem, ensure you carefully analyse the arguments to your function and make sure the most important come first. 
+
+Having an argument without a default after an argument with a default is a warning sign.
 
 If you have an exported function with this problem, there's no way to fix it. You'll need to deprecate the function and come up with a new replacement without the problem.
 

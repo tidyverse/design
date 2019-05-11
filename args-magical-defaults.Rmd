@@ -48,6 +48,14 @@ If a function behaves differently when the default value is suppled explicitly, 
     Vectorize(rep.int, vectorize.args = arg.names)
     ```
 
+*   In `rbeta()`, the default value of `ncp` is 0, but if you explicitly supply
+    it the function uses a different algorithm:
+    
+    ```{r}
+    rbeta
+    ```
+    
+
 ## What are the exceptions?
 
 It's ok to use this behaviour when you want the default value of one argument to be the same as another. For example, take `rlang::set_names()`, which allows you to create a named vector from two inputs:

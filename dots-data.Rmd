@@ -21,7 +21,12 @@ f
 fct_relevel(f, c("b", "a"))
 # can be shortened to:
 fct_relevel(f, "b", "a")
+
 ```
+
+*  `mapply()`
+
+
 
 ## Why is it important?
 
