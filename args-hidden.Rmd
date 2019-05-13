@@ -93,7 +93,7 @@ Allowing the system locale to affect the result of a function is a subtle source
 
 Generally, hidden arguments are easy to avoid when creating new functions: simply avoid depending on environment variables (like the locale), or global options (like `stringsAsFactors`). The easiest way for problems to creep in is for you to not realise a function has hidden inputs; make sure to consult the list of common offenders provided above.
 
-If you must depend on an environment variable or option, make sure it's an explicit argument, as in Chapter \@ref(args-user-defautlts). Such arguments generally should not affect computation (only side-effects like printed output or status messages); if they do affect results, follow Chapter \@ref(args-explain) to make sure to inform the user what's happening.
+If you must depend on an environment variable or option, make sure it's an explicit argument, as in Chapter \@ref(args-user-defautlts). Such arguments generally should not affect computation (only side-effects like printed output or status messages); if they do affect results, follow Chapter \@ref(args-inform) to make sure to inform the user what's happening.
 
 If you have an existing function with a hidden input, you'll need to take both steps above. First make sure the input is an explicit option, and then make sure it's printed. For example, lets take `as.POSIXct()` which basically looks something like this:
 

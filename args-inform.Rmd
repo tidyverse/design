@@ -1,0 +1,128 @@
+# Explain important defaults {#args-inform}
+
+```{r, include = FALSE}
+source("common.R")
+library(dplyr, warn.conflicts = FALSE)
+```
+
+## What's the pattern?
+
+If a default value is important, and the computation is non-trivial, inform the user what value was used. This is particularly important when the default value is an educated guess, and you want the user to change it.
+
+## What are some examples?
+
+*   `dplyr::left_join()` and friends automatically compute the variables to 
+    join `by` as the variables that occur in both `x` and `y` (this is called 
+    a natural join in SQL). This is convenient, but it's a heuristic so 
+    doesn't always work.
+    
+    ```{r, error = TRUE}
+    library(nycflights13)
+    library(dplyr)
+    
+    # Correct    
+    out <- left_join(flights, airlines)
+    
+    # Incorrect
+    out <- left_join(flights, planes)
+    
+    # Error
+    out <- left_join(flights, airports)
+    ```
+
+*   `readr::read_csv()` reads a csv file into a data frame. Because csv files 
+    don't store the type of each variable, readr must guess the types. In order 
+    to be fast, `read_csv()` uses some heuristics, so it might guess wrong. Or 
+    maybe guesses correctly today, but when your automated script runs in two 
+    months time when the data format has changed, it might guess incorrectly
+    and give weird downstream errors. For this reason, `read_csv()` prints
+    the column specification in a way that you can copy-and-paste into your 
+    code.
+
+    ```{r}
+    library(readr)
+    mtcars <- read_csv(readr_example("mtcars.csv"))
+    ```
+
+*   In `ggplot2::geom_histogram()`, the `binwidth` is an important parameter 
+    that you should always experiment with. This suggests it should be a 
+    required argument, but it's hard to know what values to try until you've 
+    seen a plot. For this reason, ggplot2 provides a suboptimal default of
+    30 bins: this gets you started, and then a message tells you how to modify.
+  
+    ```{r}
+    library(ggplot2)
+    ggplot(diamonds, aes(carat)) + geom_histogram()
+    ```
+
+*  When installing packages, `install.packages()` informs of the value of the
+   `lib` argument, which defaults to `.libPath()[[1]]`:
+
+    ```{r, eval = FALSE}
+    install.packages("forcats")
+    # Installing package into ‘/Users/hadley/R’
+    # (as ‘lib’ is unspecified)
+    ```
+    
+    This, however, is not terribly important (most people only use one library),
+    it's easy to ignore this amongst the other output, and the message doesn't 
+    refer to the mechanism that controls it: `.libPaths()`.
+
+<!-- `GITHUB_PAT` -->
+
+
+
+## Why is it important?
+
+This is particulary important for descriptor arguments (Chapter \@ref(args-data-details)). 
+
+## How can I use it?
+
+There are two main principles to adhere to when use this technique:
+
+* Be silenced when a default value is provided.
+
+* Include code to copy and paste to avoid it in the future.
+
+Generally, you'll implement these through a helper function. It should compute the default value, and generating a `message()` displaying the result. Take the dplyr join functions, for example. They use a function like this `common_by()`:
+
+```{r}
+common_by <- function(x, y) {
+  common <- intersect(names(x), names(y))
+  if (length(common) == 0) {
+    stop("No common variables in `x` and `y`", call. = FALSE)
+  }
+  
+  message("Computing default: `by = ", rlang::expr_text(common), "`")
+  common
+}
+
+common_by(data.frame(x = 1), data.frame(x = 1))
+common_by(flights, planes)
+```
+
+The technique you use to generate the code will vary from function to function. `rlang::expr_text()` is useful here because it automatically creates the code you'd use to build the character vector.
+
+You can use the function directly as the default value, `by = common_by(x, y)`, which is most appropriate if you want to export and document it. Otherwise, to avoid creating a magical default (Chapter \@ref(args-magical-defaults)), use the technique of Section \@ref(arg-short-null):
+
+```{r}
+left_join <- function(x, y, by = NULL) {
+  by <- by %||% common_by(x, y)
+}
+```
+
+If you use this function in multiple places, it may be helpful to parameterise the argument name:
+
+```{r}
+common_by <- function(x, y, arg = "by") {
+  common <- intersect(names(x), names(y))
+  if (length(common) == 0) {
+    stop("No common variables in `x` and `y`", call. = FALSE)
+  }
+  
+  message(glue::glue("Computing default: `{arg} = {deparse(common)}`"))
+  common
+}
+
+common_by(flights, planes)
+```

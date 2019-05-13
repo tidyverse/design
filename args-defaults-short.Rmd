@@ -65,7 +65,7 @@ There are three approaches:
 * If `NULL` is meaningful, so you can't use the first approach, use a 
   "sentinel" object instead.
 
-### `NULL` default
+### `NULL` default {#arg-short-null}
 
 The most common approach is to use `NULL` as a sentinel value that indicates that the argument is optional, but non-trivial. This pattern is made substantially more elegant with the infix `%||%` operator. You can either get it by importing it from rlang, or copying and pasting it in to your `utils.R`:
 

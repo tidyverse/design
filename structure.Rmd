@@ -34,7 +34,7 @@ The interface of a function describes how it interfaces with the world, independ
 * Chapter \@ref(args-defaults-short): Default values should be short. If
   you have a complex calculation, either use `NULL` or an exported function.
 
-* Chapter \@ref(args-explain): If a default value is particularly important,
+* Chapter \@ref(args-inform): If a default value is particularly important,
   as has non-trivial calculation, let the user know what it is.
 
 * Chapter \@ref(args-user-defaults): Use `getOption()` to allow the user to 
