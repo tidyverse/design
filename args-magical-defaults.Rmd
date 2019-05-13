@@ -55,6 +55,21 @@ If a function behaves differently when the default value is suppled explicitly, 
     rbeta
     ```
     
+*   In `table()`, the default value of `dnn` is `list.names(...)`; but 
+    `list.names()` is only defined inside of `table()`. 
+    
+*   `readr::read_csv()` has `progress = show_progress()`, but until version
+    XYZ `show_progress()` was not exported from the package. That means if you 
+    attempted to run it yourself, you'd see an error message:
+   
+    ```{r, error = TRUE}
+    show_progress()
+    ```
+
+*   In `usethis::use_rmarkdown_template()`, `template_dir` has the default value
+    of `tolower(asciify(template_name))`, but `asciify` is not exported. That
+    means there's no way to interactively explore this default value.
+
 
 ## What are the exceptions?
 
@@ -82,63 +97,83 @@ fun_call(file.copy)
 
 This makes the defaults arguments harder to understand because you can't just read from left-to-right.
 
+
+## What causes the problem?
+
+There are three primary causes:
+
+*   Overuse of lazy evaluation of default values, which are evaluated in the
+    environment of the function, as described in 
+    [Advanced R](https://adv-r.hadley.nz/functions.html#default-arguments). 
+    Here's a simple example:
+    
+    ```{r}
+    f1 <- function(x = y) {
+      y <- 2
+      x
+    }
+    
+    y <- 1
+    f1()
+    f1(y)
+    ```
+    
+    When `x` takes the value `y` from its default, it's evaluated inside the 
+    function, yielding `1`. When `y` is supplied explicitly, it is evaluated 
+    in the caller environment, yielding `2`.
+
+*   Use of `missing()` so that the default value is never consulted:
+
+    ```{r}
+    f2 <- function(x = 1) {
+      if (missing(x)) {
+        2
+      } else {
+        x
+      }
+    }
+    
+    f2()
+    f2(1)
+    ```
+
+*   In packages, it's easy to use a non-exported function. This is available to
+    you, the package author, but not the user of the package.
+
 ## How do I remediate the problem?
 
 This problem is generally easy to avoid for new functions:
 
-* Never use `missing()`[^missing-exceptions].
+* Don't use default values that depend on variables defined inside the function.
+
+* Don't use `missing()`[^missing-exceptions].
   
-* Never use defaults that depend on variables defined inside the function.
+* Don't use unexported functions.
 
 [^missing-exceptions]: The only exceptions are described in Sections \@ref(args-mutually-exclusive) and \@ref(args-compound).
-
-Typically, the problem arises from the overuse of lazy evaluation of default values, which are evaluated in the environment of the function, as described in [Advanced R](https://adv-r.hadley.nz/functions.html#default-arguments). Here's a simple example:
-
-```{r}
-f1 <- function(x = y) {
-  y <- 2
-  x
-}
-
-y <- 1
-f1()
-f1(y)
-```
-
-When `x` takes the value `y` from its default, it's evaluated inside the function, yielding `1`. When `y` is supplied explicitly, it is evaluated in the caller environment, yielding `2`.
-
-A rarer cause is to use `missing()` so that the default value is never consulted:
-
-```{r}
-f2 <- function(x = 1) {
-  if (missing(x)) {
-    2
-  } else {
-    x
-  }
-}
-
-f2()
-f2(1)
-```
 
 If you have a made a mistake in an older function you can remediate it by using an explicit `NULL`, as described in Chapter \@ref(args-defaults-short).
 
 ```{r}
 `%||%` <- function(x, y) if (is.null(x)) y else x
 
-f3 <- function(x = NULL) {
+f1_better <- function(x = NULL) {
   y <- 2
   x <- x %||% y
   
   x
 }
 
-f3()
-f3(1)
+f2_better <- function(x = NULL) {
+  x <- x %||% 2
+  
+  x
+}
 ```
 
-This modification expands the interface of the function, because all existing code will work, but `NULL` inputs will now also work (where they probably didn't before). This means that this change does not generally break existing code. The only exception is functions like `data.frame()` where `NULL` is a permissible value, and it does something different to the default:
+This modification expands the interface of the function, because all existing code will work, but `NULL` inputs will now also work (where they probably didn't before). This means that this change should not break existing code. 
+
+The only exception is functions like `data.frame()` where `NULL` is a permissible value, and it does something different to the default:
 
 ```{r}
 x <- setNames(nm = letters[1:3])
@@ -146,7 +181,7 @@ data.frame(x)
 data.frame(x, row.names = NULL)
 ```
 
-To remediate a function of this nature, you'll need to use a sentinel object, as described in more detail in Section \@ref(args-default-sentinel).
+To remediate a function of this nature, you'll need to use a sentinel object, as described in Section \@ref(args-default-sentinel).
 
 ```{r}
 sentinel <- function() structure(list(), class = "sentinel")
