@@ -31,8 +31,8 @@ Related patterns:
   other functions. See Chapters \@ref(dots-position) and \@ref(dots-inspect) 
   to how to use `...` as safely as possible in this situation.
 
-* If the descriptor has a deafult value, I think you should tell the use about 
-  it, as in Chapter \@ref(args-explain).
+* If the descriptor has a default value, I think you should inform the user 
+  about it, as in Chapter \@ref(args-explain).
 
 ## What are some examples?
 
