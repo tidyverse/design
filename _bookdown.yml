@@ -17,6 +17,7 @@ rmd_files:
     "args-hidden.Rmd",
     "args-data-details.Rmd",
     "args-independence.Rmd",
+    "cs-setNames.Rmd",
     "cs-rep.Rmd",
     
     "args-required.Rmd",

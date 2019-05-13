@@ -1,0 +1,44 @@
+# Case study: `setNames()`
+
+```{r, include = FALSE}
+source("common.R")
+```
+
+Issues:
+
+* `setNames()` -> `set_names()`
+* argument names
+* default arguments
+* extension points (e.g. support a function)
+* input checking (`setNames(1:3, c("a", "b"))`)
+
+`setNames()` has an unusual definition:
+
+```{r}
+setNames <- function(object = nm, nm) {
+  names(object) <- nm
+  object
+}
+```
+
+The first argument is optional, using the second argument as a default. That means you can call it like:
+
+```{r}
+setNames(nm = letters[1:3])
+```
+
+The purrr equivalent, `set_names()` adopts the more obvious specification:
+
+```{r}
+set_names <- function(x, nm = x) {
+  names(x) <- nm
+  x
+}
+
+set_names(letters[1:3])
+```
+
+(Here `x` is a better name than `object`, because only vectors can have names, and `x` is a convential argument name for a vector.)
+
+(`set_names()` is actually a bit more complicated because the second argument can be a function used to transform existing names. See the documentation for more details.)
+

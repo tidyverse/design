@@ -6,7 +6,7 @@ source("common.R")
 
 ## What's the pattern?
 
-Function arguments should always come in the same order: data arguments, then descriptors, then details.
+Function arguments should always come in the same order: data, then descriptors, then details.
 
 * __Data__ arguments provide the core data. They are required, and are usually
   vectors and often determine the type and size of the output. Data arguments
@@ -16,8 +16,8 @@ Function arguments should always come in the same order: data arguments, then de
   are usually required.
   
 * __Details__ arguments control the details of the function. These arguments
-  should have defaults, so they become optional, and their values are 
-  typically scalars (e.g. `na.rm = TRUE`, `n = 10`, `prop = 0.1`).
+  are optional (because they have default values), and are typically scalars 
+  (e.g. `na.rm = TRUE`, `n = 10`, `prop = 0.1`).
 
 A standard argument order makes it easier to understand a function at a glance, and this order implies that required arguments always come before optional arguments.
 
@@ -46,11 +46,6 @@ Related patterns:
 *   `merge()` has two data arguments (`x`, `y`), one descriptor (`by`), 
     and a number of details (`all`, `no.dups`, `sort`, ...).
 
-*   `grepl()`, which returns a logical vector the same length as `x` 
-    containing `TRUE` whenever it matches a regular expression `pattern`. 
-    It has one data argument (`x`), one descrptor (`pattern`), and a number 
-    of details (`fixed`, `perl`, `ignore.case`, ...).
-    
 *   `rnorm()` has no data arguments and three descriptors (`n`, `mean`, `sd`).
     `mean` and `sd` default to 0 and 1 respectively, which makes them feel 
     more like details. I'd argue that they shouldn't have defaults to make it 
@@ -60,8 +55,14 @@ Related patterns:
     In `rt(n, df, ncp)`, however, I think `ncp` should default to `0` to make 
     it clear that the non-centrality parameter is detail of the t-distribution,
     not a core part.
+
+*   `grepl()` has one data argument (`x`), one descriptor (`pattern`), and a 
+    number of details (`fixed`, `perl`, `ignore.case`, ...).
     
-*   `stringr::str_sub()` has three data arguments (`string`, `start` and 
+*   `stringr::str_detect()` has one data argument (`string`), one descriptor
+    (`pattern`), and one detail argument (`negate`).
+    
+*   `stringr::str_sub()` has three data arguments (`string`, `start`, and 
     `end`). You might wonder what makes `start` and `end` data arguments, and
     I admit it took me a while to figure this out too, but I think the
     crucial factor is that you can give a single `string` and multiple 
@@ -71,9 +72,8 @@ Related patterns:
     stringr::str_sub("Hello", 1:5, -1)
     ```
     
-    If I was to write `str_sub()` today, I'd call the first argument `x` (not
-    `string`), and I wouldn't give `start` and `end` default arguments to that 
-    they'd be required.
+    If I was to write `str_sub()` today, I'd call the first argument `x`, and 
+    I wouldn't give `start` and `end` default values.
 
 *   `ggplot2::ggplot()` has one data argument (`data`) and one descriptor 
     (`mapping`). 
@@ -92,45 +92,45 @@ Related patterns:
     and a number of details (`SIMPLIFY`, `USE.NAMES`, ...). The descriptor
     comes before the data arguments.
 
+*   At first glance it looks like the ggplot2 layer functions, like 
+    `geom_point()`, don't obey this principle because the first argument is
+    `mapping` (a descriptor) and the second is `data` (presumably a data 
+    argument). However, this is because ggplot2 doesn't use the pipe. If it
+    did (like [ggplot1](https://github.com/hadley/ggplot1)), the first 
+    argument would be the plot to modify, which is the data object in this case,
+    because the output is also a plot. Here `data` acts a descriptor, because
+    it modifies the behaviour of the layer.
+    
+    The argument order differs between the layers and `ggplot()`, because you
+    more commonly specify the data for the plot, and the aesthetic mappings
+    for the layers. This is a little confusing, but I think time has shown it
+    to be a reasonable design decision.
+
 ## Why is it important?
 
-This convention makes it easy to understand the structure of a function at a glance, as when reading the arguments of a function, you know that they are roughly ordered in terms of importance. 
+This convention makes it easy to understand the structure of a function at a glance: the most important arguments are always on the left hand side, and it's obvious what arguments most affect the shape of the output. Strongly connecting the shape of the first argument to the shape of output is what makes dplyr (data frames), stringr (character vectors), and the map family (vectors) easier to learn. These families of functions represent transformations that preserve the shape while modifying the value. When combined with the pipe, this leads to code that focusses on the transformations, not the objects being transformed.
 
-As in Chapter \@ref(call-data-details), the distinction affects how you call functions: you should always name details arguments, and leave data and descriptors to be specified by position.
+These argument types as also affect how you _call_ a function. As discussed in Chapter \@ref(call-data-details), you should never name data arguments, and always name details arguments. This convention balances concision with readability.
 
-Many families of functions are transformations: the output is the same type and size as the input. This includes dplyr (data frames), stringr (character vectors), and the map family (vectors) (and seen in a certain light ggplot2 also works the same way). Consistently placing the primary data first in the argument list makes it easy to generate pipelines of transformations.
+## How do I avoid the problem?
 
-## How do I remediate the problem?
+To avoid the problem, you have to carefully analyse the arguments to ensure that you correctly categorise each argument. It's generally easy to tell the difference between a data argument and a details argument, particularly because data arguments are required and details arguments are optional. But it can be harder to distinguish between data and descriptor, or descriptor and details. This is partly because my categorisation is false trichotomy: there's really more of a continuous gradient from absolutely required to totally optional than discrete steps. Nevertheless, I think these three categories are useful, and even if you don't get it absolutely right every time, this framework will help you do better on average.
 
-Data arguments are always required, and details arguments are always optional. Descriptors are usually required; if a function has multiple descriptor arguments and only some are required, they should come before the optional descriptors. The line between descriptor and details is often thin. And it's easy to make mistakes: giving a descriptor a default value often makes the function easier to use, and the cost of making the typically call less expressive.
+There are a couple of heuristics that you can also check for:
 
-This categorisation is somewhat of a false trichotomy: there is really a continuous gradient of importance, where you want the arguments to be roughly in order of importance (although sometimes other concerns, like organising related arguments together, will dominate). The most important arguments are obviously those that you _must_ supply, and the least important are optional. Descriptors are somewhere in the middle. Despite being an approximation, I think these three terms are useful.
+* Are the arguments generally ordered from most important to least important? 
+  If an important argument comes before an unimportant argument, you may have 
+  assigned an argument to the wrong category. (Note that this ordering isn't
+  strict: sometimes it's more important to organise related arguments together
+  than to precisely order by importance.)
 
-To avoid the problem, ensure you carefully analyse the arguments to your function and make sure the most important come first. 
+* Do any arguments with defaults come before any arguments without defaults?
+  This may be a sign that the argument order is wrong, or that you've 
+  assigned a default value to an required argument (See Chapter
+  \@ref(#args-required) for more details.)
 
-Having an argument without a default after an argument with a default is a warning sign.
+## How do I remediate past mistakes?
 
-If you have an exported function with this problem, there's no way to fix it. You'll need to deprecate the function and come up with a new replacement without the problem.
+Generally, it is not possible to fix an exported function preserving both old behaviour and new behaviour. Typically, you will need to perform major surgery on the function arguments, and it will convey different conventions about which arguments should be named. This implies that you should deprecate the entire existing function and replace it with a new alternative. Because this is invasive to the user, it's best to do sparingly: if the mistake is minor, you're better off waiting until you've collected other problems before fixing it.
 
-For example, `setNames()` has an unusual definition:
-
-```{r}
-setNames <- function(object = nm, nm) {
-  names(object) <- nm
-  object
-}
-```
-
-The purrr equivalent, `set_names()` adopts the more obvious specification:
-
-```{r}
-set_names <- function(x, nm = x) {
-  names(x) <- nm
-  x
-}
-```
-
-(Here `x` is a better name than `object`, because only vectors can have names, and `x` is a convential argument name for a vector.)
-
-(`set_names()` is actually a bit more complicated because the second argument can be a function used to transform existing names. See the documentation for more details.)
-
+Take `tidyr::gather()`, for example. It has a number of problems with its design that made them hard to use. Relevant to this chapter, is that the argument order is wrong.
