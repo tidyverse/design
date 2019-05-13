@@ -66,15 +66,13 @@ If a default value is important, and the computation is non-trivial, inform the 
     
     This, however, is not terribly important (most people only use one library),
     it's easy to ignore this amongst the other output, and the message doesn't 
-    refer to the mechanism that controls it: `.libPaths()`.
-
-<!-- `GITHUB_PAT` -->
-
-
+    refer to the mechanism that controls the default (`.libPaths()`).
 
 ## Why is it important?
 
 This is particulary important for descriptor arguments (Chapter \@ref(args-data-details)). 
+
+Need to balance with the counterpoint that people don't read output that is constantly repeated. (For example, do you know how to cite R in a paper? It's mentioned every time that you start R.)
 
 ## How can I use it?
 
@@ -90,10 +88,10 @@ Generally, you'll implement these through a helper function. It should compute t
 common_by <- function(x, y) {
   common <- intersect(names(x), names(y))
   if (length(common) == 0) {
-    stop("No common variables in `x` and `y`", call. = FALSE)
+    stop("Must specify `by` when no common variables in `x` and `y`", call. = FALSE)
   }
   
-  message("Computing default: `by = ", rlang::expr_text(common), "`")
+  message("Computing common variables: `by = ", rlang::expr_text(common), "`")
   common
 }
 
@@ -117,10 +115,13 @@ If you use this function in multiple places, it may be helpful to parameterise t
 common_by <- function(x, y, arg = "by") {
   common <- intersect(names(x), names(y))
   if (length(common) == 0) {
-    stop("No common variables in `x` and `y`", call. = FALSE)
+    stop(
+      glue::glue("Must specify `{arg}` when no common variables in `x` and `y`"),
+      call. = FALSE
+    )
   }
   
-  message(glue::glue("Computing default: `{arg} = {deparse(common)}`"))
+  message(glue::glue("Computing common variables: `{arg} = {deparse(common)}`"))
   common
 }
 
