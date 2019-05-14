@@ -18,4 +18,5 @@ Imports:
 URL: https://github.com/tidyverse/principles
 BugReports: https://github.com/tidyverse/principles/issues
 Remotes:
-    tidyverse/tibble
+    tidyverse/tibble,
+    rstudio/bookdown

@@ -11,8 +11,6 @@ cache:
 before_install:
 - nvm install stable
 - npm install netlify-cli -g
-after_install:
-- R script -e 'remotes::install_version("bookdown", "0.9")'
 
 script:
 - Rscript -e 'bookdown::render_book("index.Rmd")'
