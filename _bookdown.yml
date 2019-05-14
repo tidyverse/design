@@ -18,10 +18,10 @@ rmd_files:
     "args-data-details.Rmd",
     "args-independence.Rmd",
     "cs-setNames.Rmd",
-    "cs-rep.Rmd",
     
     "def.Rmd",
     "def-required.Rmd",
+    "cs-rep.Rmd",
     "def-enum.Rmd",
     "def-magical.Rmd",
     "def-short.Rmd",
