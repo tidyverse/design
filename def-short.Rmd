@@ -55,7 +55,7 @@ There are three approaches:
 
 * Set the default value to `NULL` and calculate the default only when the 
   argument is `NULL`. Providing a default of `NULL` signals that the argument 
-  is optional (Chapter \@ref(args-required)) but that the default requires
+  is optional (Chapter \@ref(def-required)) but that the default requires
   some calculation.
 
 * If the calculation is complex, and the user might find it useful in other 

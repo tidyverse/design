@@ -1,4 +1,4 @@
-# Explain important defaults {#args-inform}
+# Explain important defaults {#def-inform}
 
 ```{r, include = FALSE}
 source("common.R")
