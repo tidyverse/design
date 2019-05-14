@@ -15,7 +15,7 @@ Related:
 
 ## What are some examples?
 
-One common source of hidden arguments is the use of global options. These can be useful to control display but, as discussed in Chapter \@ref(args-user-defaults)), should not affect computation:
+One common source of hidden arguments is the use of global options. These can be useful to control display but, as discussed in Chapter \@ref(def-user)), should not affect computation:
 
 *   The result of `data.frame(x = "a")$x` depends on the value of the global
     `stringsAsFactors` option: if it's `TRUE` (the default) you get a factor;

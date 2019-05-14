@@ -101,7 +101,7 @@ common_by(flights, planes)
 
 The technique you use to generate the code will vary from function to function. `rlang::expr_text()` is useful here because it automatically creates the code you'd use to build the character vector.
 
-You can use the function directly as the default value, `by = common_by(x, y)`, which is most appropriate if you want to export and document it. Otherwise, to avoid creating a magical default (Chapter \@ref(args-magical-defaults)), use the technique of Section \@ref(arg-short-null):
+You can use the function directly as the default value, `by = common_by(x, y)`, which is most appropriate if you want to export and document it. Otherwise, to avoid creating a magical default (Chapter \@ref(def-magical)), use the technique of Section \@ref(arg-short-null):
 
 ```{r}
 left_join <- function(x, y, by = NULL) {

@@ -20,24 +20,24 @@ The interface of a function describes how it interfaces with the world, independ
 
 #### Default values
 
-* Chapter \@ref(args-required): the absence of a default value should indicate
+* Chapter \@ref(def-required): the absence of a default value should indicate
   that an argument is required; the presence of a default value should indicate
   that an argument is optional.
 
-* Chapter \@ref(args-enum): If a details argument can take one of a fixed set 
+* Chapter \@ref(def-enum): If a details argument can take one of a fixed set 
   of possible strings, record them in the default value and use `match.arg()`
   or `rlang::arg_match()` inside the function.
   
-* Chapter \@ref(args-magical-defaults): Default values should return the same 
+* Chapter \@ref(def-magical): Default values should return the same 
   answer when set directly.
 
-* Chapter \@ref(args-defaults-short): Default values should be short. If
+* Chapter \@ref(def-short): Default values should be short. If
   you have a complex calculation, either use `NULL` or an exported function.
 
-* Chapter \@ref(args-inform): If a default value is particularly important,
+* Chapter \@ref(def-inform): If a default value is particularly important,
   as has non-trivial calculation, let the user know what it is.
 
-* Chapter \@ref(args-user-defaults): Use `getOption()` to allow the user to 
+* Chapter \@ref(def-user): Use `getOption()` to allow the user to 
   set default values.
 
 #### Dots

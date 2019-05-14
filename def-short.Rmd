@@ -1,4 +1,4 @@
-# Keep defaults short and sweet {#args-defaults-short}
+# Keep defaults short and sweet {#def-short}
 
 ```{r, include = FALSE}
 source("common.R")

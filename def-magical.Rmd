@@ -1,4 +1,4 @@
-# Avoid magical defaults {#args-magical-defaults}
+# Avoid magical defaults {#def-magical}
 
 ```{r, include = FALSE, cache = FALSE}
 source("common.R")
@@ -107,7 +107,7 @@ There are three primary causes:
     
     ```{r}
     f1 <- function(x = y) {
-      y <- trunc(Sys.time(), units = "weeks")
+      y <- trunc(Sys.time(), units = "months")
       x
     }
     
@@ -152,7 +152,7 @@ This problem is generally easy to avoid for new functions:
 
 [^missing-exceptions]: The only exceptions are described in Sections \@ref(args-mutually-exclusive) and \@ref(args-compound).
 
-If you have a made a mistake in an older function you can remediate it by using a `NULL` default, as described in Chapter \@ref(args-defaults-short). If the problem is caused by an unexported function, you can also choose to document and export it.
+If you have a made a mistake in an older function you can remediate it by using a `NULL` default, as described in Chapter \@ref(def-short). If the problem is caused by an unexported function, you can also choose to document and export it.
 
 ```{r}
 `%||%` <- function(x, y) if (is.null(x)) y else x

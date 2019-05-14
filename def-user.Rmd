@@ -1,4 +1,4 @@
-# User settable defaults {#args-user-defaults}
+# User settable defaults {#def-user}
 
 ```{r, include = FALSE}
 source("common.R")
