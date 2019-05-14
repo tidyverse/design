@@ -4,23 +4,52 @@
 source("common.R")
 ```
 
+```{r, eval = FALSE, include = FALSE}
+source("fun_def.R")
+pkg_funs("base") %>% funs_formals_keep(~ is_call(.x, "c"))
+
+has_several_ok <- function(x) {
+  if (is_call(x, "match.arg")) {
+    x <- call_standardise(x)
+    isTRUE(x$several.ok)
+  } else if (is_call(x)) {
+    some(x[-1], has_several_ok)
+  } else {
+    FALSE
+  }
+}
+pkg_funs("utils") %>% funs_body_keep(has_several_ok)
+```
+
 ## What's the pattern?
 
-If an argument can take one of a relatively small set of known values, specify all possible values in the default argument, and then use `match.arg()` or `rlang::arg_match()` to pick. This pattern is often naturally paired with a `switch()` to take action.
-
-(See ???? for a similar pattern that can be extended by others.)
+If the possible values of an argument are a small set of strings, set the default argument to the set of possible values, and then use `match.arg()` or `rlang::arg_match()` in the function body. This convention advertises to the user what the possible values, and makes it easy to generate an informative error message for inappropriate inputs.
 
 ## What are some examples?
 
-* `rank()` has a `ties.method` that describes the method used to handle the 
-  rank of ties. It must be "average", "first", "last", "random", "max", or 
-  "min". 
+* In `difftime()`, `units` can be any one of "auto", "secs", "mins", 
+  "hours", "days", or "weeks".
+
+* In `format()`, `justify` can be "left", "right", "center", or "none".
+
+* In `trimws()`, you can choose `which` side to remove whitespace from:
+  "both", "left", or "right".
+
+* In `rank()`, you can select the `ties.method` from one of "average",
+  "first", "last", "random", "max", or "min". 
+  
+* In `RSiteSearch()`, you can `restrict` results to be "functions", 
+  "vignettes", "views", or any combination of the three.
 
 ## Why is it important?
 
+This convention makes it possible to advertise the possible set of values for an argument. The advertisement happens in the function specification, so you see in tooltips and autocomplete, without having to look at the documentation.
+
 ## How do I use it?
 
-`rank()` documents this restriction with the by including a vector of possible values as the default.
+To use this technique, set the default value to a character vector, where the first value is the default. Inside the function, use `match.arg()` or `rlang::arg_match()` which checks that the value comes from the known good set. This interface pattern is often coupled with an implementation that uses `switch()`.
+
+Take `rank()`, for example. The heart of its implementation looks like this:
 
 ```{r}
 rank <- function(x, 
@@ -59,7 +88,7 @@ It also supports partial matching so that the following code is shorthand for `t
 rank(x, ties.method = "r")
 ```
 
-We generally believe that partial matching is a bad idea, because it makes code harder to read. `rlang::arg_match()` is an alternative to `match.args()` that doesn't support partial matching. Instead it provides a helpful error message:
+I generally believe that partial matching is a bad idea, because it makes code harder to read. `rlang::arg_match()` is an alternative to `match.args()` that doesn't support partial matching. Instead it provides a helpful error message:
 
 ```{r, error = TRUE}
 rank2 <- function(x, 
@@ -74,9 +103,9 @@ rank2 <- function(x,
 rank2(x, ties.method = "r")
 ```
 
-### How to use it and keep defaults short?
+### How keep defaults short?
 
-Best used when the set of possible values is short. You can see in the `rank()` example it's already getting unwieldy and makes it difficult to nicely format. The easiest way to follow Chapter \@ref(def-short) and extract the possible values into its own function:
+This technique is a best used when the set of possible values is short. You can see that it's already getting unwieldy in `rank()`. The easiest way to resolve this problem is to follow Chapter \@ref(def-short) and extract the possible values into their own function:
 
 ```{r}
 ties_method <- function() {
@@ -94,6 +123,6 @@ rank2 <- function(x, ties.method = ties_method()) {
 }
 ```
 
-This is not quite as good as inlining all possible values, since there's some indirection, so you can't see the possible values in tooltips, but you can still access programmatically.
+This is nowhere near as good as inlining all possible values, since you can can no longer see the possible values in tooltips, but you can still access programmatically.
 
 This is also useful if you want to share the values across multiple functions. For example `stats::p.adjust()`, `stats::pairwise.prop.test()`, `stats::pairwise.t.test()`, `stats::pairwise.wilcox.test()` all use `p.adjust.method = p.adjust.methods`.
