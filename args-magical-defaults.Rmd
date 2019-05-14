@@ -59,7 +59,7 @@ If a function behaves differently when the default value is suppled explicitly, 
     `list.names()` is only defined inside of `table()`. 
     
 *   `readr::read_csv()` has `progress = show_progress()`, but until version
-    XYZ `show_progress()` was not exported from the package. That means if you 
+    1.3.1, `show_progress()` was not exported from the package. That means if you 
     attempted to run it yourself, you'd see an error message:
    
     ```{r, error = TRUE}
@@ -69,7 +69,6 @@ If a function behaves differently when the default value is suppled explicitly, 
 *   In `usethis::use_rmarkdown_template()`, `template_dir` has the default value
     of `tolower(asciify(template_name))`, but `asciify` is not exported. That
     means there's no way to interactively explore this default value.
-
 
 ## What are the exceptions?
 
@@ -97,7 +96,6 @@ fun_call(file.copy)
 
 This makes the defaults arguments harder to understand because you can't just read from left-to-right.
 
-
 ## What causes the problem?
 
 There are three primary causes:
@@ -109,7 +107,7 @@ There are three primary causes:
     
     ```{r}
     f1 <- function(x = y) {
-      y <- 2
+      y <- trunc(Sys.time(), units = "weeks")
       x
     }
     
@@ -137,8 +135,10 @@ There are three primary causes:
     f2(1)
     ```
 
-*   In packages, it's easy to use a non-exported function. This is available to
-    you, the package author, but not the user of the package.
+*   In packages, it's easy to use a non-exported function without thinking 
+    about it. This function is available to you, the package author, but not 
+    the user of the package, which makes it harder for them to understand
+    how a package works.
 
 ## How do I remediate the problem?
 
@@ -152,13 +152,13 @@ This problem is generally easy to avoid for new functions:
 
 [^missing-exceptions]: The only exceptions are described in Sections \@ref(args-mutually-exclusive) and \@ref(args-compound).
 
-If you have a made a mistake in an older function you can remediate it by using an explicit `NULL`, as described in Chapter \@ref(args-defaults-short).
+If you have a made a mistake in an older function you can remediate it by using a `NULL` default, as described in Chapter \@ref(args-defaults-short). If the problem is caused by an unexported function, you can also choose to document and export it.
 
 ```{r}
 `%||%` <- function(x, y) if (is.null(x)) y else x
 
 f1_better <- function(x = NULL) {
-  y <- 2
+  y <- trunc(Sys.time(), units = "weeks")
   x <- x %||% y
   
   x
@@ -171,17 +171,9 @@ f2_better <- function(x = NULL) {
 }
 ```
 
-This modification expands the interface of the function, because all existing code will work, but `NULL` inputs will now also work (where they probably didn't before). This means that this change should not break existing code. 
+This modification should not break existing code, because expands the function interface: all previous code will continue to work, and the function will also work if the argument is passed `NULL` input (which probably didn't previously).
 
-The only exception is functions like `data.frame()` where `NULL` is a permissible value, and it does something different to the default:
-
-```{r}
-x <- setNames(nm = letters[1:3])
-data.frame(x)
-data.frame(x, row.names = NULL)
-```
-
-To remediate a function of this nature, you'll need to use a sentinel object, as described in Section \@ref(args-default-sentinel).
+For functions like `data.frame()` where `NULL` is already a permissible value, you'll need to use a sentinel object, as described in Section \@ref(args-default-sentinel).
 
 ```{r}
 sentinel <- function() structure(list(), class = "sentinel")
