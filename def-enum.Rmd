@@ -105,24 +105,42 @@ rank2(x, ties.method = "r")
 
 ### How keep defaults short?
 
-This technique is a best used when the set of possible values is short. You can see that it's already getting unwieldy in `rank()`. The easiest way to resolve this problem is to follow Chapter \@ref(def-short) and extract the possible values into their own function:
+This technique is a best used when the set of possible values is short. You can see that it's already getting unwieldy in `rank()`. If you have a long list of possibilities, there are two options that you could use from Chapter \@ref(def-short). Unfortunately both approaches have major downsides:
 
-```{r}
-ties_method <- function() {
-  c("average", "first", "last", "random", "max", "min")
-}
-```
+*   Set a single default and supply the possible values to `match.arg()`:
 
-(If in a package, this function should be exported and documented with the function that uses it.)
+    ```{r}
+    rank2 <- function(x, ties.method = "average") {
+      ties.method <- match.arg(
+        ties.method, 
+        c("average", "first", "last", "random", "max", "min")
+      )
+    }
+    ```
+    
+    The downside of this approach is that you can no longer see which values 
+    are permitted, and you'd have to describe them separately in the 
+    documentation. You can, however, still see the default value in the 
+    function speci.
 
-Then you can use that as a default argument:
-
-```{r}
-rank2 <- function(x, ties.method = ties_method()) {
-  ...
-}
-```
-
-This is nowhere near as good as inlining all possible values, since you can can no longer see the possible values in tooltips, but you can still access programmatically.
-
-This is also useful if you want to share the values across multiple functions. For example `stats::p.adjust()`, `stats::pairwise.prop.test()`, `stats::pairwise.t.test()`, `stats::pairwise.wilcox.test()` all use `p.adjust.method = p.adjust.methods`.
+*   Store the options in an exported function, and use it in the defaults:
+  
+    ```{r}
+    ties_method <- function() {
+      c("average", "first", "last", "random", "max", "min")
+    }
+    
+    rank2 <- function(x, ties.method = ties_method()) {
+      ties.method <- match.arg(ties.method)
+    }
+    ```
+    
+    The downside of this approach is that when looking at the function spec, 
+    you can no longer easily see the default value, or the set of possible
+    values. However, the possible values can easily be found programmatically.
+    
+    This is more worthwhile if you want to share the permitted values across 
+    multiple functions. For example `stats::p.adjust()`, 
+    `stats::pairwise.prop.test()`, `stats::pairwise.t.test()`, 
+    `stats::pairwise.wilcox.test()` all use 
+    `p.adjust.method = p.adjust.methods`.
