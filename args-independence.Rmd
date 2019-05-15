@@ -6,12 +6,12 @@ source("common.R")
 
 ## What's the problem?
 
-Avoid creating dependencies between details arguments so that only certain combinations are permitted. Dependencies between arguments makes functions harder to use because you have to remember how arguments interact.
+Avoid creating dependencies between details arguments so that only certain combinations are permitted. Dependencies between arguments makes functions harder to use because you have to remember how arguments interact, and you when reading a call, you need to read multiple arguments before interpreting one.
 
 ## What are some examples?
 
-*   In `rep()` you can supply both `times` and `each` _unless_
-    `times` is a vector:
+*   In `rep()` you can supply both `times` and `each` _unless_ `times` is a
+    vector:
     
     ```{r, error = TRUE}
     rep(1:3, times = 2, each = 3)
@@ -33,7 +33,8 @@ Avoid creating dependencies between details arguments so that only certain combi
 
 *   `grepl()` has `perl`, `fixed`, and `ignore.case` arguments which can
     either be `TRUE` or `FALSE`. But `fixed = TRUE` overrides `perl = TRUE`, 
-    and `ignore.case` only works if `fixed = FALSE`.
+    and `ignore.case` only works if `fixed = FALSE`. Both `fixed` and `perl`
+    change how another argument, `pattern`, is interpreted.
     
 *   In `library()` the `character.only` argument changes how `package` is
     intepreted:

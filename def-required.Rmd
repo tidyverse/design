@@ -24,6 +24,10 @@ When reading a function, it's important to be able to tell at a glance which arg
 *   `rt()` (draw random numbers from the t-distribution) looks like it 
     requires the `ncp` parameter but it doesn't.
 
+*   `download.file()` looks like it requires the `method` argument but 
+    actually consults a global option (`download.file.method`) if it's not
+    supplied.
+
 *   `lm()` does not have defaults for `formula`, `data`, `subset`, `weights`, 
     `na.action`, or `offset`. Only `formula` is actually required, but even 
     its absence fails to generate a clear error message:
@@ -105,7 +109,7 @@ This technique should only be used for are exactly two possible arguments. If th
 
 ### One compound argument vs multiple simple arguments {#args-compound}
 
-A related form, is less commonly useful form, is to allow the user to supply either a single complex argument or several smaller arguments. For example:
+A related, if less generally useful, form is to allow the user to supply either a single complex argument or several smaller arguments. For example:
 
 * `stringr::str_sub(x, cbind(start, end))` is equivalent to 
   `str_sub(x, start, end)`.
