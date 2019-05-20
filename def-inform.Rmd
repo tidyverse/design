@@ -7,7 +7,7 @@ library(dplyr, warn.conflicts = FALSE)
 
 ## What's the pattern?
 
-If a default value is important, and the computation is non-trivial, inform the user what value was used. This is particularly important when the default value is an educated guess, and you want the user to change it.
+If a default value is important, and the computation is non-trivial, inform the user what value was used. This is particularly important when the default value is an educated guess, and you want the user to change it. It is also important when descriptor arguments (Chapter \@ref(args-data-details)) have defaults. 
 
 ## What are some examples?
 
@@ -70,19 +70,43 @@ If a default value is important, and the computation is non-trivial, inform the 
 
 ## Why is it important?
 
-This is particulary important for descriptor arguments (Chapter \@ref(args-data-details)). 
+> There are two ways to fire a machine gun in the dark. You can find out 
+> exactly where your target is (range, elevation, and azimuth). You can 
+> determine the environmental conditions (temperature, humidity, air pressure, 
+> wind, and so on). You can determine the precise specifications of the 
+> cartridges and bullets you are using, and their interactions with the 
+> actual gun you are firing. You can then use tables or a firing computer 
+> to calculate the exact bearing and elevation of the barrel. If everything
+> works exactly as specified, your tables are correct, and the environment 
+> doesn't change, your bullets should land close to their target.
+> 
+> Or you could use tracer bullets.
+> 
+> Tracer bullets are loaded at intervals on the ammo belt alongside regular
+> ammunition. When they're fired, their phosphorus ignites and leaves a 
+> pyrotechnic trail from the gun to whatever they hit. If the tracers are 
+> hitting the target, then so are the regular bullets.
+>
+> --- [The Pragmatic Programmer](https://www.amazon.com/dp/B003GCTQAE)
 
-Need to balance with the counterpoint that people don't read output that is constantly repeated. (For example, do you know how to cite R in a paper? It's mentioned every time that you start R.)
+I think this is a valuable pattern because it helps balance two tensions in function design: 
+
+* Forcing the function user to really think about what they want to do.
+
+* Trying to be helpful, so the user of function can achieve their goal as
+  quickly as possible.
+  
+Often your thoughts about a problem will be aided by a first attempt, even if that attempt is wrong. Helps facilitate iteration: you don't sit down and contemplate for an hour and then write one perfectly formed line of R code. You take a stab at it, look at the result, and then tweak. 
+
+Taking a default that the user really should carefully think about and make a decision on, and turning it into a heurstic or educated guess, and reporting the value, is like a tracer bullet.
+
+The counterpoint to this pattern is that people don't read repeated output. For example, do you know how to cite R in a paper? It's mentioned every time that you start R. Human brains are extremely good at filtering out unchanging signals, which means that you must use this technique with caution. If every argument tells you the default it uses, it's effectively the same as doing nothing: the most important signals will get buried in the noise. This is why you'll see the technique used in only a handful of places in the tidyverse.
 
 ## How can I use it?
 
-There are two main principles to adhere to when use this technique:
+To use this message you need to generate a message from the computation of the default value. The easiest way to do this to write a small helper function. It should compute the default value given some inputs and generate a `message()` that gives the code that you could copy and paste into the function call. 
 
-* Be silenced when a default value is provided.
-
-* Include code to copy and paste to avoid it in the future.
-
-Generally, you'll implement these through a helper function. It should compute the default value, and generating a `message()` displaying the result. Take the dplyr join functions, for example. They use a function like this `common_by()`:
+Take the dplyr join functions, for example. They use a function like this:
 
 ```{r}
 common_by <- function(x, y) {
@@ -101,29 +125,10 @@ common_by(flights, planes)
 
 The technique you use to generate the code will vary from function to function. `rlang::expr_text()` is useful here because it automatically creates the code you'd use to build the character vector.
 
-You can use the function directly as the default value, `by = common_by(x, y)`, which is most appropriate if you want to export and document it. Otherwise, to avoid creating a magical default (Chapter \@ref(def-magical)), use the technique of Section \@ref(arg-short-null):
+To avoid creating a magical default (Chapter \@ref(def-magical)), either export and document the function, or use the technique of Section \@ref(arg-short-null):
 
 ```{r}
 left_join <- function(x, y, by = NULL) {
   by <- by %||% common_by(x, y)
 }
-```
-
-If you use this function in multiple places, it may be helpful to parameterise the argument name:
-
-```{r}
-common_by <- function(x, y, arg = "by") {
-  common <- intersect(names(x), names(y))
-  if (length(common) == 0) {
-    stop(
-      glue::glue("Must specify `{arg}` when no common variables in `x` and `y`"),
-      call. = FALSE
-    )
-  }
-  
-  message(glue::glue("Computing common variables: `{arg} = {deparse(common)}`"))
-  common
-}
-
-common_by(flights, planes)
 ```
