@@ -31,7 +31,7 @@ This function is short (just two lines of code!) but yields a surprisingly rich 
 
 ## How can we improve the names?
 
-Firstly, I prefer camelCase to snake_case, so I'd call it `set_names()`. Then we need to consider the arguments:
+Firstly, I prefer snake_case to camelCase, so I'd call it `set_names()`. Then we need to consider the arguments:
 
 * I think the first argument, `object`, would be better called `x`, not
   `object`, to emphasise that this function only works with vectors 
@@ -198,13 +198,11 @@ However, I think this has muddied the logic. To resolve it, I think we should pu
 ```{r}
 # Use early returns to minimse code
 check_names_1 <- function(names, x) {
-  if (is.null(names)) {
-    return(names)
+  if (rlang::is_formula(names)) {
+    names <- rlang::as_function(names)
   }
-  
-  if (is.function(names) || rlang::is_formula(names)) {
-    fun <- rlang::as_function(names)
-    names <- fun(base::names(x))
+  if (is.function(names)) {
+    names <- names(base::names(x))
   }
 
   vec_assert(names, ptype = character(), size = length(x))
@@ -225,9 +223,22 @@ check_names_2 <- function(names, x) {
     rlang::abort("`names` must be NULL, a function (or formula), or a vector")
   }
 }
+
+# Use a generic
+check_names_3 <- function(names, x) UseMethod("check_names_3")
+check_names_3.NULL <- function(names, x) NULL
+check_names_3.character <- function(names, x) {
+  if (length(names) != length(x)) {
+    stop("`names` and `x` must be the same length", call. = FALSE)
+  }
+  names
+}
+check_names_3.formula <- function(names, x) check_names_3(rlang::as_function(names), x)
+check_names_3.function <- function(names, x) check_names_3(names(base::names(x)), x)
+check_names_3.default <- function(names, x) stop("Invalid input to names (", class(names)[[1]] ,")")
 ```
 
-Then we use in `set_names()`, replacing the existing `set_names()`:
+Then we use in `set_names()`, replacing the existing `vec_assert()`:
 
 ```{r}
 set_names <- function(x, names = x) {
