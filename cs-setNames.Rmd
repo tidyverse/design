@@ -31,16 +31,15 @@ This function is short (just two lines of code!) but yields a surprisingly rich 
 
 ## How can we improve the names?
 
-Firstly, I prefer snake_case to camelCase, so I'd call it `set_names()`. Then we need to consider the arguments:
+Firstly, I prefer snake_case to camelCase, so I'd call the function `set_names()`. Then we need to consider the arguments:
 
-* I think the first argument, `object`, would be better called `x`, not
-  `object`, to emphasise that this function only works with vectors 
-  (because only vectors have names).
+* I think the first argument, `object`, would be better called `x` in order 
+  to emphasise that this function only works with vectors (because only 
+  vectors have names).
 
-* The second argument, `nm` is rather terse, and I don't see any 
-  disadvantage in calling it `names`. (You could also argue that it 
-  should be called `y` since it's meaning should be obvious from the 
-  function name.)
+* The second argument, `nm` is rather terse, and I don't see any disadvantage 
+  in calling it `names`. I think you could also argue that it should be 
+  called `y` since its meaning should be obvious from the function name.
 
 This yields:
 
@@ -193,40 +192,10 @@ x <- c(a = 1, b = 2, c = 3)
 set_names(x, NULL)
 ```
 
-However, I think this has muddied the logic. To resolve it, I think we should pull out the checking code into a separate function. The code below shows two approaches.
+However, I think this has muddied the logic. To resolve it, I think we should pull out the checking code into a separate function. After trying out a [few approaches](https://github.com/tidyverse/principles/issues/79), I ended up with:
 
 ```{r}
-# Use early returns to minimse code
-check_names_1 <- function(names, x) {
-  if (rlang::is_formula(names)) {
-    names <- rlang::as_function(names)
-  }
-  if (is.function(names)) {
-    names <- names(base::names(x))
-  }
-
-  vec_assert(names, ptype = character(), size = length(x))
-  names
-}
-
-
-# Emphasise three types of input
-check_names_2 <- function(names, x) {
-  if (is.null(names)) {
-    names
-  } else if (is.function(names) || rlang::is_formula(names)) {
-    fun <- rlang::as_function(names)
-    names <- fun(base::names(x))
-    vec_assert(names, ptype = character(), size = length(x))
-  } else if (is.vector(names)) {
-    vec_assert(names, ptype = character(), size = length(x))  
-  } else {
-    rlang::abort("`names` must be NULL, a function (or formula), or a vector")
-  }
-}
-
-
-check_names_2.5 <- function(names, x) {
+check_names <- function(names, x) {
   if (is.null(names)) {
     names
   } else if (vec_is(names)) {
@@ -234,27 +203,14 @@ check_names_2.5 <- function(names, x) {
   } else if (rlang::is.formula(names)) {
     check_names_2(rlang::as_function(names), x)
   } else if (is.function(names)) {
-    check_names_2(names(x), x)
+    check_names_2(names(base::names(x)), x)
   } else {
     rlang::abort("`names` must be NULL, a function or formula, or a vector")
   }
 }
-
-# Use a generic
-check_names_3 <- function(names, x) UseMethod("check_names_3")
-check_names_3.NULL <- function(names, x) NULL
-check_names_3.character <- function(names, x) {
-  if (length(names) != length(x)) {
-    stop("`names` and `x` must be the same length", call. = FALSE)
-  }
-  names
-}
-check_names_3.formula <- function(names, x) check_names_3(rlang::as_function(names), x)
-check_names_3.function <- function(names, x) check_names_3(names(base::names(x)), x)
-check_names_3.default <- function(names, x) stop("Invalid input to names (", class(names)[[1]] ,")")
 ```
 
-Then we use in `set_names()`, replacing the existing `vec_assert()`:
+Then we use in `set_names()`, replacing the existing `vec_assert()`. I separate the input checking and implementation with a blank line to help visually group the parts of the function.
 
 ```{r}
 set_names <- function(x, names = x) {
@@ -266,13 +222,20 @@ set_names <- function(x, names = x) {
 }
 ```
 
-We could even simplify a little further, but I think this is a bad idea becaues it mindles input validation with implementation:
+We _could_ simplify the function even further, but I think this is a bad idea becaues it mindles input validation with implementation:
 
 ```{r}
+# Don't do this
 set_names <- function(x, names = x) {
   vec_assert(x)
   names(x) <- check_names(names, x)
   x
+}
+
+# Or this
+set_names <- function(x, names = x) {
+  vec_assert(x)
+  `names<-`(x, check_names(names, x))
 }
 ```
 
@@ -288,9 +251,9 @@ If you're familiar with rlang, you might notice that we've ended up with somethi
   automatically name the vector, but this seems a relatively weak new feature
   in return for the cost of not throwing an error message if you provide an
   unsual vector type. (Both lists and data frames have `as.character()` methods
-  so basically any vector, no matter how crazy)
+  so this will work for basically any type of vector, even if completely 
+  inappropriate.)
 
 * Passes `...` on to function `nm`. I now think that decision was a 
   mistake: it substantially complicates the interface in return for a
   relatively small investment.
-
