@@ -209,6 +209,7 @@ check_names_1 <- function(names, x) {
   names
 }
 
+
 # Emphasise three types of input
 check_names_2 <- function(names, x) {
   if (is.null(names)) {
@@ -221,6 +222,21 @@ check_names_2 <- function(names, x) {
     vec_assert(names, ptype = character(), size = length(x))  
   } else {
     rlang::abort("`names` must be NULL, a function (or formula), or a vector")
+  }
+}
+
+
+check_names_2.5 <- function(names, x) {
+  if (is.null(names)) {
+    names
+  } else if (vec_is(names)) {
+    vec_assert(names, ptype = character(), size = length(x))  
+  } else if (rlang::is.formula(names)) {
+    check_names_2(rlang::as_function(names), x)
+  } else if (is.function(names)) {
+    check_names_2(names(x), x)
+  } else {
+    rlang::abort("`names` must be NULL, a function or formula, or a vector")
   }
 }
 
