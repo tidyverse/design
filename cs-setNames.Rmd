@@ -118,7 +118,7 @@ setNames(mean, 1:3)
 set_names(mean, 1:3)
 ```
 
-Note that we're simply checking the length of `names` here, rather than recycling it. I think this is the correct behaviour because you usually add names to a vector to create a lookup table, and a lookup table is not useful if there are duplicated names. This makes `set_names()` less general, but I think the trade off is worth it because you will get better error messages when you do something suspicious (and you can always fall back to `names<-` if you really want to do this.)
+Note that we're simply checking the length of `names` here, rather than recycling it, i.e. the invariant is `vec_size(set_names(x, y))` is `vec_size(x)`, not `vec_size_common(x, y)`. I think this is the correct behaviour because you usually add names to a vector to create a lookup table, and a lookup table is not useful if there are duplicated names. This makes `set_names()` less general in return for better error messages when you do something suspicious (and you can always use an explicit `rep_along()` if do want this behaviour.)
 
 ## How could we extend this function?
 
@@ -200,17 +200,17 @@ check_names <- function(names, x) {
     names
   } else if (vec_is(names)) {
     vec_assert(names, ptype = character(), size = length(x))  
-  } else if (rlang::is.formula(names)) {
-    check_names_2(rlang::as_function(names), x)
   } else if (is.function(names)) {
     check_names_2(names(base::names(x)), x)
+  } else if (rlang::is.formula(names)) {
+    check_names_2(rlang::as_function(names), x)
   } else {
     rlang::abort("`names` must be NULL, a function or formula, or a vector")
   }
 }
 ```
 
-Then we use in `set_names()`, replacing the existing `vec_assert()`. I separate the input checking and implementation with a blank line to help visually group the parts of the function.
+This then replaces `vec_assert()` in `set_names()`. I separate the input checking and implementation with a blank line to help visually group the parts of the function.
 
 ```{r}
 set_names <- function(x, names = x) {
@@ -222,7 +222,7 @@ set_names <- function(x, names = x) {
 }
 ```
 
-We _could_ simplify the function even further, but I think this is a bad idea becaues it mindles input validation with implementation:
+We _could_ simplify the function even further, but I think this is a bad idea becaues it mingles input validation with implementation:
 
 ```{r}
 # Don't do this
@@ -232,10 +232,9 @@ set_names <- function(x, names = x) {
   x
 }
 
-# Or this
+# Or even
 set_names <- function(x, names = x) {
-  vec_assert(x)
-  `names<-`(x, check_names(names, x))
+  `names<-`(vec_assert(x), check_names(names, x))
 }
 ```
 
