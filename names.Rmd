@@ -19,7 +19,7 @@ Existing name-related topics in <http://style.tidyverse.org>
 
 Here we address how to manage the `names` attribute of an object. Current content reflects recent thinking about how to handle the column or variable names of a tibble. This may inform a name-handling strategy for vectors, in general.
 
-The name repair described below is exposed to users via the `.name_repair` argument of [tibble::tibble()](https://tibble.tidyverse.org/reference/tibble.html) and [tibble::as_tibble()](https://tibble.tidyverse.org/reference/as_tibble.html). The workhorse functions are not yet exported, so you may see the use of some unexported functions via `:::` here, in the meantime. *Name repair was first introduced in [tibble v2.0.0](https://tibble.tidyverse.org/news/index.html#tibble-2-0-0) and this write-up is being rendered with tibble `r tibble_version`.*
+The name repair described below is exposed to users via the `.name_repair` argument of [tibble::tibble()](https://tibble.tidyverse.org/reference/tibble.html), [tibble::as_tibble()](https://tibble.tidyverse.org/reference/as_tibble.html), [readxl::read_excel()](https://readxl.tidyverse.org/reference/read_excel.html), and, eventually other packages in the tidyverse. The workhorse functions are not yet exported, so you may see the use of some unexported functions via `:::` here, in the meantime. *Name repair was first introduced in [tibble v2.0.0](https://tibble.tidyverse.org/news/index.html#tibble-2-0-0) and this write-up is being rendered with tibble `r tibble_version`.*
 
 These are the kind of names we're talking about:
 
@@ -37,8 +37,10 @@ names(euro)
 
 We identify three nested levels of naminess that are practically useful:
 
-  * Minimal: The `names` attribute is not `NULL`. The name of an unnamed element is `""` (the empty string) and never `NA`.
-  * Unique: No element of `names` appears more than once. A couple specific names are also repaired, such as `""` (the empty string).
+  * Minimal: The `names` attribute is not `NULL`. The name of an unnamed element
+    is `""` (the empty string) and never `NA`.
+  * Unique: No element of `names` appears more than once. A couple specific
+    names are also forbidden in unique names, such as `""` (the empty string).
     - All columns can be accessed by name via `df[["name"]]` and, more
       generally, by quoting with backticks: `` df$`name` ``,
       `` subset(df, select = `name`) ``, and `` dplyr::select(df, `name`) ``.
@@ -79,7 +81,7 @@ This is also a reasonable interpretation of base R's *intent* for named vectors,
 
 `tbl_df` objects created by [tibble::tibble()](https://tibble.tidyverse.org/reference/tibble.html) and [tibble::as_tibble()](https://tibble.tidyverse.org/reference/as_tibble.html) have variable names that are minimal, at the very least.
 
-The existing function [rlang::names2()](https://rlang.r-lib.org/reference/names2.html) returns the names of an object, after making them minimal.
+The function [rlang::names2()](https://rlang.r-lib.org/reference/names2.html) returns the names of an object, after making them minimal.
 
 ```{r}
 x <- letters[1:3]
@@ -295,9 +297,7 @@ Now we can state the motivation for universal names, which have the group-wise p
 
 In practice, if you want syntactic names, you probably also want them to be unique. You need both in order to refer to individual elements easily, without ambiguity and without quoting.
 
-Currently, universal names are only exposed in the tidyverse via `.name_repair = "universal"` inside `tibble::tibble()` and `tibble::as_tibble()`. 
-
-TO FILL IN: how exactly we make names unique and syntactic. Explain relative to a simple composition of two primitive operations.
+Universal names can be requested in the tidyverse via `.name_repair = "universal"`, in functions that expose name repair.
 
 ### Making names universal
 
