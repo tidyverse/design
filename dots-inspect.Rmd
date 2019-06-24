@@ -40,7 +40,7 @@ safe_cut.numeric <- function(x, breaks, ..., right = TRUE, include.lowest = FALS
   cut(x, breaks = breaks, right = right, include.lowest = include.lowest)
 }
 
-safe_cut.Date <- function(x, breaks, ...., right = TRUE, start.on.monday = TRUE) {
+safe_cut.Date <- function(x, breaks, ..., right = TRUE, start.on.monday = TRUE) {
   cut(x, breaks = breaks, right = right, start.on.monday = start.on.monday)
 }
 ```
