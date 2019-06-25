@@ -6,7 +6,7 @@ source("common.R")
 
 ## What's the problem?
 
-There are no limits to what an function or script can do. After you call `draw_plot()` or `source("analyse-data.R")`, you _could_ discover that all the variables in your global environment have been deleted, or that 1000 new files have been created on your desktop. But these actions would be surprising, because generally you expect the impact of a function (or script) to be as limited as possible. Collectively, we call such side-effects "spooky actions" because the connection between action (calling a function or sourcing a script) and result (deleting objects or upgrading packages) is surprising. It's like flipping a light-switch and discovering that shower starts running, or having a poltergeist that rearranges the contents of your kitchen cupboards when you're not looking.
+There are no limits to what an function or script can do. After you call `draw_plot()` or `source("analyse-data.R")`, you _could_ discover that all the variables in your global environment have been deleted, or that 1000 new files have been created on your desktop. But these actions would be surprising, because generally you expect the impact of a function (or script) to be as limited as possible. Collectively, we call such side-effects "spooky actions" because the connection between action (calling a function or sourcing a script) and result (deleting objects or upgrading packages) is surprising. It's like flipping a light-switch and discovering that the shower starts running, or having a poltergeist that rearranges the contents of your kitchen cupboards when you're not looking.
 
 Deleting variables and creating files on your desktop are obviously surprising even if you've only just started using R. But there are other actions that are less obviously destructive, and only start to become surprising as your mental model of R matures. These include actions like:
 
@@ -15,7 +15,7 @@ Deleting variables and creating files on your desktop are obviously surprising e
   This seems harmless, but if you were using purrr, it would break `map()` 
   `map()` would now refer to `maps::map()` rather than `purrr::map()`. 
   Because of functions in different packages can have the same name, attaching 
-  a package can the behaviour of existing code.
+  a package can change the behaviour of existing code.
   
 * __Installing packages with `install.packages()`__. If a script needs dplyr to 
   work, and it's not installed, it seem polite to install it on behalf of the 
@@ -24,13 +24,13 @@ Deleting variables and creating files on your desktop are obviously surprising e
   operation which should be done with care.
 
 * __Deleting objects in the global environment with `rm(list = ls())`__. 
-  This might seem like a good way to reset the environment so that you're 
+  This might seem like a good way to reset the environment so that your 
   script can run cleanly. But if someone else `source()`s your script, it will
   delete objects that might be important to them. (Of course, you'd hope that
   all of those objects could easily be recreated from another script, but that
   is not always the case).
 
-Because R doesn't constrain the potential scope of functions and scripts, *you* have to. By avoiding these actions, you will create code that is less suprising to other R users. At first, this might seem like tedious busywork. You might find that spooky action is convenient in the moment, and you might convince yourself that it’s necessary or a good idea. But as you share your code with more people and run more code that has been shared with you[^teachers], you'll find spooky action to get more and more surprising and frustrating. 
+Because R doesn't constrain the potential scope of functions and scripts, *you* have to. By avoiding these actions, you will create code that is less surprising to other R users. At first, this might seem like tedious busywork. You might find that spooky action is convenient in the moment, and you might convince yourself that it’s necessary or a good idea. But as you share your code with more people and run more code that has been shared with you[^teachers], you'll find spooky action to get more and more surprising and frustrating. 
 
 [^teachers]: Spooky actions tend to be particularly frustrating to those who teach R, because they have to run scripts from many students, and those scripts can end up doing wacky things to their computers.
 
@@ -56,7 +56,7 @@ There are two important types of trees to consider:
 *   __The tree of environments created by function calls.__
     A function should only create and modify variables in its own environment 
     or environments that it creates (typically by calling other functions).
-    This explains why you shouldn't attach packages (because that the
+    This explains why you shouldn't attach packages (because that changes the
     [search path](https://adv-r.hadley.nz/environments.html#search-path)),
     why you shouldn't delete variables with `rm(list = ls())`,
     or assign to variables that you didn't create with `<<-`.
@@ -91,7 +91,7 @@ If you can't parameterise the action, make it clear what's going to happen from 
 
 * It's fine for `install.packages()` to modify files outside of the current
   working directory because it's designed specifically to install packages.
-  Simlarly, it's ok for `source("class-setup.R")` to install packages because 
+  Similarly, it's ok for `source("class-setup.R")` to install packages because 
   the intent of a setup script is to get your computer into the same state as
   someone else's.
 
@@ -125,7 +125,7 @@ install_if_needed <- function(package) {
   
   title <- paste0(package, " is not installed. Do you wish to install now?")
   if (menu(c("Yes", "No"), title = title) != 1) {
-    stop("Confirmation not recieved", call. = FALSE)
+    stop("Confirmation not received", call. = FALSE)
   }
   
   invisible(TRUE)
@@ -263,7 +263,7 @@ The usethis package is designed to support the process of developing a package o
 
 If you haven't heard of `<<-`, the super-assignment operator, before, feel free to skip this section as it's an advanced technique that has relatively limited applications. They're most important in the context of functionals, which you can read more about in [Advanced R](https://adv-r.hadley.nz/function-factories.html#stateful-funs).
 
-`<<-` is safe if you use it to modify a variable in an environment that you control. For example, the following code creates a function that counts the number of times it is called. The use of `<<-` is safe because it only affects the environmnent created by `make_counter()`, not an external environment.
+`<<-` is safe if you use it to modify a variable in an environment that you control. For example, the following code creates a function that counts the number of times it is called. The use of `<<-` is safe because it only affects the environment created by `make_counter()`, not an external environment.
 
 ```{r}
 make_counter <- function() {
@@ -347,7 +347,7 @@ This eliminates the spooky action because it's now modifying an object that the 
 
 ### `assign()` in a for loop
 
-It's not uncommon for people to ask how to create multiple objects from for a loop. For exampe, maybe you have a vector of file names, and want to read each file into an individual object. With some effort you typically discover `assign()`:
+It's not uncommon for people to ask how to create multiple objects from for a loop. For example, maybe you have a vector of file names, and want to read each file into an individual object. With some effort you typically discover `assign()`:
 
 ```{r, eval = FALSE}
 paths <- c("a.csv", "b.csv", "c.csv")
@@ -358,7 +358,7 @@ for (i in seq_along(paths)) {
 }
 ```
 
-The main problem with this approach is that it does not faciliate composition. For example, imagine that you now wanted to figure out how many rows are in each of the data frames. Now you need to learn how to loop over a series of objects, where the name of the object is stored in a character vector. With some work, you might discover `get()` and write:
+The main problem with this approach is that it does not facilitate composition. For example, imagine that you now wanted to figure out how many rows are in each of the data frames. Now you need to learn how to loop over a series of objects, where the name of the object is stored in a character vector. With some work, you might discover `get()` and write:
 
 ```{r, eval = FALSE}
 lengths <- numeric(length(names))
