@@ -30,7 +30,11 @@ Deleting variables and creating files on your desktop are obviously surprising e
   all of those objects could easily be recreated from another script, but that
   is not always the case).
 
-Because R doesn't constrain the potential scope of functions and scripts, *you* have to. By avoiding these actions, you will create code that is less surprising to other R users. At first, this might seem like tedious busywork. You might find that spooky action is convenient in the moment, and you might convince yourself that it’s necessary or a good idea. But as you share your code with more people and run more code that has been shared with you[^teachers], you'll find spooky action to get more and more surprising and frustrating. 
+Because R doesn't constrain the potential scope of functions and scripts, *you* have to. By avoiding these actions, you will create code that is less surprising to other R users. Moreover, you'll benefit from the experience of other programming pioneers, summarised in the "Principle of Least Astonishment/Surprise" (POLA[^pola]).
+
+[^pola]: https://web.archive.org/web/20181216083109/http://wiki.c2.com/?PrincipleOfLeastAstonishment
+
+At first, this might seem like tedious busywork. You might find that spooky action is convenient in the moment, and you might convince yourself that it’s necessary or a good idea. But as you share your code with more people and run more code that has been shared with you[^teachers], you'll find spooky action to get more and more surprising and frustrating. 
 
 [^teachers]: Spooky actions tend to be particularly frustrating to those who teach R, because they have to run scripts from many students, and those scripts can end up doing wacky things to their computers.
 
