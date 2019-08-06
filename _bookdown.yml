@@ -46,6 +46,9 @@ rmd_files:
     "err-call.Rmd",
     "err-constructor.Rmd",
     
+    "changes.Rmd",
+    "changes-multivers.Rmd",
+    
     "side.Rmd",
     "side-effects.Rmd",
     "spooky-action.Rmd",

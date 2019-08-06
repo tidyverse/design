@@ -1,0 +1,69 @@
+# Working with multiple versions of a package {#changes-multivers}
+
+```{r, include = FALSE}
+source("common.R")
+```
+
+## What's the problem?
+
+When another package changes it's interface, you ideally want to make sure that your package works with both versions of the package. If your package only works with a single version of the dependency, you'll need to carefully choreograph the CRAN release, and you're more likely to cause problems in user code. 
+
+This chapter describes some useful patterns when you want your package to work with multiple versions of another package.
+
+## Writing code
+
+Sometimes there will be an easy way to change the code to work with both old and new versions of the package. However, in most cases, you'll want to explicitly branch with an `if` statement that runs different code for different versions.
+
+Generally, we recommend conditioning on the existence of function or argument. Conditioning on a version is very challenging to do correctly because of the way that most packages define their versions.
+
+For example, tidyr 1.0.0 changed the interface of the `unnest()` and `nest()` functions. To make it easy for people to have their packages work with either version, tidyr 1.0.0 provides `unnest_legacy()` and `nest_legacy()` which are the same as `nest()` and `unnest()` in previous versions. We can use their existence to define which code to run:
+
+```{r, eval = FALSE}
+if (exists("unnest_legacy", asNamespace("tidyr"))) {
+  out <- tidyr::unnest_legacy(df, x, y, z)
+} else {
+  out <- tidyr::unnest(df, x, y, z)
+}
+```
+
+Note that if you submit this package to CRAN before tidyr is updated you'll get a `NOTE` saying that `unnest_legacy()` is not found in tidyr. This is one of the few NOTEs that you can explain to CRAN: just mention that it is needed for forward compabitility in your submission notes.
+
+If you do this in multiple functions, I'd recommend pulling the existence test out in to a separate function:
+
+```{r}
+tidyr_has_legacy_nest <- function() exists("unnest_legacy", asNamespace("tidyr"))
+```
+
+## Writing tests
+
+It's good practice to test both old and new versions of the code, although you won't be able to ever run both sets of tests in the same R session.
+
+You have two basic options.
+
+## Checking with multiple package versions
+
+Before the package is release, you can manually install the development version using `remotes::install_github()`:
+
+```yaml
+matrix:
+  include:
+  - r: release
+    name: tidyr-devel
+    before_script: Rscript -e "remotes::install_github('tidyverse/tidyr')"
+```
+
+Once the package have been released, you can removed this build. 
+
+It's generally not worthwhile checking that your code continues to work with an older version of the package (because generally R users are effectively forced to have the latest version of packages), but if you want to you can use `remotes::install_version()`:
+
+```yaml
+matrix:
+  include:
+  - r: release
+    name: tidyr-0.8
+    before_script: Rscript -e "remotes::install_version('tidyr', '0.8.3')"
+```
+
+## Removing the branches
+
+Once a sufficient amount of time has elapsed (a year after release?), you should bump the required version of the package in your DESCRIPTION and remove all the branches from the code. This is easiest if you've used a single version; just search for it in the source.
