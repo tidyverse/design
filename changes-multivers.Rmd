@@ -34,13 +34,55 @@ If you do this in multiple functions, I'd recommend pulling the existence test o
 tidyr_has_legacy_nest <- function() exists("unnest_legacy", asNamespace("tidyr"))
 ```
 
-## Writing tests
+Another option is to look for the value of an argument, e.g.
 
-It's good practice to test both old and new versions of the code, although you won't be able to ever run both sets of tests in the same R session.
+```{r}
+identical(formals(tidyr::nest)$.key, "DEPRECATED")
+```
 
-You have two basic options.
+Testing for existance of a function or the value argument of an argument are both extremely fast, and it's unlikely they'll have any impact on performance unless called in a very tight loop. 
 
-## Checking with multiple package versions
+```{r}
+bench::mark(
+  exists = exists("pivot_longer", asNamespace("tidyr")),
+  formals = identical(formals(tidyr::nest)$.key, "DEPRECATED")
+)[1:5]
+```
+
+### Why not test the package version?
+
+The major downside of `packageVersion()`, however, is that all options have drawbacks:
+
+* `packageVersion("tidyr") >= 1.0.0` won't work until the development version 
+   is released, so you can't easily test your code, and it doesn't help with
+   coupling on CRAN.
+   
+* `packageVersion("tidyr") > 0.8.2` is safer, but it will fail if there's a 
+  long release process, and during release we need to do a patch release.
+  
+* `packageVersion("tidyr") > 0.8.99` is safest, but it will fail if there's a 
+  long release process, and during release we need to do a patch release.
+
+Additionally, `packageVersion()` is quite slow:
+
+```{r}
+bench::mark(
+  version = utils::packageVersion("tidyr") > "0.8.2"
+)[1:5]
+```
+
+This means that you need to be used with care: if it's being called inside a loop or in a performance sensitive function, you'll need to cache the check `.onLoad()`:
+
+```{r}
+tidyr_has_legacy_nest <- NULL
+.onLoad <- function(...) {
+  tidyr_has_legacy_nest <<- utils::packageVersion("tidyr")
+}
+```
+
+## Testing with multiple package versions
+
+It's good practice to test both old and new versions of the code, although you won't be able to ever run both sets of tests in the same R session. The easiest way to make sure that both versions are working and stay working is to use Travis.
 
 Before the package is release, you can manually install the development version using `remotes::install_github()`:
 
