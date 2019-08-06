@@ -26,7 +26,7 @@ if (exists("unnest_legacy", asNamespace("tidyr"))) {
 }
 ```
 
-Note that if you submit this package to CRAN before tidyr is updated you'll get a `NOTE` saying that `unnest_legacy()` is not found in tidyr. This is one of the few NOTEs that you can explain to CRAN: just mention that it is needed for forward compabitility in your submission notes.
+Note that if you submit this package to CRAN before tidyr is updated you'll get a `NOTE` saying that `unnest_legacy()` is not found in tidyr. This is one of the few NOTEs that you can explain to CRAN: just mention that it is needed for forward compatibility in your submission notes.
 
 If you do this in multiple functions, I'd recommend pulling the existence test out in to a separate function:
 
@@ -40,7 +40,7 @@ Another option is to look for the value of an argument, e.g.
 identical(formals(tidyr::nest)$.key, "DEPRECATED")
 ```
 
-Testing for existance of a function or the value argument of an argument are both extremely fast, and it's unlikely they'll have any impact on performance unless called in a very tight loop. 
+Testing for existence of a function or the default value of an argument are both extremely fast, and it's unlikely they'll have any impact on performance unless called in a very tight loop. 
 
 ```{r}
 bench::mark(
@@ -71,7 +71,7 @@ bench::mark(
 )[1:5]
 ```
 
-This means that you need to be used with care: if it's being called inside a loop or in a performance sensitive function, you'll need to cache the check `.onLoad()`:
+This means that you need to use `packageVersion()` with care: if it's called inside a loop or in a performance sensitive function, you'll need to cache the check in `.onLoad()`:
 
 ```{r}
 tidyr_has_legacy_nest <- NULL
@@ -84,7 +84,7 @@ tidyr_has_legacy_nest <- NULL
 
 It's good practice to test both old and new versions of the code, although you won't be able to ever run both sets of tests in the same R session. The easiest way to make sure that both versions are working and stay working is to use Travis.
 
-Before the package is release, you can manually install the development version using `remotes::install_github()`:
+Before the package is released, you can manually install the development version using `remotes::install_github()`:
 
 ```yaml
 matrix:
@@ -94,9 +94,9 @@ matrix:
     before_script: Rscript -e "remotes::install_github('tidyverse/tidyr')"
 ```
 
-Once the package have been released, you can removed this build. 
+Once the package has been released, you can remove this build. 
 
-It's generally not worthwhile checking that your code continues to work with an older version of the package (because generally R users are effectively forced to have the latest version of packages), but if you want to you can use `remotes::install_version()`:
+It's generally not worthwhile to check that your code continues to work with an older version of the package (because generally R users are effectively forced to have the latest version of packages), but if you want to you can use `remotes::install_version()`:
 
 ```yaml
 matrix:
