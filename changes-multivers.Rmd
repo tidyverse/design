@@ -22,7 +22,7 @@ For example, tidyr 1.0.0 changed the interface of the `unnest()` and `nest()` fu
 if (exists("unnest_legacy", asNamespace("tidyr"))) {
   out <- tidyr::unnest_legacy(df, x, y, z)
 } else {
-  out <- tidyr::unnest(df, x, y, z)
+  out <- tidyr::unnest(df, c(x, y, z))
 }
 ```
 
