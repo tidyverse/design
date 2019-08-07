@@ -23,42 +23,33 @@ In this pattern, you'll learn how to write code designed to work with multiple v
 
 ## Writing code
 
-Sometimes there will be an easy way to change the code to work with both old and new versions of the package. However, in most cases, you'll need an `if` statement that uses one call for old versions of the dependency and one call for new versions of the package:
+Sometimes there will be an easy way to change the code to work with both old and new versions of the package; do this if you can! However, in most cases, you can't, and you'll need an `if` statement that runs different code for new and old versions of the package:
 
 ```{r, eval = FALSE}
 if (dependency_has_new_interface()) {
-  # freshly written code that works with new version
+  # freshly written code that works with in-development dependency
 } else {
-  # previously written code
+  # existing code that works with the currently released dependency
 }
 ```
 
-Note that this code will usually generate an R CMD check `NOTE` when you submit it to CRAN because the fresly written code will use functions that don't exist in the CRAN version. This is one of the few NOTEs that you can explain to CRAN: just mention that it is needed for forward compatibility in your submission notes.
+(If your freshly written code uses functions that don't exist in the CRAN version this will generate an R CMD check `NOTE` when you submit it to CRAN. This is one of the few NOTEs that you can explain: just mention that it's needed for forward/backward compatibility in your submission notes.)
 
-There are three basics approaches to test if a package has the new interface:
+We recommend always pulling out the check out into a function so that the logic lives in one place. This will make it much easier to pull it out when it's no longer needed, and provides a good place to document why it's needed. 
+
+There are three basic approaches to implement `dependency_has_new_interface()`:
 
 * Check the version of the package. This is recommended in most cases, 
   but requires that the dependency author use a specific version convention.
   
 * Check for existence of a function.
 
-* Check for existence or value of an argument.
+* Check for a specific argument value, or otherwise detect that the interface
+  has changed.
 
 ### Case study: tidyr
 
-To make the problem concrete so we can show of some real code, lets imagine we have a package that uses `tidyr::nest()`. Between versions 0.8.3 and 1.0.0, tidyr changed the interface of `nest()`. There are three versions of tidyr that we need to think about:
-
-* 0.8.3: the version currently on CRAN with the old interface.
-
-* 0.8.99.9000: the current development version with the new version. As 
-  usually, the fourth component is >= 9000 to indicate that it's a development 
-  version. Note, however, that the patch version is 99; this indicates that 
-  release includes breaking changes.
-  
-* 1.0.0: the future CRAN version; this is the version that will be submitted 
-  to CRAN.
-
-And packages need to include code like this:
+To make the problem concrete so we can show of some real code, lets imagine we have a package that uses `tidyr::nest()`. `tidyr::nest()` changed substantially between 0.8.3 and 1.0.0, and so we need to write code like this:
 
 ```{r, eval = FALSE}
 if (tidyr_new_interface()) {
@@ -69,6 +60,18 @@ if (tidyr_new_interface()) {
 ```
 
 (As described above, when submitted to CRAN this will generate a note about missing `tidyr::nest_legacy()` which can be explained in the submission comments.)
+
+To implement `tidyr_new_interface()`, we need to think about three versions of tidyr:
+
+* 0.8.3: the version currently on CRAN with the old interface.
+
+* 0.8.99.9000: the development version with the new interface. As usualy, 
+  the fourth component is >= 9000 to indicate that it's a development 
+  version. Note, however, that the patch version is 99; this indicates that 
+  release includes breaking changes.
+  
+* 1.0.0: the future CRAN version; this is the version that will be submitted 
+  to CRAN.
 
 The main question is how to write `tidyr_new_interface()`. There are three options:
 
@@ -114,7 +117,7 @@ bench::mark(
 )[1:5]
 ```
 
-If you need to use `packageVersion()` inside a performance sensitive function, I recommend caching the result in `.onLoad()` (which, by convention, lives in `zzz.R`). There a few ways to do this; the following block shows one approach that matches the interface of the other ways:
+If you do need to use `packageVersion()` inside a performance sensitive function, I recommend caching the result in `.onLoad()` (which, by convention, lives in `zzz.R`). There a few ways to do this; but the following block shows one approach that matches the function interface I used above:
 
 ```{r}
 tidyr_new_interface <- function() FALSE
@@ -127,9 +130,9 @@ tidyr_new_interface <- function() FALSE
 
 ## Testing with multiple package versions
 
-It's good practice to test both old and new versions of the code, although you won't be able to ever run both sets of tests in the same R session. The easiest way to make sure that both versions are working and stay working is to use Travis. Here I assume you're already using Travis.
+It's good practice to test both old and new versions of the code, but this is challenging because you can't both sets of tests in the same R session. The easiest way to make sure that both versions are work and stay working is to use Travis. 
 
-Before the package is released, you can manually install the development version using `remotes::install_github()`:
+Before the dependency is released, you can manually install the development version using `remotes::install_github()`:
 
 ```yaml
 matrix:
@@ -138,8 +141,6 @@ matrix:
     name: tidyr-devel
     before_script: Rscript -e "remotes::install_github('tidyverse/tidyr')"
 ```
-
-Once the package has been released, you can remove this build. 
 
 It's not generally that important to check that your code continues to work with an older version of the package, but if you want to you can use `remotes::install_version()`:
 
@@ -151,6 +152,13 @@ matrix:
     before_script: Rscript -e "remotes::install_version('tidyr', '0.8.3')"
 ```
 
-## Removing the conditions
+## Using only the new version
 
-Once a sufficient amount of time has elapsed (a year after release?), you should bump the required version of the package in your DESCRIPTION and remove all the branches from the code. This is easiest if you've used a single version; just search for it in the source.
+At some point in the future, you'll decide that the old version of the package is no longer widely used and you want to simplify your package by only depending on the new version. There are three steps:
+
+* In the DESCRIPTION, bump the required version of the dependency.
+
+* Search for `dependency_has_new_interface()`; remove the function defintion
+  and all uses (retaining the code used with the new version).
+
+* Remove the additional build in `.travis.yml`.
