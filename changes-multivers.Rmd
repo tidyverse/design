@@ -76,7 +76,7 @@ This means that you need to be used with care: if it's being called inside a loo
 ```{r}
 tidyr_has_legacy_nest <- NULL
 .onLoad <- function(...) {
-  tidyr_has_legacy_nest <<- utils::packageVersion("tidyr")
+  tidyr_has_legacy_nest <<- utils::packageVersion("tidyr") > "0.8.2"
 }
 ```
 
