@@ -33,15 +33,32 @@ if (dependency_has_new_interface()) {
 }
 ```
 
+Note that this code will usually generate an R CMD check `NOTE` when you submit it to CRAN because the fresly written code will use functions that don't exist in the CRAN version. This is one of the few NOTEs that you can explain to CRAN: just mention that it is needed for forward compatibility in your submission notes.
+
 There are three basics approaches to test if a package has the new interface:
 
+* Check the version of the package. This is recommended in most cases, 
+  but requires that the dependency author use a specific version convention.
+  
 * Check for existence of a function.
+
 * Check for existence or value of an argument.
-* Check the version of the package.
 
-Checking the version of the package has significant downsides, so I don't recommend it. We'll come back to the problems shortly. 
+### Case study: tidyr
 
-To make the problem concrete so we can show of some real code, lets imagine we have a package that uses `tidyr::nest()`. Between versions 0.8.3 and 1.0.0, tidyr changed the interface of `nest()`, so packages that use these functions need to include code like this:
+To make the problem concrete so we can show of some real code, lets imagine we have a package that uses `tidyr::nest()`. Between versions 0.8.3 and 1.0.0, tidyr changed the interface of `nest()`. There are three versions of tidyr that we need to think about:
+
+* 0.8.3: the version currently on CRAN with the old interface.
+
+* 0.8.99.9000: the current development version with the new version. As 
+  usually, the fourth component is >= 9000 to indicate that it's a development 
+  version. Note, however, that the patch version is 99; this indicates that 
+  release includes breaking changes.
+  
+* 1.0.0: the future CRAN version; this is the version that will be submitted 
+  to CRAN.
+
+And packages need to include code like this:
 
 ```{r, eval = FALSE}
 if (tidyr_new_interface()) {
@@ -51,24 +68,35 @@ if (tidyr_new_interface()) {
 }
 ```
 
-Note that this code will generate an an R CMD check `NOTE` when you submit it to CRAN because `unnest_legacy()` will not be found in the CRAN version of tidyr. This is one of the few NOTEs that you can explain to CRAN: just mention that it is needed for forward compatibility in your submission notes.
+(As described above, when submitted to CRAN this will generate a note about missing `tidyr::nest_legacy()` which can be explained in the submission comments.)
 
-The main question is how to write `tidyr_new_interface()`. There are two options:
+The main question is how to write `tidyr_new_interface()`. There are three options:
 
-*   As you can see above, the new version of tidyr provides `unnest_legacy()`  
-    so that if you want a quick fix you can just change the function name. This
-    means that we could check for the existence of that function:
-  
+*   Check that the version is greater than the development version:
+
     ```{r}
     tidyr_new_interface <- function() {
+      packageVersion("tidyr") > "0.8.99"
+    }
+    ```
+    
+    This technique works because tidyr uses the convention that the 
+    development version of backward incompatible functions contain `99`
+    in the third (patch) component.
+
+*   If tidyr didn't adopt this naming convention, we could test for the 
+    existence of `unnest_legacy()`. 
+  
+    ```{r}
+    tidyr_new_interface1 <- function() {
       exists("unnest_legacy", asNamespace("tidyr"))
     }
     ```
   
-*   Another approach that's useful when a single argument is deprecated is to
-    check for the sentinel value that's used to advertise that the argument is
-    deprecated. If the package uses [lifecycle](http://lifecycle.r-lib.org/)
-    then you can test for the presence of `deprecated()`:
+*   If the inteface change was more subtle, you might have to think more 
+    creatively. If the package uses the [lifecycle](http://lifecycle.r-lib.org/)
+    system, one approach would be to test for the presence of `deprecated()`
+    in the function arguments:
     
     ```{r}
     tidyr_new_interface2 <- function() {
@@ -76,26 +104,17 @@ The main question is how to write `tidyr_new_interface()`. There are two options
     }
     ```
 
-Both approaches are fast, and it's unlikely they'll have any impact on performance unless called in a very tight loop. 
+All these approaches are reaosnably fast, so it's unlikely they'll have any impact on performance unless called in a very tight loop. 
 
 ```{r}
 bench::mark(
-  exists =  tidyr_new_interface(),
+  version = tidyr_new_interface(),
+  exists =  tidyr_new_interface1(),
   formals = tidyr_new_interface2() 
 )[1:5]
 ```
 
-### Why not test the package version?
-
-You might wonder why we don't recommend the use of `packageVersion()`, as it seems like a straightforward solution. The first problem is that it's quite slow:
-
-```{r}
-bench::mark(
-  version = utils::packageVersion("tidyr") > "0.8.99"
-)[1:5]
-```
-
-This means that you have to use it with with care if it's called inside a loop or in a performance sensitive function. If you do want to use `packageVersion()` I recommend caching the result `.onLoad()` (which, by convention, lives in `zzz.R`). There a few ways to do this; the following block shows one approach that matches the interface of the other ways.
+If you need to use `packageVersion()` inside a performance sensitive function, I recommend caching the result in `.onLoad()` (which, by convention, lives in `zzz.R`). There a few ways to do this; the following block shows one approach that matches the interface of the other ways:
 
 ```{r}
 tidyr_new_interface <- function() FALSE
@@ -106,24 +125,9 @@ tidyr_new_interface <- function() FALSE
 }
 ```
 
-It has two main drawbacks: it's hard to get the version specification exactly right, and its relatively slow.
-
-* `packageVersion("tidyr") >= "1.0.0"` won't work until the development version 
-   is released, so you can't easily test your code, and it doesn't help with
-   coupling on CRAN.
-   
-* `packageVersion("tidyr") > "0.8.3"` is safer, but it will fail if there's a 
-  long release process, and during release we need to do a patch release.
-  This doesn't happen with most packages but has happened for packages like 
-  ggplot2 and dplyr which have a large number of reverse dependencies.
-  
-* `packageVersion("tidyr") > "0.8.99"` is safe, but not evocative.
-
-Additionally, `packageVersion()` is quite slow:
-
 ## Testing with multiple package versions
 
-It's good practice to test both old and new versions of the code, although you won't be able to ever run both sets of tests in the same R session. The easiest way to make sure that both versions are working and stay working is to use Travis.
+It's good practice to test both old and new versions of the code, although you won't be able to ever run both sets of tests in the same R session. The easiest way to make sure that both versions are working and stay working is to use Travis. Here I assume you're already using Travis.
 
 Before the package is released, you can manually install the development version using `remotes::install_github()`:
 
@@ -137,7 +141,7 @@ matrix:
 
 Once the package has been released, you can remove this build. 
 
-It's generally not worthwhile to check that your code continues to work with an older version of the package (because generally R users are effectively forced to have the latest version of packages), but if you want to you can use `remotes::install_version()`:
+It's not generally that important to check that your code continues to work with an older version of the package, but if you want to you can use `remotes::install_version()`:
 
 ```yaml
 matrix:
@@ -147,6 +151,6 @@ matrix:
     before_script: Rscript -e "remotes::install_version('tidyr', '0.8.3')"
 ```
 
-## Removing the branches
+## Removing the conditions
 
 Once a sufficient amount of time has elapsed (a year after release?), you should bump the required version of the package in your DESCRIPTION and remove all the branches from the code. This is easiest if you've used a single version; just search for it in the source.
