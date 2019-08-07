@@ -1,84 +1,125 @@
-# Working with multiple versions of a package {#changes-multivers}
+# Work with multiple dependency versions {#changes-multivers}
 
 ```{r, include = FALSE}
 source("common.R")
 ```
 
-## What's the problem?
+## What's the pattern?
 
-When another package changes it's interface, you ideally want to make sure that your package works with both versions of the package. If your package only works with a single version of the dependency, you'll need to carefully choreograph the CRAN release, and you're more likely to cause problems in user code. 
+In an ideal world, when a dependency of your package changes its interface, you want your package to work with both versions. This is more work but it has two significant advantages:
 
-This chapter describes some useful patterns when you want your package to work with multiple versions of another package.
+* The CRAN submission process is decoupled. If your package only works with the
+  development version of a dependency, you'll need to carefully coordinate your
+  CRAN submission with the dependencies CRAN submission. If your package works
+  with both versions, you can submit first, making life easier for CRAN and for
+  the maintainer of the dependency.
+  
+* User code is less likely to be effected. If your package only works with the
+  latest version of the dependency, then when a user upgrades your package, the
+  dependency also must update. Upgrading multiple packages is more likely to
+  affect user code than updating a single package.
+
+In this pattern, you'll learn how to write code designed to work with multiple versions of a dependency, and you'll how to adapt your existing Travis configuration to test that you've got it right.
 
 ## Writing code
 
-Sometimes there will be an easy way to change the code to work with both old and new versions of the package. However, in most cases, you'll want to explicitly branch with an `if` statement that runs different code for different versions.
-
-Generally, we recommend conditioning on the existence of function or argument. Conditioning on a version is very challenging to do correctly because of the way that most packages define their versions.
-
-For example, tidyr 1.0.0 changed the interface of the `unnest()` and `nest()` functions. To make it easy for people to have their packages work with either version, tidyr 1.0.0 provides `unnest_legacy()` and `nest_legacy()` which are the same as `nest()` and `unnest()` in previous versions. We can use their existence to define which code to run:
+Sometimes there will be an easy way to change the code to work with both old and new versions of the package. However, in most cases, you'll need an `if` statement that uses one call for old versions of the dependency and one call for new versions of the package:
 
 ```{r, eval = FALSE}
-if (exists("unnest_legacy", asNamespace("tidyr"))) {
-  out <- tidyr::unnest_legacy(df, x, y, z)
+if (dependency_has_new_interface()) {
+  # freshly written code that works with new version
 } else {
-  out <- tidyr::unnest(df, c(x, y, z))
+  # previously written code
 }
 ```
 
-Note that if you submit this package to CRAN before tidyr is updated you'll get a `NOTE` saying that `unnest_legacy()` is not found in tidyr. This is one of the few NOTEs that you can explain to CRAN: just mention that it is needed for forward compatibility in your submission notes.
+There are three basics approaches to test if a package has the new interface:
 
-If you do this in multiple functions, I'd recommend pulling the existence test out in to a separate function:
+* Check for existence of a function.
+* Check for existence or value of an argument.
+* Check the version of the package.
 
-```{r}
-tidyr_has_legacy_nest <- function() exists("unnest_legacy", asNamespace("tidyr"))
+Checking the version of the package has significant downsides, so I don't recommend it. We'll come back to the problems shortly. 
+
+To make the problem concrete so we can show of some real code, lets imagine we have a package that uses `tidyr::nest()`. Between versions 0.8.3 and 1.0.0, tidyr changed the interface of `nest()`, so packages that use these functions need to include code like this:
+
+```{r, eval = FALSE}
+if (tidyr_new_interface()) {
+  out <- tidyr::nest_legacy(df, x, y, z)
+} else {
+  out <- tidyr::nest(df, c(x, y, z))
+}
 ```
 
-Another option is to look for the value of an argument, e.g.
+Note that this code will generate an an R CMD check `NOTE` when you submit it to CRAN because `unnest_legacy()` will not be found in the CRAN version of tidyr. This is one of the few NOTEs that you can explain to CRAN: just mention that it is needed for forward compatibility in your submission notes.
 
-```{r}
-identical(formals(tidyr::nest)$.key, "DEPRECATED")
-```
+The main question is how to write `tidyr_new_interface()`. There are two options:
 
-Testing for existence of a function or the default value of an argument are both extremely fast, and it's unlikely they'll have any impact on performance unless called in a very tight loop. 
+*   As you can see above, the new version of tidyr provides `unnest_legacy()`  
+    so that if you want a quick fix you can just change the function name. This
+    means that we could check for the existence of that function:
+  
+    ```{r}
+    tidyr_new_interface <- function() {
+      exists("unnest_legacy", asNamespace("tidyr"))
+    }
+    ```
+  
+*   Another approach that's useful when a single argument is deprecated is to
+    check for the sentinel value that's used to advertise that the argument is
+    deprecated. If the package uses [lifecycle](http://lifecycle.r-lib.org/)
+    then you can test for the presence of `deprecated()`:
+    
+    ```{r}
+    tidyr_new_interface2 <- function() {
+      identical(formals(tidyr::nest)$.key, quote(deprecated()))
+    }
+    ```
+
+Both approaches are fast, and it's unlikely they'll have any impact on performance unless called in a very tight loop. 
 
 ```{r}
 bench::mark(
-  exists = exists("pivot_longer", asNamespace("tidyr")),
-  formals = identical(formals(tidyr::nest)$.key, "DEPRECATED")
+  exists =  tidyr_new_interface(),
+  formals = tidyr_new_interface2() 
 )[1:5]
 ```
 
 ### Why not test the package version?
 
-The major downside of `packageVersion()`, however, is that all options have drawbacks:
-
-* `packageVersion("tidyr") >= 1.0.0` won't work until the development version 
-   is released, so you can't easily test your code, and it doesn't help with
-   coupling on CRAN.
-   
-* `packageVersion("tidyr") > 0.8.2` is safer, but it will fail if there's a 
-  long release process, and during release we need to do a patch release.
-  
-* `packageVersion("tidyr") > 0.8.99` is safest, but it will fail if there's a 
-  long release process, and during release we need to do a patch release.
-
-Additionally, `packageVersion()` is quite slow:
+You might wonder why we don't recommend the use of `packageVersion()`, as it seems like a straightforward solution. The first problem is that it's quite slow:
 
 ```{r}
 bench::mark(
-  version = utils::packageVersion("tidyr") > "0.8.2"
+  version = utils::packageVersion("tidyr") > "0.8.99"
 )[1:5]
 ```
 
-This means that you need to use `packageVersion()` with care: if it's called inside a loop or in a performance sensitive function, you'll need to cache the check in `.onLoad()`:
+This means that you have to use it with with care if it's called inside a loop or in a performance sensitive function. If you do want to use `packageVersion()` I recommend caching the result `.onLoad()` (which, by convention, lives in `zzz.R`). There a few ways to do this; the following block shows one approach that matches the interface of the other ways.
 
 ```{r}
-tidyr_has_legacy_nest <- NULL
+tidyr_new_interface <- function() FALSE
 .onLoad <- function(...) {
-  tidyr_has_legacy_nest <<- utils::packageVersion("tidyr") > "0.8.2"
+  if (utils::packageVersion("tidyr") > "0.8.2") {
+    tidyr_new_interface <<- function() TRUE
+  }
 }
 ```
+
+It has two main drawbacks: it's hard to get the version specification exactly right, and its relatively slow.
+
+* `packageVersion("tidyr") >= "1.0.0"` won't work until the development version 
+   is released, so you can't easily test your code, and it doesn't help with
+   coupling on CRAN.
+   
+* `packageVersion("tidyr") > "0.8.3"` is safer, but it will fail if there's a 
+  long release process, and during release we need to do a patch release.
+  This doesn't happen with most packages but has happened for packages like 
+  ggplot2 and dplyr which have a large number of reverse dependencies.
+  
+* `packageVersion("tidyr") > "0.8.99"` is safe, but not evocative.
+
+Additionally, `packageVersion()` is quite slow:
 
 ## Testing with multiple package versions
 
