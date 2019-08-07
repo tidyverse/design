@@ -2,6 +2,7 @@
 
 ```{r, include = FALSE}
 source("common.R")
+vctrs_version <- paste0("v", as.character(packageVersion("vctrs")))
 tibble_version <- paste0("v", as.character(packageVersion("tibble")))
 library(tidyverse)
 ```
@@ -17,9 +18,9 @@ Existing name-related topics in <http://style.tidyverse.org>
   
 ## The `names` attribute of an object
 
-Here we address how to manage the `names` attribute of an object. Current content reflects recent thinking about how to handle the column or variable names of a tibble. This may inform a name-handling strategy for vectors, in general.
+Here we address how to manage the `names` attribute of an object. Our initial thinking was motivated by how to handle the column or variable names of a tibble, but is evolving into a name-handling strategy for vectors, in general.
 
-The name repair described below is exposed to users via the `.name_repair` argument of [tibble::tibble()](https://tibble.tidyverse.org/reference/tibble.html), [tibble::as_tibble()](https://tibble.tidyverse.org/reference/as_tibble.html), [readxl::read_excel()](https://readxl.tidyverse.org/reference/read_excel.html), and, eventually other packages in the tidyverse. The workhorse functions are not yet exported, so you may see the use of some unexported functions via `:::` here, in the meantime. *Name repair was first introduced in [tibble v2.0.0](https://tibble.tidyverse.org/news/index.html#tibble-2-0-0) and this write-up is being rendered with tibble `r tibble_version`.*
+The name repair described below is exposed to users via the `.name_repair` argument of [tibble::tibble()](https://tibble.tidyverse.org/reference/tibble.html), [tibble::as_tibble()](https://tibble.tidyverse.org/reference/as_tibble.html), [readxl::read_excel()](https://readxl.tidyverse.org/reference/read_excel.html), and, eventually other packages in the tidyverse. This work was initiated in the tibble package, but is migrating to the vctrs package. *Name repair was first introduced in [tibble v2.0.0](https://tibble.tidyverse.org/news/index.html#tibble-2-0-0) and this write-up is being rendered with tibble `r tibble_version` and vctrs `r vctrs_version`.*
 
 These are the kind of names we're talking about:
 
@@ -63,8 +64,12 @@ names(x)
 
 Repair the names to make them minimal.
 
-```{r}
-x <- tibble:::set_minimal_names(x)
+```{r eval = FALSE}
+# TODO: Figure out where `set_minimal_names()` ended up when name repair moved
+# from tibble to vctrs, then update this chunk. Use rlang in the meantime.
+
+# x <- tibble:::set_minimal_names(x)
+x <- rlang::set_names(x, rlang::names2(x))
 names(x)
 ```
 
@@ -109,7 +114,7 @@ justify <- function(z) {
 nms <- c("", "x", "", "...", "y", "x")
 x <- cbind(
   original = nms,
-  unique   = tibble:::unique_names(nms),
+  unique   = vctrs::vec_as_names(nms, repair = "unique"),
   base     = make.unique(nms)
 )
 
@@ -186,7 +191,7 @@ Example of re-unique-ified names:
 nms <- c("...5", "x", "x...3", "", "x...1...5")
 x <- cbind(
   suffixed   = nms,
-  resuffixed = tibble:::unique_names(nms)
+  resuffixed = vctrs::vec_as_names(nms, repair = "unique")
 )
 y <- rbind(c("original", "unique-ified"), x)
 glue::glue_data(justify(y), "{suffixed} {resuffixed}")
@@ -275,7 +280,7 @@ Examples of the tidyverse approach to making individual names syntactic versus [
 nms <- c("", NA, "(y)", "_z", ".2fa", "FALSE", "...", "..3")
 x <- cbind(
   original = nms,
-  tidy_syn = tibble:::make_syntactic(nms),
+  tidy_syn = vctrs:::make_syntactic(nms),
   base_syn = make.names(nms)
 )
 
