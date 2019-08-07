@@ -14,7 +14,7 @@ In an ideal world, when a dependency of your package changes its interface, you 
   with both versions, you can submit first, making life easier for CRAN and for
   the maintainer of the dependency.
   
-* User code is less likely to be effected. If your package only works with the
+* User code is less likely to be affected. If your package only works with the
   latest version of the dependency, then when a user upgrades your package, the
   dependency also must update. Upgrading multiple packages is more likely to
   affect user code than updating a single package.
