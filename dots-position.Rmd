@@ -8,7 +8,7 @@ source("common.R")
 
 ## What's the pattern?
 
-When you use `...` in a function, where should you put it? It's obvious that the data arguments must come first. But which should come next, the dots or the details? This patter tells you to place `...` between the data arguments (the required arguments that supply the key "data" to the function) and the details arguments (optional additional arguments that control the finer details of the function). 
+When you use `...` in a function, where should you put it? It's obvious that the data arguments must come first. But which should come next, the dots or the details? This pattern tells you to place `...` between the data arguments (the required arguments that supply the key "data" to the function) and the details arguments (optional additional arguments that control the finer details of the function). 
 
 ## What are some examples?
 
@@ -47,12 +47,17 @@ mean(c(2, 3, 10))
 
 ## What is it important?
 
-There are two primary advantages:
+There are three primary advantages:
 
 * It forces the user of your function to fully name the detail arguments, 
   because arguments that come after `...` are never matched by position
   or partially by name. Using full names for details arguments is good practice,
   because it makes code easier to read.
+
+* You can easily add new detail arguments without changing the meaning of 
+  existing function calls. This makes it easy to extend your function with
+  new capabilities, becaue you don't need to worry about changing existing 
+  code.
   
 * When coupled with "inspect the dots" (Chapter \@ref(dots-inspect)), 
   or "dot prefix" (Chapter \@ref(dots-prefix)) it minimises the chances that
