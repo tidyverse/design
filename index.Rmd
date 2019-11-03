@@ -1,9 +1,9 @@
 --- 
-title: "Tidyverse design principles"
+title: "Tidyverse design guide"
 author: ["Tidyverse team"]
 site: bookdown::bookdown_site
 output: bookdown::gitbook
-github-repo: tidyverse/principles
+github-repo: tidyverse/design
 documentclass: book
 ---
 

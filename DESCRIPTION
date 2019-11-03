@@ -1,5 +1,5 @@
-Package: principles
-Title: Tidyverse principles
+Package: design
+Title: Tidyverse design
 Version: 1.0.0
 Authors@R: c(
   person("Tidyverse", "Team", , "tidyverse@rstudio.com", c("aut", "cre"))
@@ -16,5 +16,5 @@ Imports:
     tibble (>= 2.0.1),
     tidyverse,
     vctrs
-URL: https://github.com/tidyverse/principles
-BugReports: https://github.com/tidyverse/principles/issues
+URL: https://github.com/tidyverse/design
+BugReports: https://github.com/tidyverse/design/issues
