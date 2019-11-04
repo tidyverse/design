@@ -17,5 +17,6 @@ Imports:
     tibble (>= 2.0.1),
     tidyverse,
     vctrs
+Remotes: r-lib/testthat
 URL: https://github.com/tidyverse/design
 BugReports: https://github.com/tidyverse/design/issues
