@@ -70,6 +70,11 @@ conditionMessage.fs_error_not_found <- function(cnd) {
 }
 ```
 
+```{r, include = FALSE}
+vctrs::s3_register("base::conditionMessage", "fs_error_not_found")
+```
+
+
 ```{r, eval = FALSE}
 stop_not_found("a.csv")
 #> Error: 'a.csv' not found
