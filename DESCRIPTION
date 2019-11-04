@@ -13,6 +13,7 @@ Imports:
     glue,
     nycflights13,
     rmarkdown,
+    testthat,
     tibble (>= 2.0.1),
     tidyverse,
     vctrs
