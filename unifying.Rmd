@@ -61,7 +61,7 @@ This principle is deeply connected to our beliefs about performance. Most import
 > 
 > --- Daniel H. H. Ingalls
 
-The most important API principle of the the tidyverse, it's to be consistent. We want to find the smallest possible set of key ideas and use them again and again. This is important because it makes the tidyverse easier to learn and remember. 
+The most important API principle of the tidyverse is to be consistent. We want to find the smallest possible set of key ideas and use them again and again. This is important because it makes the tidyverse easier to learn and remember. 
 
 (Another framing of this principle is [Less Volume, More Creativity][less-volume], which comes from Mike McCarthy, the head coach of the Green Bay Packers, and popularised in Statistics Education by [Randall Pruim][randy-pruim])
 
