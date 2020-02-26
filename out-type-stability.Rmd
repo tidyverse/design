@@ -6,7 +6,7 @@ source("common.R")
 
 The less you need to know about a function's inputs to predict the type of its output, the better. Ideally, a function should either always return the same type of thing, or return something that can be trivially computed from its inputs.
 
-If a function is __type-stable__ it satisifes two conditions:
+If a function is __type-stable__ it satisfies two conditions:
 
 * You can predict the output type based only on the input types 
   (not their values).
@@ -49,11 +49,11 @@ library(vctrs)
 
 ## More complicated examples
 
-Some functions are more complex because they take multiple input types and have to return a single output type. This includes functions like `c()` and `ifelse()`. The rules governing base R functions are idiosyntractic, and each function tends to apply it's own slightly different set of rules. Tidy functions should use the consistent set of rules provided by the [vctrs](https://vctrs.r-lib.org) package.
+Some functions are more complex because they take multiple input types and have to return a single output type. This includes functions like `c()` and `ifelse()`. The rules governing base R functions are idiosyncratic, and each function tends to apply it's own slightly different set of rules. Tidy functions should use the consistent set of rules provided by the [vctrs](https://vctrs.r-lib.org) package.
 
 ## Challenge: the median
 
-A more challenging example is `median()`. The median of a vector is a value that (as evenly as possible) splits the vector into a lower half and an upper half. In the absense of ties, `mean(x > median(x)) == mean(x <= median(x)) == 0.5`. The median is straightforward to compute for odd lengths: you simply order the vector and pick the value in the middle, i.e. `sort(x)[(length(x) - 1) / 2]`. It's clear that the type of the output should be the same type as `x`, and this algorithm can be applied to any vector that can be ordered.
+A more challenging example is `median()`. The median of a vector is a value that (as evenly as possible) splits the vector into a lower half and an upper half. In the absence of ties, `mean(x > median(x)) == mean(x <= median(x)) == 0.5`. The median is straightforward to compute for odd lengths: you simply order the vector and pick the value in the middle, i.e. `sort(x)[(length(x) - 1) / 2]`. It's clear that the type of the output should be the same type as `x`, and this algorithm can be applied to any vector that can be ordered.
 
 But what if the vector has an even length? In this case, there's no longer a unique median, and by convention we usually take the mean of the middle two numbers. 
 
@@ -71,7 +71,7 @@ median(factor(1:2))
 median(Sys.Date() + 0:1)
 ```
 
-To be clear, the problems that this cause in practice are quite small, but this makes analysis of `median()` more complex, and it makes it to know what principle you should adhere to when creating `median` methods for new vector classes.
+To be clear, the problems caused by this behaviour are quite small in practice, but it makes the analysis of `median()` more complex, and it makes it difficult to decide what principle you should adhere to when creating `median` methods for new vector classes.
 
 ```{r, error = TRUE}
 median("foo")
