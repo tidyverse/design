@@ -71,7 +71,7 @@ This is related to one of my favourite saying from the Python community:
 > 
 > --- Zen of Python
 
-This is a fairly restrictive philosophy, but it's workable with the tidyverse because the tidyverse is not R; you can always step outside the tidyverse and attack the problem a different way.
+The tidyverse aspires to put this philosophy into practice. However, because the tidyverse is embedded within the larger R ecosystem, applying this principle never needs to be 100% comprehensive. If you can't solve a problem from within the tidyverse, you can always step outside and do so with base R or another package. This also means that we don't have to rush to cover every possible use case; we can take our time to develop the best new solutions.
 
 The principle of consistency reveals itself in two primary ways: in function APIs and in data structures. The API of a function defines its external interface (independent of its internal implementation). Having consistent APIs means that each time you learn a function, learning the next function is a little easier; once you've mastered one package, mastering the next is easier. 
 
