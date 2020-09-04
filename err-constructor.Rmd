@@ -65,8 +65,8 @@ To generate the error message shown to the user, provide a `conditionMessage()` 
 
 ```{r}
 #' @export
-conditionMessage.fs_error_not_found <- function(cnd) {
-  glue::glue_data(cnd, "'{path}' not found")
+conditionMessage.fs_error_not_found <- function(c) {
+  glue::glue_data(c, "'{path}' not found")
 }
 ```
 
