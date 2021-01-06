@@ -13,7 +13,7 @@ pkg_funs("base") %>% funs_body_keep(has_call, "missing")
 
 ## What's the problem?
 
-If a function behaves differently when the default value is suppled explicitly, we say it has a __magical default__. Magical defaults are best avoided because they make it harder to interpret the function specification.
+If a function behaves differently when the default value is supplied explicitly, we say it has a __magical default__. Magical defaults are best avoided because they make it harder to interpret the function specification.
 
 ## What are some examples?
 
