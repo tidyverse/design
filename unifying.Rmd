@@ -45,7 +45,7 @@ A particularly useful tool from cognitive psychology is "cognitive load theory"[
 * By being __composable__ you can break down complex problems into bite sized
   pieces that you can easily hold in your head.
 
-Idea of "chunking" is important. Some setup cost to learn a new chunk, but once you've internalised it, it only takes up one spot in your working memory. In some sense the goal of the tidyverse is to discover the minimal set of chunks needed to do data science and have some sense of the priority of the remainder. 
+The idea of "chunking" is important. There is some setup cost to learn a new chunk, but once you've internalised it, it only takes up one spot in your working memory. In some sense the goal of the tidyverse is to discover the minimal set of chunks needed to do data science and have some sense of the priority of the remainder. 
 
 [^clt]: A good practical introduction is [Cognitive load theory in practice](https://www.cese.nsw.gov.au/images/stories/PDF/Cognitive_load_theory_practice_guide_AA.pdf) (PDF).
 
@@ -75,7 +75,7 @@ The tidyverse aspires to put this philosophy into practice. However, because the
 
 The principle of consistency reveals itself in two primary ways: in function APIs and in data structures. The API of a function defines its external interface (independent of its internal implementation). Having consistent APIs means that each time you learn a function, learning the next function is a little easier; once you've mastered one package, mastering the next is easier. 
 
-There are two ways that we make functions consistent that are so important that they're explicitly pull out as high-level principles below:
+There are two ways that we make functions consistent that are so important that they're explicitly pulled out as high-level principles below:
 
 * Functions should be composable: each individual function should tackle
   one well contained problem, and you solve complex real-world problems by

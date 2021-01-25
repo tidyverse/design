@@ -22,7 +22,7 @@ Not sure about common prefixes for a package. Works well for stringr (esp. with 
 
 Use suffixes for variations on a theme (e.g. `map_int()`, `map_lgl()`, `map_dbl()`; `str_locate()`, `str_locate_all()`.)
 
-Strive for thematic unity in related functions. Can you make related fuctions rhyme? Or have the same number of letters? Or similar background (i.e. all Germanic origins vs. French).
+Strive for thematic unity in related functions. Can you make related functions rhyme? Or have the same number of letters? Or similar background (i.e. all Germanic origins vs. French).
 
 ## Length
 
@@ -44,4 +44,3 @@ You can't expect to avoid conflicts with every existing CRAN package, but you sh
 
 * [I Shall Call It.. SomethingManager](https://blog.codinghorror.com/i-shall-call-it-somethingmanager/)
 * [The Poetry of Function Naming](http://blog.stephenwolfram.com/2010/10/the-poetry-of-function-naming/)
-
