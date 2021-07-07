@@ -56,7 +56,7 @@ There are three primary advantages:
 
 * You can easily add new detail arguments without changing the meaning of 
   existing function calls. This makes it easy to extend your function with
-  new capabilities, becaue you don't need to worry about changing existing 
+  new capabilities, because you don't need to worry about changing existing 
   code.
   
 * When coupled with "inspect the dots" (Chapter \@ref(dots-inspect)), 
