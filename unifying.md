@@ -1,0 +1,140 @@
+# Unifying principles
+
+The tidyverse is a language for solving data science challenges with R code. Its primary goal is to facilitate the conversation that a human has with a dataset, and we want to help dig a "pit of success" where the least-effort path trends towards a positive outcome. The primary tool to dig the pit is API design: by carefully considering the external interface to a function, we can help guide the user towards success. But it's also necessary to have some high level principles that guide how we think broadly about APIs, principles that we can use to "break ties" when other factors are balanced.
+
+The tidyverse has four guiding principles:
+
+* It is __human centered__, i.e. the tidyverse is designed specifically to
+  support the activities of a human data analyst.
+  
+* It is __consistent__, so that what you learn about one function or package
+  can be applied to another, and the number of special cases that you need
+  to remember is as small as possible.
+
+* It is __composable__, allowing you to solve complex problems by breaking
+  them down into small pieces, supporting a rapid cycle of exploratory 
+  iteration to find the best solution.
+  
+* It is __inclusive__, because the tidyverse is not just the collection of 
+  packages, but it is also the community of people who use them.
+
+These guiding principles are aspirational; they're not always fully realised in current tidyverse packages, but we strive to make them so. 
+
+### Related work {-}
+
+These principles are inspired by writings about the design of other systems: such as:
+
+* [The Unix philsophy][unix-philosophy]
+* [The Zen of Python][zen-python]
+* [Design Principles Behind Smalltalk][smalltalk-design]
+
+## Human centered
+
+> Programs must be written for people to read, and only incidentally
+> for machines to execute.
+> 
+> --- Hal Abelson
+
+Programming is a task performed by humans. To create effective programming tools we must explicitly recognise and acknowledge the role played by cognitive psychology. This is particularly important for R, because it's a language that's used primarily by non-programmers, and we want to make it as easy as possible for first-time and end-user programmers to learn the tidyverse. 
+
+A particularly useful tool from cognitive psychology is "cognitive load theory"[^clt]: we have a limited working memory, and anything we can do to reduce extraneous cognitive load helps the learner and user of the tidyverse. This motivates the next two principles:
+
+* By being __consistent__ you only need to learn and internalise one 
+  expression of an idea, and then you can apply that many times.
+  
+* By being __composable__ you can break down complex problems into bite sized
+  pieces that you can easily hold in your head.
+
+Idea of "chunking" is important. Some setup cost to learn a new chunk, but once you've internalised it, it only takes up one spot in your working memory. In some sense the goal of the tidyverse is to discover the minimal set of chunks needed to do data science and have some sense of the priority of the remainder. 
+
+[^clt]: A good practical introduction is [Cognitive load theory in practice](https://www.cese.nsw.gov.au/images/stories/PDF/Cognitive_load_theory_practice_guide_AA.pdf) (PDF).
+
+Other useful ideas come from design. One particularly powerful idea is that of "affordance": the exterior of a tool should suggest how to use it. We want to avoid ["Norman doors"][norman-doors] where the exterior clues and cues point you in the wrong direction.
+
+This principle is deeply connected to our beliefs about performance. Most importantly performance of code depends not only on how long it takes to run, but also how long it takes to _write_ and _read_. Human brains are typically slower than computers, so this means we spend a lot of time thinking about how to create intuitve interfaces, focussing on writing and reading speed. Intuitive interfaces sometimes are at odds with running speed, because writing the fastest code for a problem often requires designing the interface for performance rather than usability. Generally, we optimise first for humans, then use profiling to discover bottlenecks that cause friction in data analysis. Once we have identified an important bottleneck, then performance becomes a priority and we rewrite the existing code. Generally, we'll attempt to preserve the existing interface, only changing it when the performance implications are significant.
+
+## Consistent
+
+> A system should be built with a minimum set of unchangeable parts; 
+> those parts should be as general as possible; and all parts of the 
+> system should be held in a uniform framework.
+> 
+> --- Daniel H. H. Ingalls
+
+The most important API principle of the tidyverse is to be consistent. We want to find the smallest possible set of key ideas and use them again and again. This is important because it makes the tidyverse easier to learn and remember. 
+
+(Another framing of this principle is [Less Volume, More Creativity][less-volume], which comes from Mike McCarthy, the head coach of the Green Bay Packers, and popularised in Statistics Education by [Randall Pruim][randy-pruim])
+
+This is related to one of my favourite saying from the Python community:
+
+> There should be one—and preferably only one—obvious way to do it.
+> 
+> --- Zen of Python
+
+The tidyverse aspires to put this philosophy into practice. However, because the tidyverse is embedded within the larger R ecosystem, applying this principle never needs to be 100% comprehensive. If you can't solve a problem from within the tidyverse, you can always step outside and do so with base R or another package. This also means that we don't have to rush to cover every possible use case; we can take our time to develop the best new solutions.
+
+The principle of consistency reveals itself in two primary ways: in function APIs and in data structures. The API of a function defines its external interface (independent of its internal implementation). Having consistent APIs means that each time you learn a function, learning the next function is a little easier; once you've mastered one package, mastering the next is easier. 
+
+There are two ways that we make functions consistent that are so important that they're explicitly pull out as high-level principles below:
+
+* Functions should be composable: each individual function should tackle
+  one well contained problem, and you solve complex real-world problems by
+  composing many individual functions.
+  
+* Overall, the API should feel "functional", which is a technical term for
+  the programming paradigm favoured by the tidyverse
+
+But consistency also applies to data structures: we want to ensure we use the same data structures again and again and again. Principally, we expect data to be stored in [tidy](https://www.jstatsoft.org/article/view/v059i10) data frames or [tibbles](https://github.com/hadley/tibble/). This means that tools for converting other formats can be centralised in one place, and that packages development is simplified by assuming that data is already in a standard format. 
+
+Valuing consistency is a trade-off, and we explicitly value it over performance. There are cases where a different data structure or a different interface might make a solution simpler to express or much faster. However, one-off solutions create a much higher cognitive load.
+
+## Composable
+
+> No matter how complex and polished the individual operations are, 
+> it is often the quality of the glue that most directly determines 
+> the power of the system. 
+>
+> --- Hal Abelson
+
+A powerful strategy for solving complex problems is to combine many simple pieces. Each piece should be easily understood in isolation, and have a standard way of combining with other pieces. 
+
+Within the tidyverse, we prefer to compose functions using a single tool: the pipe, `%>%`. There are two notable exceptions to this principle: ggplot2 composes graphical elements with `+`, and httr composes requests primarily through `...`. These are not bad techniques in isolation, and they are well suited to the domains in which they are used, but the disadvantages of inconsistency outweigh any local advantages.
+
+For smaller domains, this means carefully designing functions so that the inputs and outputs align (e.g. the output from `stringr::str_locate()` can easily be fed into `str_sub()`). For middling domains, this means drawing many [feature matrices](https://www.evanmiller.org/feature-matrix.html) and ensuring that they are dense (e.g. consider the map family in purrr). For larger domains, this means carefully thinking about algebras and grammars, identifying the atoms of a problem and the ways in which they might be composed to solve bigger problems.
+
+We decompose large problems into smaller, more tractable ones by creating and combining functions that transform data rather than by creating objects whose state changes over time.
+
+Other techniques that tend to facilitate composability:
+
+* Functions are data: this leads some of the most impactful techniques for 
+  functional programming, which allow you to reduce code duplication.
+
+* Immutable objects. Enforces independence between components.
+
+* Partition side-effects.
+
+* Type-stable.
+
+## Inclusive
+
+We value not just the interface between the human and the computer, but also the interface between humans. We want the tidyverse to be a diverse, inclusive, and welcoming community. 
+
+* We develop educational materials that are accessible to people with many
+  different skill levels.
+
+* We prefer explicit codes of conduct. 
+
+* We create safe and friendly communities. We believe that kindness should
+  be a core value of communities.
+
+* We think about how we can help others who are not like us 
+  (they may be visually impaired or may not speak English).
+
+We also appreciate the paradox of tolerance: the only people that we do not welcome are the intolerant.
+
+[norman-doors]: https://99percentinvisible.org/article/norman-doors/
+[less-volume]: http://www.calvin.edu/~rpruim/talks/LessVolume/2015-06-24-AKL/LessVolume-2015-06-24.html#1
+[randy-pruim]: https://www.calvin.edu/~rpruim/
+[smalltalk-design]: https://refs.devinmcgloin.com/smalltalk/Design-Principles-Behind-Smalltalk.pdf
+[zen-python]: https://www.python.org/dev/peps/pep-0020/
+[unix-philosophy]: https://homepage.cs.uri.edu/~thenry/resources/unix_art/ch01s06.html

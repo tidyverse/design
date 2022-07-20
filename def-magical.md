@@ -1,0 +1,235 @@
+# Avoid magical defaults {#def-magical}
+
+
+
+
+
+## What's the problem?
+
+If a function behaves differently when the default value is supplied explicitly, we say it has a __magical default__. Magical defaults are best avoided because they make it harder to interpret the function specification.
+
+## What are some examples?
+
+*   In `data.frame()`, the default argument for `row.names` is `NULL`, but
+    if you supply it directly you get a different result:
+
+    
+    ```r
+    fun_call(data.frame)
+    #> base::data.frame(..., row.names = NULL, check.rows = FALSE, check.names = TRUE, 
+    #>     fix.empty.names = TRUE, stringsAsFactors = FALSE)
+    
+    x <- setNames(nm = letters[1:3])
+    data.frame(x)
+    #>   x
+    #> a a
+    #> b b
+    #> c c
+    data.frame(x, row.names = NULL)
+    #>   x
+    #> 1 a
+    #> 2 b
+    #> 3 c
+    ```
+    
+*   In `hist()`, the default value of `xlim` is `range(breaks)`, and the
+    default value for `breaks` is `"Sturges"`. `range("Sturges")` returns 
+    `c("Sturges", "Sturges")` which doesn't work when supplied explicitly:
+    
+    
+    ```r
+    fun_call(hist.default)
+    #> graphics::hist.default(x, breaks = "Sturges", freq = NULL, probability = !freq, 
+    #>     include.lowest = TRUE, right = TRUE, fuzz = 1e-07, density = NULL, 
+    #>     angle = 45, col = "lightgray", border = NULL, main = paste("Histogram of", 
+    #>         xname), xlim = range(breaks), ylim = NULL, xlab = xname, 
+    #>     ylab, axes = TRUE, plot = TRUE, labels = FALSE, nclass = NULL, 
+    #>     warn.unused = TRUE, ...)
+    
+    hist(1:10, xlim = c("Sturges", "Sturges"))
+    #> Error in plot.window(xlim, ylim, "", ...): invalid 'xlim' value
+    ```
+
+*   In `Vectorize()`, the default argument for `vectorize.args` is `arg.names`, 
+    but this variable is defined inside of `Vectorize()`, so if you supply it
+    explicitly you get an error.
+
+    
+    ```r
+    fun_call(Vectorize)
+    #> base::Vectorize(FUN, vectorize.args = arg.names, SIMPLIFY = TRUE, 
+    #>     USE.NAMES = TRUE)
+    
+    Vectorize(rep.int, vectorize.args = arg.names)
+    #> Error in Vectorize(rep.int, vectorize.args = arg.names): object 'arg.names' not found
+    ```
+
+*   In `rbeta()`, the default value of `ncp` is 0, but if you explicitly supply
+    it the function uses a different algorithm:
+    
+    
+    ```r
+    rbeta
+    #> function (n, shape1, shape2, ncp = 0) 
+    #> {
+    #>     if (missing(ncp)) 
+    #>         .Call(C_rbeta, n, shape1, shape2)
+    #>     else {
+    #>         X <- rchisq(n, 2 * shape1, ncp = ncp)
+    #>         X/(X + rchisq(n, 2 * shape2))
+    #>     }
+    #> }
+    #> <bytecode: 0x5592d51d0128>
+    #> <environment: namespace:stats>
+    ```
+    
+*   In `table()`, the default value of `dnn` is `list.names(...)`; but 
+    `list.names()` is only defined inside of `table()`. 
+    
+*   `readr::read_csv()` has `progress = show_progress()`, but until version
+    1.3.1, `show_progress()` was not exported from the package. That means if you 
+    attempted to run it yourself, you'd see an error message:
+   
+    
+    ```r
+    show_progress()
+    #> Error in show_progress(): could not find function "show_progress"
+    ```
+
+*   In `usethis::use_rmarkdown_template()`, `template_dir` has the default value
+    of `tolower(asciify(template_name))`, but `asciify` is not exported. That
+    means there's no way to interactively explore this default value.
+
+## What are the exceptions?
+
+It's ok to use this behaviour when you want the default value of one argument to be the same as another. For example, take `rlang::set_names()`, which allows you to create a named vector from two inputs:
+
+
+```r
+fun_call(set_names)
+#> rlang::set_names(x, nm = x, ...)
+
+set_names(1:3, letters[1:3])
+#> a b c 
+#> 1 2 3
+```
+
+The default value for the names is the vector itself. This provides a convenient shortcut for naming a vector with itself:
+
+
+```r
+set_names(letters[1:3])
+#>   a   b   c 
+#> "a" "b" "c"
+```
+
+You can see this same technique in `merge()`, where `all.x` and `all.y` default to the same value as `all`, and in `factor()` where `labels` defaults to the same value as `levels`.
+
+If you use this technique, make sure that you never use the value of an argument that comes later in the argument list. For example, in `file.copy()` `overwrite` defaults to the same value as `recursive`, but the `recursive` argument is defined after `overwrite`:
+
+
+```r
+fun_call(file.copy)
+#> base::file.copy(from, to, overwrite = recursive, recursive = FALSE, 
+#>     copy.mode = TRUE, copy.date = FALSE)
+```
+
+This makes the defaults arguments harder to understand because you can't just read from left-to-right.
+
+## What causes the problem?
+
+There are three primary causes:
+
+*   Overuse of lazy evaluation of default values, which are evaluated in the
+    environment of the function, as described in 
+    [Advanced R](https://adv-r.hadley.nz/functions.html#default-arguments). 
+    Here's a simple example:
+    
+    
+    ```r
+    f1 <- function(x = y) {
+      y <- trunc(Sys.time(), units = "months")
+      x
+    }
+    
+    y <- 1
+    f1()
+    #> [1] "2022-07-01 UTC"
+    f1(y)
+    #> [1] 1
+    ```
+    
+    When `x` takes the value `y` from its default, it's evaluated inside the 
+    function, yielding `1`. When `y` is supplied explicitly, it is evaluated 
+    in the caller environment, yielding `2`.
+
+*   Use of `missing()` so that the default value is never consulted:
+
+    
+    ```r
+    f2 <- function(x = 1) {
+      if (missing(x)) {
+        2
+      } else {
+        x
+      }
+    }
+    
+    f2()
+    #> [1] 2
+    f2(1)
+    #> [1] 1
+    ```
+
+*   In packages, it's easy to use a non-exported function without thinking 
+    about it. This function is available to you, the package author, but not 
+    the user of the package, which makes it harder for them to understand
+    how a package works.
+
+## How do I remediate the problem?
+
+This problem is generally easy to avoid for new functions:
+
+* Don't use default values that depend on variables defined inside the function.
+
+* Don't use `missing()`[^missing-exceptions].
+  
+* Don't use unexported functions.
+
+[^missing-exceptions]: The only exceptions are described in Sections \@ref(args-mutually-exclusive) and \@ref(args-compound).
+
+If you have a made a mistake in an older function you can remediate it by using a `NULL` default, as described in Chapter \@ref(def-short). If the problem is caused by an unexported function, you can also choose to document and export it.
+
+
+```r
+`%||%` <- function(x, y) if (is.null(x)) y else x
+
+f1_better <- function(x = NULL) {
+  y <- trunc(Sys.time(), units = "weeks")
+  x <- x %||% y
+  
+  x
+}
+
+f2_better <- function(x = NULL) {
+  x <- x %||% 2
+  
+  x
+}
+```
+
+This modification should not break existing code, because expands the function interface: all previous code will continue to work, and the function will also work if the argument is passed `NULL` input (which probably didn't previously).
+
+For functions like `data.frame()` where `NULL` is already a permissible value, you'll need to use a sentinel object, as described in Section \@ref(args-default-sentinel).
+
+
+```r
+sentinel <- function() structure(list(), class = "sentinel")
+is_sentinel <- function(x) inherits(x, "sentinel")
+
+data.frame_better <- function(..., row.names = sentinel()) {
+  if (is_sentinel(row.names)) {
+    # old default behaviour
+  }
+}
+```

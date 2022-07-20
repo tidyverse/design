@@ -1,0 +1,294 @@
+# Case study: `setNames()`
+
+
+
+## What does `setNames()` do?
+
+`stats::setNames()` is a shorthand that allows you to set vector names inline (it's a little surprising that it lives in the stats package). It has a simple definition:
+
+
+```r
+setNames <- function(object = nm, nm) {
+  names(object) <- nm
+  object
+}
+```
+
+And is easy to use:
+
+
+```r
+# Instead of
+x <- 1:3
+names(x) <- c("a", "b", "c")
+
+# Can write
+x <- setNames(1:3, c("a", "b", "c"))
+x
+#> a b c 
+#> 1 2 3
+```
+
+This function is short (just two lines of code!) but yields a surprisingly rich analysis.
+
+## How can we improve the names?
+
+Firstly, I prefer snake_case to camelCase, so I'd call the function `set_names()`. Then we need to consider the arguments:
+
+* I think the first argument, `object`, would be better called `x` in order 
+  to emphasise that this function only works with vectors (because only 
+  vectors have names).
+
+* The second argument, `nm` is rather terse, and I don't see any disadvantage 
+  in calling it `names`. I think you could also argue that it should be 
+  called `y` since its meaning should be obvious from the function name.
+
+This yields:
+
+
+```r
+set_names <- function(x = names, names) {
+  names(x) <- names
+  x
+}
+```
+
+## What about the default values?
+
+The default values of `setNames()` are a little hard to understand, because the default value of the first argument is the second argument. It was defined this way to make it possible to name a character vector with itself:
+
+
+```r
+setNames(nm = c("apple", "banana", "cake"))
+#>    apple   banana     cake 
+#>  "apple" "banana"   "cake"
+```
+
+But that decision leads to a function signature that violates one of the principles of Chapter \@ref(args-data-details): a required argument comes after an optional argument. Fortunately, we can fix this easily and still preserve the useful ability to name a vector with itself:
+
+
+```r
+set_names <- function(x, names = x) {
+  names(x) <- names
+  x
+}
+
+set_names(c("apple", "banana", "cake"))
+#>    apple   banana     cake 
+#>  "apple" "banana"   "cake"
+```
+
+This helps to emphasise that `x` is the primary argument.
+
+## What about bad inputs?
+
+Now that we've considered how the function works with correct inputs, it's time to consider how it should work with malformed inputs. The current function checks neither the length not the type:
+
+
+```r
+set_names(1:3, "a")
+#>    a <NA> <NA> 
+#>    1    2    3
+
+set_names(1:3, list(letters[1:3], letters[4], letters[5:6]))
+#> c("a", "b", "c")                d      c("e", "f") 
+#>                1                2                3
+```
+
+We can resolve this by asserting that the names should always be a character vector, and should have the same length as `x`:
+
+
+```r
+set_names <- function(x, names = x) {
+  if (!is.character(names) || length(names) != length(x)) {
+    stop("`names` must be a character vector the same length as `x`.", call. = FALSE)
+  }
+  
+  names(x) <- names
+  x
+}
+
+set_names(1:3, "a")
+#> Error: `names` must be a character vector the same length as `x`.
+set_names(1:3, list(letters[1:3], letters[4], letters[5:6]))
+#> Error: `names` must be a character vector the same length as `x`.
+```
+
+You could also frame this test using vctrs assertions: 
+
+
+```r
+library(vctrs)
+
+set_names <- function(x, names = x) {
+  vec_assert(x)
+  vec_assert(names, ptype = character(), size = length(x))
+
+  names(x) <- names
+  x
+}
+```
+
+Note that I slipped in an assertion that `x` should be a vector. This slightly improves the error message if you accidentally supply the wrong sort of input to `set_names()`:
+
+
+```r
+setNames(mean, 1:3)
+#> Error in names(object) <- nm: names() applied to a non-vector
+set_names(mean, 1:3)
+#> Error in `set_names()`:
+#> ! `x` must be a vector, not a function.
+```
+
+Note that we're simply checking the length of `names` here, rather than recycling it, i.e. the invariant is `vec_size(set_names(x, y))` is `vec_size(x)`, not `vec_size_common(x, y)`. I think this is the correct behaviour because you usually add names to a vector to create a lookup table, and a lookup table is not useful if there are duplicated names. This makes `set_names()` less general in return for better error messages when you do something suspicious (and you can always use an explicit `rep_along()` if do want this behaviour.)
+
+## How could we extend this function?
+
+Now that we've modified the function so it doesn't violate the principles in this book, we can think about how we might extend it. Currently the function is only useful for setting names to a constant. Maybe we could extend it to also make it easier to change existing names? One way to do that would be to allow `names` to be a function:
+
+
+```r
+set_names <- function(x, names = x) {
+  vec_assert(x)
+  
+  if (is.function(names)) {
+    names <- names(base::names(x))
+  }
+  vec_assert(names, ptype = character(), size = length(x))
+
+  names(x) <- names
+  x
+}
+
+x <- c(a = 1, b = 2, c = 3)
+set_names(x, toupper)
+#> A B C 
+#> 1 2 3
+```
+
+We could also support anonymous function formula shortcut used in many places in the tidyverse.
+
+
+```r
+set_names <- function(x, names = x) {
+  vec_assert(x)
+  
+  if (is.function(names) || rlang::is_formula(names)) {
+    fun <- rlang::as_function(names)
+    names <- fun(base::names(x))
+  }
+  vec_assert(names, ptype = character(), size = length(x))
+
+  names(x) <- names
+  x
+}
+
+x <- c(a = 1, b = 2, c = 3)
+set_names(x, ~ paste0("x-", .))
+#> x-a x-b x-c 
+#>   1   2   3
+```
+
+Now `set_names()` supports overriding and modifying names. What about removing them? It turns out that `setNames()` supported this, but our stricter checks prohibit:
+
+
+```r
+x <- c(a = 1, b = 2, c = 3)
+setNames(x, NULL)
+#> [1] 1 2 3
+set_names(x, NULL)
+#> Error in `set_names()`:
+#> ! `names` must be a vector, not NULL.
+```
+
+We can fix this with another clause:
+
+
+```r
+set_names <- function(x, names = x) {
+  vec_assert(x)
+  
+  if (!is.null(names)) {
+    if (is.function(names) || rlang::is_formula(names)) {
+      fun <- rlang::as_function(names)
+      names <- fun(base::names(x))
+    }
+    
+  }
+
+  names(x) <- names
+  x
+}
+
+x <- c(a = 1, b = 2, c = 3)
+set_names(x, NULL)
+#> [1] 1 2 3
+```
+
+However, I think this has muddied the logic. To resolve it, I think we should pull out the checking code into a separate function. After trying out a [few approaches](https://github.com/tidyverse/principles/issues/79), I ended up with:
+
+
+```r
+check_names <- function(names, x) {
+  if (is.null(names)) {
+    names
+  } else if (vec_is(names)) {
+    vec_assert(names, ptype = character(), size = length(x))  
+  } else if (is.function(names)) {
+    check_names_2(names(base::names(x)), x)
+  } else if (rlang::is.formula(names)) {
+    check_names_2(rlang::as_function(names), x)
+  } else {
+    rlang::abort("`names` must be NULL, a function or formula, or a vector")
+  }
+}
+```
+
+This then replaces `vec_assert()` in `set_names()`. I separate the input checking and implementation with a blank line to help visually group the parts of the function.
+
+
+```r
+set_names <- function(x, names = x) {
+  vec_assert(x)
+  names <- check_names(names, x)
+  
+  names(x) <- names
+  x
+}
+```
+
+We _could_ simplify the function even further, but I think this is a bad idea becaues it mingles input validation with implementation:
+
+
+```r
+# Don't do this
+set_names <- function(x, names = x) {
+  vec_assert(x)
+  names(x) <- check_names(names, x)
+  x
+}
+
+# Or even
+set_names <- function(x, names = x) {
+  `names<-`(vec_assert(x), check_names(names, x))
+}
+```
+
+## Compared to `rlang::set_names()`
+
+If you're familiar with rlang, you might notice that we've ended up with something rather similar to `rlang::set_names()`. However, these careful analysis in this chapter has lead to a few differences. `rlang::set_names()`:
+
+* Calls the second argument `nm`, instead of something more descriptive.
+  I think this is simply because we never sat down and fully considered the
+  interface.
+
+* Coerces `nm` to character vector. This allows `rlang::set_names(1:4)` to
+  automatically name the vector, but this seems a relatively weak new feature
+  in return for the cost of not throwing an error message if you provide an
+  unsual vector type. (Both lists and data frames have `as.character()` methods
+  so this will work for basically any type of vector, even if completely 
+  inappropriate.)
+
+* Passes `...` on to function `nm`. I now think that decision was a 
+  mistake: it substantially complicates the interface in return for a
+  relatively small investment.

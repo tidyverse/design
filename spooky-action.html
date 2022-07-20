@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>31 Spooky action | Tidyverse design guide</title>
+  <meta name="description" content="31 Spooky action | Tidyverse design guide" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="31 Spooky action | Tidyverse design guide" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="tidyverse/design" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="31 Spooky action | Tidyverse design guide" />
+  
+  
+  
+
+<meta name="author" content="Tidyverse team" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="side-effect-soup.html"/>
+<link rel="next" href="glossary.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115082821-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-115082821-1');
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">tidyverse design principles</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a></li>
+<li class="chapter" data-level="1" data-path="structure.html"><a href="structure.html"><i class="fa fa-check"></i><b>1</b> Structure</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="structure.html"><a href="structure.html#implementation"><i class="fa fa-check"></i><b>1.1</b> Implementation</a></li>
+<li class="chapter" data-level="1.2" data-path="structure.html"><a href="structure.html#interface"><i class="fa fa-check"></i><b>1.2</b> Interface</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="structure.html"><a href="structure.html#inputs"><i class="fa fa-check"></i><b>1.2.1</b> Inputs</a></li>
+<li class="chapter" data-level="1.2.2" data-path="structure.html"><a href="structure.html#output"><i class="fa fa-check"></i><b>1.2.2</b> Output</a></li>
+<li class="chapter" data-level="1.2.3" data-path="structure.html"><a href="structure.html#errors"><i class="fa fa-check"></i><b>1.2.3</b> Errors</a></li>
+<li class="chapter" data-level="1.2.4" data-path="structure.html"><a href="structure.html#side-effects"><i class="fa fa-check"></i><b>1.2.4</b> Side-effects</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="unifying-principles.html"><a href="unifying-principles.html"><i class="fa fa-check"></i><b>2</b> Unifying principles</a>
+<ul>
+<li class="chapter" data-level="" data-path="unifying-principles.html"><a href="unifying-principles.html#related-work"><i class="fa fa-check"></i>Related work</a></li>
+<li class="chapter" data-level="2.1" data-path="unifying-principles.html"><a href="unifying-principles.html#human-centered"><i class="fa fa-check"></i><b>2.1</b> Human centered</a></li>
+<li class="chapter" data-level="2.2" data-path="unifying-principles.html"><a href="unifying-principles.html#consistent"><i class="fa fa-check"></i><b>2.2</b> Consistent</a></li>
+<li class="chapter" data-level="2.3" data-path="unifying-principles.html"><a href="unifying-principles.html#composable"><i class="fa fa-check"></i><b>2.3</b> Composable</a></li>
+<li class="chapter" data-level="2.4" data-path="unifying-principles.html"><a href="unifying-principles.html#inclusive"><i class="fa fa-check"></i><b>2.4</b> Inclusive</a></li>
+</ul></li>
+<li class="part"><span><b>I Implementation</b></span></li>
+<li class="chapter" data-level="3" data-path="names-attribute.html"><a href="names-attribute.html"><i class="fa fa-check"></i><b>3</b> Names attribute</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="names-attribute.html"><a href="names-attribute.html#coverage-in-tidyverse-style-guide"><i class="fa fa-check"></i><b>3.1</b> Coverage in tidyverse style guide</a></li>
+<li class="chapter" data-level="3.2" data-path="names-attribute.html"><a href="names-attribute.html#the-names-attribute-of-an-object"><i class="fa fa-check"></i><b>3.2</b> The <code>names</code> attribute of an object</a></li>
+<li class="chapter" data-level="3.3" data-path="names-attribute.html"><a href="names-attribute.html#minimal-unique-universal"><i class="fa fa-check"></i><b>3.3</b> Minimal, unique, universal</a></li>
+<li class="chapter" data-level="3.4" data-path="names-attribute.html"><a href="names-attribute.html#minimal-names"><i class="fa fa-check"></i><b>3.4</b> Minimal names</a></li>
+<li class="chapter" data-level="3.5" data-path="names-attribute.html"><a href="names-attribute.html#unique-names"><i class="fa fa-check"></i><b>3.5</b> Unique names</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="names-attribute.html"><a href="names-attribute.html#making-names-unique"><i class="fa fa-check"></i><b>3.5.1</b> Making names unique</a></li>
+<li class="chapter" data-level="3.5.2" data-path="names-attribute.html"><a href="names-attribute.html#roundtrips"><i class="fa fa-check"></i><b>3.5.2</b> Roundtrips</a></li>
+<li class="chapter" data-level="3.5.3" data-path="names-attribute.html"><a href="names-attribute.html#when-is-minimal-better-than-unique"><i class="fa fa-check"></i><b>3.5.3</b> When is minimal better than unique?</a></li>
+<li class="chapter" data-level="3.5.4" data-path="names-attribute.html"><a href="names-attribute.html#ugly-with-a-purpose"><i class="fa fa-check"></i><b>3.5.4</b> Ugly, with a purpose</a></li>
+<li class="chapter" data-level="3.5.5" data-path="names-attribute.html"><a href="names-attribute.html#why-so-many-dots"><i class="fa fa-check"></i><b>3.5.5</b> Why so many dots?</a></li>
+<li class="chapter" data-level="3.5.6" data-path="names-attribute.html"><a href="names-attribute.html#why-dots-in-the-first-place"><i class="fa fa-check"></i><b>3.5.6</b> Why dot(s) in the first place?</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="names-attribute.html"><a href="names-attribute.html#universal-names"><i class="fa fa-check"></i><b>3.6</b> Universal names</a>
+<ul>
+<li class="chapter" data-level="3.6.1" data-path="names-attribute.html"><a href="names-attribute.html#syntactic-names"><i class="fa fa-check"></i><b>3.6.1</b> Syntactic names</a></li>
+<li class="chapter" data-level="3.6.2" data-path="names-attribute.html"><a href="names-attribute.html#making-an-individual-name-syntactic"><i class="fa fa-check"></i><b>3.6.2</b> Making an individual name syntactic</a></li>
+<li class="chapter" data-level="3.6.3" data-path="names-attribute.html"><a href="names-attribute.html#why-universal"><i class="fa fa-check"></i><b>3.6.3</b> Why universal?</a></li>
+<li class="chapter" data-level="3.6.4" data-path="names-attribute.html"><a href="names-attribute.html#making-names-universal"><i class="fa fa-check"></i><b>3.6.4</b> Making names universal</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="names-attribute.html"><a href="names-attribute.html#messaging-user-about-name-repair"><i class="fa fa-check"></i><b>3.7</b> Messaging user about name repair</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="call-data-details.html"><a href="call-data-details.html"><i class="fa fa-check"></i><b>4</b> Name details arguments</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="call-data-details.html"><a href="call-data-details.html#what-are-data-and-details-arguments"><i class="fa fa-check"></i><b>4.1</b> What are data and details arguments?</a></li>
+<li class="chapter" data-level="4.2" data-path="call-data-details.html"><a href="call-data-details.html#whats-the-pattern"><i class="fa fa-check"></i><b>4.2</b> What’s the pattern?</a></li>
+<li class="chapter" data-level="4.3" data-path="call-data-details.html"><a href="call-data-details.html#why-is-this-useful"><i class="fa fa-check"></i><b>4.3</b> Why is this useful?</a></li>
+<li class="chapter" data-level="4.4" data-path="call-data-details.html"><a href="call-data-details.html#what-are-the-exceptions"><i class="fa fa-check"></i><b>4.4</b> What are the exceptions?</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="function-names.html"><a href="function-names.html"><i class="fa fa-check"></i><b>5</b> Function names</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="function-names.html"><a href="function-names.html#nouns-vs-verbs"><i class="fa fa-check"></i><b>5.1</b> Nouns vs verbs</a></li>
+<li class="chapter" data-level="5.2" data-path="function-names.html"><a href="function-names.html#function-families"><i class="fa fa-check"></i><b>5.2</b> Function families</a></li>
+<li class="chapter" data-level="5.3" data-path="function-names.html"><a href="function-names.html#length"><i class="fa fa-check"></i><b>5.3</b> Length</a></li>
+<li class="chapter" data-level="5.4" data-path="function-names.html"><a href="function-names.html#conflicts"><i class="fa fa-check"></i><b>5.4</b> Conflicts</a></li>
+<li class="chapter" data-level="5.5" data-path="function-names.html"><a href="function-names.html#techniques"><i class="fa fa-check"></i><b>5.5</b> Techniques</a></li>
+<li class="chapter" data-level="5.6" data-path="function-names.html"><a href="function-names.html#other-good-advice"><i class="fa fa-check"></i><b>5.6</b> Other good advice</a></li>
+</ul></li>
+<li class="part"><span><b>II Interface: inputs</b></span></li>
+<li class="chapter" data-level="6" data-path="args-hidden.html"><a href="args-hidden.html"><i class="fa fa-check"></i><b>6</b> Avoid hidden arguments</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="args-hidden.html"><a href="args-hidden.html#whats-the-problem"><i class="fa fa-check"></i><b>6.1</b> What’s the problem?</a></li>
+<li class="chapter" data-level="6.2" data-path="args-hidden.html"><a href="args-hidden.html#what-are-some-examples"><i class="fa fa-check"></i><b>6.2</b> What are some examples?</a></li>
+<li class="chapter" data-level="6.3" data-path="args-hidden.html"><a href="args-hidden.html#why-is-it-important"><i class="fa fa-check"></i><b>6.3</b> Why is it important?</a></li>
+<li class="chapter" data-level="6.4" data-path="args-hidden.html"><a href="args-hidden.html#how-can-i-remediate-the-problem"><i class="fa fa-check"></i><b>6.4</b> How can I remediate the problem?</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="args-data-details.html"><a href="args-data-details.html"><i class="fa fa-check"></i><b>7</b> Data, descriptors, details</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="args-data-details.html"><a href="args-data-details.html#whats-the-pattern-1"><i class="fa fa-check"></i><b>7.1</b> What’s the pattern?</a></li>
+<li class="chapter" data-level="7.2" data-path="args-data-details.html"><a href="args-data-details.html#what-are-some-examples-1"><i class="fa fa-check"></i><b>7.2</b> What are some examples?</a></li>
+<li class="chapter" data-level="7.3" data-path="args-data-details.html"><a href="args-data-details.html#why-is-it-important-1"><i class="fa fa-check"></i><b>7.3</b> Why is it important?</a></li>
+<li class="chapter" data-level="7.4" data-path="args-data-details.html"><a href="args-data-details.html#how-do-i-avoid-the-problem"><i class="fa fa-check"></i><b>7.4</b> How do I avoid the problem?</a></li>
+<li class="chapter" data-level="7.5" data-path="args-data-details.html"><a href="args-data-details.html#how-do-i-remediate-past-mistakes"><i class="fa fa-check"></i><b>7.5</b> How do I remediate past mistakes?</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="args-independence.html"><a href="args-independence.html"><i class="fa fa-check"></i><b>8</b> Avoid dependencies between arguments</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="args-independence.html"><a href="args-independence.html#whats-the-problem-1"><i class="fa fa-check"></i><b>8.1</b> What’s the problem?</a></li>
+<li class="chapter" data-level="8.2" data-path="args-independence.html"><a href="args-independence.html#what-are-some-examples-2"><i class="fa fa-check"></i><b>8.2</b> What are some examples?</a></li>
+<li class="chapter" data-level="8.3" data-path="args-independence.html"><a href="args-independence.html#why-is-this-important"><i class="fa fa-check"></i><b>8.3</b> Why is this important?</a></li>
+<li class="chapter" data-level="8.4" data-path="args-independence.html"><a href="args-independence.html#how-do-i-remediate"><i class="fa fa-check"></i><b>8.4</b> How do I remediate?</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="args-independence.html"><a href="args-independence.html#cs-fct-lump"><i class="fa fa-check"></i><b>8.4.1</b> Case study: <code>fct_lump()</code></a></li>
+<li class="chapter" data-level="8.4.2" data-path="args-independence.html"><a href="args-independence.html#case-study-grepl-vs-stringrstr_detect"><i class="fa fa-check"></i><b>8.4.2</b> Case study: <code>grepl()</code> vs <code>stringr::str_detect()</code></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="case-study-setnames.html"><a href="case-study-setnames.html"><i class="fa fa-check"></i><b>9</b> Case study: <code>setNames()</code></a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="case-study-setnames.html"><a href="case-study-setnames.html#what-does-setnames-do"><i class="fa fa-check"></i><b>9.1</b> What does <code>setNames()</code> do?</a></li>
+<li class="chapter" data-level="9.2" data-path="case-study-setnames.html"><a href="case-study-setnames.html#how-can-we-improve-the-names"><i class="fa fa-check"></i><b>9.2</b> How can we improve the names?</a></li>
+<li class="chapter" data-level="9.3" data-path="case-study-setnames.html"><a href="case-study-setnames.html#what-about-the-default-values"><i class="fa fa-check"></i><b>9.3</b> What about the default values?</a></li>
+<li class="chapter" data-level="9.4" data-path="case-study-setnames.html"><a href="case-study-setnames.html#what-about-bad-inputs"><i class="fa fa-check"></i><b>9.4</b> What about bad inputs?</a></li>
+<li class="chapter" data-level="9.5" data-path="case-study-setnames.html"><a href="case-study-setnames.html#how-could-we-extend-this-function"><i class="fa fa-check"></i><b>9.5</b> How could we extend this function?</a></li>
+<li class="chapter" data-level="9.6" data-path="case-study-setnames.html"><a href="case-study-setnames.html#compared-to-rlangset_names"><i class="fa fa-check"></i><b>9.6</b> Compared to <code>rlang::set_names()</code></a></li>
+</ul></li>
+<li class="part"><span><b>III Interface: default values</b></span></li>
+<li class="chapter" data-level="10" data-path="def-required.html"><a href="def-required.html"><i class="fa fa-check"></i><b>10</b> Required args shouldn’t have defaults</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="def-required.html"><a href="def-required.html#whats-the-problem-2"><i class="fa fa-check"></i><b>10.1</b> What’s the problem?</a></li>
+<li class="chapter" data-level="10.2" data-path="def-required.html"><a href="def-required.html#what-are-some-examples-3"><i class="fa fa-check"></i><b>10.2</b> What are some examples?</a></li>
+<li class="chapter" data-level="10.3" data-path="def-required.html"><a href="def-required.html#what-are-the-exceptions-1"><i class="fa fa-check"></i><b>10.3</b> What are the exceptions?</a>
+<ul>
+<li class="chapter" data-level="10.3.1" data-path="def-required.html"><a href="def-required.html#args-mutually-exclusive"><i class="fa fa-check"></i><b>10.3.1</b> Pair of mututally exclusive arguments</a></li>
+<li class="chapter" data-level="10.3.2" data-path="def-required.html"><a href="def-required.html#args-compound"><i class="fa fa-check"></i><b>10.3.2</b> One compound argument vs multiple simple arguments</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="cs-rep.html"><a href="cs-rep.html"><i class="fa fa-check"></i><b>11</b> Case study: <code>rep()</code></a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="cs-rep.html"><a href="cs-rep.html#what-does-rep-do"><i class="fa fa-check"></i><b>11.1</b> What does <code>rep()</code> do?</a></li>
+<li class="chapter" data-level="11.2" data-path="cs-rep.html"><a href="cs-rep.html#what-makes-this-function-hard-to-understand"><i class="fa fa-check"></i><b>11.2</b> What makes this function hard to understand?</a></li>
+<li class="chapter" data-level="11.3" data-path="cs-rep.html"><a href="cs-rep.html#how-might-we-improve-the-situation"><i class="fa fa-check"></i><b>11.3</b> How might we improve the situation?</a></li>
+<li class="chapter" data-level="11.4" data-path="cs-rep.html"><a href="cs-rep.html#dealing-with-bad-inputs"><i class="fa fa-check"></i><b>11.4</b> Dealing with bad inputs</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="def-enum.html"><a href="def-enum.html"><i class="fa fa-check"></i><b>12</b> Enumerate possible options</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="def-enum.html"><a href="def-enum.html#whats-the-pattern-2"><i class="fa fa-check"></i><b>12.1</b> What’s the pattern?</a></li>
+<li class="chapter" data-level="12.2" data-path="def-enum.html"><a href="def-enum.html#what-are-some-examples-4"><i class="fa fa-check"></i><b>12.2</b> What are some examples?</a></li>
+<li class="chapter" data-level="12.3" data-path="def-enum.html"><a href="def-enum.html#why-is-it-important-2"><i class="fa fa-check"></i><b>12.3</b> Why is it important?</a></li>
+<li class="chapter" data-level="12.4" data-path="def-enum.html"><a href="def-enum.html#how-do-i-use-it"><i class="fa fa-check"></i><b>12.4</b> How do I use it?</a>
+<ul>
+<li class="chapter" data-level="12.4.1" data-path="def-enum.html"><a href="def-enum.html#how-keep-defaults-short"><i class="fa fa-check"></i><b>12.4.1</b> How keep defaults short?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="def-magical.html"><a href="def-magical.html"><i class="fa fa-check"></i><b>13</b> Avoid magical defaults</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="def-magical.html"><a href="def-magical.html#whats-the-problem-3"><i class="fa fa-check"></i><b>13.1</b> What’s the problem?</a></li>
+<li class="chapter" data-level="13.2" data-path="def-magical.html"><a href="def-magical.html#what-are-some-examples-5"><i class="fa fa-check"></i><b>13.2</b> What are some examples?</a></li>
+<li class="chapter" data-level="13.3" data-path="def-magical.html"><a href="def-magical.html#what-are-the-exceptions-2"><i class="fa fa-check"></i><b>13.3</b> What are the exceptions?</a></li>
+<li class="chapter" data-level="13.4" data-path="def-magical.html"><a href="def-magical.html#what-causes-the-problem"><i class="fa fa-check"></i><b>13.4</b> What causes the problem?</a></li>
+<li class="chapter" data-level="13.5" data-path="def-magical.html"><a href="def-magical.html#how-do-i-remediate-the-problem"><i class="fa fa-check"></i><b>13.5</b> How do I remediate the problem?</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="def-short.html"><a href="def-short.html"><i class="fa fa-check"></i><b>14</b> Keep defaults short and sweet</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="def-short.html"><a href="def-short.html#whats-the-pattern-3"><i class="fa fa-check"></i><b>14.1</b> What’s the pattern?</a></li>
+<li class="chapter" data-level="14.2" data-path="def-short.html"><a href="def-short.html#what-are-some-examples-6"><i class="fa fa-check"></i><b>14.2</b> What are some examples?</a></li>
+<li class="chapter" data-level="14.3" data-path="def-short.html"><a href="def-short.html#why-is-it-important-3"><i class="fa fa-check"></i><b>14.3</b> Why is it important?</a></li>
+<li class="chapter" data-level="14.4" data-path="def-short.html"><a href="def-short.html#how-do-i-use-it-1"><i class="fa fa-check"></i><b>14.4</b> How do I use it?</a>
+<ul>
+<li class="chapter" data-level="14.4.1" data-path="def-short.html"><a href="def-short.html#arg-short-null"><i class="fa fa-check"></i><b>14.4.1</b> <code>NULL</code> default</a></li>
+<li class="chapter" data-level="14.4.2" data-path="def-short.html"><a href="def-short.html#helper-function"><i class="fa fa-check"></i><b>14.4.2</b> Helper function</a></li>
+<li class="chapter" data-level="14.4.3" data-path="def-short.html"><a href="def-short.html#args-default-sentinel"><i class="fa fa-check"></i><b>14.4.3</b> Sentinel value</a></li>
+</ul></li>
+<li class="chapter" data-level="14.5" data-path="def-short.html"><a href="def-short.html#how-do-i-remediate-existing-problems"><i class="fa fa-check"></i><b>14.5</b> How do I remediate existing problems?</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="def-inform.html"><a href="def-inform.html"><i class="fa fa-check"></i><b>15</b> Explain important defaults</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="def-inform.html"><a href="def-inform.html#whats-the-pattern-4"><i class="fa fa-check"></i><b>15.1</b> What’s the pattern?</a></li>
+<li class="chapter" data-level="15.2" data-path="def-inform.html"><a href="def-inform.html#what-are-some-examples-7"><i class="fa fa-check"></i><b>15.2</b> What are some examples?</a></li>
+<li class="chapter" data-level="15.3" data-path="def-inform.html"><a href="def-inform.html#why-is-it-important-4"><i class="fa fa-check"></i><b>15.3</b> Why is it important?</a></li>
+<li class="chapter" data-level="15.4" data-path="def-inform.html"><a href="def-inform.html#how-can-i-use-it"><i class="fa fa-check"></i><b>15.4</b> How can I use it?</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="def-user.html"><a href="def-user.html"><i class="fa fa-check"></i><b>16</b> User settable defaults</a>
+<ul>
+<li class="chapter" data-level="16.1" data-path="def-user.html"><a href="def-user.html#whats-the-pattern-5"><i class="fa fa-check"></i><b>16.1</b> What’s the pattern?</a></li>
+<li class="chapter" data-level="16.2" data-path="def-user.html"><a href="def-user.html#what-are-some-examples-8"><i class="fa fa-check"></i><b>16.2</b> What are some examples?</a></li>
+<li class="chapter" data-level="16.3" data-path="def-user.html"><a href="def-user.html#why-is-it-important-5"><i class="fa fa-check"></i><b>16.3</b> Why is it important?</a></li>
+<li class="chapter" data-level="16.4" data-path="def-user.html"><a href="def-user.html#what-are-the-exceptions-3"><i class="fa fa-check"></i><b>16.4</b> What are the exceptions?</a></li>
+<li class="chapter" data-level="16.5" data-path="def-user.html"><a href="def-user.html#how-do-i-use-it-2"><i class="fa fa-check"></i><b>16.5</b> How do I use it?</a></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="cs-rgb.html"><a href="cs-rgb.html"><i class="fa fa-check"></i><b>17</b> Case study: <code>rgb()</code></a></li>
+<li class="part"><span><b>IV Interface: <code>...</code></b></span></li>
+<li class="chapter" data-level="18" data-path="dots-position.html"><a href="dots-position.html"><i class="fa fa-check"></i><b>18</b> Data, dots, details</a>
+<ul>
+<li class="chapter" data-level="18.1" data-path="dots-position.html"><a href="dots-position.html#whats-the-pattern-6"><i class="fa fa-check"></i><b>18.1</b> What’s the pattern?</a></li>
+<li class="chapter" data-level="18.2" data-path="dots-position.html"><a href="dots-position.html#what-are-some-examples-9"><i class="fa fa-check"></i><b>18.2</b> What are some examples?</a></li>
+<li class="chapter" data-level="18.3" data-path="dots-position.html"><a href="dots-position.html#what-is-it-important"><i class="fa fa-check"></i><b>18.3</b> What is it important?</a></li>
+<li class="chapter" data-level="18.4" data-path="dots-position.html"><a href="dots-position.html#how-do-i-do-it"><i class="fa fa-check"></i><b>18.4</b> How do I do it?</a></li>
+<li class="chapter" data-level="18.5" data-path="dots-position.html"><a href="dots-position.html#how-do-i-remediate-it"><i class="fa fa-check"></i><b>18.5</b> How do I remediate it?</a></li>
+</ul></li>
+<li class="chapter" data-level="19" data-path="dots-data.html"><a href="dots-data.html"><i class="fa fa-check"></i><b>19</b> Making data with …</a>
+<ul>
+<li class="chapter" data-level="19.1" data-path="dots-data.html"><a href="dots-data.html#whats-the-problem-4"><i class="fa fa-check"></i><b>19.1</b> What’s the problem?</a></li>
+<li class="chapter" data-level="19.2" data-path="dots-data.html"><a href="dots-data.html#what-are-some-examples-10"><i class="fa fa-check"></i><b>19.2</b> What are some examples?</a></li>
+<li class="chapter" data-level="19.3" data-path="dots-data.html"><a href="dots-data.html#why-is-it-important-6"><i class="fa fa-check"></i><b>19.3</b> Why is it important?</a></li>
+<li class="chapter" data-level="19.4" data-path="dots-data.html"><a href="dots-data.html#what-are-the-exceptions-4"><i class="fa fa-check"></i><b>19.4</b> What are the exceptions?</a></li>
+<li class="chapter" data-level="19.5" data-path="dots-data.html"><a href="dots-data.html#how-can-remediate-it"><i class="fa fa-check"></i><b>19.5</b> How can remediate it?</a></li>
+<li class="chapter" data-level="19.6" data-path="dots-data.html"><a href="dots-data.html#how-can-i-protect-myself"><i class="fa fa-check"></i><b>19.6</b> How can I protect myself?</a></li>
+<li class="chapter" data-level="19.7" data-path="dots-data.html"><a href="dots-data.html#selecting-variables"><i class="fa fa-check"></i><b>19.7</b> Selecting variables</a></li>
+</ul></li>
+<li class="chapter" data-level="20" data-path="dots-prefix.html"><a href="dots-prefix.html"><i class="fa fa-check"></i><b>20</b> Dot prefix</a>
+<ul>
+<li class="chapter" data-level="20.1" data-path="dots-prefix.html"><a href="dots-prefix.html#whats-the-pattern-7"><i class="fa fa-check"></i><b>20.1</b> What’s the pattern?</a></li>
+<li class="chapter" data-level="20.2" data-path="dots-prefix.html"><a href="dots-prefix.html#what-are-some-examples-11"><i class="fa fa-check"></i><b>20.2</b> What are some examples?</a></li>
+<li class="chapter" data-level="20.3" data-path="dots-prefix.html"><a href="dots-prefix.html#case-study-dplyr-verbs"><i class="fa fa-check"></i><b>20.3</b> Case study: dplyr verbs</a></li>
+<li class="chapter" data-level="20.4" data-path="dots-prefix.html"><a href="dots-prefix.html#other-approaches-in-base-r"><i class="fa fa-check"></i><b>20.4</b> Other approaches in base R</a></li>
+<li class="chapter" data-level="20.5" data-path="dots-prefix.html"><a href="dots-prefix.html#what-are-the-exceptions-5"><i class="fa fa-check"></i><b>20.5</b> What are the exceptions?</a></li>
+</ul></li>
+<li class="chapter" data-level="21" data-path="dots-inspect.html"><a href="dots-inspect.html"><i class="fa fa-check"></i><b>21</b> Inspect the dots</a>
+<ul>
+<li class="chapter" data-level="21.1" data-path="dots-inspect.html"><a href="dots-inspect.html#whats-the-pattern-8"><i class="fa fa-check"></i><b>21.1</b> What’s the pattern?</a></li>
+<li class="chapter" data-level="21.2" data-path="dots-inspect.html"><a href="dots-inspect.html#what-are-some-examples-12"><i class="fa fa-check"></i><b>21.2</b> What are some examples?</a></li>
+<li class="chapter" data-level="21.3" data-path="dots-inspect.html"><a href="dots-inspect.html#how-do-i-do-it-1"><i class="fa fa-check"></i><b>21.3</b> How do I do it?</a>
+<ul>
+<li class="chapter" data-level="21.3.1" data-path="dots-inspect.html"><a href="dots-inspect.html#what-are-the-limitations"><i class="fa fa-check"></i><b>21.3.1</b> What are the limitations?</a></li>
+<li class="chapter" data-level="21.3.2" data-path="dots-inspect.html"><a href="dots-inspect.html#what-are-other-uses"><i class="fa fa-check"></i><b>21.3.2</b> What are other uses?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="22" data-path="cs-mapply-pmap.html"><a href="cs-mapply-pmap.html"><i class="fa fa-check"></i><b>22</b> Case study: <code>mapply()</code> vs <code>pmap()</code></a></li>
+<li class="part"><span><b>V Interface: outputs</b></span></li>
+<li class="chapter" data-level="23" data-path="out-multi.html"><a href="out-multi.html"><i class="fa fa-check"></i><b>23</b> Returning multiple values</a>
+<ul>
+<li class="chapter" data-level="23.1" data-path="out-multi.html"><a href="out-multi.html#different-sizes"><i class="fa fa-check"></i><b>23.1</b> Different sizes</a></li>
+<li class="chapter" data-level="23.2" data-path="out-multi.html"><a href="out-multi.html#same-size"><i class="fa fa-check"></i><b>23.2</b> Same size</a></li>
+<li class="chapter" data-level="23.3" data-path="out-multi.html"><a href="out-multi.html#case-study-str_locate"><i class="fa fa-check"></i><b>23.3</b> Case study: <code>str_locate()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="24" data-path="out-type-stability.html"><a href="out-type-stability.html"><i class="fa fa-check"></i><b>24</b> Type-stability</a>
+<ul>
+<li class="chapter" data-level="24.1" data-path="out-type-stability.html"><a href="out-type-stability.html#simple-examples"><i class="fa fa-check"></i><b>24.1</b> Simple examples</a></li>
+<li class="chapter" data-level="24.2" data-path="out-type-stability.html"><a href="out-type-stability.html#more-complicated-examples"><i class="fa fa-check"></i><b>24.2</b> More complicated examples</a></li>
+<li class="chapter" data-level="24.3" data-path="out-type-stability.html"><a href="out-type-stability.html#challenge-the-median"><i class="fa fa-check"></i><b>24.3</b> Challenge: the median</a></li>
+<li class="chapter" data-level="24.4" data-path="out-type-stability.html"><a href="out-type-stability.html#exercises"><i class="fa fa-check"></i><b>24.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="25" data-path="out-vectorisation.html"><a href="out-vectorisation.html"><i class="fa fa-check"></i><b>25</b> Vectorisation</a></li>
+<li class="chapter" data-level="26" data-path="out-invisible.html"><a href="out-invisible.html"><i class="fa fa-check"></i><b>26</b> Side-effect functions should return invisibly</a>
+<ul>
+<li class="chapter" data-level="26.1" data-path="out-invisible.html"><a href="out-invisible.html#whats-the-pattern-9"><i class="fa fa-check"></i><b>26.1</b> What’s the pattern?</a></li>
+<li class="chapter" data-level="26.2" data-path="out-invisible.html"><a href="out-invisible.html#what-are-some-examples-13"><i class="fa fa-check"></i><b>26.2</b> What are some examples?</a></li>
+<li class="chapter" data-level="26.3" data-path="out-invisible.html"><a href="out-invisible.html#why-is-it-important-7"><i class="fa fa-check"></i><b>26.3</b> Why is it important?</a></li>
+</ul></li>
+<li class="part"><span><b>VI Interface: errors</b></span></li>
+<li class="chapter" data-level="27" data-path="err-call.html"><a href="err-call.html"><i class="fa fa-check"></i><b>27</b> Error call</a></li>
+<li class="chapter" data-level="28" data-path="err-constructor.html"><a href="err-constructor.html"><i class="fa fa-check"></i><b>28</b> Error constructors</a>
+<ul>
+<li class="chapter" data-level="28.1" data-path="err-constructor.html"><a href="err-constructor.html#whats-the-pattern-10"><i class="fa fa-check"></i><b>28.1</b> What’s the pattern?</a></li>
+<li class="chapter" data-level="28.2" data-path="err-constructor.html"><a href="err-constructor.html#why-is-this-important-1"><i class="fa fa-check"></i><b>28.2</b> Why is this important?</a></li>
+<li class="chapter" data-level="28.3" data-path="err-constructor.html"><a href="err-constructor.html#what-does-an-error-constructor-do"><i class="fa fa-check"></i><b>28.3</b> What does an error constructor do?</a></li>
+<li class="chapter" data-level="28.4" data-path="err-constructor.html"><a href="err-constructor.html#how-do-i-test"><i class="fa fa-check"></i><b>28.4</b> How do I test?</a>
+<ul>
+<li class="chapter" data-level="28.4.1" data-path="err-constructor.html"><a href="err-constructor.html#test-the-constructor"><i class="fa fa-check"></i><b>28.4.1</b> Test the constructor</a></li>
+<li class="chapter" data-level="28.4.2" data-path="err-constructor.html"><a href="err-constructor.html#test-usage"><i class="fa fa-check"></i><b>28.4.2</b> Test usage</a></li>
+</ul></li>
+<li class="chapter" data-level="28.5" data-path="err-constructor.html"><a href="err-constructor.html#error-hierarchies"><i class="fa fa-check"></i><b>28.5</b> Error hierarchies</a></li>
+</ul></li>
+<li class="part"><span><b>VII Interface: changes</b></span></li>
+<li class="chapter" data-level="29" data-path="changes-multivers.html"><a href="changes-multivers.html"><i class="fa fa-check"></i><b>29</b> Work with multiple dependency versions</a>
+<ul>
+<li class="chapter" data-level="29.1" data-path="changes-multivers.html"><a href="changes-multivers.html#whats-the-pattern-11"><i class="fa fa-check"></i><b>29.1</b> What’s the pattern?</a></li>
+<li class="chapter" data-level="29.2" data-path="changes-multivers.html"><a href="changes-multivers.html#writing-code"><i class="fa fa-check"></i><b>29.2</b> Writing code</a>
+<ul>
+<li class="chapter" data-level="29.2.1" data-path="changes-multivers.html"><a href="changes-multivers.html#case-study-tidyr"><i class="fa fa-check"></i><b>29.2.1</b> Case study: tidyr</a></li>
+</ul></li>
+<li class="chapter" data-level="29.3" data-path="changes-multivers.html"><a href="changes-multivers.html#testing-with-multiple-package-versions"><i class="fa fa-check"></i><b>29.3</b> Testing with multiple package versions</a></li>
+<li class="chapter" data-level="29.4" data-path="changes-multivers.html"><a href="changes-multivers.html#using-only-the-new-version"><i class="fa fa-check"></i><b>29.4</b> Using only the new version</a></li>
+</ul></li>
+<li class="part"><span><b>VIII Interface: side effects</b></span></li>
+<li class="chapter" data-level="30" data-path="side-effect-soup.html"><a href="side-effect-soup.html"><i class="fa fa-check"></i><b>30</b> Side-effect soup</a>
+<ul>
+<li class="chapter" data-level="30.1" data-path="side-effect-soup.html"><a href="side-effect-soup.html#what-is-a-side-effect"><i class="fa fa-check"></i><b>30.1</b> What is a side-effect?</a>
+<ul>
+<li class="chapter" data-level="30.1.1" data-path="side-effect-soup.html"><a href="side-effect-soup.html#user-feedback"><i class="fa fa-check"></i><b>30.1.1</b> User feedback</a></li>
+<li class="chapter" data-level="30.1.2" data-path="side-effect-soup.html"><a href="side-effect-soup.html#global-state"><i class="fa fa-check"></i><b>30.1.2</b> Global state</a></li>
+</ul></li>
+<li class="chapter" data-level="30.2" data-path="side-effect-soup.html"><a href="side-effect-soup.html#what-are-some-examples-14"><i class="fa fa-check"></i><b>30.2</b> What are some examples?</a></li>
+<li class="chapter" data-level="30.3" data-path="side-effect-soup.html"><a href="side-effect-soup.html#why-is-it-bad"><i class="fa fa-check"></i><b>30.3</b> Why is it bad?</a></li>
+<li class="chapter" data-level="30.4" data-path="side-effect-soup.html"><a href="side-effect-soup.html#how-avoid-it"><i class="fa fa-check"></i><b>30.4</b> How avoid it?</a>
+<ul>
+<li class="chapter" data-level="30.4.1" data-path="side-effect-soup.html"><a href="side-effect-soup.html#localise-side-effects"><i class="fa fa-check"></i><b>30.4.1</b> Localise side-effects</a></li>
+<li class="chapter" data-level="30.4.2" data-path="side-effect-soup.html"><a href="side-effect-soup.html#extract-side-effects"><i class="fa fa-check"></i><b>30.4.2</b> Extract side-effects</a></li>
+<li class="chapter" data-level="30.4.3" data-path="side-effect-soup.html"><a href="side-effect-soup.html#make-side-effects-noisy"><i class="fa fa-check"></i><b>30.4.3</b> Make side-effects noisy</a></li>
+<li class="chapter" data-level="30.4.4" data-path="side-effect-soup.html"><a href="side-effect-soup.html#provide-an-argument-to-suppress"><i class="fa fa-check"></i><b>30.4.4</b> Provide an argument to suppress</a></li>
+<li class="chapter" data-level="30.4.5" data-path="side-effect-soup.html"><a href="side-effect-soup.html#use-the-print-method"><i class="fa fa-check"></i><b>30.4.5</b> Use the <code>print()</code> method</a></li>
+<li class="chapter" data-level="30.4.6" data-path="side-effect-soup.html"><a href="side-effect-soup.html#make-easy-to-undo"><i class="fa fa-check"></i><b>30.4.6</b> Make easy to undo</a></li>
+</ul></li>
+<li class="chapter" data-level="30.5" data-path="side-effect-soup.html"><a href="side-effect-soup.html#package-considerations"><i class="fa fa-check"></i><b>30.5</b> Package considerations</a></li>
+</ul></li>
+<li class="chapter" data-level="31" data-path="spooky-action.html"><a href="spooky-action.html"><i class="fa fa-check"></i><b>31</b> Spooky action</a>
+<ul>
+<li class="chapter" data-level="31.1" data-path="spooky-action.html"><a href="spooky-action.html#whats-the-problem-5"><i class="fa fa-check"></i><b>31.1</b> What’s the problem?</a></li>
+<li class="chapter" data-level="31.2" data-path="spooky-action.html"><a href="spooky-action.html#what-precisely-is-a-spooky-action"><i class="fa fa-check"></i><b>31.2</b> What precisely is a spooky action?</a></li>
+<li class="chapter" data-level="31.3" data-path="spooky-action.html"><a href="spooky-action.html#how-can-i-remediate-spooky-actions"><i class="fa fa-check"></i><b>31.3</b> How can I remediate spooky actions?</a>
+<ul>
+<li class="chapter" data-level="31.3.1" data-path="spooky-action.html"><a href="spooky-action.html#parameterise-the-action"><i class="fa fa-check"></i><b>31.3.1</b> Parameterise the action</a></li>
+<li class="chapter" data-level="31.3.2" data-path="spooky-action.html"><a href="spooky-action.html#advertise-the-action-with-a-clear-name"><i class="fa fa-check"></i><b>31.3.2</b> Advertise the action with a clear name</a></li>
+<li class="chapter" data-level="31.3.3" data-path="spooky-action.html"><a href="spooky-action.html#ask-for-confirmation"><i class="fa fa-check"></i><b>31.3.3</b> Ask for confirmation</a></li>
+<li class="chapter" data-level="31.3.4" data-path="spooky-action.html"><a href="spooky-action.html#advertise-the-side-effects"><i class="fa fa-check"></i><b>31.3.4</b> Advertise the side-effects</a></li>
+</ul></li>
+<li class="chapter" data-level="31.4" data-path="spooky-action.html"><a href="spooky-action.html#case-studies"><i class="fa fa-check"></i><b>31.4</b> Case studies</a>
+<ul>
+<li class="chapter" data-level="31.4.1" data-path="spooky-action.html"><a href="spooky-action.html#save-and-load"><i class="fa fa-check"></i><b>31.4.1</b> <code>save()</code> and <code>load()</code></a></li>
+<li class="chapter" data-level="31.4.2" data-path="spooky-action.html"><a href="spooky-action.html#usethis"><i class="fa fa-check"></i><b>31.4.2</b> usethis</a></li>
+<li class="chapter" data-level="31.4.3" data-path="spooky-action.html"><a href="spooky-action.html#section"><i class="fa fa-check"></i><b>31.4.3</b> <code>&lt;&lt;-</code></a></li>
+<li class="chapter" data-level="31.4.4" data-path="spooky-action.html"><a href="spooky-action.html#assign-in-a-for-loop"><i class="fa fa-check"></i><b>31.4.4</b> <code>assign()</code> in a for loop</a></li>
+</ul></li>
+</ul></li>
+<li class="appendix"><span><b>Appendix</b></span></li>
+<li class="chapter" data-level="A" data-path="glossary.html"><a href="glossary.html"><i class="fa fa-check"></i><b>A</b> Glossary</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tidyverse design guide</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="spooky-action" class="section level1 hasAnchor" number="31">
+<h1><span class="header-section-number">31</span> Spooky action<a href="spooky-action.html#spooky-action" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="whats-the-problem-5" class="section level2 hasAnchor" number="31.1">
+<h2><span class="header-section-number">31.1</span> What’s the problem?<a href="spooky-action.html#whats-the-problem-5" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>There are no limits to what an function or script can do. After you call <code>draw_plot()</code> or <code>source("analyse-data.R")</code>, you <em>could</em> discover that all the variables in your global environment have been deleted, or that 1000 new files have been created on your desktop. But these actions would be surprising, because generally you expect the impact of a function (or script) to be as limited as possible. Collectively, we call such side-effects “spooky actions” because the connection between action (calling a function or sourcing a script) and result (deleting objects or upgrading packages) is surprising. It’s like flipping a light-switch and discovering that the shower starts running, or having a poltergeist that rearranges the contents of your kitchen cupboards when you’re not looking.</p>
+<p>Deleting variables and creating files on your desktop are obviously surprising even if you’ve only just started using R. But there are other actions that are less obviously destructive, and only start to become surprising as your mental model of R matures. These include actions like:</p>
+<ul>
+<li><p><strong>Attaching packages with <code>library()</code></strong>. For example, <code>ggplot2::geom_map()</code> used
+to call <code>library(maps)</code> in order to make map data available to the function.
+This seems harmless, but if you were using purrr, it would break <code>map()</code>
+<code>map()</code> would now refer to <code>maps::map()</code> rather than <code>purrr::map()</code>.
+Because of functions in different packages can have the same name, attaching
+a package can change the behaviour of existing code.</p></li>
+<li><p><strong>Installing packages with <code>install.packages()</code></strong>. If a script needs dplyr to
+work, and it’s not installed, it seem polite to install it on behalf of the
+user. But installing a new package can upgrade existing packages, which might
+break code in other projects. Install a package is a potentially destructive
+operation which should be done with care.</p></li>
+<li><p><strong>Deleting objects in the global environment with <code>rm(list = ls())</code></strong>.
+This might seem like a good way to reset the environment so that your
+script can run cleanly. But if someone else <code>source()</code>s your script, it will
+delete objects that might be important to them. (Of course, you’d hope that
+all of those objects could easily be recreated from another script, but that
+is not always the case).</p></li>
+</ul>
+<p>Because R doesn’t constrain the potential scope of functions and scripts, <em>you</em> have to. By avoiding these actions, you will create code that is less surprising to other R users. At first, this might seem like tedious busywork. You might find that spooky action is convenient in the moment, and you might convince yourself that it’s necessary or a good idea. But as you share your code with more people and run more code that has been shared with you<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>, you’ll find spooky action to get more and more surprising and frustrating.</p>
+</div>
+<div id="what-precisely-is-a-spooky-action" class="section level2 hasAnchor" number="31.2">
+<h2><span class="header-section-number">31.2</span> What precisely is a spooky action?<a href="spooky-action.html#what-precisely-is-a-spooky-action" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We can make the notion of spooky action precise by thinking about trees. Code should only affect the tree beneath where it lives, so any action that reaches up, or across, the tree is a <strong>spooky action</strong>.</p>
+<p>There are two important types of trees to consider:</p>
+<ul>
+<li><p><strong>The tree formed by files and directories.</strong>
+A script should only read from and write to directories beneath the
+directory where it lives. This explains why you shouldn’t install packages
+(because the package library usually lives elsewhere), and also explains
+why you shouldn’t create files on the desktop.</p>
+<p>This rule can be relaxed in two small ways. Firstly, if the script
+lives in a project, it’s ok to read from and write to anywhere in the
+project (i.e. a file in <code>R/</code> can read from <code>data-raw/</code> and write to
+<code>data/</code>). Secondly, it’s always ok to write to the session specific
+temporary directory, <code>tempdir()</code>. This directory is automatically deleted
+when R closes, so does not have any lasting effects.</p></li>
+<li><p><strong>The tree of environments created by function calls.</strong>
+A function should only create and modify variables in its own environment
+or environments that it creates (typically by calling other functions).
+This explains why you shouldn’t attach packages (because that changes the
+<a href="https://adv-r.hadley.nz/environments.html#search-path">search path</a>),
+why you shouldn’t delete variables with <code>rm(list = ls())</code>,
+or assign to variables that you didn’t create with <code>&lt;&lt;-</code>.</p></li>
+</ul>
+</div>
+<div id="how-can-i-remediate-spooky-actions" class="section level2 hasAnchor" number="31.3">
+<h2><span class="header-section-number">31.3</span> How can I remediate spooky actions?<a href="spooky-action.html#how-can-i-remediate-spooky-actions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>If you have read the above cautions, and still want to proceed, there are three ways you can make the spooky action as safe as possible:</p>
+<ul>
+<li><p>Allow the user to control the scope.</p></li>
+<li><p>Make the action less spooky by giving it a name that clearly describes
+what it will do.</p></li>
+<li><p>Explicitly check with the user before proceeding with the action.</p></li>
+<li><p>Advertise what’s happening, so while the action might still be spooky,
+at least it isn’t surprising.</p></li>
+</ul>
+<div id="parameterise-the-action" class="section level3 hasAnchor" number="31.3.1">
+<h3><span class="header-section-number">31.3.1</span> Parameterise the action<a href="spooky-action.html#parameterise-the-action" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The first technique is to allow the user to control where the action will occur. For example, instead of <code>save_output_desktop()</code>, you would write <code>save_output(path)</code>, and require that the user provide the path.</p>
+</div>
+<div id="advertise-the-action-with-a-clear-name" class="section level3 hasAnchor" number="31.3.2">
+<h3><span class="header-section-number">31.3.2</span> Advertise the action with a clear name<a href="spooky-action.html#advertise-the-action-with-a-clear-name" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>If you can’t parameterise the action, make it clear what’s going to happen from the outside. It is fine for function or scripts to have actions outside of their usual trees as long as it is implicit in the name:</p>
+<ul>
+<li><p>It’s ok for <code>&lt;-</code> to modify the global environment, because that is its one
+job, and it’s obvious from the name (once you’ve learned about <code>&lt;-</code>, which
+happens very early). Similarly, it’s ok for <code>save_output_to_desktop()</code> to
+create files in on the desktop, or <code>copy_to_clipboard()</code> to copy text to
+the clipboard, because the action is clear from the name.</p></li>
+<li><p>It’s fine for <code>install.packages()</code> to modify files outside of the current
+working directory because it’s designed specifically to install packages.
+Similarly, it’s ok for <code>source("class-setup.R")</code> to install packages because
+the intent of a setup script is to get your computer into the same state as
+someone else’s.</p></li>
+</ul>
+<p>Here, it’s the name of the function or script that is really important. As soon as you</p>
+<p>Note that it’s the name that’s important - it’s fine for <code>install.packages()</code> to install packages, but it’s not ok as soon as it’s hidden behind even a very simple wrapper:</p>
+<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="spooky-action.html#cb179-1" aria-hidden="true" tabindex="-1"></a>current_time <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<span id="cb179-2"><a href="spooky-action.html#cb179-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">&quot;lubridate&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb179-3"><a href="spooky-action.html#cb179-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">install.packages</span>(<span class="st">&quot;lubridate&quot;</span>)</span>
+<span id="cb179-4"><a href="spooky-action.html#cb179-4" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb179-5"><a href="spooky-action.html#cb179-5" aria-hidden="true" tabindex="-1"></a>  lubridate<span class="sc">::</span><span class="fu">now</span>()</span>
+<span id="cb179-6"><a href="spooky-action.html#cb179-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb179-7"><a href="spooky-action.html#cb179-7" aria-hidden="true" tabindex="-1"></a><span class="fu">current_time</span>()</span>
+<span id="cb179-8"><a href="spooky-action.html#cb179-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;2022-07-20 18:18:53 UTC&quot;</span></span></code></pre></div>
+</div>
+<div id="ask-for-confirmation" class="section level3 hasAnchor" number="31.3.3">
+<h3><span class="header-section-number">31.3.3</span> Ask for confirmation<a href="spooky-action.html#ask-for-confirmation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>If you can’t parameterise the operation, and need to perform it from somewhere deep within the cope, make sure to confirm with the user before performing the action. The code below shows how you might do so when installing a package:</p>
+<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="spooky-action.html#cb180-1" aria-hidden="true" tabindex="-1"></a>install_if_needed <span class="ot">&lt;-</span> <span class="cf">function</span>(package) {</span>
+<span id="cb180-2"><a href="spooky-action.html#cb180-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">requireNamespace</span>(package, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb180-3"><a href="spooky-action.html#cb180-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">invisible</span>(<span class="cn">TRUE</span>))</span>
+<span id="cb180-4"><a href="spooky-action.html#cb180-4" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb180-5"><a href="spooky-action.html#cb180-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb180-6"><a href="spooky-action.html#cb180-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">interactive</span>()) {</span>
+<span id="cb180-7"><a href="spooky-action.html#cb180-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(package, <span class="st">&quot; is not installed&quot;</span>, <span class="at">call. =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb180-8"><a href="spooky-action.html#cb180-8" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb180-9"><a href="spooky-action.html#cb180-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb180-10"><a href="spooky-action.html#cb180-10" aria-hidden="true" tabindex="-1"></a>  title <span class="ot">&lt;-</span> <span class="fu">paste0</span>(package, <span class="st">&quot; is not installed. Do you wish to install now?&quot;</span>)</span>
+<span id="cb180-11"><a href="spooky-action.html#cb180-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">menu</span>(<span class="fu">c</span>(<span class="st">&quot;Yes&quot;</span>, <span class="st">&quot;No&quot;</span>), <span class="at">title =</span> title) <span class="sc">!=</span> <span class="dv">1</span>) {</span>
+<span id="cb180-12"><a href="spooky-action.html#cb180-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Confirmation not received&quot;</span>, <span class="at">call. =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb180-13"><a href="spooky-action.html#cb180-13" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb180-14"><a href="spooky-action.html#cb180-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb180-15"><a href="spooky-action.html#cb180-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">invisible</span>(<span class="cn">TRUE</span>)</span>
+<span id="cb180-16"><a href="spooky-action.html#cb180-16" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Note the use of <code>interactive()</code> here: if the user is not in an interactive setting (i.e. the code is being run with <code>Rscript</code>) and we can not get explicit confirmation, we shouldn’t make any changes. Also that all failures are errors: this ensures that the remainder of the function or script does not run if the user doesn’t confirm.</p>
+<p>Ideally this function would also clearly describe the consequences of your decision. For example, it would be nice to know if it will download a significant amount of data (since you might want to wait until your at a fast connection if downloading a 1 Gb data package), or if it will upgrade existing packages (since that might break other code).</p>
+<p>Writing code that checks with the user requires some care, and it’s easy to get the details wrong. That’s why it’s better to prefer one of the prior techniques.</p>
+</div>
+<div id="advertise-the-side-effects" class="section level3 hasAnchor" number="31.3.4">
+<h3><span class="header-section-number">31.3.4</span> Advertise the side-effects<a href="spooky-action.html#advertise-the-side-effects" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>If you can’t get explicit confirmation from the user, at the very minimum you should clearly advertise what is happening. For example, when you call <code>install.packages()</code> it notifies you:</p>
+<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="spooky-action.html#cb181-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;dplyr&quot;</span>)</span>
+<span id="cb181-2"><a href="spooky-action.html#cb181-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Installing package into ‘/Users/hadley/R’</span></span>
+<span id="cb181-3"><a href="spooky-action.html#cb181-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (as ‘lib’ is unspecified)</span></span>
+<span id="cb181-4"><a href="spooky-action.html#cb181-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Trying URL &#39;https://cran.rstudio.com/bin/macosx/el-capitan/contrib/3.5/dplyr_0.8.0.1.tgz&#39;</span></span>
+<span id="cb181-5"><a href="spooky-action.html#cb181-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Content type &#39;application/x-gzip&#39; length 6587031 bytes (6.3 MB)</span></span>
+<span id="cb181-6"><a href="spooky-action.html#cb181-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ==================================================</span></span>
+<span id="cb181-7"><a href="spooky-action.html#cb181-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; downloaded 6.3 MB</span></span></code></pre></div>
+<p>However, this message could do with some work:</p>
+<ul>
+<li><p>It says installing “package”, without specifying which package (so if
+this is called inside another function it won’t be informative).</p></li>
+<li><p>It doesn’t notify me which dependencies it’s also going to update.</p></li>
+<li><p>It notifies me of the url it’s downloading from, which I don’t care about,
+and it only notifies me about the size when it’s finished downloading,
+by which time it too late to stop it.</p></li>
+</ul>
+<p>I would instead write something like this:</p>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="spooky-action.html#cb182-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;dplyr&quot;</span>)</span>
+<span id="cb182-2"><a href="spooky-action.html#cb182-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Installing package dplyr to `/Users/hadley/R`</span></span>
+<span id="cb182-3"><a href="spooky-action.html#cb182-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Also installing 3 dependencies: glue, rlang, R6</span></span></code></pre></div>
+<p>We’ll come back to the issue of informing the user in …</p>
+</div>
+</div>
+<div id="case-studies" class="section level2 hasAnchor" number="31.4">
+<h2><span class="header-section-number">31.4</span> Case studies<a href="spooky-action.html#case-studies" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="save-and-load" class="section level3 hasAnchor" number="31.4.1">
+<h3><span class="header-section-number">31.4.1</span> <code>save()</code> and <code>load()</code><a href="spooky-action.html#save-and-load" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>load()</code> has a spooky action because it modifies variables in the current environment:</p>
+<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="spooky-action.html#cb183-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb183-2"><a href="spooky-action.html#cb183-2" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;spooky-action.rds&quot;</span>)</span>
+<span id="cb183-3"><a href="spooky-action.html#cb183-3" aria-hidden="true" tabindex="-1"></a>x</span>
+<span id="cb183-4"><a href="spooky-action.html#cb183-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 10</span></span></code></pre></div>
+<p>You can make it less spooky by supplying <code>verbose = TRUE</code>. Here we learn that it also loaded a <code>y</code> object:</p>
+<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="spooky-action.html#cb184-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;spooky-action.rds&quot;</span>, <span class="at">verbose =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb184-2"><a href="spooky-action.html#cb184-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Loading objects:</span></span>
+<span id="cb184-3"><a href="spooky-action.html#cb184-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   x</span></span>
+<span id="cb184-4"><a href="spooky-action.html#cb184-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   y</span></span>
+<span id="cb184-5"><a href="spooky-action.html#cb184-5" aria-hidden="true" tabindex="-1"></a>y</span>
+<span id="cb184-6"><a href="spooky-action.html#cb184-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 100</span></span></code></pre></div>
+<p>(In an ideal world <code>verbose = TRUE</code> would be default)</p>
+<p>But generally, I’d avoid <code>save()</code> and <code>load()</code> altogether, and instead use <code>saveRDS()</code> and <code>readRDS()</code>, which read and write individual R objects to individual R files and work with <code>&lt;-</code>. This eliminates all spooky action:</p>
+<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="spooky-action.html#cb185-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(x, <span class="st">&quot;x.rds&quot;</span>)</span>
+<span id="cb185-2"><a href="spooky-action.html#cb185-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;x.rds&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="spooky-action.html#cb186-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unlink</span>(<span class="st">&quot;x.rds&quot;</span>)</span></code></pre></div>
+<p>(readr provides <code>readr::read_rds()</code> and <code>readr::write_rds()</code> if the inconsistent naming conventions bother you like they bother me.)</p>
+</div>
+<div id="usethis" class="section level3 hasAnchor" number="31.4.2">
+<h3><span class="header-section-number">31.4.2</span> usethis<a href="spooky-action.html#usethis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The usethis package is designed to support the process of developing a package of R code. It automates many of tedious setup steps by providing function like <code>use_r()</code> or <code>use_test()</code>. Many usethis functions modify the <code>DESCRIPTION</code> and create other files. usethis makes these actions as pedestrian as possible by:</p>
+<ul>
+<li><p>Making it clear that the entire package is designed for the purpose of
+creating and modifying files, and the purpose of each function is clearly
+encoded in its named.</p></li>
+<li><p>For any potential risky operation, e.g. overwriting an existing file, usethis
+explicitly asks for confirmation from the user. To make it harder to “click”
+through prompts without reading them, usethis uses random prompts in a
+random ordering.</p>
+<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="spooky-action.html#cb187-1" aria-hidden="true" tabindex="-1"></a>usethis<span class="sc">::</span><span class="fu">ui_yeah</span>(<span class="st">&quot;Do you want to proceed?&quot;</span>)</span>
+<span id="cb187-2"><a href="spooky-action.html#cb187-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Do you want to proceed?</span></span>
+<span id="cb187-3"><a href="spooky-action.html#cb187-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb187-4"><a href="spooky-action.html#cb187-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1: Absolutely not</span></span>
+<span id="cb187-5"><a href="spooky-action.html#cb187-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2: Not now</span></span>
+<span id="cb187-6"><a href="spooky-action.html#cb187-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3: I agree</span></span></code></pre></div>
+<p>usethis also works in concert with git to make sure that change are captured
+in a way that can easily be undone.</p></li>
+<li><p>When you call it, every usethis function describes what it is doing as it
+it doing it:</p>
+<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="spooky-action.html#cb188-1" aria-hidden="true" tabindex="-1"></a>usethis<span class="sc">::</span><span class="fu">create_package</span>(<span class="st">&quot;mypackage&quot;</span>, <span class="at">open =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb188-2"><a href="spooky-action.html#cb188-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ✔ Creating &#39;mypackage&#39;</span></span>
+<span id="cb188-3"><a href="spooky-action.html#cb188-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ✔ Setting active project to &#39;mypackage&#39;</span></span>
+<span id="cb188-4"><a href="spooky-action.html#cb188-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ✔ Creating &#39;R/&#39;</span></span>
+<span id="cb188-5"><a href="spooky-action.html#cb188-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ✔ Writing &#39;DESCRIPTION&#39;</span></span>
+<span id="cb188-6"><a href="spooky-action.html#cb188-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ✔ Writing &#39;NAMESPACE&#39;</span></span>
+<span id="cb188-7"><a href="spooky-action.html#cb188-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ✔ Writing &#39;mypackage.Rproj&#39;</span></span>
+<span id="cb188-8"><a href="spooky-action.html#cb188-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ✔ Adding &#39;.Rproj.user&#39; to &#39;.gitignore&#39;</span></span>
+<span id="cb188-9"><a href="spooky-action.html#cb188-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ✔ Adding &#39;^mypackage\\.Rproj$&#39;, &#39;^\\.Rproj\\.user$&#39; to &#39;.Rbuildignore&#39;</span></span></code></pre></div>
+<p>This is important, but it’s not clear how impactful it is because
+many functions produce enough output that reading through it all seems
+onerous and so generally most people don’t read it.</p></li>
+</ul>
+</div>
+<div id="section" class="section level3 hasAnchor" number="31.4.3">
+<h3><span class="header-section-number">31.4.3</span> <code>&lt;&lt;-</code><a href="spooky-action.html#section" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>If you haven’t heard of <code>&lt;&lt;-</code>, the super-assignment operator, before, feel free to skip this section as it’s an advanced technique that has relatively limited applications. They’re most important in the context of functionals, which you can read more about in <a href="https://adv-r.hadley.nz/function-factories.html#stateful-funs">Advanced R</a>.</p>
+<p><code>&lt;&lt;-</code> is safe if you use it to modify a variable in an environment that you control. For example, the following code creates a function that counts the number of times it is called. The use of <code>&lt;&lt;-</code> is safe because it only affects the environment created by <code>make_counter()</code>, not an external environment.</p>
+<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="spooky-action.html#cb189-1" aria-hidden="true" tabindex="-1"></a>make_counter <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<span id="cb189-2"><a href="spooky-action.html#cb189-2" aria-hidden="true" tabindex="-1"></a>  i <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb189-3"><a href="spooky-action.html#cb189-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>() {</span>
+<span id="cb189-4"><a href="spooky-action.html#cb189-4" aria-hidden="true" tabindex="-1"></a>    i <span class="ot">&lt;&lt;-</span> i <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb189-5"><a href="spooky-action.html#cb189-5" aria-hidden="true" tabindex="-1"></a>    i</span>
+<span id="cb189-6"><a href="spooky-action.html#cb189-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb189-7"><a href="spooky-action.html#cb189-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb189-8"><a href="spooky-action.html#cb189-8" aria-hidden="true" tabindex="-1"></a>c1 <span class="ot">&lt;-</span> <span class="fu">make_counter</span>()</span>
+<span id="cb189-9"><a href="spooky-action.html#cb189-9" aria-hidden="true" tabindex="-1"></a>c2 <span class="ot">&lt;-</span> <span class="fu">make_counter</span>()</span>
+<span id="cb189-10"><a href="spooky-action.html#cb189-10" aria-hidden="true" tabindex="-1"></a><span class="fu">c1</span>()</span>
+<span id="cb189-11"><a href="spooky-action.html#cb189-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 1</span></span>
+<span id="cb189-12"><a href="spooky-action.html#cb189-12" aria-hidden="true" tabindex="-1"></a><span class="fu">c1</span>()</span>
+<span id="cb189-13"><a href="spooky-action.html#cb189-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 2</span></span>
+<span id="cb189-14"><a href="spooky-action.html#cb189-14" aria-hidden="true" tabindex="-1"></a><span class="fu">c2</span>()</span>
+<span id="cb189-15"><a href="spooky-action.html#cb189-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 1</span></span></code></pre></div>
+<p>A more common use of <code>&lt;&lt;-</code> is to break one of the limitations of <code>map()</code><a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a> and use it like a for loop to iteratively modify input. For example, imagine you want to compute a cumulative sum. That’s straightforward to write with a for loop:</p>
+<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="spooky-action.html#cb190-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rpois</span>(<span class="dv">10</span>, <span class="dv">10</span>)</span>
+<span id="cb190-2"><a href="spooky-action.html#cb190-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb190-3"><a href="spooky-action.html#cb190-3" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="fu">length</span>(x))</span>
+<span id="cb190-4"><a href="spooky-action.html#cb190-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(x)) {</span>
+<span id="cb190-5"><a href="spooky-action.html#cb190-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (i <span class="sc">==</span> <span class="dv">1</span>) {</span>
+<span id="cb190-6"><a href="spooky-action.html#cb190-6" aria-hidden="true" tabindex="-1"></a>    out[[i]] <span class="ot">&lt;-</span> x[[i]]</span>
+<span id="cb190-7"><a href="spooky-action.html#cb190-7" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb190-8"><a href="spooky-action.html#cb190-8" aria-hidden="true" tabindex="-1"></a>    out[[i]] <span class="ot">&lt;-</span> x[[i]] <span class="sc">+</span> out[[i <span class="sc">-</span> <span class="dv">1</span>]]</span>
+<span id="cb190-9"><a href="spooky-action.html#cb190-9" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb190-10"><a href="spooky-action.html#cb190-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb190-11"><a href="spooky-action.html#cb190-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb190-12"><a href="spooky-action.html#cb190-12" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(x, out)</span>
+<span id="cb190-13"><a href="spooky-action.html#cb190-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]</span></span>
+<span id="cb190-14"><a href="spooky-action.html#cb190-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; x      8    8   11    5   12    8   10   12    9    12</span></span>
+<span id="cb190-15"><a href="spooky-action.html#cb190-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; out    8   16   27   32   44   52   62   74   83    95</span></span></code></pre></div>
+<p>A simple transformation from to use <code>map()</code> doesn’t work:</p>
+<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="spooky-action.html#cb191-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb191-2"><a href="spooky-action.html#cb191-2" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="fu">length</span>(x))</span>
+<span id="cb191-3"><a href="spooky-action.html#cb191-3" aria-hidden="true" tabindex="-1"></a><span class="fu">map_dbl</span>(<span class="fu">seq_along</span>(x), <span class="cf">function</span>(i) {</span>
+<span id="cb191-4"><a href="spooky-action.html#cb191-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (i <span class="sc">==</span> <span class="dv">1</span>) {</span>
+<span id="cb191-5"><a href="spooky-action.html#cb191-5" aria-hidden="true" tabindex="-1"></a>    out[[i]] <span class="ot">&lt;-</span> x[[i]]</span>
+<span id="cb191-6"><a href="spooky-action.html#cb191-6" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb191-7"><a href="spooky-action.html#cb191-7" aria-hidden="true" tabindex="-1"></a>    out[[i]] <span class="ot">&lt;-</span> x[[i]] <span class="sc">+</span> out[[i <span class="sc">-</span> <span class="dv">1</span>]]</span>
+<span id="cb191-8"><a href="spooky-action.html#cb191-8" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb191-9"><a href="spooky-action.html#cb191-9" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb191-10"><a href="spooky-action.html#cb191-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1]  8  8 11  5 12  8 10 12  9 12</span></span></code></pre></div>
+<p>Because the modification of <code>out</code> is happening inside of a function, R creates a copy of <code>out</code> (this is called <a href="https://adv-r.hadley.nz/names-values.html#copy-on-modify">copy-on-modify principle</a>). Instead we need to use <code>&lt;&lt;-</code> to reach outside of the function to modify the outer <code>out</code>:</p>
+<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="spooky-action.html#cb192-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map_dbl</span>(<span class="fu">seq_along</span>(x), <span class="cf">function</span>(i) {</span>
+<span id="cb192-2"><a href="spooky-action.html#cb192-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (i <span class="sc">==</span> <span class="dv">1</span>) {</span>
+<span id="cb192-3"><a href="spooky-action.html#cb192-3" aria-hidden="true" tabindex="-1"></a>    out[[i]] <span class="ot">&lt;&lt;-</span> x[[i]]</span>
+<span id="cb192-4"><a href="spooky-action.html#cb192-4" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb192-5"><a href="spooky-action.html#cb192-5" aria-hidden="true" tabindex="-1"></a>    out[[i]] <span class="ot">&lt;&lt;-</span> x[[i]] <span class="sc">+</span> out[[i <span class="sc">-</span> <span class="dv">1</span>]]</span>
+<span id="cb192-6"><a href="spooky-action.html#cb192-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb192-7"><a href="spooky-action.html#cb192-7" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb192-8"><a href="spooky-action.html#cb192-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1]  8 16 27 32 44 52 62 74 83 95</span></span></code></pre></div>
+<p>This use of <code>&lt;&lt;-</code> is a spooky action because we’re reaching up the tree of environments to modify an object created outside of the function. In this case, however, there’s no point in using <code>map()</code>: the point of those functions is to restrict what you can do compared to a for loop so that your code is easier to understand. <a href="https://r4ds.had.co.nz/iteration.html#for-loop-variations">R for data science</a> has other examples of for loops that <em>could</em> be rewritten with <code>map()</code>, but shouldn’t be.</p>
+<p>Note that we could still wrap this code into a function to eliminate the spooky action:</p>
+<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="spooky-action.html#cb193-1" aria-hidden="true" tabindex="-1"></a>cumsum2 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb193-2"><a href="spooky-action.html#cb193-2" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="fu">length</span>(x))</span>
+<span id="cb193-3"><a href="spooky-action.html#cb193-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map_dbl</span>(<span class="fu">seq_along</span>(x), <span class="cf">function</span>(i) {</span>
+<span id="cb193-4"><a href="spooky-action.html#cb193-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (i <span class="sc">==</span> <span class="dv">1</span>) {</span>
+<span id="cb193-5"><a href="spooky-action.html#cb193-5" aria-hidden="true" tabindex="-1"></a>      out[[i]] <span class="ot">&lt;&lt;-</span> x[[i]]</span>
+<span id="cb193-6"><a href="spooky-action.html#cb193-6" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb193-7"><a href="spooky-action.html#cb193-7" aria-hidden="true" tabindex="-1"></a>      out[[i]] <span class="ot">&lt;&lt;-</span> x[[i]] <span class="sc">+</span> out[[i <span class="sc">-</span> <span class="dv">1</span>]]</span>
+<span id="cb193-8"><a href="spooky-action.html#cb193-8" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb193-9"><a href="spooky-action.html#cb193-9" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb193-10"><a href="spooky-action.html#cb193-10" aria-hidden="true" tabindex="-1"></a>  out</span>
+<span id="cb193-11"><a href="spooky-action.html#cb193-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>This eliminates the spooky action because it’s now modifying an object that the function “owns”, but I still wouldn’t recommend it, as the use of <code>map()</code> and <code>&lt;&lt;-</code> only increases complexity for no gain compared to the use of a for loop.</p>
+</div>
+<div id="assign-in-a-for-loop" class="section level3 hasAnchor" number="31.4.4">
+<h3><span class="header-section-number">31.4.4</span> <code>assign()</code> in a for loop<a href="spooky-action.html#assign-in-a-for-loop" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>It’s not uncommon for people to ask how to create multiple objects from for a loop. For example, maybe you have a vector of file names, and want to read each file into an individual object. With some effort you typically discover <code>assign()</code>:</p>
+<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="spooky-action.html#cb194-1" aria-hidden="true" tabindex="-1"></a>paths <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;a.csv&quot;</span>, <span class="st">&quot;b.csv&quot;</span>, <span class="st">&quot;c.csv&quot;</span>)</span>
+<span id="cb194-2"><a href="spooky-action.html#cb194-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(paths) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>)</span>
+<span id="cb194-3"><a href="spooky-action.html#cb194-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb194-4"><a href="spooky-action.html#cb194-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(paths)) {</span>
+<span id="cb194-5"><a href="spooky-action.html#cb194-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">assign</span>(<span class="fu">names</span>(paths)[[i]], <span class="fu">read.csv</span>(paths[[i]]))</span>
+<span id="cb194-6"><a href="spooky-action.html#cb194-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>The main problem with this approach is that it does not facilitate composition. For example, imagine that you now wanted to figure out how many rows are in each of the data frames. Now you need to learn how to loop over a series of objects, where the name of the object is stored in a character vector. With some work, you might discover <code>get()</code> and write:</p>
+<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="spooky-action.html#cb195-1" aria-hidden="true" tabindex="-1"></a>lengths <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="fu">length</span>(names))</span>
+<span id="cb195-2"><a href="spooky-action.html#cb195-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(paths)) {</span>
+<span id="cb195-3"><a href="spooky-action.html#cb195-3" aria-hidden="true" tabindex="-1"></a>  lengths[[i]] <span class="ot">&lt;-</span> <span class="fu">nrow</span>(<span class="fu">get</span>(<span class="fu">names</span>(paths)[[i]]))</span>
+<span id="cb195-4"><a href="spooky-action.html#cb195-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>This approach is not necessarily bad in and of itself<a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a>, but it tends to lead you down a high-friction path. Instead, if you learn a little about lists and functional programming techniques (e.g. with <a href="http://purrr.tidyverse.org/">purrr</a>), you’ll be able to write code like this:</p>
+<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="spooky-action.html#cb196-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb196-2"><a href="spooky-action.html#cb196-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb196-3"><a href="spooky-action.html#cb196-3" aria-hidden="true" tabindex="-1"></a>files <span class="ot">&lt;-</span> <span class="fu">map</span>(paths, read.csv)</span>
+<span id="cb196-4"><a href="spooky-action.html#cb196-4" aria-hidden="true" tabindex="-1"></a>lengths <span class="ot">&lt;-</span> <span class="fu">map_int</span>(files, nrow)</span></code></pre></div>
+<p>This obviously requires that you learn some new tools - but learning about <code>map()</code> and <code>map_int()</code> will pay off in many more situations than learning about <code>assign()</code> and <code>get()</code>. And because you can reuse <code>map()</code> and friends in many places, you’ll find that they get easier and easier to use over time.</p>
+<p>It would certainly be possible to build tools in purrr to avoid having to learn about <code>assign()</code> and <code>get()</code> and to provide a polished interface for working with character vectors containing object names. But such functions would need to reach up the tree of environments, so would violate the “spooky action” principle, and thus I believe are best avoided.</p>
+
+</div>
+</div>
+</div>
+
+
+
+<div class="footnotes">
+<hr />
+<ol start="5">
+<li id="fn5"><p>Spooky actions tend to be particularly frustrating to those who teach R, because they have to run scripts from many students, and those scripts can end up doing wacky things to their computers.<a href="spooky-action.html#fnref5" class="footnote-back">↩︎</a></p></li>
+<li id="fn6"><p><code>purrr::map()</code> is basically interchangeable with <code>base::lapply()</code> so if you’re more familiar with <code>lapply()</code>, you can mentally substitute it for <code>map()</code> in all the code here.<a href="spooky-action.html#fnref6" class="footnote-back">↩︎</a></p></li>
+<li id="fn7"><p>However, if you take this approach in multiple places in your code, you’ll need to make sure that you don’t use the same name in multiple loops because <code>assign()</code> will silently overwrite an existing variable. This might not happen commonly but because it’s silent, it will create a bug that is hard to detect.<a href="spooky-action.html#fnref7" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="side-effect-soup.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="glossary.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": {}
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/tidyverse/principles/edit/master/spooky-action.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

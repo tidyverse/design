@@ -1,0 +1,169 @@
+# Error constructors {#err-constructor}
+
+
+
+## What's the pattern?
+
+Following the rule of three, whenever you generate the same error in three or more places, you should extract it out into a common function, called an __error constructor__. This function should create a [custom condition](https://adv-r.hadley.nz/conditions.html#custom-conditions) that contains components that can easily be tested and a `conditionMessage()` method that generates user friendly error messages.
+
+(This is a new pattern that we are currently rolling out across the tidyverse; it's currently found in few packages.)
+
+
+```r
+library(rlang)
+```
+
+## Why is this important?
+
+* If you don't use an custom condition, you can only check that your function
+  has generated the correct error by matching the text of the error message
+  with a regular expression. This is fragile because the text of error messages
+  changes relatively frequently, causing spurious test failures.
+
+* You _can_ use custom conditions for one-off errors, but generally the extra 
+  implementation work is not worth the pay off. That's why we recommend only 
+  using an error constructor for repeated errors.
+
+* It gives more precise control over error handling with `tryCatch()`. 
+  This is particularly useful in packages because you may be able to give
+  more useful high-level error mesasges by wrapping a specific low-level 
+  error. 
+
+* As you start using this technique for more error messages you can create
+  a hierarchy of errors that allows you to borrow behaviour, reducing the
+  amount of code you need to write.
+
+* Once you have identified all the errors that can be thrown by a function,
+  you can add a `@section Throws:` to the documentation that precisely 
+  describes the possible failure modes.
+
+## What does an error constructor do?
+
+An error constructor is very similar to an [S3 constructor](https://adv-r.hadley.nz/s3.html#s3-constructor), as its job is to extract out repeated code and generate a rich object that can easily be computed with. The primary difference is that instead of creating and returning a new object, it creates a custom error and immediately throws it with `abort()`.
+
+Here's a simple imaginary error that might be thrown by [fs](http://fs.r-lib.org/) if it couldn't find a file:
+
+
+```r
+stop_not_found <- function(path) {
+  abort(
+    .subclass = "fs_error_not_found",
+    path = path
+  )
+}
+```
+
+Note the naming scheme:
+
+* The function should be called `stop_{error_type}`
+
+* The error class should be `{package}_error_{error_type}`. 
+
+The function should have one argument for each varying part of the error, and these argument should be passed onto `abort()` to be stored in the condition object.
+
+To generate the error message shown to the user, provide a `conditionMessage()` method:
+
+
+```r
+#' @export
+conditionMessage.fs_error_not_found <- function(c) {
+  glue::glue_data(c, "'{path}' not found")
+}
+```
+
+
+
+
+
+```r
+stop_not_found("a.csv")
+#> Error: 'a.csv' not found
+```
+
+This method must be exported, because you are defining a method for a generic in another package, and it will often use `glue::glue_data()` to assemble the components of the condition into a string. See <https://style.tidyverse.org/error-messages.html> for advice on writing the error message.
+
+## How do I test?
+
+
+```r
+library(testthat)
+#> 
+#> Attaching package: 'testthat'
+#> The following objects are masked from 'package:rlang':
+#> 
+#>     is_false, is_null, is_true
+```
+
+
+### Test the constructor
+
+Firstly, you should test the error constructor. The primary goal of this test is to ensure that the error constructor generates a message that is useful to humans, which you can not automate. This means that you can not use a unit test (because the desired output is not known) and instead you need to use a regression test, so you can ensure that the message does not change unexpectedly. For that reason the best approach is usually to use [`verify_output()`](https://testthat.r-lib.org/reference/verify_output.html), e.g.:
+
+
+```r
+test_that("stop_not_found() generates useful error message", {
+  verify_output(test_path("test-stop-not-found.txt"), {
+    stop_not_found("a.csv")
+  })
+})
+```
+
+This is useful for pull requests because `verify_output()` generates a complete error messages in a text file that can easily be read and reviewed.
+
+If your error has multiple arguments, or your `conditionMessage()` method contains `if` statements, you should generally attempt to cover them all in a test case. 
+
+### Test usage
+
+Now that you have an error constructor, you'll need to slightly change how you test your functions that use the error constructor. For example, take this imaginary example for reading a file into a single string:
+
+
+```r
+read_lines <- function(x) {
+  if (!file.exists(x)) {
+    stop_not_found(x)
+  }
+  paste0(readLines(x), collapse = "\n")
+}
+```
+
+Previously, you might have written:
+
+
+```r
+expect_error(read_lines("missing-file.txt"), "not found")
+```
+
+But, now as you see, testthat gives you a warning that suggests you need to use the class argument instead:
+
+
+```r
+expect_error(read_lines("missing-file.txt"), class = "fs_error_not_found")
+```
+
+This is less fragile because you can now change the error message without having to worry about breaking existing tests.
+
+If you also want to check components of the error object, note that `expect_error()` returns it:
+
+
+```r
+cnd <- expect_error(read_lines("missing-file.txt"), class = "fs_error_not_found")
+expect_equal(cnd$path, "missing-file.txt")
+```
+
+I don't think this level of testing is generally important, so you should only use it because the error generation code is complex conditions, or you have identified a bug.
+
+## Error hierarchies
+
+As you start writing more and more error constructors, you may notice that you are starting to share code between them because the errors form a natural hierarchy. To take advantage of this hierarchy to reduce the amount of code you need to write, you can make the errors subclassable by adding `...` and `class` arguments:
+
+
+```r
+stop_not_found <- function(path, ..., class = character()) {
+  abort(
+    .subclass = c(class, "fs_error_not_found"),
+    path = path
+  )
+}
+```
+
+Then the subclasses can call this constructor, and the problem becomes one of S3 class design. We currently have little experience with this, so use with caution.

@@ -1,0 +1,25 @@
+# User settable defaults {#def-user}
+
+
+
+## What's the pattern?
+
+It's sometimes useful to give the user control over default values, so that they can set once per session or once for every session in their `.Rprofile`. To do so, use `getOption()` in the default value.
+
+Note that this pattern should general only be used to control the side-effects of a function, not its compute value. The two primary uses are for controlling the apperance of output, particulary in `print()` methods, and for setting default values in generated templates. 
+
+Related patterns:
+
+* If a global option affects the results of the computation (not just its 
+  side-effects), you have an example of Chapter \@ref(args-hidden).
+
+## What are some examples?
+
+
+
+## Why is it important?
+
+## What are the exceptions?
+
+
+## How do I use it?
