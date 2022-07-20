@@ -1,6 +1,11 @@
 # Case study: `rgb()` {#cs-rgb}
 
+```{r, include = FALSE}
+source("common.R")
+```
+
 Interface:
+
 * Function name and argument names.
 * `alpha` has no default but isn't required.
 * `names` not required (imo).
