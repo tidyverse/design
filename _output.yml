@@ -1,15 +1,7 @@
-bookdown::gitbook:
+bookdown::bs4_book:
   includes:
     in_header: [ga_script.html]
-  css: style.css
-  config:
-    toc:
-      collapse: section
-      before: |
-        <li><a href="./">tidyverse design principles</a></li>
-    edit: https://github.com/tidyverse/principles/edit/master/%s
-    sharing:
-      github: yes
-      facebook: no
-      twitter: no
-      all: []
+  repo:
+    base: http://github.com/tidyverse/design
+    branch: main
+    
