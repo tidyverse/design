@@ -8,7 +8,7 @@ source("common.R")
 
 It's sometimes useful to give the user control over default values, so that they can set once per session or once for every session in their `.Rprofile`. To do so, use `getOption()` in the default value.
 
-Note that this pattern should general only be used to control the side-effects of a function, not its compute value. The two primary uses are for controlling the apperance of output, particulary in `print()` methods, and for setting default values in generated templates. 
+Note that this pattern should general only be used to control the side-effects of a function, not its compute value. The two primary uses are for controlling the appearance of output, particularly in `print()` methods, and for setting default values in generated templates. 
 
 Related patterns:
 
