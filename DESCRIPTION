@@ -9,6 +9,7 @@ Depends:
 Imports: 
     bench,
     bookdown,
+    downlit,
     dplyr,
     glue,
     nycflights13,
