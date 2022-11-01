@@ -15,7 +15,7 @@ Existing name-related topics in <http://style.tidyverse.org>
 
 Here we address how to manage the `names` attribute of an object. Our initial thinking was motivated by how to handle the column or variable names of a tibble, but is evolving into a name-handling strategy for vectors, in general.
 
-The name repair described below is exposed to users via the `.name_repair` argument of [tibble::tibble()](https://tibble.tidyverse.org/reference/tibble.html), [tibble::as_tibble()](https://tibble.tidyverse.org/reference/as_tibble.html), [readxl::read_excel()](https://readxl.tidyverse.org/reference/read_excel.html), and, eventually other packages in the tidyverse. This work was initiated in the tibble package, but is migrating to the vctrs package. *Name repair was first introduced in [tibble v2.0.0](https://tibble.tidyverse.org/news/index.html#tibble-2-0-0) and this write-up is being rendered with tibble v3.1.7 and vctrs v0.4.1.*
+The name repair described below is exposed to users via the `.name_repair` argument of [tibble::tibble()](https://tibble.tidyverse.org/reference/tibble.html), [tibble::as_tibble()](https://tibble.tidyverse.org/reference/as_tibble.html), [readxl::read_excel()](https://readxl.tidyverse.org/reference/read_excel.html), and, eventually other packages in the tidyverse. This work was initiated in the tibble package, but is migrating to the vctrs package. *Name repair was first introduced in [tibble v2.0.0](https://tibble.tidyverse.org/news/index.html#tibble-2-0-0) and this write-up is being rendered with tibble v3.1.8 and vctrs v0.5.0.*
 
 These are the kind of names we're talking about:
 
@@ -165,8 +165,7 @@ df <- tibble(`..1` = "not ok")
 with(df, `..1`)
 #> Error in eval(substitute(expr), data, enclos = parent.frame()): ..1 used in an incorrect context, no ... to look in
 dplyr::select(df, `..1`)
-#> Error in `dplyr::select()`:
-#> ! '...' used in an incorrect context
+#> Error in dplyr::select(df, ..1): '...' used in an incorrect context
 
 df <- tibble(`...` = "not ok")
 #> Error:

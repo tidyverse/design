@@ -1,458 +1,110 @@
 <!DOCTYPE html>
-<html lang="" xml:lang="">
+<html lang="en">
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>6 Avoid hidden arguments | Tidyverse design guide</title>
+<meta name="author" content="Tidyverse team">
+<meta name="generator" content="bookdown 0.29 with bs4_book()">
+<meta property="og:title" content="6 Avoid hidden arguments | Tidyverse design guide">
+<meta property="og:type" content="book">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="6 Avoid hidden arguments | Tidyverse design guide">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.0/transition.js"></script><script src="libs/bs3compat-0.4.0/tabs.js"></script><script src="libs/bs3compat-0.4.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-115082821-1"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>6 Avoid hidden arguments | Tidyverse design guide</title>
-  <meta name="description" content="6 Avoid hidden arguments | Tidyverse design guide" />
-  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
-
-  <meta property="og:title" content="6 Avoid hidden arguments | Tidyverse design guide" />
-  <meta property="og:type" content="book" />
-  
-  
-  <meta name="github-repo" content="tidyverse/design" />
-
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="6 Avoid hidden arguments | Tidyverse design guide" />
-  
-  
-  
-
-<meta name="author" content="Tidyverse team" />
-
-
-
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-  
-  
-<link rel="prev" href="function-names.html"/>
-<link rel="next" href="args-data-details.html"/>
-<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
-<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
-
-
-
-
-
-
-
-
-<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
-<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115082821-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-115082821-1');
-</script>
-
-
-<style type="text/css">
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-</style>
-
-
-<link rel="stylesheet" href="style.css" type="text/css" />
+      gtag('config', 'UA-115082821-1');
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<meta name="description" content="6.1 What’s the problem? Functions are easier to understand if the results depend only on the values of the inputs. If a function returns surprisingly different results with the same inputs, then...">
+<meta property="og:description" content="6.1 What’s the problem? Functions are easier to understand if the results depend only on the values of the inputs. If a function returns surprisingly different results with the same inputs, then...">
+<meta name="twitter:description" content="6.1 What’s the problem? Functions are easier to understand if the results depend only on the values of the inputs. If a function returns surprisingly different results with the same inputs, then...">
 </head>
+<body data-spy="scroll" data-target="#toc">
 
-<body>
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
 
-
-
-  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
-
-    <div class="book-summary">
-      <nav role="navigation">
-
-<ul class="summary">
-<li><a href="./">tidyverse design principles</a></li>
-
-<li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a></li>
-<li class="chapter" data-level="1" data-path="structure.html"><a href="structure.html"><i class="fa fa-check"></i><b>1</b> Structure</a>
-<ul>
-<li class="chapter" data-level="1.1" data-path="structure.html"><a href="structure.html#implementation"><i class="fa fa-check"></i><b>1.1</b> Implementation</a></li>
-<li class="chapter" data-level="1.2" data-path="structure.html"><a href="structure.html#interface"><i class="fa fa-check"></i><b>1.2</b> Interface</a>
-<ul>
-<li class="chapter" data-level="1.2.1" data-path="structure.html"><a href="structure.html#inputs"><i class="fa fa-check"></i><b>1.2.1</b> Inputs</a></li>
-<li class="chapter" data-level="1.2.2" data-path="structure.html"><a href="structure.html#output"><i class="fa fa-check"></i><b>1.2.2</b> Output</a></li>
-<li class="chapter" data-level="1.2.3" data-path="structure.html"><a href="structure.html#errors"><i class="fa fa-check"></i><b>1.2.3</b> Errors</a></li>
-<li class="chapter" data-level="1.2.4" data-path="structure.html"><a href="structure.html#side-effects"><i class="fa fa-check"></i><b>1.2.4</b> Side-effects</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="2" data-path="unifying-principles.html"><a href="unifying-principles.html"><i class="fa fa-check"></i><b>2</b> Unifying principles</a>
-<ul>
-<li class="chapter" data-level="" data-path="unifying-principles.html"><a href="unifying-principles.html#related-work"><i class="fa fa-check"></i>Related work</a></li>
-<li class="chapter" data-level="2.1" data-path="unifying-principles.html"><a href="unifying-principles.html#human-centered"><i class="fa fa-check"></i><b>2.1</b> Human centered</a></li>
-<li class="chapter" data-level="2.2" data-path="unifying-principles.html"><a href="unifying-principles.html#consistent"><i class="fa fa-check"></i><b>2.2</b> Consistent</a></li>
-<li class="chapter" data-level="2.3" data-path="unifying-principles.html"><a href="unifying-principles.html#composable"><i class="fa fa-check"></i><b>2.3</b> Composable</a></li>
-<li class="chapter" data-level="2.4" data-path="unifying-principles.html"><a href="unifying-principles.html#inclusive"><i class="fa fa-check"></i><b>2.4</b> Inclusive</a></li>
-</ul></li>
-<li class="part"><span><b>I Implementation</b></span></li>
-<li class="chapter" data-level="3" data-path="names-attribute.html"><a href="names-attribute.html"><i class="fa fa-check"></i><b>3</b> Names attribute</a>
-<ul>
-<li class="chapter" data-level="3.1" data-path="names-attribute.html"><a href="names-attribute.html#coverage-in-tidyverse-style-guide"><i class="fa fa-check"></i><b>3.1</b> Coverage in tidyverse style guide</a></li>
-<li class="chapter" data-level="3.2" data-path="names-attribute.html"><a href="names-attribute.html#the-names-attribute-of-an-object"><i class="fa fa-check"></i><b>3.2</b> The <code>names</code> attribute of an object</a></li>
-<li class="chapter" data-level="3.3" data-path="names-attribute.html"><a href="names-attribute.html#minimal-unique-universal"><i class="fa fa-check"></i><b>3.3</b> Minimal, unique, universal</a></li>
-<li class="chapter" data-level="3.4" data-path="names-attribute.html"><a href="names-attribute.html#minimal-names"><i class="fa fa-check"></i><b>3.4</b> Minimal names</a></li>
-<li class="chapter" data-level="3.5" data-path="names-attribute.html"><a href="names-attribute.html#unique-names"><i class="fa fa-check"></i><b>3.5</b> Unique names</a>
-<ul>
-<li class="chapter" data-level="3.5.1" data-path="names-attribute.html"><a href="names-attribute.html#making-names-unique"><i class="fa fa-check"></i><b>3.5.1</b> Making names unique</a></li>
-<li class="chapter" data-level="3.5.2" data-path="names-attribute.html"><a href="names-attribute.html#roundtrips"><i class="fa fa-check"></i><b>3.5.2</b> Roundtrips</a></li>
-<li class="chapter" data-level="3.5.3" data-path="names-attribute.html"><a href="names-attribute.html#when-is-minimal-better-than-unique"><i class="fa fa-check"></i><b>3.5.3</b> When is minimal better than unique?</a></li>
-<li class="chapter" data-level="3.5.4" data-path="names-attribute.html"><a href="names-attribute.html#ugly-with-a-purpose"><i class="fa fa-check"></i><b>3.5.4</b> Ugly, with a purpose</a></li>
-<li class="chapter" data-level="3.5.5" data-path="names-attribute.html"><a href="names-attribute.html#why-so-many-dots"><i class="fa fa-check"></i><b>3.5.5</b> Why so many dots?</a></li>
-<li class="chapter" data-level="3.5.6" data-path="names-attribute.html"><a href="names-attribute.html#why-dots-in-the-first-place"><i class="fa fa-check"></i><b>3.5.6</b> Why dot(s) in the first place?</a></li>
-</ul></li>
-<li class="chapter" data-level="3.6" data-path="names-attribute.html"><a href="names-attribute.html#universal-names"><i class="fa fa-check"></i><b>3.6</b> Universal names</a>
-<ul>
-<li class="chapter" data-level="3.6.1" data-path="names-attribute.html"><a href="names-attribute.html#syntactic-names"><i class="fa fa-check"></i><b>3.6.1</b> Syntactic names</a></li>
-<li class="chapter" data-level="3.6.2" data-path="names-attribute.html"><a href="names-attribute.html#making-an-individual-name-syntactic"><i class="fa fa-check"></i><b>3.6.2</b> Making an individual name syntactic</a></li>
-<li class="chapter" data-level="3.6.3" data-path="names-attribute.html"><a href="names-attribute.html#why-universal"><i class="fa fa-check"></i><b>3.6.3</b> Why universal?</a></li>
-<li class="chapter" data-level="3.6.4" data-path="names-attribute.html"><a href="names-attribute.html#making-names-universal"><i class="fa fa-check"></i><b>3.6.4</b> Making names universal</a></li>
-</ul></li>
-<li class="chapter" data-level="3.7" data-path="names-attribute.html"><a href="names-attribute.html#messaging-user-about-name-repair"><i class="fa fa-check"></i><b>3.7</b> Messaging user about name repair</a></li>
-</ul></li>
-<li class="chapter" data-level="4" data-path="call-data-details.html"><a href="call-data-details.html"><i class="fa fa-check"></i><b>4</b> Name details arguments</a>
-<ul>
-<li class="chapter" data-level="4.1" data-path="call-data-details.html"><a href="call-data-details.html#what-are-data-and-details-arguments"><i class="fa fa-check"></i><b>4.1</b> What are data and details arguments?</a></li>
-<li class="chapter" data-level="4.2" data-path="call-data-details.html"><a href="call-data-details.html#whats-the-pattern"><i class="fa fa-check"></i><b>4.2</b> What’s the pattern?</a></li>
-<li class="chapter" data-level="4.3" data-path="call-data-details.html"><a href="call-data-details.html#why-is-this-useful"><i class="fa fa-check"></i><b>4.3</b> Why is this useful?</a></li>
-<li class="chapter" data-level="4.4" data-path="call-data-details.html"><a href="call-data-details.html#what-are-the-exceptions"><i class="fa fa-check"></i><b>4.4</b> What are the exceptions?</a></li>
-</ul></li>
-<li class="chapter" data-level="5" data-path="function-names.html"><a href="function-names.html"><i class="fa fa-check"></i><b>5</b> Function names</a>
-<ul>
-<li class="chapter" data-level="5.1" data-path="function-names.html"><a href="function-names.html#nouns-vs-verbs"><i class="fa fa-check"></i><b>5.1</b> Nouns vs verbs</a></li>
-<li class="chapter" data-level="5.2" data-path="function-names.html"><a href="function-names.html#function-families"><i class="fa fa-check"></i><b>5.2</b> Function families</a></li>
-<li class="chapter" data-level="5.3" data-path="function-names.html"><a href="function-names.html#length"><i class="fa fa-check"></i><b>5.3</b> Length</a></li>
-<li class="chapter" data-level="5.4" data-path="function-names.html"><a href="function-names.html#conflicts"><i class="fa fa-check"></i><b>5.4</b> Conflicts</a></li>
-<li class="chapter" data-level="5.5" data-path="function-names.html"><a href="function-names.html#techniques"><i class="fa fa-check"></i><b>5.5</b> Techniques</a></li>
-<li class="chapter" data-level="5.6" data-path="function-names.html"><a href="function-names.html#other-good-advice"><i class="fa fa-check"></i><b>5.6</b> Other good advice</a></li>
-</ul></li>
-<li class="part"><span><b>II Interface: inputs</b></span></li>
-<li class="chapter" data-level="6" data-path="args-hidden.html"><a href="args-hidden.html"><i class="fa fa-check"></i><b>6</b> Avoid hidden arguments</a>
-<ul>
-<li class="chapter" data-level="6.1" data-path="args-hidden.html"><a href="args-hidden.html#whats-the-problem"><i class="fa fa-check"></i><b>6.1</b> What’s the problem?</a></li>
-<li class="chapter" data-level="6.2" data-path="args-hidden.html"><a href="args-hidden.html#what-are-some-examples"><i class="fa fa-check"></i><b>6.2</b> What are some examples?</a></li>
-<li class="chapter" data-level="6.3" data-path="args-hidden.html"><a href="args-hidden.html#why-is-it-important"><i class="fa fa-check"></i><b>6.3</b> Why is it important?</a></li>
-<li class="chapter" data-level="6.4" data-path="args-hidden.html"><a href="args-hidden.html#how-can-i-remediate-the-problem"><i class="fa fa-check"></i><b>6.4</b> How can I remediate the problem?</a></li>
-</ul></li>
-<li class="chapter" data-level="7" data-path="args-data-details.html"><a href="args-data-details.html"><i class="fa fa-check"></i><b>7</b> Data, descriptors, details</a>
-<ul>
-<li class="chapter" data-level="7.1" data-path="args-data-details.html"><a href="args-data-details.html#whats-the-pattern-1"><i class="fa fa-check"></i><b>7.1</b> What’s the pattern?</a></li>
-<li class="chapter" data-level="7.2" data-path="args-data-details.html"><a href="args-data-details.html#what-are-some-examples-1"><i class="fa fa-check"></i><b>7.2</b> What are some examples?</a></li>
-<li class="chapter" data-level="7.3" data-path="args-data-details.html"><a href="args-data-details.html#why-is-it-important-1"><i class="fa fa-check"></i><b>7.3</b> Why is it important?</a></li>
-<li class="chapter" data-level="7.4" data-path="args-data-details.html"><a href="args-data-details.html#how-do-i-avoid-the-problem"><i class="fa fa-check"></i><b>7.4</b> How do I avoid the problem?</a></li>
-<li class="chapter" data-level="7.5" data-path="args-data-details.html"><a href="args-data-details.html#how-do-i-remediate-past-mistakes"><i class="fa fa-check"></i><b>7.5</b> How do I remediate past mistakes?</a></li>
-</ul></li>
-<li class="chapter" data-level="8" data-path="args-independence.html"><a href="args-independence.html"><i class="fa fa-check"></i><b>8</b> Avoid dependencies between arguments</a>
-<ul>
-<li class="chapter" data-level="8.1" data-path="args-independence.html"><a href="args-independence.html#whats-the-problem-1"><i class="fa fa-check"></i><b>8.1</b> What’s the problem?</a></li>
-<li class="chapter" data-level="8.2" data-path="args-independence.html"><a href="args-independence.html#what-are-some-examples-2"><i class="fa fa-check"></i><b>8.2</b> What are some examples?</a></li>
-<li class="chapter" data-level="8.3" data-path="args-independence.html"><a href="args-independence.html#why-is-this-important"><i class="fa fa-check"></i><b>8.3</b> Why is this important?</a></li>
-<li class="chapter" data-level="8.4" data-path="args-independence.html"><a href="args-independence.html#how-do-i-remediate"><i class="fa fa-check"></i><b>8.4</b> How do I remediate?</a>
-<ul>
-<li class="chapter" data-level="8.4.1" data-path="args-independence.html"><a href="args-independence.html#cs-fct-lump"><i class="fa fa-check"></i><b>8.4.1</b> Case study: <code>fct_lump()</code></a></li>
-<li class="chapter" data-level="8.4.2" data-path="args-independence.html"><a href="args-independence.html#case-study-grepl-vs-stringrstr_detect"><i class="fa fa-check"></i><b>8.4.2</b> Case study: <code>grepl()</code> vs <code>stringr::str_detect()</code></a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="9" data-path="case-study-setnames.html"><a href="case-study-setnames.html"><i class="fa fa-check"></i><b>9</b> Case study: <code>setNames()</code></a>
-<ul>
-<li class="chapter" data-level="9.1" data-path="case-study-setnames.html"><a href="case-study-setnames.html#what-does-setnames-do"><i class="fa fa-check"></i><b>9.1</b> What does <code>setNames()</code> do?</a></li>
-<li class="chapter" data-level="9.2" data-path="case-study-setnames.html"><a href="case-study-setnames.html#how-can-we-improve-the-names"><i class="fa fa-check"></i><b>9.2</b> How can we improve the names?</a></li>
-<li class="chapter" data-level="9.3" data-path="case-study-setnames.html"><a href="case-study-setnames.html#what-about-the-default-values"><i class="fa fa-check"></i><b>9.3</b> What about the default values?</a></li>
-<li class="chapter" data-level="9.4" data-path="case-study-setnames.html"><a href="case-study-setnames.html#what-about-bad-inputs"><i class="fa fa-check"></i><b>9.4</b> What about bad inputs?</a></li>
-<li class="chapter" data-level="9.5" data-path="case-study-setnames.html"><a href="case-study-setnames.html#how-could-we-extend-this-function"><i class="fa fa-check"></i><b>9.5</b> How could we extend this function?</a></li>
-<li class="chapter" data-level="9.6" data-path="case-study-setnames.html"><a href="case-study-setnames.html#compared-to-rlangset_names"><i class="fa fa-check"></i><b>9.6</b> Compared to <code>rlang::set_names()</code></a></li>
-</ul></li>
-<li class="part"><span><b>III Interface: default values</b></span></li>
-<li class="chapter" data-level="10" data-path="def-required.html"><a href="def-required.html"><i class="fa fa-check"></i><b>10</b> Required args shouldn’t have defaults</a>
-<ul>
-<li class="chapter" data-level="10.1" data-path="def-required.html"><a href="def-required.html#whats-the-problem-2"><i class="fa fa-check"></i><b>10.1</b> What’s the problem?</a></li>
-<li class="chapter" data-level="10.2" data-path="def-required.html"><a href="def-required.html#what-are-some-examples-3"><i class="fa fa-check"></i><b>10.2</b> What are some examples?</a></li>
-<li class="chapter" data-level="10.3" data-path="def-required.html"><a href="def-required.html#what-are-the-exceptions-1"><i class="fa fa-check"></i><b>10.3</b> What are the exceptions?</a>
-<ul>
-<li class="chapter" data-level="10.3.1" data-path="def-required.html"><a href="def-required.html#args-mutually-exclusive"><i class="fa fa-check"></i><b>10.3.1</b> Pair of mututally exclusive arguments</a></li>
-<li class="chapter" data-level="10.3.2" data-path="def-required.html"><a href="def-required.html#args-compound"><i class="fa fa-check"></i><b>10.3.2</b> One compound argument vs multiple simple arguments</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="11" data-path="cs-rep.html"><a href="cs-rep.html"><i class="fa fa-check"></i><b>11</b> Case study: <code>rep()</code></a>
-<ul>
-<li class="chapter" data-level="11.1" data-path="cs-rep.html"><a href="cs-rep.html#what-does-rep-do"><i class="fa fa-check"></i><b>11.1</b> What does <code>rep()</code> do?</a></li>
-<li class="chapter" data-level="11.2" data-path="cs-rep.html"><a href="cs-rep.html#what-makes-this-function-hard-to-understand"><i class="fa fa-check"></i><b>11.2</b> What makes this function hard to understand?</a></li>
-<li class="chapter" data-level="11.3" data-path="cs-rep.html"><a href="cs-rep.html#how-might-we-improve-the-situation"><i class="fa fa-check"></i><b>11.3</b> How might we improve the situation?</a></li>
-<li class="chapter" data-level="11.4" data-path="cs-rep.html"><a href="cs-rep.html#dealing-with-bad-inputs"><i class="fa fa-check"></i><b>11.4</b> Dealing with bad inputs</a></li>
-</ul></li>
-<li class="chapter" data-level="12" data-path="def-enum.html"><a href="def-enum.html"><i class="fa fa-check"></i><b>12</b> Enumerate possible options</a>
-<ul>
-<li class="chapter" data-level="12.1" data-path="def-enum.html"><a href="def-enum.html#whats-the-pattern-2"><i class="fa fa-check"></i><b>12.1</b> What’s the pattern?</a></li>
-<li class="chapter" data-level="12.2" data-path="def-enum.html"><a href="def-enum.html#what-are-some-examples-4"><i class="fa fa-check"></i><b>12.2</b> What are some examples?</a></li>
-<li class="chapter" data-level="12.3" data-path="def-enum.html"><a href="def-enum.html#why-is-it-important-2"><i class="fa fa-check"></i><b>12.3</b> Why is it important?</a></li>
-<li class="chapter" data-level="12.4" data-path="def-enum.html"><a href="def-enum.html#how-do-i-use-it"><i class="fa fa-check"></i><b>12.4</b> How do I use it?</a>
-<ul>
-<li class="chapter" data-level="12.4.1" data-path="def-enum.html"><a href="def-enum.html#how-keep-defaults-short"><i class="fa fa-check"></i><b>12.4.1</b> How keep defaults short?</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="13" data-path="def-magical.html"><a href="def-magical.html"><i class="fa fa-check"></i><b>13</b> Avoid magical defaults</a>
-<ul>
-<li class="chapter" data-level="13.1" data-path="def-magical.html"><a href="def-magical.html#whats-the-problem-3"><i class="fa fa-check"></i><b>13.1</b> What’s the problem?</a></li>
-<li class="chapter" data-level="13.2" data-path="def-magical.html"><a href="def-magical.html#what-are-some-examples-5"><i class="fa fa-check"></i><b>13.2</b> What are some examples?</a></li>
-<li class="chapter" data-level="13.3" data-path="def-magical.html"><a href="def-magical.html#what-are-the-exceptions-2"><i class="fa fa-check"></i><b>13.3</b> What are the exceptions?</a></li>
-<li class="chapter" data-level="13.4" data-path="def-magical.html"><a href="def-magical.html#what-causes-the-problem"><i class="fa fa-check"></i><b>13.4</b> What causes the problem?</a></li>
-<li class="chapter" data-level="13.5" data-path="def-magical.html"><a href="def-magical.html#how-do-i-remediate-the-problem"><i class="fa fa-check"></i><b>13.5</b> How do I remediate the problem?</a></li>
-</ul></li>
-<li class="chapter" data-level="14" data-path="def-short.html"><a href="def-short.html"><i class="fa fa-check"></i><b>14</b> Keep defaults short and sweet</a>
-<ul>
-<li class="chapter" data-level="14.1" data-path="def-short.html"><a href="def-short.html#whats-the-pattern-3"><i class="fa fa-check"></i><b>14.1</b> What’s the pattern?</a></li>
-<li class="chapter" data-level="14.2" data-path="def-short.html"><a href="def-short.html#what-are-some-examples-6"><i class="fa fa-check"></i><b>14.2</b> What are some examples?</a></li>
-<li class="chapter" data-level="14.3" data-path="def-short.html"><a href="def-short.html#why-is-it-important-3"><i class="fa fa-check"></i><b>14.3</b> Why is it important?</a></li>
-<li class="chapter" data-level="14.4" data-path="def-short.html"><a href="def-short.html#how-do-i-use-it-1"><i class="fa fa-check"></i><b>14.4</b> How do I use it?</a>
-<ul>
-<li class="chapter" data-level="14.4.1" data-path="def-short.html"><a href="def-short.html#arg-short-null"><i class="fa fa-check"></i><b>14.4.1</b> <code>NULL</code> default</a></li>
-<li class="chapter" data-level="14.4.2" data-path="def-short.html"><a href="def-short.html#helper-function"><i class="fa fa-check"></i><b>14.4.2</b> Helper function</a></li>
-<li class="chapter" data-level="14.4.3" data-path="def-short.html"><a href="def-short.html#args-default-sentinel"><i class="fa fa-check"></i><b>14.4.3</b> Sentinel value</a></li>
-</ul></li>
-<li class="chapter" data-level="14.5" data-path="def-short.html"><a href="def-short.html#how-do-i-remediate-existing-problems"><i class="fa fa-check"></i><b>14.5</b> How do I remediate existing problems?</a></li>
-</ul></li>
-<li class="chapter" data-level="15" data-path="def-inform.html"><a href="def-inform.html"><i class="fa fa-check"></i><b>15</b> Explain important defaults</a>
-<ul>
-<li class="chapter" data-level="15.1" data-path="def-inform.html"><a href="def-inform.html#whats-the-pattern-4"><i class="fa fa-check"></i><b>15.1</b> What’s the pattern?</a></li>
-<li class="chapter" data-level="15.2" data-path="def-inform.html"><a href="def-inform.html#what-are-some-examples-7"><i class="fa fa-check"></i><b>15.2</b> What are some examples?</a></li>
-<li class="chapter" data-level="15.3" data-path="def-inform.html"><a href="def-inform.html#why-is-it-important-4"><i class="fa fa-check"></i><b>15.3</b> Why is it important?</a></li>
-<li class="chapter" data-level="15.4" data-path="def-inform.html"><a href="def-inform.html#how-can-i-use-it"><i class="fa fa-check"></i><b>15.4</b> How can I use it?</a></li>
-</ul></li>
-<li class="chapter" data-level="16" data-path="def-user.html"><a href="def-user.html"><i class="fa fa-check"></i><b>16</b> User settable defaults</a>
-<ul>
-<li class="chapter" data-level="16.1" data-path="def-user.html"><a href="def-user.html#whats-the-pattern-5"><i class="fa fa-check"></i><b>16.1</b> What’s the pattern?</a></li>
-<li class="chapter" data-level="16.2" data-path="def-user.html"><a href="def-user.html#what-are-some-examples-8"><i class="fa fa-check"></i><b>16.2</b> What are some examples?</a></li>
-<li class="chapter" data-level="16.3" data-path="def-user.html"><a href="def-user.html#why-is-it-important-5"><i class="fa fa-check"></i><b>16.3</b> Why is it important?</a></li>
-<li class="chapter" data-level="16.4" data-path="def-user.html"><a href="def-user.html#what-are-the-exceptions-3"><i class="fa fa-check"></i><b>16.4</b> What are the exceptions?</a></li>
-<li class="chapter" data-level="16.5" data-path="def-user.html"><a href="def-user.html#how-do-i-use-it-2"><i class="fa fa-check"></i><b>16.5</b> How do I use it?</a></li>
-</ul></li>
-<li class="chapter" data-level="17" data-path="cs-rgb.html"><a href="cs-rgb.html"><i class="fa fa-check"></i><b>17</b> Case study: <code>rgb()</code></a></li>
-<li class="part"><span><b>IV Interface: <code>...</code></b></span></li>
-<li class="chapter" data-level="18" data-path="dots-position.html"><a href="dots-position.html"><i class="fa fa-check"></i><b>18</b> Data, dots, details</a>
-<ul>
-<li class="chapter" data-level="18.1" data-path="dots-position.html"><a href="dots-position.html#whats-the-pattern-6"><i class="fa fa-check"></i><b>18.1</b> What’s the pattern?</a></li>
-<li class="chapter" data-level="18.2" data-path="dots-position.html"><a href="dots-position.html#what-are-some-examples-9"><i class="fa fa-check"></i><b>18.2</b> What are some examples?</a></li>
-<li class="chapter" data-level="18.3" data-path="dots-position.html"><a href="dots-position.html#what-is-it-important"><i class="fa fa-check"></i><b>18.3</b> What is it important?</a></li>
-<li class="chapter" data-level="18.4" data-path="dots-position.html"><a href="dots-position.html#how-do-i-do-it"><i class="fa fa-check"></i><b>18.4</b> How do I do it?</a></li>
-<li class="chapter" data-level="18.5" data-path="dots-position.html"><a href="dots-position.html#how-do-i-remediate-it"><i class="fa fa-check"></i><b>18.5</b> How do I remediate it?</a></li>
-</ul></li>
-<li class="chapter" data-level="19" data-path="dots-data.html"><a href="dots-data.html"><i class="fa fa-check"></i><b>19</b> Making data with …</a>
-<ul>
-<li class="chapter" data-level="19.1" data-path="dots-data.html"><a href="dots-data.html#whats-the-problem-4"><i class="fa fa-check"></i><b>19.1</b> What’s the problem?</a></li>
-<li class="chapter" data-level="19.2" data-path="dots-data.html"><a href="dots-data.html#what-are-some-examples-10"><i class="fa fa-check"></i><b>19.2</b> What are some examples?</a></li>
-<li class="chapter" data-level="19.3" data-path="dots-data.html"><a href="dots-data.html#why-is-it-important-6"><i class="fa fa-check"></i><b>19.3</b> Why is it important?</a></li>
-<li class="chapter" data-level="19.4" data-path="dots-data.html"><a href="dots-data.html#what-are-the-exceptions-4"><i class="fa fa-check"></i><b>19.4</b> What are the exceptions?</a></li>
-<li class="chapter" data-level="19.5" data-path="dots-data.html"><a href="dots-data.html#how-can-remediate-it"><i class="fa fa-check"></i><b>19.5</b> How can remediate it?</a></li>
-<li class="chapter" data-level="19.6" data-path="dots-data.html"><a href="dots-data.html#how-can-i-protect-myself"><i class="fa fa-check"></i><b>19.6</b> How can I protect myself?</a></li>
-<li class="chapter" data-level="19.7" data-path="dots-data.html"><a href="dots-data.html#selecting-variables"><i class="fa fa-check"></i><b>19.7</b> Selecting variables</a></li>
-</ul></li>
-<li class="chapter" data-level="20" data-path="dots-prefix.html"><a href="dots-prefix.html"><i class="fa fa-check"></i><b>20</b> Dot prefix</a>
-<ul>
-<li class="chapter" data-level="20.1" data-path="dots-prefix.html"><a href="dots-prefix.html#whats-the-pattern-7"><i class="fa fa-check"></i><b>20.1</b> What’s the pattern?</a></li>
-<li class="chapter" data-level="20.2" data-path="dots-prefix.html"><a href="dots-prefix.html#what-are-some-examples-11"><i class="fa fa-check"></i><b>20.2</b> What are some examples?</a></li>
-<li class="chapter" data-level="20.3" data-path="dots-prefix.html"><a href="dots-prefix.html#case-study-dplyr-verbs"><i class="fa fa-check"></i><b>20.3</b> Case study: dplyr verbs</a></li>
-<li class="chapter" data-level="20.4" data-path="dots-prefix.html"><a href="dots-prefix.html#other-approaches-in-base-r"><i class="fa fa-check"></i><b>20.4</b> Other approaches in base R</a></li>
-<li class="chapter" data-level="20.5" data-path="dots-prefix.html"><a href="dots-prefix.html#what-are-the-exceptions-5"><i class="fa fa-check"></i><b>20.5</b> What are the exceptions?</a></li>
-</ul></li>
-<li class="chapter" data-level="21" data-path="dots-inspect.html"><a href="dots-inspect.html"><i class="fa fa-check"></i><b>21</b> Inspect the dots</a>
-<ul>
-<li class="chapter" data-level="21.1" data-path="dots-inspect.html"><a href="dots-inspect.html#whats-the-pattern-8"><i class="fa fa-check"></i><b>21.1</b> What’s the pattern?</a></li>
-<li class="chapter" data-level="21.2" data-path="dots-inspect.html"><a href="dots-inspect.html#what-are-some-examples-12"><i class="fa fa-check"></i><b>21.2</b> What are some examples?</a></li>
-<li class="chapter" data-level="21.3" data-path="dots-inspect.html"><a href="dots-inspect.html#how-do-i-do-it-1"><i class="fa fa-check"></i><b>21.3</b> How do I do it?</a>
-<ul>
-<li class="chapter" data-level="21.3.1" data-path="dots-inspect.html"><a href="dots-inspect.html#what-are-the-limitations"><i class="fa fa-check"></i><b>21.3.1</b> What are the limitations?</a></li>
-<li class="chapter" data-level="21.3.2" data-path="dots-inspect.html"><a href="dots-inspect.html#what-are-other-uses"><i class="fa fa-check"></i><b>21.3.2</b> What are other uses?</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="22" data-path="cs-mapply-pmap.html"><a href="cs-mapply-pmap.html"><i class="fa fa-check"></i><b>22</b> Case study: <code>mapply()</code> vs <code>pmap()</code></a></li>
-<li class="part"><span><b>V Interface: outputs</b></span></li>
-<li class="chapter" data-level="23" data-path="out-multi.html"><a href="out-multi.html"><i class="fa fa-check"></i><b>23</b> Returning multiple values</a>
-<ul>
-<li class="chapter" data-level="23.1" data-path="out-multi.html"><a href="out-multi.html#different-sizes"><i class="fa fa-check"></i><b>23.1</b> Different sizes</a></li>
-<li class="chapter" data-level="23.2" data-path="out-multi.html"><a href="out-multi.html#same-size"><i class="fa fa-check"></i><b>23.2</b> Same size</a></li>
-<li class="chapter" data-level="23.3" data-path="out-multi.html"><a href="out-multi.html#case-study-str_locate"><i class="fa fa-check"></i><b>23.3</b> Case study: <code>str_locate()</code></a></li>
-</ul></li>
-<li class="chapter" data-level="24" data-path="out-type-stability.html"><a href="out-type-stability.html"><i class="fa fa-check"></i><b>24</b> Type-stability</a>
-<ul>
-<li class="chapter" data-level="24.1" data-path="out-type-stability.html"><a href="out-type-stability.html#simple-examples"><i class="fa fa-check"></i><b>24.1</b> Simple examples</a></li>
-<li class="chapter" data-level="24.2" data-path="out-type-stability.html"><a href="out-type-stability.html#more-complicated-examples"><i class="fa fa-check"></i><b>24.2</b> More complicated examples</a></li>
-<li class="chapter" data-level="24.3" data-path="out-type-stability.html"><a href="out-type-stability.html#challenge-the-median"><i class="fa fa-check"></i><b>24.3</b> Challenge: the median</a></li>
-<li class="chapter" data-level="24.4" data-path="out-type-stability.html"><a href="out-type-stability.html#exercises"><i class="fa fa-check"></i><b>24.4</b> Exercises</a></li>
-</ul></li>
-<li class="chapter" data-level="25" data-path="out-vectorisation.html"><a href="out-vectorisation.html"><i class="fa fa-check"></i><b>25</b> Vectorisation</a></li>
-<li class="chapter" data-level="26" data-path="out-invisible.html"><a href="out-invisible.html"><i class="fa fa-check"></i><b>26</b> Side-effect functions should return invisibly</a>
-<ul>
-<li class="chapter" data-level="26.1" data-path="out-invisible.html"><a href="out-invisible.html#whats-the-pattern-9"><i class="fa fa-check"></i><b>26.1</b> What’s the pattern?</a></li>
-<li class="chapter" data-level="26.2" data-path="out-invisible.html"><a href="out-invisible.html#what-are-some-examples-13"><i class="fa fa-check"></i><b>26.2</b> What are some examples?</a></li>
-<li class="chapter" data-level="26.3" data-path="out-invisible.html"><a href="out-invisible.html#why-is-it-important-7"><i class="fa fa-check"></i><b>26.3</b> Why is it important?</a></li>
-</ul></li>
-<li class="part"><span><b>VI Interface: errors</b></span></li>
-<li class="chapter" data-level="27" data-path="err-call.html"><a href="err-call.html"><i class="fa fa-check"></i><b>27</b> Error call</a></li>
-<li class="chapter" data-level="28" data-path="err-constructor.html"><a href="err-constructor.html"><i class="fa fa-check"></i><b>28</b> Error constructors</a>
-<ul>
-<li class="chapter" data-level="28.1" data-path="err-constructor.html"><a href="err-constructor.html#whats-the-pattern-10"><i class="fa fa-check"></i><b>28.1</b> What’s the pattern?</a></li>
-<li class="chapter" data-level="28.2" data-path="err-constructor.html"><a href="err-constructor.html#why-is-this-important-1"><i class="fa fa-check"></i><b>28.2</b> Why is this important?</a></li>
-<li class="chapter" data-level="28.3" data-path="err-constructor.html"><a href="err-constructor.html#what-does-an-error-constructor-do"><i class="fa fa-check"></i><b>28.3</b> What does an error constructor do?</a></li>
-<li class="chapter" data-level="28.4" data-path="err-constructor.html"><a href="err-constructor.html#how-do-i-test"><i class="fa fa-check"></i><b>28.4</b> How do I test?</a>
-<ul>
-<li class="chapter" data-level="28.4.1" data-path="err-constructor.html"><a href="err-constructor.html#test-the-constructor"><i class="fa fa-check"></i><b>28.4.1</b> Test the constructor</a></li>
-<li class="chapter" data-level="28.4.2" data-path="err-constructor.html"><a href="err-constructor.html#test-usage"><i class="fa fa-check"></i><b>28.4.2</b> Test usage</a></li>
-</ul></li>
-<li class="chapter" data-level="28.5" data-path="err-constructor.html"><a href="err-constructor.html#error-hierarchies"><i class="fa fa-check"></i><b>28.5</b> Error hierarchies</a></li>
-</ul></li>
-<li class="part"><span><b>VII Interface: changes</b></span></li>
-<li class="chapter" data-level="29" data-path="changes-multivers.html"><a href="changes-multivers.html"><i class="fa fa-check"></i><b>29</b> Work with multiple dependency versions</a>
-<ul>
-<li class="chapter" data-level="29.1" data-path="changes-multivers.html"><a href="changes-multivers.html#whats-the-pattern-11"><i class="fa fa-check"></i><b>29.1</b> What’s the pattern?</a></li>
-<li class="chapter" data-level="29.2" data-path="changes-multivers.html"><a href="changes-multivers.html#writing-code"><i class="fa fa-check"></i><b>29.2</b> Writing code</a>
-<ul>
-<li class="chapter" data-level="29.2.1" data-path="changes-multivers.html"><a href="changes-multivers.html#case-study-tidyr"><i class="fa fa-check"></i><b>29.2.1</b> Case study: tidyr</a></li>
-</ul></li>
-<li class="chapter" data-level="29.3" data-path="changes-multivers.html"><a href="changes-multivers.html#testing-with-multiple-package-versions"><i class="fa fa-check"></i><b>29.3</b> Testing with multiple package versions</a></li>
-<li class="chapter" data-level="29.4" data-path="changes-multivers.html"><a href="changes-multivers.html#using-only-the-new-version"><i class="fa fa-check"></i><b>29.4</b> Using only the new version</a></li>
-</ul></li>
-<li class="part"><span><b>VIII Interface: side effects</b></span></li>
-<li class="chapter" data-level="30" data-path="side-effect-soup.html"><a href="side-effect-soup.html"><i class="fa fa-check"></i><b>30</b> Side-effect soup</a>
-<ul>
-<li class="chapter" data-level="30.1" data-path="side-effect-soup.html"><a href="side-effect-soup.html#what-is-a-side-effect"><i class="fa fa-check"></i><b>30.1</b> What is a side-effect?</a>
-<ul>
-<li class="chapter" data-level="30.1.1" data-path="side-effect-soup.html"><a href="side-effect-soup.html#user-feedback"><i class="fa fa-check"></i><b>30.1.1</b> User feedback</a></li>
-<li class="chapter" data-level="30.1.2" data-path="side-effect-soup.html"><a href="side-effect-soup.html#global-state"><i class="fa fa-check"></i><b>30.1.2</b> Global state</a></li>
-</ul></li>
-<li class="chapter" data-level="30.2" data-path="side-effect-soup.html"><a href="side-effect-soup.html#what-are-some-examples-14"><i class="fa fa-check"></i><b>30.2</b> What are some examples?</a></li>
-<li class="chapter" data-level="30.3" data-path="side-effect-soup.html"><a href="side-effect-soup.html#why-is-it-bad"><i class="fa fa-check"></i><b>30.3</b> Why is it bad?</a></li>
-<li class="chapter" data-level="30.4" data-path="side-effect-soup.html"><a href="side-effect-soup.html#how-avoid-it"><i class="fa fa-check"></i><b>30.4</b> How avoid it?</a>
-<ul>
-<li class="chapter" data-level="30.4.1" data-path="side-effect-soup.html"><a href="side-effect-soup.html#localise-side-effects"><i class="fa fa-check"></i><b>30.4.1</b> Localise side-effects</a></li>
-<li class="chapter" data-level="30.4.2" data-path="side-effect-soup.html"><a href="side-effect-soup.html#extract-side-effects"><i class="fa fa-check"></i><b>30.4.2</b> Extract side-effects</a></li>
-<li class="chapter" data-level="30.4.3" data-path="side-effect-soup.html"><a href="side-effect-soup.html#make-side-effects-noisy"><i class="fa fa-check"></i><b>30.4.3</b> Make side-effects noisy</a></li>
-<li class="chapter" data-level="30.4.4" data-path="side-effect-soup.html"><a href="side-effect-soup.html#provide-an-argument-to-suppress"><i class="fa fa-check"></i><b>30.4.4</b> Provide an argument to suppress</a></li>
-<li class="chapter" data-level="30.4.5" data-path="side-effect-soup.html"><a href="side-effect-soup.html#use-the-print-method"><i class="fa fa-check"></i><b>30.4.5</b> Use the <code>print()</code> method</a></li>
-<li class="chapter" data-level="30.4.6" data-path="side-effect-soup.html"><a href="side-effect-soup.html#make-easy-to-undo"><i class="fa fa-check"></i><b>30.4.6</b> Make easy to undo</a></li>
-</ul></li>
-<li class="chapter" data-level="30.5" data-path="side-effect-soup.html"><a href="side-effect-soup.html#package-considerations"><i class="fa fa-check"></i><b>30.5</b> Package considerations</a></li>
-</ul></li>
-<li class="chapter" data-level="31" data-path="spooky-action.html"><a href="spooky-action.html"><i class="fa fa-check"></i><b>31</b> Spooky action</a>
-<ul>
-<li class="chapter" data-level="31.1" data-path="spooky-action.html"><a href="spooky-action.html#whats-the-problem-5"><i class="fa fa-check"></i><b>31.1</b> What’s the problem?</a></li>
-<li class="chapter" data-level="31.2" data-path="spooky-action.html"><a href="spooky-action.html#what-precisely-is-a-spooky-action"><i class="fa fa-check"></i><b>31.2</b> What precisely is a spooky action?</a></li>
-<li class="chapter" data-level="31.3" data-path="spooky-action.html"><a href="spooky-action.html#how-can-i-remediate-spooky-actions"><i class="fa fa-check"></i><b>31.3</b> How can I remediate spooky actions?</a>
-<ul>
-<li class="chapter" data-level="31.3.1" data-path="spooky-action.html"><a href="spooky-action.html#parameterise-the-action"><i class="fa fa-check"></i><b>31.3.1</b> Parameterise the action</a></li>
-<li class="chapter" data-level="31.3.2" data-path="spooky-action.html"><a href="spooky-action.html#advertise-the-action-with-a-clear-name"><i class="fa fa-check"></i><b>31.3.2</b> Advertise the action with a clear name</a></li>
-<li class="chapter" data-level="31.3.3" data-path="spooky-action.html"><a href="spooky-action.html#ask-for-confirmation"><i class="fa fa-check"></i><b>31.3.3</b> Ask for confirmation</a></li>
-<li class="chapter" data-level="31.3.4" data-path="spooky-action.html"><a href="spooky-action.html#advertise-the-side-effects"><i class="fa fa-check"></i><b>31.3.4</b> Advertise the side-effects</a></li>
-</ul></li>
-<li class="chapter" data-level="31.4" data-path="spooky-action.html"><a href="spooky-action.html#case-studies"><i class="fa fa-check"></i><b>31.4</b> Case studies</a>
-<ul>
-<li class="chapter" data-level="31.4.1" data-path="spooky-action.html"><a href="spooky-action.html#save-and-load"><i class="fa fa-check"></i><b>31.4.1</b> <code>save()</code> and <code>load()</code></a></li>
-<li class="chapter" data-level="31.4.2" data-path="spooky-action.html"><a href="spooky-action.html#usethis"><i class="fa fa-check"></i><b>31.4.2</b> usethis</a></li>
-<li class="chapter" data-level="31.4.3" data-path="spooky-action.html"><a href="spooky-action.html#section"><i class="fa fa-check"></i><b>31.4.3</b> <code>&lt;&lt;-</code></a></li>
-<li class="chapter" data-level="31.4.4" data-path="spooky-action.html"><a href="spooky-action.html#assign-in-a-for-loop"><i class="fa fa-check"></i><b>31.4.4</b> <code>assign()</code> in a for loop</a></li>
-</ul></li>
-</ul></li>
-<li class="appendix"><span><b>Appendix</b></span></li>
-<li class="chapter" data-level="A" data-path="glossary.html"><a href="glossary.html"><i class="fa fa-check"></i><b>A</b> Glossary</a></li>
-</ul>
-
-      </nav>
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Tidyverse design guide</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
     </div>
 
-    <div class="book-body">
-      <div class="body-inner">
-        <div class="book-header" role="navigation">
-          <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tidyverse design guide</a>
-          </h1>
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Welcome</a></li>
+<li><a class="" href="structure.html"><span class="header-section-number">1</span> Structure</a></li>
+<li><a class="" href="unifying-principles.html"><span class="header-section-number">2</span> Unifying principles</a></li>
+<li class="book-part">Implementation</li>
+<li><a class="" href="names-attribute.html"><span class="header-section-number">3</span> Names attribute</a></li>
+<li><a class="" href="call-data-details.html"><span class="header-section-number">4</span> Name details arguments</a></li>
+<li><a class="" href="function-names.html"><span class="header-section-number">5</span> Function names</a></li>
+<li class="book-part">Interface: inputs</li>
+<li><a class="active" href="args-hidden.html"><span class="header-section-number">6</span> Avoid hidden arguments</a></li>
+<li><a class="" href="args-data-details.html"><span class="header-section-number">7</span> Data, descriptors, details</a></li>
+<li><a class="" href="args-independence.html"><span class="header-section-number">8</span> Avoid dependencies between arguments</a></li>
+<li><a class="" href="case-study-setnames.html"><span class="header-section-number">9</span> Case study: setNames()</a></li>
+<li class="book-part">Interface: default values</li>
+<li><a class="" href="def-required.html"><span class="header-section-number">10</span> Required args shouldn’t have defaults</a></li>
+<li><a class="" href="cs-rep.html"><span class="header-section-number">11</span> Case study: rep()</a></li>
+<li><a class="" href="def-enum.html"><span class="header-section-number">12</span> Enumerate possible options</a></li>
+<li><a class="" href="def-magical.html"><span class="header-section-number">13</span> Avoid magical defaults</a></li>
+<li><a class="" href="def-short.html"><span class="header-section-number">14</span> Keep defaults short and sweet</a></li>
+<li><a class="" href="def-inform.html"><span class="header-section-number">15</span> Explain important defaults</a></li>
+<li><a class="" href="def-user.html"><span class="header-section-number">16</span> User settable defaults</a></li>
+<li><a class="" href="cs-rgb.html"><span class="header-section-number">17</span> Case study: rgb()</a></li>
+<li class="book-part">Interface: ...</li>
+<li><a class="" href="dots-position.html"><span class="header-section-number">18</span> Data, dots, details</a></li>
+<li><a class="" href="dots-data.html"><span class="header-section-number">19</span> Making data with …</a></li>
+<li><a class="" href="dots-prefix.html"><span class="header-section-number">20</span> Dot prefix</a></li>
+<li><a class="" href="dots-inspect.html"><span class="header-section-number">21</span> Inspect the dots</a></li>
+<li><a class="" href="cs-mapply-pmap.html"><span class="header-section-number">22</span> Case study: mapply() vs pmap()</a></li>
+<li class="book-part">Interface: outputs</li>
+<li><a class="" href="out-multi.html"><span class="header-section-number">23</span> Returning multiple values</a></li>
+<li><a class="" href="out-type-stability.html"><span class="header-section-number">24</span> Type-stability</a></li>
+<li><a class="" href="out-vectorisation.html"><span class="header-section-number">25</span> Vectorisation</a></li>
+<li><a class="" href="out-invisible.html"><span class="header-section-number">26</span> Side-effect functions should return invisibly</a></li>
+<li class="book-part">Interface: errors</li>
+<li><a class="" href="err-call.html"><span class="header-section-number">27</span> Error call</a></li>
+<li><a class="" href="err-constructor.html"><span class="header-section-number">28</span> Error constructors</a></li>
+<li class="book-part">Interface: changes</li>
+<li><a class="" href="changes-multivers.html"><span class="header-section-number">29</span> Work with multiple dependency versions</a></li>
+<li class="book-part">Interface: side effects</li>
+<li><a class="" href="side-effect-soup.html"><span class="header-section-number">30</span> Side-effect soup</a></li>
+<li><a class="" href="spooky-action.html"><span class="header-section-number">31</span> Spooky action</a></li>
+<li class="book-part">Appendix</li>
+<li><a class="" href="glossary.html"><span class="header-section-number">A</span> Glossary</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="http://github.com/tidyverse/design">View book source <i class="fab fa-github"></i></a></p>
         </div>
-
-        <div class="page-wrapper" tabindex="-1" role="main">
-          <div class="page-inner">
-
-            <section class="normal" id="section-">
-<div id="args-hidden" class="section level1 hasAnchor" number="6">
-<h1><span class="header-section-number">6</span> Avoid hidden arguments<a href="args-hidden.html#args-hidden" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="whats-the-problem" class="section level2 hasAnchor" number="6.1">
-<h2><span class="header-section-number">6.1</span> What’s the problem?<a href="args-hidden.html#whats-the-problem" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="args-hidden" class="section level1" number="6">
+<h1>
+<span class="header-section-number">6</span> Avoid hidden arguments<a class="anchor" aria-label="anchor" href="#args-hidden"><i class="fas fa-link"></i></a>
+</h1>
+<div id="whats-the-problem" class="section level2" number="6.1">
+<h2>
+<span class="header-section-number">6.1</span> What’s the problem?<a class="anchor" aria-label="anchor" href="#whats-the-problem"><i class="fas fa-link"></i></a>
+</h2>
 <p>Functions are easier to understand if the results depend only on the values of the inputs. If a function returns surprisingly different results with the same inputs, then we say it has <strong>hidden arguments</strong>. Hidden arguments make code harder to reason about, because to correctly predict the output you also need to know some other state.</p>
 <p>Related:</p>
 <ul>
@@ -460,32 +112,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 suprising outputs.</li>
 </ul>
 </div>
-<div id="what-are-some-examples" class="section level2 hasAnchor" number="6.2">
-<h2><span class="header-section-number">6.2</span> What are some examples?<a href="args-hidden.html#what-are-some-examples" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="what-are-some-examples" class="section level2" number="6.2">
+<h2>
+<span class="header-section-number">6.2</span> What are some examples?<a class="anchor" aria-label="anchor" href="#what-are-some-examples"><i class="fas fa-link"></i></a>
+</h2>
 <p>One common source of hidden arguments is the use of global options. These can be useful to control display but, as discussed in Chapter <a href="def-user.html#def-user">16</a>), should not affect computation:</p>
 <ul>
 <li><p>The result of <code>data.frame(x = "a")$x</code> depends on the value of the global
 <code>stringsAsFactors</code> option: if it’s <code>TRUE</code> (the default) you get a factor;
 if it’s false, you get a character vector.</p></li>
-<li><p><code>lm()</code>’s handling of missing values depends on the global option of
+<li><p><code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>’s handling of missing values depends on the global option of
 <code>na.action</code>. The default is <code>na.omit</code> which drops the missing values
 prior to fitting the model (which is inconvenient because then the results
-of <code>predict()</code> don’t line up with the input data. <code>modelr::na.warn()</code>
+of <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> don’t line up with the input data. <code><a href="https://modelr.tidyverse.org/reference/na.warn.html">modelr::na.warn()</a></code>
 provides an approach more in line with other base behaviours: it drops
 missing values with a warning.)</p></li>
 </ul>
 <p>Another common source of hidden inputs is the system locale:</p>
 <ul>
-<li><p><code>strptime()</code> relies on the names of weekdays and months in the current
+<li><p><code><a href="https://rdrr.io/r/base/strptime.html">strptime()</a></code> relies on the names of weekdays and months in the current
 locale. That means <code>strptime("1 Jan 2020", "%d %b %Y")</code> will work on
 computers with an English locale, and fail elsewhere. This is particularly
 troublesome for Europeans who frequently have colleagues who speak a
 different language.</p></li>
-<li><p><code>as.POSIXct()</code> depends on the current timezone. The following code returns
+<li>
+<p><code><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct()</a></code> depends on the current timezone. The following code returns
 different underlying times when run on different computers:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="args-hidden.html#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.POSIXct</span>(<span class="st">&quot;2020-01-01 09:00&quot;</span>)</span>
-<span id="cb19-2"><a href="args-hidden.html#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;2020-01-01 09:00:00 UTC&quot;</span></span></code></pre></div></li>
-<li><p><code>toupper()</code> and <code>tolower()</code> depend on the current locale. It is faily
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="st">"2020-01-01 09:00"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "2020-01-01 09:00:00 UTC"</span></span></code></pre></div>
+</li>
+<li>
+<p><code><a href="https://rdrr.io/r/base/chartr.html">toupper()</a></code> and <code><a href="https://rdrr.io/r/base/chartr.html">tolower()</a></code> depend on the current locale. It is faily
 uncommon for this to cause problems because most languages either
 use their own character set, or use the same rules for capitalisation as
 English. However, this behaviour did cause a bug in ggplot2 because
@@ -493,133 +151,113 @@ internally it takes <code>geom = "identity"</code> and turns it into <code>GeomI
 to find the object that actually does computation. In Turkish, however, the
 upper case version of i is İ, and <code>Geomİdentity</code> does not exist. This
 meant that for some time ggplot2 did not work on Turkish computers.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="args-hidden.html#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb20-2"><a href="args-hidden.html#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-3"><a href="args-hidden.html#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str_to_upper</span>(<span class="st">&quot;i&quot;</span>)</span>
-<span id="cb20-4"><a href="args-hidden.html#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;I&quot;</span></span>
-<span id="cb20-5"><a href="args-hidden.html#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="fu">str_to_upper</span>(<span class="st">&quot;i&quot;</span>, <span class="at">locale =</span> <span class="st">&quot;tr&quot;</span>)</span>
-<span id="cb20-6"><a href="args-hidden.html#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;İ&quot;</span></span></code></pre></div></li>
-<li><p>For similar reasons, <code>sort()</code> and <code>order()</code> rely on the lexicographic
-order defined by the current locale. <code>factor()</code> uses <code>order()</code>, so the
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://stringr.tidyverse.org">stringr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/case.html">str_to_upper</a></span><span class="op">(</span><span class="st">"i"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "I"</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/case.html">str_to_upper</a></span><span class="op">(</span><span class="st">"i"</span>, locale <span class="op">=</span> <span class="st">"tr"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "İ"</span></span></code></pre></div>
+</li>
+<li><p>For similar reasons, <code><a href="https://rdrr.io/r/base/sort.html">sort()</a></code> and <code><a href="https://rdrr.io/r/base/order.html">order()</a></code> rely on the lexicographic
+order defined by the current locale. <code><a href="https://rdrr.io/r/base/factor.html">factor()</a></code> uses <code><a href="https://rdrr.io/r/base/order.html">order()</a></code>, so the
 results from factor depend implicitly on the current locale. (This is
 not an imaginary problem as this
 <a href="https://stackoverflow.com/questions/39339489">SO question</a>) attests).</p></li>
 </ul>
 <p>Some functions depend on external settings, but not in a surprising way:</p>
 <ul>
-<li><p><code>Sys.time()</code> depends on the system time, but it’s not a surprise: getting
+<li><p><code><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time()</a></code> depends on the system time, but it’s not a surprise: getting
 the current time is to the whole point of the function!</p></li>
 <li><p><code>read.csv(path)</code> depends not on the value of <code>path</code> but the contents of the
 file at that location. Reading from the file system necessarily implies that
 the results depend on the contents of the file, not its path, so this is not
 a surprise.</p></li>
-<li><p>Random number generators like <code>runif()</code> peek at the value of the special
+<li><p>Random number generators like <code><a href="https://rdrr.io/r/stats/Uniform.html">runif()</a></code> peek at the value of the special
 global variable <code>.Random.seed</code>. This is a little surprising, but if they
-didn’t have some global state every call to <code>runif()</code> would return the
+didn’t have some global state every call to <code><a href="https://rdrr.io/r/stats/Uniform.html">runif()</a></code> would return the
 same value.</p></li>
 </ul>
 </div>
-<div id="why-is-it-important" class="section level2 hasAnchor" number="6.3">
-<h2><span class="header-section-number">6.3</span> Why is it important?<a href="args-hidden.html#why-is-it-important" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Hidden arguments are bad because they make it much harder to predict the output of a fuction. The worst offender by far is the <code>stringsAsFactors</code> option which changes how a number of functions (including <code>data.frame()</code>, <code>as.data.frame()</code>, and <code>read.csv()</code>) treat character vectors. This exists mostly for historical reasons, as described in <a href="http://simplystatistics.org/2015/07/24/stringsasfactors-an-unauthorized-biography/"><em>stringsAsFactors: An unauthorized biography</em></a> by Roger Peng and <a href="http://notstatschat.tumblr.com/post/124987394001/stringsasfactors-sigh"><em>stringsAsFactors = &lt;sigh&gt;</em></a>
+<div id="why-is-it-important" class="section level2" number="6.3">
+<h2>
+<span class="header-section-number">6.3</span> Why is it important?<a class="anchor" aria-label="anchor" href="#why-is-it-important"><i class="fas fa-link"></i></a>
+</h2>
+<p>Hidden arguments are bad because they make it much harder to predict the output of a fuction. The worst offender by far is the <code>stringsAsFactors</code> option which changes how a number of functions (including <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code>, <code><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame()</a></code>, and <code><a href="https://rdrr.io/r/utils/read.table.html">read.csv()</a></code>) treat character vectors. This exists mostly for historical reasons, as described in <a href="http://simplystatistics.org/2015/07/24/stringsasfactors-an-unauthorized-biography/"><em>stringsAsFactors: An unauthorized biography</em></a> by Roger Peng and <a href="http://notstatschat.tumblr.com/post/124987394001/stringsasfactors-sigh"><em>stringsAsFactors = &lt;sigh&gt;</em></a>
 by Thomas Lumley. )</p>
-<p>Allowing the system locale to affect the result of a function is a subtle source of bugs when sharing code between people who work in different countries. To be clear, these defaults on rarely cause problems because most languages that share the same writing system share (most of) the same collation rules. The main exceptions tend to be European languages which have varying rules for modified letters, e.g. in Norwegian, å comes at the end of the alphabet. However, when they do cause problems they will take a long time to track down: you’re unlikely to expect that the coefficients of a linear model are different<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> because your code is run in a different country!</p>
+<p>Allowing the system locale to affect the result of a function is a subtle source of bugs when sharing code between people who work in different countries. To be clear, these defaults on rarely cause problems because most languages that share the same writing system share (most of) the same collation rules. The main exceptions tend to be European languages which have varying rules for modified letters, e.g. in Norwegian, å comes at the end of the alphabet. However, when they do cause problems they will take a long time to track down: you’re unlikely to expect that the coefficients of a linear model are different<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;You’ll get different coefficients for a categorical predictor if the ordering means that a different levels comes first in the alphabet. The predictions and other diagnostics won’t be affected, but you’re likely to be surprised that your coefficients are different.&lt;/p&gt;"><sup>2</sup></a> because your code is run in a different country!</p>
 </div>
-<div id="how-can-i-remediate-the-problem" class="section level2 hasAnchor" number="6.4">
-<h2><span class="header-section-number">6.4</span> How can I remediate the problem?<a href="args-hidden.html#how-can-i-remediate-the-problem" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="how-can-i-remediate-the-problem" class="section level2" number="6.4">
+<h2>
+<span class="header-section-number">6.4</span> How can I remediate the problem?<a class="anchor" aria-label="anchor" href="#how-can-i-remediate-the-problem"><i class="fas fa-link"></i></a>
+</h2>
 <p>Generally, hidden arguments are easy to avoid when creating new functions: simply avoid depending on environment variables (like the locale), or global options (like <code>stringsAsFactors</code>). The easiest way for problems to creep in is for you to not realise a function has hidden inputs; make sure to consult the list of common offenders provided above.</p>
 <p>If you must depend on an environment variable or option, make sure it’s an explicit argument, as in Chapter <a href="def-user.html#def-user">16</a>. Such arguments generally should not affect computation (only side-effects like printed output or status messages); if they do affect results, follow Chapter <a href="def-inform.html#def-inform">15</a> to make sure to inform the user what’s happening.</p>
-<p>If you have an existing function with a hidden input, you’ll need to take both steps above. First make sure the input is an explicit option, and then make sure it’s printed. For example, lets take <code>as.POSIXct()</code> which basically looks something like this:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="args-hidden.html#cb21-1" aria-hidden="true" tabindex="-1"></a>as.POSIXct <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">tz =</span> <span class="st">&quot;&quot;</span>) {</span>
-<span id="cb21-2"><a href="args-hidden.html#cb21-2" aria-hidden="true" tabindex="-1"></a>  base<span class="sc">::</span><span class="fu">as.POSIXct</span>(x, <span class="at">tz =</span> tz)</span>
-<span id="cb21-3"><a href="args-hidden.html#cb21-3" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb21-4"><a href="args-hidden.html#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">as.POSIXct</span>(<span class="st">&quot;2020-01-01 09:00&quot;</span>)</span>
-<span id="cb21-5"><a href="args-hidden.html#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;2020-01-01 09:00:00 UTC&quot;</span></span></code></pre></div>
+<p>If you have an existing function with a hidden input, you’ll need to take both steps above. First make sure the input is an explicit option, and then make sure it’s printed. For example, lets take <code><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct()</a></code> which basically looks something like this:</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">as.POSIXct</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">tz</span> <span class="op">=</span> <span class="st">""</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="va">x</span>, tz <span class="op">=</span> <span class="va">tz</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="st">"2020-01-01 09:00"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "2020-01-01 09:00:00 UTC"</span></span></code></pre></div>
 <p>The <code>tz</code> argument is present, but it’s not obvious that <code>""</code> means take from the system timezone. Let’s first make that explicit:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="args-hidden.html#cb22-1" aria-hidden="true" tabindex="-1"></a>as.POSIXct <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">tz =</span> <span class="fu">Sys.timezone</span>()) {</span>
-<span id="cb22-2"><a href="args-hidden.html#cb22-2" aria-hidden="true" tabindex="-1"></a>  base<span class="sc">::</span><span class="fu">as.POSIXct</span>(x, <span class="at">tz =</span> tz)</span>
-<span id="cb22-3"><a href="args-hidden.html#cb22-3" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb22-4"><a href="args-hidden.html#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">as.POSIXct</span>(<span class="st">&quot;2020-01-01 09:00&quot;</span>)</span>
-<span id="cb22-5"><a href="args-hidden.html#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;2020-01-01 09:00:00 UTC&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">as.POSIXct</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">tz</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/timezones.html">Sys.timezone</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="va">x</span>, tz <span class="op">=</span> <span class="va">tz</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="st">"2020-01-01 09:00"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "2020-01-01 09:00:00 UTC"</span></span></code></pre></div>
 <p>This is an important argument coming (indirectly) from an environment variable, so we should also print it out if the user hasn’t explicitly set it:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="args-hidden.html#cb23-1" aria-hidden="true" tabindex="-1"></a>as.POSIXct <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">tz =</span> <span class="fu">Sys.timezone</span>()) {</span>
-<span id="cb23-2"><a href="args-hidden.html#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">missing</span>(tz)) {</span>
-<span id="cb23-3"><a href="args-hidden.html#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">&quot;Using `tz = &#39;&quot;</span>, tz, <span class="st">&quot;&#39;`&quot;</span>)</span>
-<span id="cb23-4"><a href="args-hidden.html#cb23-4" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb23-5"><a href="args-hidden.html#cb23-5" aria-hidden="true" tabindex="-1"></a>  base<span class="sc">::</span><span class="fu">as.POSIXct</span>(x, <span class="at">tz =</span> tz)</span>
-<span id="cb23-6"><a href="args-hidden.html#cb23-6" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb23-7"><a href="args-hidden.html#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="fu">as.POSIXct</span>(<span class="st">&quot;2020-01-01 09:00&quot;</span>)</span>
-<span id="cb23-8"><a href="args-hidden.html#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Using `tz = &#39;UTC&#39;`</span></span>
-<span id="cb23-9"><a href="args-hidden.html#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;2020-01-01 09:00:00 UTC&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">as.POSIXct</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">tz</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/timezones.html">Sys.timezone</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">tz</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span><span class="op">(</span><span class="st">"Using `tz = '"</span>, <span class="va">tz</span>, <span class="st">"'`"</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="va">x</span>, tz <span class="op">=</span> <span class="va">tz</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="st">"2020-01-01 09:00"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Using `tz = 'UTC'`</span></span>
+<span><span class="co">#&gt; [1] "2020-01-01 09:00:00 UTC"</span></span></code></pre></div>
 
 </div>
 </div>
-<div class="footnotes">
-<hr />
-<ol start="2">
-<li id="fn2"><p>You’ll get different coefficients for a categorical predictor if the ordering means that a different levels comes first in the alphabet. The predictions and other diagnostics won’t be affected, but you’re likely to be surprised that your coefficients are different.<a href="args-hidden.html#fnref2" class="footnote-back">↩︎</a></p></li>
-</ol>
-</div>
-            </section>
 
-          </div>
-        </div>
-      </div>
-<a href="function-names.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="args-data-details.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
-    </div>
+  <div class="chapter-nav">
+<div class="prev"><a href="function-names.html"><span class="header-section-number">5</span> Function names</a></div>
+<div class="next"><a href="args-data-details.html"><span class="header-section-number">7</span> Data, descriptors, details</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#args-hidden"><span class="header-section-number">6</span> Avoid hidden arguments</a></li>
+<li><a class="nav-link" href="#whats-the-problem"><span class="header-section-number">6.1</span> What’s the problem?</a></li>
+<li><a class="nav-link" href="#what-are-some-examples"><span class="header-section-number">6.2</span> What are some examples?</a></li>
+<li><a class="nav-link" href="#why-is-it-important"><span class="header-section-number">6.3</span> Why is it important?</a></li>
+<li><a class="nav-link" href="#how-can-i-remediate-the-problem"><span class="header-section-number">6.4</span> How can I remediate the problem?</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="http://github.com/tidyverse/design/blob/main/args-hidden.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="http://github.com/tidyverse/design/edit/main/args-hidden.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Tidyverse design guide</strong>" was written by Tidyverse team. </p>
   </div>
-<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
-<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
-<script>
-gitbook.require(["gitbook"], function(gitbook) {
-gitbook.start({
-"sharing": {
-"github": true,
-"facebook": false,
-"twitter": false,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"whatsapp": false,
-"all": {}
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": "https://github.com/tidyverse/principles/edit/master/args-hidden.Rmd",
-"text": "Edit"
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": null,
-"text": null
-},
-"download": null,
-"search": {
-"engine": "fuse",
-"options": null
-},
-"toc": {
-"collapse": "section"
-}
-});
-});
-</script>
 
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
 </body>
-
 </html>

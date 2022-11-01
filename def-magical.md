@@ -79,7 +79,7 @@ If a function behaves differently when the default value is supplied explicitly,
     #>         X/(X + rchisq(n, 2 * shape2))
     #>     }
     #> }
-    #> <bytecode: 0x5592d51d0128>
+    #> <bytecode: 0x55f37b5aa310>
     #> <environment: namespace:stats>
     ```
     
@@ -154,7 +154,7 @@ There are three primary causes:
     
     y <- 1
     f1()
-    #> [1] "2022-07-01 UTC"
+    #> [1] "2022-11-01 UTC"
     f1(y)
     #> [1] 1
     ```

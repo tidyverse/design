@@ -122,9 +122,9 @@ bench::mark(
 #> # A tibble: 3 × 5
 #>   expression      min   median `itr/sec` mem_alloc
 #>   <bch:expr> <bch:tm> <bch:tm>     <dbl> <bch:byt>
-#> 1 version     713.9µs  813.5µs     1222.    3.82KB
-#> 2 exists        3.4µs      4µs   226810.   17.09MB
-#> 3 formals       1.4µs    1.9µs   438038.        0B
+#> 1 version     728.9µs  888.4µs     1074.    3.82KB
+#> 2 exists        3.1µs    4.1µs   198150.   17.34MB
+#> 3 formals       1.3µs    1.6µs   438516.        0B
 ```
 
 If you do need to use `packageVersion()` inside a performance sensitive function, I recommend caching the result in `.onLoad()` (which, by convention, lives in `zzz.R`). There a few ways to do this; but the following block shows one approach that matches the function interface I used above:

@@ -122,7 +122,7 @@ str_sort <- function(x, decreasing = FALSE, na_last = TRUE, locale = "en",  nume
 str_sort(x, numric = TRUE)
 #> Warning in stringi::stri_opts_collator(locale, numeric = numeric, ...): Unknown
 #> option to `stri_opts_collator`.
-#> Error:
+#> Error in `str_sort()`:
 #> ! Arguments in `...` must be used.
 #> ✖ Problematic argument:
 #> • numric = TRUE

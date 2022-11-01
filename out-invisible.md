@@ -76,9 +76,9 @@ paths <- file_temp() %>%
   path(letters[1:5]) %>%
   file_create()
 paths
-#> /tmp/RtmpDPqf91/file30a81409f144/a /tmp/RtmpDPqf91/file30a81409f144/b 
-#> /tmp/RtmpDPqf91/file30a81409f144/c /tmp/RtmpDPqf91/file30a81409f144/d 
-#> /tmp/RtmpDPqf91/file30a81409f144/e
+#> /tmp/RtmpUceado/file32bd7128070f/a /tmp/RtmpUceado/file32bd7128070f/b 
+#> /tmp/RtmpUceado/file32bd7128070f/c /tmp/RtmpUceado/file32bd7128070f/d 
+#> /tmp/RtmpUceado/file32bd7128070f/e
 ```
 
 Functions that modify some global state, like `options()` or `par()`, should return the _previous_ value of the variables. This, in combination with Section \@ref(args-compound), makes it possible to easily reset the effect of the change:
@@ -88,9 +88,9 @@ Functions that modify some global state, like `options()` or `par()`, should ret
 x <- runif(1)
 old <- options(digits = 3)
 x
-#> [1] 0.394
+#> [1] 0.251
 
 options(old)
 x
-#> [1] 0.3938863
+#> [1] 0.2508593
 ```

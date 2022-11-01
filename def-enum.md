@@ -76,7 +76,7 @@ It also supports partial matching so that the following code is shorthand for `t
 
 ```r
 rank(x, ties.method = "r")
-#> [1] 1 3 2 5 4 6
+#> [1] 1 2 3 4 5 6
 ```
 
 I generally believe that partial matching is a bad idea, because it makes code harder to read. `rlang::arg_match()` is an alternative to `match.args()` that doesn't support partial matching. Instead it provides a helpful error message:

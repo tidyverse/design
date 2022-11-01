@@ -198,7 +198,7 @@ setNames(x, NULL)
 #> [1] 1 2 3
 set_names(x, NULL)
 #> Error in `set_names()`:
-#> ! `names` must be a vector, not NULL.
+#> ! `names` must be a vector, not `NULL`.
 ```
 
 We can fix this with another clause:

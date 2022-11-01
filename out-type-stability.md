@@ -83,7 +83,7 @@ Base R doesn't appear to follow a consistent principle when computing the median
 median(factor(1:2))
 #> Error in median.default(factor(1:2)): need numeric data
 median(Sys.Date() + 0:1)
-#> [1] "2022-07-20"
+#> [1] "2022-11-01"
 ```
 
 To be clear, the problems caused by this behaviour are quite small in practice, but it makes the analysis of `median()` more complex, and it makes it difficult to decide what principle you should adhere to when creating `median` methods for new vector classes.

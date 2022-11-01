@@ -108,7 +108,7 @@ safe_median <- function(x, ..., na.rm = FALSE) {
 }
 
 safe_median(2, 3, 10)
-#> Error:
+#> Error in `safe_median()`:
 #> ! Arguments in `...` must be used.
 #> ✖ Problematic arguments:
 #> • ..1 = 3

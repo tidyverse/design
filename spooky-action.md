@@ -106,7 +106,7 @@ current_time <- function() {
   lubridate::now()
 }
 current_time()
-#> [1] "2022-07-20 18:18:53 UTC"
+#> [1] "2022-11-01 04:57:42 UTC"
 ```
 
 ### Ask for confirmation
@@ -310,8 +310,8 @@ for (i in seq_along(x)) {
 
 rbind(x, out)
 #>     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
-#> x      8    8   11    5   12    8   10   12    9    12
-#> out    8   16   27   32   44   52   62   74   83    95
+#> x      8    4   11   11   13   15   10   11   11    19
+#> out    8   12   23   34   47   62   72   83   94   113
 ```
 
 A simple transformation from to use `map()` doesn't work:
@@ -327,7 +327,7 @@ map_dbl(seq_along(x), function(i) {
     out[[i]] <- x[[i]] + out[[i - 1]]
   }
 })
-#>  [1]  8  8 11  5 12  8 10 12  9 12
+#>  [1]  8  4 11 11 13 15 10 11 11 19
 ```
 
 Because the modification of `out` is happening inside of a function, R creates a copy of `out` (this is called [copy-on-modify principle](https://adv-r.hadley.nz/names-values.html#copy-on-modify)). Instead we need to use `<<-` to reach outside of the function to modify the outer `out`:
@@ -341,7 +341,7 @@ map_dbl(seq_along(x), function(i) {
     out[[i]] <<- x[[i]] + out[[i - 1]]
   }
 })
-#>  [1]  8 16 27 32 44 52 62 74 83 95
+#>  [1]   8  12  23  34  47  62  72  83  94 113
 ```
 
 This use of `<<-` is a spooky action because we're reaching up the tree of environments to modify an object created outside of the function. In this case, however, there's no point in using `map()`: the point of those functions is to restrict what you can do compared to a for loop so that your code is easier to understand. [R for data science](https://r4ds.had.co.nz/iteration.html#for-loop-variations) has other examples of for loops that _could_ be rewritten with `map()`, but shouldn't be.

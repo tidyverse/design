@@ -32,7 +32,7 @@ Avoid creating dependencies between details arguments so that only certain combi
     rgamma(5, shape = 1, rate = 2, scale = 1/2)
     #> Warning in rgamma(5, shape = 1, rate = 2, scale = 1/2): specify 'rate' or
     #> 'scale' but not both
-    #> [1] 0.05501131 0.96119617 0.22807245 0.02848951 0.63576186
+    #> [1] 0.06124463 0.27777043 1.81029217 0.19422776 0.28172955
     rgamma(5, shape = 1, rate = 2, scale = 2)
     #> Error in rgamma(5, shape = 1, rate = 2, scale = 2): specify 'rate' or 'scale' but not both
     ```

@@ -17,9 +17,9 @@ When reading a function, it's important to be able to tell at a glance which arg
     
     ```r
     sample(1:4)
-    #> [1] 1 2 4 3
+    #> [1] 4 2 1 3
     sample(4)
-    #> [1] 1 4 3 2
+    #> [1] 1 4 2 3
     ```
 
 *   `rt()` (draw random numbers from the t-distribution) looks like it 
