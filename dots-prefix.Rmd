@@ -74,5 +74,3 @@ Using a non-syntactic variable names means that it must always be surrounded in 
 *  `tryCatch()`: the names give classes so, as long as you don't create a 
     condition class called `expr` or `finally` (which would be weird!) you
     don't need to worry about matches
-
-*   
