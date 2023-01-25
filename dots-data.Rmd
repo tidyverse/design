@@ -102,13 +102,13 @@ Because this is a interface change, it should be prominently advertised in packa
 
 If you do feel that the tradeoff is worth it (i.e. it's an extremely frequently used function and the savings over time will be considerable), you need to take some steps to minimise the downsides.
 
-This is easiest if you're constructing a vector that shouldn't have names. In this case, you can call `ellipsis::check_dots_unnamed()` to ensure that no named arguments have been accidentally passed to `...`. This protects you against the following undesirable behaviour of `sum()`:
+This is easiest if you're constructing a vector that shouldn't have names. In this case, you can call `rlang::check_dots_unnamed()` to ensure that no named arguments have been accidentally passed to `...`. This protects you against the following undesirable behaviour of `sum()`:
 
 ```{r, error = TRUE}
 sum(1, 1, 1, na.omit = TRUE)
 
 safe_sum <- function(..., na.rm = TRUE) {
-  ellipsis::check_dots_unnamed()
+  rlang::check_dots_unnamed()
   sum(c(...), na.rm = na.rm)
 }
 safe_sum(1, 1, 1, na.omit = TRUE)
