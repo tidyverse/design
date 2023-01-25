@@ -26,13 +26,13 @@ mean(c(1:9, 100), trim = 0.1)
 
 ## How do I do it?
 
-Add a call to `ellipsis::check_dots_used()` in the generic before the call to `UseMethod()`. This automatically adds an on exit handler, which checks that ever element of `...` has been evaluated just prior to the function returnning.
+Add a call to `rlang::check_dots_used()` in the generic before the call to `UseMethod()`. This automatically adds an on exit handler, which checks that ever element of `...` has been evaluated just prior to the function returnning.
 
 You can see this in action by creating a safe wrapper around `cut()`, which has different arguments for its numeric and date methods.
 
 ```{r}
 safe_cut <- function(x, breaks, ..., right = TRUE) {
-  ellipsis::check_dots_used()
+  rlang::check_dots_used()
   UseMethod("safe_cut")
 }
 
