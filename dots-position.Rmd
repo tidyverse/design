@@ -71,14 +71,14 @@ Following this pattern is simple: just identify which arguments are data and whi
 
 ## How do I remediate it?
 
-If you've already published a function where you've put `...` in the wrong place, it's easy to fix. You'll need to use a function from the ellipsis package to check that `...` is as expected (e.g. from Chapters \@ref(dots-inspect) or \@ref(dots-data)). Since using the full names for details arguments is good practice, making this change will typically affect little existing code, but it is an interface change so should be advertised prominently.
+If you've already published a function where you've put `...` in the wrong place, it's easy to fix. You'll need to use `rlang::check_dots_used()` to check that `...` is as expected (cf. Chapters \@ref(dots-inspect) and \@ref(dots-data)). Since using the full names for details arguments is good practice, making this change will typically affect little existing code, but it is an interface change so should be advertised prominently.
 
 ```{r}
 old_interface <- function(x, data1 = 1, data2 = 2, ...) {
 }
 
 new_interace <- function(x, ..., data1 = 1, data2 = 2) {
-  ellipsis::check_dots_used()
+  rlang::check_dots_used()
 }
 ```
 
@@ -86,7 +86,7 @@ We can use this approach to make a safer version of `median()`:
 
 ```{r, error = TRUE}
 safe_median <- function(x, ..., na.rm = FALSE) {
-  ellipsis::check_dots_used()
+  rlang::check_dots_used()
   median(x, ..., na.rm = na.rm)
 }
 
