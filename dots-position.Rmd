@@ -61,17 +61,17 @@ There are three primary advantages:
   
 * When coupled with "inspect the dots" (Chapter \@ref(dots-inspect)), 
   or "dot prefix" (Chapter \@ref(dots-prefix)) it minimises the chances that
-  misspelled arguments names will silently go astray.
+  misspelled argument names will silently go astray.
 
 The payoff of this pattern is not huge: it protects against a fairly unusual failure mode. However, the failure mode is silent (so easy to miss), and the pattern is very easy to apply, so I think the payoff is still worth it.
 
 ## How do I do it?
 
-Following this pattern is simple: just identity which arguments are data, and which arguments are details and then put the ... in between.
+Following this pattern is simple: just identify which arguments are data and which are details, and then put the `...` in between.
 
 ## How do I remediate it?
 
-If you've already published a function where you've put `...` in the wrong place, it's easy to fix. You'll need to use function from the ellipsis package to check that `...` is as expected (e.g. from Chapters \@ref(dots-inspect) or \@ref(dots-data)). Since using the full names for details arguments is good practice, making this change will typically affect little existing code, but it is an interface change so should be advertised prominently.
+If you've already published a function where you've put `...` in the wrong place, it's easy to fix. You'll need to use a function from the ellipsis package to check that `...` is as expected (e.g. from Chapters \@ref(dots-inspect) or \@ref(dots-data)). Since using the full names for details arguments is good practice, making this change will typically affect little existing code, but it is an interface change so should be advertised prominently.
 
 ```{r}
 old_interface <- function(x, data1 = 1, data2 = 2, ...) {
