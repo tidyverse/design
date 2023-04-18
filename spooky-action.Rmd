@@ -18,7 +18,7 @@ Deleting variables and creating files on your desktop are obviously surprising e
   a package can change the behaviour of existing code.
   
 * __Installing packages with `install.packages()`__. If a script needs dplyr to 
-  work, and it's not installed, it seem polite to install it on behalf of the 
+  work, and it's not installed, it seems polite to install it on behalf of the 
   user. But installing a new package can upgrade existing packages, which might 
   break code in other projects. Install a package is a potentially destructive
   operation which should be done with care.
