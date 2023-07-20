@@ -21,20 +21,20 @@ book:
     - structure.Rmd
     - unifying.Rmd
     
-    - part: implementation.Rmd
+    - part: Implementation
       chapters:
       - names.Rmd
       - call-data-details.Rmd
       - function-names.Rmd
         
-    - part: args.Rmd
+    - part: Inputs
       chapters:
       - args-hidden.Rmd
       - args-data-details.Rmd
       - args-independence.Rmd
       - cs-setNames.Rmd
     
-    - part: def.Rmd
+    - part: Default values
       chapters: 
       - def-required.Rmd
       - cs-rep.Rmd
@@ -45,7 +45,7 @@ book:
       - def-user.Rmd
       - cs-rgb.Rmd
     
-    - part: dots.Rmd
+    - part: "`...`"
       chapters: 
       - dots-position.Rmd
       - dots-data.Rmd
@@ -53,26 +53,27 @@ book:
       - dots-inspect.Rmd
       - cs-mapply-pmap.Rmd
     
-    - part: out.Rmd
+    - part: Outputs
       chapters: 
       - out-multi.Rmd
       - out-type-stability.Rmd
       - out-vectorisation.Rmd
       - out-invisible.Rmd
 
-    - part: err.Rmd
+    - part: Evolution
+      chapters: 
+      - changes-multivers.Rmd
+    
+    - part: Side effects
+      chapters: 
+      - side-effects.Rmd
+      - spooky-action.Rmd
+
+    - part: Errors
       chapters: 
       - err-call.Rmd
       - err-constructor.Rmd
     
-    - part: changes.Rmd
-      chapters: 
-      - changes-multivers.Rmd
-    
-    - part: side.Rmd
-      chapters: 
-      - side-effects.Rmd
-      - spooky-action.Rmd
     
   appendices:
     - glossary.Rmd
