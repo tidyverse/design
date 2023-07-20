@@ -84,6 +84,4 @@ In my opinion, this trade-off is not worth it.
 
 ## What are the exceptions?
 
--   `tryCatch()`: the names give classes so, as long as you don't create a condition class called `expr` or `finally` (which would be weird!) you don't need to worry about matches
-
--   
+-   `tryCatch()`: the names give classes so, as long as you don't create a condition class called `expr` or `finally` (which would be weird!) you don't need to worry about matches.
