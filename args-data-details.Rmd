@@ -1,4 +1,4 @@
-# Data, descriptors, details {#sec-args-data-details}
+# Put the most important arguments first {#sec-args-data-details}
 
 ```{r}
 #| include = FALSE
@@ -7,10 +7,11 @@ source("common.R")
 
 ## What's the pattern?
 
-Function arguments should always come in the same order: data, then descriptors, then details.
+In a function call, the most important arguments should come first.
+We can help make this clear by roughly categorising arguments into one of three types: data, then descriptors, then details.
 
 -   **Data** arguments provide the core data.
-    They are required, and are usually vectors and often determine the type and size of the output.
+    They are required, are usually vectors or data frames, typically determine the type and shape of the output.
     Data arguments are often called `data`, `x`, or `y`.
 
 -   **Descriptor** arguments describe essential details of the operation, and are usually required.
@@ -18,11 +19,12 @@ Function arguments should always come in the same order: data, then descriptors,
 -   **Details** arguments control the details of the function.
     These arguments are optional (because they have default values), and are typically scalars (e.g. `na.rm = TRUE`, `n = 10`, `prop = 0.1`).
 
+Then data arguments should always come first, followed by descriptors, and finally by details.
 A standard argument order makes it easier to understand a function at a glance, and this order implies that required arguments always come before optional arguments.
 
 Related patterns:
 
--   `...` can play the role of the data argument (i.e. when there are an arbitrary number of inputs), as in `paste()`.
+-   `...` can play the role of the data argument (e.g. when there are an arbitrary number of inputs), as in `paste()`.
     This pattern is best using sparingly, and is described in more detail in @sec-dots-data.
 
 -   `...` can also be used to capture details arguments and pass them on to other functions.
@@ -39,17 +41,18 @@ Related patterns:
 -   `ifelse()` has three data arguments (`test`, `yes`, `no`).
 
 -   `merge()` has two data arguments (`x`, `y`), one descriptor (`by`), and a number of details (`all`, `no.dups`, `sort`, ...).
+    Similarly, `dplyr::left_join()` has two data arguments (`x`, `y`), one descriptor (`by)`, and a number of details (`copy`, `suffix`, `keep`, \...).
 
--   `rnorm()` has no data arguments and three descriptors (`n`, `mean`, `sd`).
-    `mean` and `sd` default to 0 and 1 respectively, which makes them feel more like details.
-    I'd argue that they shouldn't have defaults to make it more clear that they're descriptors.
-    This would have the side-effect of making `rnrorm()` more consistent with the other RNGs.
-
-    In `rt(n, df, ncp)`, however, I think `ncp` should default to `0` to make it clear that the non-centrality parameter is detail of the t-distribution, not a core part.
+-   `rnorm()` is an interesting case.
+    It doesn't really have data arguments, although you could possible argue that `n` is one, since it fundamentally determines the shape of the output.
+    What about `mean` and `sd`?
+    Giving them defaults makes them feels like less important, and inconsistent with the other RNGs which generally require that you specify the parameters of the distribution.
+    On the other hand, the Z-distribution (a normal distribution with mean 0 and sd 1) is an extremely important distribution.
+    In `rt()`, however, I'd argue that `ncp` should have a default (`0)` to make it clear that the non-centrality parameter is detail of the t-distribution, not a core part.
 
 -   `grepl()` has one data argument (`x`), one descriptor (`pattern`), and a number of details (`fixed`, `perl`, `ignore.case`, ...).
-
--   `stringr::str_detect()` has one data argument (`string`), one descriptor (`pattern`), and one detail argument (`negate`).
+    `pattern` comes before `x`.
+    `stringr::str_detect()` has one data argument (`string`), one descriptor (`pattern`), and one detail argument (`negate`).
 
 -   `stringr::str_sub()` has three data arguments (`string`, `start`, and `end`).
     You might wonder what makes `start` and `end` data arguments, and I admit it took me a while to figure this out too, but I think the crucial factor is that you can give a single `string` and multiple `start`/`end` positions:
@@ -85,7 +88,7 @@ Related patterns:
 This convention makes it easy to understand the structure of a function at a glance: the most important arguments are always on the left hand side, and it's obvious what arguments most affect the shape of the output.
 Strongly connecting the shape of the first argument to the shape of output is what makes dplyr (data frames), stringr (character vectors), and the map family (vectors) easier to learn.
 These families of functions represent transformations that preserve the shape while modifying the value.
-When combined with the pipe, this leads to code that focusses on the transformations, not the objects being transformed.
+When combined with the pipe, this leads to code that focuses on the transformations, not the objects being transformed.
 
 These argument types as also affect how you *call* a function.
 As discussed in @sec-call-data-details, you should never name data arguments, and always name details arguments.
@@ -108,13 +111,14 @@ There are a couple of heuristics that you can also check for:
 -   Do any arguments with defaults come before any arguments without defaults?
     This may be a sign that the argument order is wrong, or that you've assigned a default value to an required argument (See @sec-def-required for more details.)
 
-## How do I remediate past mistakes?
+## How do I remediate it?
 
-Generally, it is not possible to fix an exported function preserving both old behaviour and new behaviour.
-Typically, you will need to perform major surgery on the function arguments, and it will convey different conventions about which arguments should be named.
+Generally, it is not possible to remediate an existing exported function with this problem.
+Typically, you will need to perform major surgery on the function arguments, and this will convey different conventions about which arguments should be named.
 This implies that you should deprecate the entire existing function and replace it with a new alternative.
 Because this is invasive to the user, it's best to do sparingly: if the mistake is minor, you're better off waiting until you've collected other problems before fixing it.
 
-Take `tidyr::gather()`, for example.
+For example, take `tidyr::gather()` for example.
 It has a number of problems with its design that made them hard to use.
-Relevant to this chapter, is that the argument order is wrong.
+Relevant to this chapter, is that the argument order is wrong, because you almost always want to specify which variables to gather, which is the fourth argument, not the second (after the `data`).
+Because it wasn't possible to easily fix this mistake, we accumulated other `gather()` problems for several years before fixing them all at once in `pivot_longer()`.
