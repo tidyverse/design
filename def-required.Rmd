@@ -1,6 +1,7 @@
 # Required args shouldn't have defaults {#def-required}
 
-```{r, include = FALSE}
+```{r}
+#| include = FALSE
 source("common.R")
 ```
 
@@ -28,7 +29,8 @@ Otherwise you need to rely on the user having carefully read the documentation.
 -   `lm()` does not have defaults for `formula`, `data`, `subset`, `weights`, `na.action`, or `offset`.
     Only `formula` is actually required, but even its absence fails to generate a clear error message:
 
-    ```{r, error = TRUE}
+    ```{r}
+    #| error = TRUE
     lm()
     ```
 
@@ -37,7 +39,8 @@ Otherwise you need to rely on the user having carefully read the documentation.
 
 -   In `diag()`, the argument `x` has a default `1`, but it's required: if you don't supply it you get an error:
 
-    ```{r, error = TRUE}
+    ```{r}
+    #| error = TRUE
     diag()
     diag(x = 1)
     ```
@@ -74,7 +77,8 @@ A number of functions that allow you to supply exactly one of two possible argum
 
 If you use this technique, use `xor()` and `missing()` to check that exactly one argument is supplied:
 
-```{r, eval = FALSE}
+```{r}
+#| eval = FALSE
 if (!xor(missing(keep), missing(drop))) {
   stop("Must supply exactly one of `keep` and `drop`", call. = FALSE)
 }

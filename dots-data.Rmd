@@ -1,6 +1,7 @@
 # Making data with ... {#dots-data}
 
-```{r, include = FALSE}
+```{r}
+#| include = FALSE
 source("common.R")
 library(tidyverse)
 ```
@@ -59,7 +60,8 @@ In general, I think it is best to avoid using `...` for this purpose because it 
 
     However, because `fct_relevel()` uses dots, the implementation needs to be more complicated:
 
-    ```{r, eval = FALSE}
+    ```{r}
+    #| eval = FALSE
     fct_relevel <- function(f, ...) {
       if (dots_n(...) == 1L && is.function(..1)) {
         levels <- fun(levels(x))
@@ -100,7 +102,8 @@ This is easiest if you're constructing a vector that shouldn't have names.
 In this case, you can call `ellipsis::check_dots_unnamed()` to ensure that no named arguments have been accidentally passed to `...`.
 This protects you against the following undesirable behaviour of `sum()`:
 
-```{r, error = TRUE}
+```{r}
+#| error = TRUE
 sum(1, 1, 1, na.omit = TRUE)
 
 safe_sum <- function(..., na.rm = TRUE) {
@@ -154,14 +157,16 @@ find_vars(df, c(year, month))
 
 In other words, I believe that better interface to `fill()` would be:
 
-```{r, eval = FALSE}
+```{r}
+#| eval = FALSE
 df %>% fill(c(year, month))
 ```
 
 Other tidyverse functions like dplyr's scoped verbs and `ggplot2::facet_grid()` require the user to explicitly quote the input.
 I now believe that this is also a suboptimal interface because it is more typing (`var()` is longer than `c()`, and you must quote even single variables), and arguments that require their inputs to be explicitly quoted are rare in the tidyverse.
 
-```{r, eval = FALSE}
+```{r}
+#| eval = FALSE
 # existing interface
 dplyr::mutate_at(mtcars, vars(cyl:vs), mean)
 # what I would create today

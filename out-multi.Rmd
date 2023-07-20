@@ -1,6 +1,7 @@
 # Returning multiple values {#out-multi}
 
-```{r, include = FALSE}
+```{r}
+#| include = FALSE
 source("common.R")
 ```
 

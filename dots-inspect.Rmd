@@ -1,6 +1,7 @@
 # Inspect the dots {#dots-inspect}
 
-```{r, include = FALSE}
+```{r}
+#| include = FALSE
 source("common.R")
 ```
 
@@ -100,7 +101,8 @@ str_sort(x, numric = TRUE)
 
 We can work around this behaviour by adding `check_dots_used()` to `str_sort()`:
 
-```{r, error = TRUE}
+```{r}
+#| error = TRUE
 str_sort <- function(x, decreasing = FALSE, na_last = TRUE, locale = "en",  numeric = FALSE, ...) 
 {
     ellipsis::check_dots_used()

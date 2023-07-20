@@ -1,6 +1,7 @@
 # Spooky action
 
-```{r, include = FALSE}
+```{r}
+#| include = FALSE
 source("common.R")
 ```
 
@@ -138,7 +139,8 @@ That's why it's better to prefer one of the prior techniques.
 If you can't get explicit confirmation from the user, at the very minimum you should clearly advertise what is happening.
 For example, when you call `install.packages()` it notifies you:
 
-```{r, eval = FALSE}
+```{r}
+#| eval = FALSE
 install.packages("dplyr")
 #> Installing package into ‘/Users/hadley/R’
 #> (as ‘lib’ is unspecified)
@@ -158,7 +160,8 @@ However, this message could do with some work:
 
 I would instead write something like this:
 
-```{r, eval = FALSE}
+```{r}
+#| eval = FALSE
 install.packages("dplyr")
 #> Installing package dplyr to `/Users/hadley/R`
 #> Also installing 3 dependencies: glue, rlang, R6
@@ -172,7 +175,8 @@ We'll come back to the issue of informing the user in ...
 
 `load()` has a spooky action because it modifies variables in the current environment:
 
-```{r, include = FALSE}
+```{r}
+#| include = FALSE
 if (!file.exists("spooky-action.rds")) {
   x <- 10
   y <- 100
@@ -223,7 +227,8 @@ usethis makes these actions as pedestrian as possible by:
 -   For any potential risky operation, e.g. overwriting an existing file, usethis explicitly asks for confirmation from the user.
     To make it harder to "click" through prompts without reading them, usethis uses random prompts in a random ordering.
 
-    ```{r, eval = FALSE}
+    ```{r}
+    #| eval = FALSE
     usethis::ui_yeah("Do you want to proceed?")
     #> Do you want to proceed?
     #> 
@@ -236,7 +241,8 @@ usethis makes these actions as pedestrian as possible by:
 
 -   When you call it, every usethis function describes what it is doing as it it doing it:
 
-    ```{r, eval = FALSE}
+    ```{r}
+    #| eval = FALSE
     usethis::create_package("mypackage", open = FALSE)
     #> ✔ Creating 'mypackage'
     #> ✔ Setting active project to 'mypackage'
@@ -350,7 +356,8 @@ It's not uncommon for people to ask how to create multiple objects from for a lo
 For example, maybe you have a vector of file names, and want to read each file into an individual object.
 With some effort you typically discover `assign()`:
 
-```{r, eval = FALSE}
+```{r}
+#| eval = FALSE
 paths <- c("a.csv", "b.csv", "c.csv")
 names(paths) <- c("a", "b", "c")
 
@@ -364,7 +371,8 @@ For example, imagine that you now wanted to figure out how many rows are in each
 Now you need to learn how to loop over a series of objects, where the name of the object is stored in a character vector.
 With some work, you might discover `get()` and write:
 
-```{r, eval = FALSE}
+```{r}
+#| eval = FALSE
 lengths <- numeric(length(names))
 for (i in seq_along(paths)) {
   lengths[[i]] <- nrow(get(names(paths)[[i]]))
@@ -377,7 +385,8 @@ Instead, if you learn a little about lists and functional programming techniques
 [^spooky-action-3]: However, if you take this approach in multiple places in your code, you'll need to make sure that you don't use the same name in multiple loops because `assign()` will silently overwrite an existing variable.
     This might not happen commonly but because it's silent, it will create a bug that is hard to detect.
 
-```{r, eval = FALSE}
+```{r}
+#| eval = FALSE
 library(purrr)
 
 files <- map(paths, read.csv)

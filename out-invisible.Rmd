@@ -1,6 +1,7 @@
 # Side-effect functions should return invisibly {#out-invisible}
 
-```{r, include = FALSE}
+```{r}
+#| include = FALSE
 source("common.R")
 ```
 
@@ -12,7 +13,9 @@ This makes it possible to use the function with in a pipeline.
 
 ## What are some examples?
 
-```{r, eval = FALSE, include = FALSE}
+```{r}
+#| eval = FALSE,
+#| include = FALSE
 source("fun_def.R")
 pkg_funs("base") %>% 
   funs_body_keep(has_call, "invisible") %>% 

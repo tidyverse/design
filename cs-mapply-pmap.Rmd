@@ -1,6 +1,7 @@
 # Case study: `mapply()` vs `pmap()` {#cs-mapply-pmap}
 
-```{r, include = FALSE}
+```{r}
+#| include = FALSE
 source("common.R")
 ```
 

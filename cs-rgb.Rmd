@@ -1,6 +1,7 @@
 # Case study: `rgb()` {#cs-rgb}
 
-```{r, include = FALSE}
+```{r}
+#| include = FALSE
 source("common.R")
 ```
 
@@ -14,7 +15,8 @@ Interface:
 -   Error if function specification is correct
 -   Check for data type, not missingness.
 
-```{r, error = TRUE}
+```{r}
+#| error = TRUE
 library(rlang)
 
 rgba <- function(r, g, b, a = NULL) {

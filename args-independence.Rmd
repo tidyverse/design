@@ -1,6 +1,7 @@
 # Avoid dependencies between arguments {#args-independence}
 
-```{r, include = FALSE}
+```{r}
+#| include = FALSE
 source("common.R")
 ```
 
@@ -13,7 +14,8 @@ Dependencies between arguments makes functions harder to use because you have to
 
 -   In `rep()` you can supply both `times` and `each` *unless* `times` is a vector :
 
-    ```{r, error = TRUE}
+    ```{r}
+    #| error = TRUE
     rep(1:3, times = 2, each = 3)
     rep(1:3, times = 1:3, each = 2)
     ```
@@ -26,7 +28,8 @@ Dependencies between arguments makes functions harder to use because you have to
 -   In `rgamma()` you can provide either `scale` or `rate`.
     If you supply both you will get an error or a warning:
 
-    ```{r, error = TRUE}
+    ```{r}
+    #| error = TRUE
     rgamma(5, shape = 1, rate = 2, scale = 1/2)
     rgamma(5, shape = 1, rate = 2, scale = 2)
     ```
@@ -37,7 +40,8 @@ Dependencies between arguments makes functions harder to use because you have to
 
 -   In `library()` the `character.only` argument changes how `package` is intepreted:
 
-    ```{r, eval = FALSE}
+    ```{r}
+    #| eval = FALSE
     ggplot2 <- "dplyr"
 
     # Loads ggplot2
@@ -157,7 +161,8 @@ This has the advantage that each engine can take different arguments.
 
 An alternative approach would be to have a separate engine argument:
 
-```{r, eval = FALSE}
+```{r}
+#| eval = FALSE
 x <- str_detect(letters, "a", engine = regex())
 x <- str_detect(letters, "a", engine = fixed())
 x <- str_detect(letters, "a", engine = coll())
@@ -165,7 +170,8 @@ x <- str_detect(letters, "a", engine = coll())
 
 This approach is a bit more discoverable (because there's clearly another argument that affects the pattern), but it's slightly less general, because of the `boundary()` engine, which doesn't match patterns but boundaries:
 
-```{r, eval = FALSE}
+```{r}
+#| eval = FALSE
 x <- str_detect(letters, boundary("word"))
 # Seems confusing: now you can omit the pattern argument?
 x <- str_detect(letters, engine = boundary("word"))

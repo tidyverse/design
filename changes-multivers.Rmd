@@ -1,6 +1,7 @@
 # Work with multiple dependency versions {#changes-multivers}
 
-```{r, include = FALSE}
+```{r}
+#| include = FALSE
 source("common.R")
 ```
 
@@ -24,7 +25,8 @@ In this pattern, you'll learn how to write code designed to work with multiple v
 Sometimes there will be an easy way to change the code to work with both old and new versions of the package; do this if you can!
 However, in most cases, you can't, and you'll need an `if` statement that runs different code for new and old versions of the package:
 
-```{r, eval = FALSE}
+```{r}
+#| eval = FALSE
 if (dependency_has_new_interface()) {
   # freshly written code that works with in-development dependency
 } else {
@@ -51,7 +53,8 @@ There are three basic approaches to implement `dependency_has_new_interface()`:
 To make the problem concrete so we can show of some real code, lets imagine we have a package that uses `tidyr::nest()`.
 `tidyr::nest()` changed substantially between 0.8.3 and 1.0.0, and so we need to write code like this:
 
-```{r, eval = FALSE}
+```{r}
+#| eval = FALSE
 if (tidyr_new_interface()) {
   out <- tidyr::nest_legacy(df, x, y, z)
 } else {

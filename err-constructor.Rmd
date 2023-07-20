@@ -1,6 +1,7 @@
 # Error constructors {#err-constructor}
 
-```{r, include = FALSE}
+```{r}
+#| include = FALSE
 source("common.R")
 ```
 
@@ -11,7 +12,8 @@ This function should create a [custom condition](https://adv-r.hadley.nz/conditi
 
 (This is a new pattern that we are currently rolling out across the tidyverse; it's currently found in few packages.)
 
-```{r setup}
+```{r}
+#| label = "setup"
 library(rlang)
 ```
 
@@ -63,11 +65,13 @@ conditionMessage.fs_error_not_found <- function(c) {
 }
 ```
 
-```{r, include = FALSE}
+```{r}
+#| include = FALSE
 vctrs::s3_register("base::conditionMessage", "fs_error_not_found")
 ```
 
-```{r, eval = FALSE}
+```{r}
+#| eval = FALSE
 stop_not_found("a.csv")
 #> Error: 'a.csv' not found
 ```
@@ -88,7 +92,8 @@ The primary goal of this test is to ensure that the error constructor generates 
 This means that you can not use a unit test (because the desired output is not known) and instead you need to use a regression test, so you can ensure that the message does not change unexpectedly.
 For that reason the best approach is usually to use [`verify_output()`](https://testthat.r-lib.org/reference/verify_output.html), e.g.:
 
-```{r, eval = FALSE}
+```{r}
+#| eval = FALSE
 test_that("stop_not_found() generates useful error message", {
   verify_output(test_path("test-stop-not-found.txt"), {
     stop_not_found("a.csv")

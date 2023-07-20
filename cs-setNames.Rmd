@@ -1,6 +1,7 @@
 # Case study: `setNames()`
 
-```{r, include = FALSE}
+```{r}
+#| include = FALSE
 source("common.R")
 ```
 
@@ -85,7 +86,8 @@ set_names(1:3, list(letters[1:3], letters[4], letters[5:6]))
 
 We can resolve this by asserting that the names should always be a character vector, and should have the same length as `x`:
 
-```{r, error = TRUE}
+```{r}
+#| error = TRUE
 set_names <- function(x, names = x) {
   if (!is.character(names) || length(names) != length(x)) {
     stop("`names` must be a character vector the same length as `x`.", call. = FALSE)
@@ -116,7 +118,8 @@ set_names <- function(x, names = x) {
 Note that I slipped in an assertion that `x` should be a vector.
 This slightly improves the error message if you accidentally supply the wrong sort of input to `set_names()`:
 
-```{r, error = TRUE}
+```{r}
+#| error = TRUE
 setNames(mean, 1:3)
 set_names(mean, 1:3)
 ```
@@ -174,7 +177,8 @@ Now `set_names()` supports overriding and modifying names.
 What about removing them?
 It turns out that `setNames()` supported this, but our stricter checks prohibit:
 
-```{r, error = TRUE}
+```{r}
+#| error = TRUE
 x <- c(a = 1, b = 2, c = 3)
 setNames(x, NULL)
 set_names(x, NULL)

@@ -1,6 +1,7 @@
 # Data, descriptors, details {#args-data-details}
 
-```{r, include = FALSE}
+```{r}
+#| include = FALSE
 source("common.R")
 ```
 

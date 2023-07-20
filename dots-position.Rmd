@@ -1,6 +1,7 @@
 # Data, dots, details {#dots-position}
 
-```{r, include = FALSE}
+```{r}
+#| include = FALSE
 source("common.R")
 ```
 
@@ -86,7 +87,8 @@ new_interace <- function(x, ..., data1 = 1, data2 = 2) {
 
 We can use this approach to make a safer version of `median()`:
 
-```{r, error = TRUE}
+```{r}
+#| error = TRUE
 safe_median <- function(x, ..., na.rm = FALSE) {
   ellipsis::check_dots_used()
   median(x, ..., na.rm = na.rm)

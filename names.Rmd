@@ -1,6 +1,7 @@
 # Names attribute
 
-```{r, include = FALSE}
+```{r}
+#| include = FALSE
 source("common.R")
 vctrs_version <- paste0("v", as.character(packageVersion("vctrs")))
 tibble_version <- paste0("v", as.character(packageVersion("tibble")))
@@ -64,7 +65,8 @@ names(x)
 
 Repair the names to make them minimal.
 
-```{r eval = FALSE}
+```{r}
+#| eval = FALSE
 # TODO: Figure out where `set_minimal_names()` ended up when name repair moved
 # from tibble to vctrs, then update this chunk. Use rlang in the meantime.
 
@@ -105,7 +107,10 @@ They are basically all treated like `""`, which is always repaired.
 
 Example of unique-ified names:
 
-```{r, echo = FALSE, message = FALSE, comment = NA}
+```{r}
+#| echo = FALSE,
+#| message = FALSE,
+#| comment = NA
 empty_stringify <- function(z) ifelse(z == "", '""', z)
 justify <- function(z) {
   z %>%
@@ -128,7 +133,8 @@ glue::glue_data(justify(y), "{original} {unique}")
 This augmented definition of unique has a specific motivation: it ensures that each element can be identified by name, at least when protected by backtick quotes.
 Literally, all of these work:
 
-```{r, eval = FALSE}
+```{r}
+#| eval = FALSE
 df[["name"]]
 df$`name`
 with(df, `name`)
@@ -152,7 +158,8 @@ Two dots followed by a number, `..j`, does need repair.
 The same goes for three dots, `...`, the ellipsis or "dots" construct.
 These can't function as names, even if quoted with backticks, so they have to be repaired.
 
-```{r, error = TRUE}
+```{r}
+#| error = TRUE
 df <- tibble(`..1` = "not ok")
 with(df, `..1`)
 dplyr::select(df, `..1`)
@@ -178,7 +185,10 @@ The unique level of naminess is regarded as normative for a tibble and a user mu
 Base R's function for this is [make.unique()](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.unique.html).
 We revisit the example above, comparing the tidyverse strategy for making names unique vs. what `make.unique()` does.
 
-```{r, echo = FALSE, message = FALSE, comment = NA}
+```{r}
+#| echo = FALSE,
+#| message = FALSE,
+#| comment = NA
 y <- rbind(
   c("Original", "Unique names",     "Result of"),
   c(   "names",  "(tidyverse)", "make.unique()"),
@@ -195,7 +205,10 @@ If this interacts poorly with your names, you need to take control of name repai
 
 Example of re-unique-ified names:
 
-```{r, echo = FALSE, message = FALSE, comment = NA}
+```{r}
+#| echo = FALSE,
+#| message = FALSE,
+#| comment = NA
 nms <- c("...5", "x", "x...3", "", "x...1...5")
 x <- cbind(
   suffixed   = nms,
@@ -295,7 +308,10 @@ Here's how our logic compares to [base::make.names()](https://stat.ethz.ch/R-man
 
 Examples of the tidyverse approach to making individual names syntactic versus [`base::make.names()`](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html):
 
-```{r, echo = FALSE, message = FALSE, comment = NA}
+```{r}
+#| echo = FALSE,
+#| message = FALSE,
+#| comment = NA
 nms <- c("", NA, "(y)", "_z", ".2fa", "FALSE", "...", "..3")
 x <- cbind(
   original = nms,

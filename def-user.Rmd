@@ -1,6 +1,7 @@
 # User settable defaults {#def-user}
 
-```{r, include = FALSE}
+```{r}
+#| include = FALSE
 source("common.R")
 ```
 

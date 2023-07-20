@@ -1,10 +1,13 @@
 # Enumerate possible options {#def-enum}
 
-```{r, include = FALSE}
+```{r}
+#| include = FALSE
 source("common.R")
 ```
 
-```{r, eval = FALSE, include = FALSE}
+```{r}
+#| eval = FALSE,
+#| include = FALSE
 source("fun_def.R")
 pkg_funs("base") %>% funs_formals_keep(~ is_call(.x, "c"))
 
@@ -79,7 +82,8 @@ rank(x, ties.method = "min")
 
 Note that `match.arg()` will automatically throw an error if the value is not in the set:
 
-```{r, error = TRUE}
+```{r}
+#| error = TRUE
 rank(x, ties.method = "middle")
 ```
 
@@ -93,7 +97,8 @@ I generally believe that partial matching is a bad idea, because it makes code h
 `rlang::arg_match()` is an alternative to `match.args()` that doesn't support partial matching.
 Instead it provides a helpful error message:
 
-```{r, error = TRUE}
+```{r}
+#| error = TRUE
 rank2 <- function(x, 
                  ties.method = 
                   c("average", "first", "last", "random", "max", "min")

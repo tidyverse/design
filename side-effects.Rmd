@@ -1,6 +1,7 @@
 # Side-effect soup
 
-```{r, include = FALSE}
+```{r}
+#| include = FALSE
 source("common.R")
 ```
 
@@ -75,7 +76,8 @@ Side-effect soup is bad because:
 -   Makes code harder to analyse because it may have non-local effects.
     Take this code:
 
-    ```{r, eval = FALSE}
+    ```{r}
+    #| eval = FALSE
     x <- 1
     y <- compute(x)
     z <- calculate(x, y)
@@ -193,7 +195,8 @@ For linux, when the package was installed.
 
 Beware copying functions from other packages:
 
-```{r, eval = FALSE}
+```{r}
+#| eval = FALSE
 foofy <- barfy::foofy
 ```
 

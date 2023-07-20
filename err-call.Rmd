@@ -1,6 +1,7 @@
 # Error call {#err-call}
 
-```{r, include = FALSE}
+```{r}
+#| include = FALSE
 source("common.R")
 ```
 

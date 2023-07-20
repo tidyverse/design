@@ -1,6 +1,7 @@
 # Explain important defaults {#def-inform}
 
-```{r, include = FALSE}
+```{r}
+#| include = FALSE
 source("common.R")
 library(dplyr, warn.conflicts = FALSE)
 ```
@@ -16,7 +17,8 @@ It is also important when descriptor arguments (Chapter \@ref(args-data-details)
 -   `dplyr::left_join()` and friends automatically compute the variables to join `by` as the variables that occur in both `x` and `y` (this is called a natural join in SQL).
     This is convenient, but it's a heuristic so doesn't always work.
 
-    ```{r, error = TRUE}
+    ```{r}
+    #| error = TRUE
     library(nycflights13)
     library(dplyr)
 
@@ -52,7 +54,8 @@ It is also important when descriptor arguments (Chapter \@ref(args-data-details)
 
 -   When installing packages, `install.packages()` informs of the value of the `lib` argument, which defaults to `.libPath()[[1]]`:
 
-    ```{r, eval = FALSE}
+    ```{r}
+    #| eval = FALSE
     install.packages("forcats")
     # Installing package into ‘/Users/hadley/R’
     # (as ‘lib’ is unspecified)

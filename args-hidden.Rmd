@@ -1,6 +1,7 @@
 # Avoid hidden arguments {#args-hidden}
 
-```{r, include = FALSE}
+```{r}
+#| include = FALSE
 source("common.R")
 ```
 

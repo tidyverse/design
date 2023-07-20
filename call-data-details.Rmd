@@ -1,6 +1,7 @@
 # Name details arguments {#call-data-details}
 
-```{r, include = FALSE}
+```{r}
+#| include = FALSE
 source("common.R")
 ```
 
@@ -58,14 +59,16 @@ I think the main exception to this rule is when you are teaching a function for 
 It makes sense to emphasis the names of the data arguments to help people understand exactly what's going on.
 For example, in [R for data science](https://r4ds.had.co.nz/data-visualisation.html) when we introduce ggplot2 we write code like:
 
-```{r, eval = FALSE}
+```{r}
+#| eval = FALSE
 ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
   geom_point()
 ```
 
 At the end of the chapter, we assume that the reader is familiar with the basic structure and so the rest of the book uses the style recommended here:
 
-```{r, eval = FALSE}
+```{r}
+#| eval = FALSE
 ggplot(mpg, aes(displ, hwy)) + 
   geom_point()
 ```

@@ -1,6 +1,7 @@
 # Dot prefix {#dots-prefix}
 
-```{r, include = FALSE}
+```{r}
+#| include = FALSE
 source("common.R")
 ```
 
@@ -10,7 +11,8 @@ When using `...` to create a data structure, or when passing `...` to a user-sup
 This reduces (but does not eliminate) the chances of matching an argument at the wrong level.
 Additionally, you should always provide some mechanism that allows you to escape and use that name if needed.
 
-```{r setup}
+```{r}
+#| label = "setup"
 library(purrr)
 ```
 

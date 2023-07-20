@@ -1,10 +1,13 @@
 # Keep defaults short and sweet {#def-short}
 
-```{r, include = FALSE}
+```{r}
+#| include = FALSE
 source("common.R")
 ```
 
-```{r, eval = FALSE, include = FALSE}
+```{r}
+#| eval = FALSE,
+#| include = FALSE
 source("fun_def.R")
 funs <- c(pkg_funs("base"), pkg_funs("stats"))
 
@@ -31,7 +34,8 @@ The following examples, drawn from base R, illustrate some functions that don't 
 -   `reshape()` has the longest default argument in the base and stats packages.
     The `split` argument is one of two possible lists depending on the value of the `sep` argument:
 
-    ```{r, eval = FALSE}
+    ```{r}
+    #| eval = FALSE
     reshape(
       split = if (sep == "") {
         list(regexp = "[A-Za-z][0-9]", include = TRUE)
@@ -67,13 +71,15 @@ You can either get it by importing it from rlang, or copying and pasting it in t
 This allows you to write code like this (extracted from `ggplot2::geom_bar()`).
 It computes the width by first looking at the data, then in the paramters, finally falling back to computing it from the resolution of the `x` variable:
 
-```{r, eval = FALSE}
+```{r}
+#| eval = FALSE
 width <- data$width %||% params$width %||% (resolution(data$x, FALSE) * 0.9)
 ```
 
 Or this code from the colourbar legend: it finds the horizontal justification by first looking in the guide settings, then in the specific theme setting, then then title element, finally using `0` if nothing else is set:
 
-```{r, eval = FALSE}
+```{r}
+#| eval = FALSE
 title.hjust <- guide$title.hjust %||% 
   theme$legend.title.align %||% 
   title.theme$hjust %||% 
@@ -85,7 +91,8 @@ As you can see, `%||%` is particularly well suited to arguments where the defaul
 Don't use `%||%` for more complex examples.
 For example in `reshape()` I would set `split = NULL` and then write:
 
-```{r, eval = FALSE}
+```{r}
+#| eval = FALSE
 if (is.null(split)) {
   if (sep == "") {
     split <- list(regexp = "[A-Za-z][0-9]", include = TRUE)
