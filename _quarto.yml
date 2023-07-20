@@ -74,6 +74,7 @@ book:
       - side-effects.Rmd
       - spooky-action.Rmd
     
+  appendices:
     - glossary.Rmd
 
 format:
