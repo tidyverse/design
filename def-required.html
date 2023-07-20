@@ -471,9 +471,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>In <code><a href="https://rdrr.io/r/base/sample.html">sample()</a></code> neither <code>x</code> not <code>size</code> has a default value, suggesting that both are required, and the function would error if you didn’t supply them. But <code>size</code> is optional, determined by a complex conditional.</p>
 <div class="cell" data-hash="def-required_cache/html/unnamed-chunk-2_5b1670f63da17bd82112061314f8cf05">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 1 4 3 2</span></span>
+<span><span class="co">#&gt; [1] 2 3 4 1</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 2 4 1 3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; [1] 3 2 4 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </li>
 <li><p><code><a href="https://rdrr.io/r/stats/TDist.html">rt()</a></code> (draw random numbers from the t-distribution) looks like it requires the <code>ncp</code> parameter but it doesn’t.</p></li>
