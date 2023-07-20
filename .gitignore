@@ -5,3 +5,7 @@
 _main.rds
 _book
 _bookdown_files
+/.quarto/
+site_libs
+/*_cache
+/*_files

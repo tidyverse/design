@@ -1,7 +1,0 @@
-bookdown::bs4_book:
-  includes:
-    in_header: [ga_script.html]
-  repo:
-    base: http://github.com/tidyverse/design
-    branch: main
-    

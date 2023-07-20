@@ -1,0 +1,89 @@
+project:
+  type: book
+  output-dir: _book
+
+book:
+  title: "Tidy design principles"
+  reader-mode: true
+
+  page-footer:
+    left: |
+      Tidy design principles was written by Hadley Wickham
+    right: |
+      This book was built with <a href="https://quarto.org/">Quarto</a>.
+  site-url: https://design.tidyverse.org
+  repo-url: https://github.com/tidyverse/design
+  repo-branch: main
+  repo-actions: [edit, issue]
+  
+  chapters:
+    - index.Rmd
+    - structure.Rmd
+    - unifying.Rmd
+    
+    - part: implementation.Rmd
+      chapters:
+      - names.Rmd
+      - call-data-details.Rmd
+      - function-names.Rmd
+        
+    - part: args.Rmd
+      chapters:
+      - args-hidden.Rmd
+      - args-data-details.Rmd
+      - args-independence.Rmd
+      - cs-setNames.Rmd
+    
+    - part: def.Rmd
+      chapters: 
+      - def-required.Rmd
+      - cs-rep.Rmd
+      - def-enum.Rmd
+      - def-magical.Rmd
+      - def-short.Rmd
+      - def-inform.Rmd
+      - def-user.Rmd
+      - cs-rgb.Rmd
+    
+    - part: dots.Rmd
+      chapters: 
+      - dots-position.Rmd
+      - dots-data.Rmd
+      - dots-prefix.Rmd
+      - dots-inspect.Rmd
+      - cs-mapply-pmap.Rmd
+    
+    - part: out.Rmd
+      chapters: 
+      - out-multi.Rmd
+      - out-type-stability.Rmd
+      - out-vectorisation.Rmd
+      - out-invisible.Rmd
+
+    - part: err.Rmd
+      chapters: 
+      - err-call.Rmd
+      - err-constructor.Rmd
+    
+    - part: changes.Rmd
+      chapters: 
+      - changes-multivers.Rmd
+    
+    - part: side.Rmd
+      chapters: 
+      - side-effects.Rmd
+      - spooky-action.Rmd
+    
+    - glossary.Rmd
+
+format:
+  html:
+    theme: cosmo
+    code-link: true
+
+    author-meta: "Hadley Wickham"
+    include-in-header: "plausible.html"
+    callout-appearance: simple
+
+editor: visual
+
