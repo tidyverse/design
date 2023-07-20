@@ -9,3 +9,4 @@ _bookdown_files
 site_libs
 /*_cache
 /*_files
+*.html
