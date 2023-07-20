@@ -69,7 +69,7 @@ You can either get it by importing it from rlang, or copying and pasting it in t
 ```
 
 This allows you to write code like this (extracted from `ggplot2::geom_bar()`).
-It computes the width by first looking at the data, then in the paramters, finally falling back to computing it from the resolution of the `x` variable:
+It computes the width by first looking at the data, then in the parameters, finally falling back to computing it from the resolution of the `x` variable:
 
 ```{r}
 #| eval = FALSE
