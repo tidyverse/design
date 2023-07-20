@@ -130,7 +130,7 @@ Unfortunately both approaches have major downsides:
     ```
 
     The downside of this approach is that you can no longer see which values are permitted, and you'd have to describe them separately in the documentation.
-    You can, however, still see the default value in the function speci.
+    You can, however, still see the default value in the function specification.
 
 -   Store the options in an exported function, and use it in the defaults:
 
