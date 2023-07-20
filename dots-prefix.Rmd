@@ -58,7 +58,7 @@ args(dplyr::left_join)
 Base R uses two alternative methods: uppercase and `_` prefix.
 
 The apply family tends to use uppercase function names for the same reason.
-Unfortunately the functions are a little inconsitent which makes it hard to see this pattern.
+Unfortunately the functions are a little inconsistent which makes it hard to see this pattern.
 I think a dot prefix is better because it's easier to type (you don't have to hold down the shift-key with one finger).
 
 ```{r}
