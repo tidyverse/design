@@ -51,7 +51,7 @@ median(c(2, 3, 10))
 mean(c(2, 3, 10))
 ```
 
-## What is it important?
+## Why is it important?
 
 There are three primary advantages:
 
