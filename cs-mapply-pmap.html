@@ -90,7 +90,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
+}</script><script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/script.js"></script>
 </head>
 <body class="nav-sidebar floating">
 
@@ -435,7 +435,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="cs-mapply-pmap" class="quarto-section-identifier"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Case study: <code>mapply()</code> vs <code>pmap()</code></span></span></h1>
+<h1 class="title"><span id="sec-cs-mapply-pmap" class="quarto-section-identifier"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Case study: <code>mapply()</code> vs <code>pmap()</code></span></span></h1>
 </div>
 
 
@@ -499,7 +499,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; [1] "axxle"  "bafafa" "cqerry"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>There’s a subtle difference here that doesn’t matter in most cases - in the <code><a href="https://rdrr.io/r/base/mapply.html">mapply()</a></code> <code>fixed</code> is recycled to the same length as <code>pattern</code> whereas it is not <code><a href="https://purrr.tidyverse.org/reference/pmap.html">pmap()</a></code>. TODO: figure out example where that’s more clear.</p>
-<p>(Also note that <code><a href="https://purrr.tidyverse.org/reference/pmap.html">pmap()</a></code> uses the <code>.</code> prefix to avoid the problem described in Chapter @ref(dots-prefix).)</p>
+<p>(Also note that <code><a href="https://purrr.tidyverse.org/reference/pmap.html">pmap()</a></code> uses the <code>.</code> prefix to avoid the problem described in Chapter <a href="dots-prefix.html"><span>Chapter&nbsp;21</span></a>.)</p>
 
 
 

@@ -90,7 +90,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
+}</script><script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/script.js"></script>
 </head>
 <body class="nav-sidebar floating">
 
@@ -440,7 +440,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li>
 <a href="#how-do-i-remediate" id="toc-how-do-i-remediate" class="nav-link" data-scroll-target="#how-do-i-remediate"><span class="header-section-number">9.4</span> How do I remediate?</a>
   <ul class="collapse">
-<li><a href="#cs-fct-lump" id="toc-cs-fct-lump" class="nav-link" data-scroll-target="#cs-fct-lump"><span class="header-section-number">9.4.1</span> Case study: <code>fct_lump()</code></a></li>
+<li><a href="#sec-cs-fct-lump" id="toc-sec-cs-fct-lump" class="nav-link" data-scroll-target="#sec-cs-fct-lump"><span class="header-section-number">9.4.1</span> Case study: <code>fct_lump()</code></a></li>
   <li><a href="#case-study-grepl-vs-stringrstr_detect" id="toc-case-study-grepl-vs-stringrstr_detect" class="nav-link" data-scroll-target="#case-study-grepl-vs-stringrstr_detect"><span class="header-section-number">9.4.2</span> Case study: <code>grepl()</code> vs <code>stringr::str_detect()</code></a></li>
   </ul>
 </li>
@@ -448,7 +448,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="args-independence" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Avoid dependencies between arguments</span></span></h1>
+<h1 class="title"><span id="sec-args-independence" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Avoid dependencies between arguments</span></span></h1>
 </div>
 
 
@@ -475,7 +475,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, times <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, each <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error in rep(1:3, times = 1:3, each = 2): invalid 'times' argument</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Learn more in Chapter @ref(cs-rep).</p>
+<p>Learn more in Chapter <a href="cs-rep.html"><span>Chapter&nbsp;12</span></a>.</p>
 </li>
 <li><p>In <code><a href="https://rdrr.io/r/stats/cor.html">var()</a></code>, <code>na.rm</code> is only used if <code>use</code> is not set. If you supply both <code>use</code> and <code>na.rm</code>, <code>na.rm</code> is silently ignored.</p></li>
 <li>
@@ -484,7 +484,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html">rgamma</a></span><span class="op">(</span><span class="fl">5</span>, shape <span class="op">=</span> <span class="fl">1</span>, rate <span class="op">=</span> <span class="fl">2</span>, scale <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in rgamma(5, shape = 1, rate = 2, scale = 1/2): specify 'rate' or</span></span>
 <span><span class="co">#&gt; 'scale' but not both</span></span>
-<span><span class="co">#&gt; [1] 0.1162249 0.2478676 0.3121495 0.6413492 1.4218245</span></span>
+<span><span class="co">#&gt; [1] 0.05048526 0.40263915 0.03253278 0.26286444 0.12213896</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html">rgamma</a></span><span class="op">(</span><span class="fl">5</span>, shape <span class="op">=</span> <span class="fl">1</span>, rate <span class="op">=</span> <span class="fl">2</span>, scale <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error in rgamma(5, shape = 1, rate = 2, scale = 2): specify 'rate' or 'scale' but not both</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -506,7 +506,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>In <code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">ggplot2::geom_histogram()</a></code>, you can specify the histogram breaks in three ways: as a number of <code>bins</code>, as the width of each bin (<code>binwidth</code>, plus <code>center</code> or <code>boundary</code>), or the exact <code>breaks</code>. You can only pick one of the three options, which is hard to convey in the documentation. There’s also an implied precedence so that if more than one option is supplied, one will silently win.</p></li>
 <li><p>In <code><a href="https://readr.tidyverse.org/reference/locale.html">readr::locale()</a></code> there’s a complex dependency between <code>decimal_mark</code> and <code>grouping_mark</code> because they can’t be the same value, and the US and Europe use different standards.</p></li>
 </ul>
-<p>See Sections @ref(args-mutually-exclusive) and @ref(args-compound) for a two exceptions where the dependency is via specific patterns of missing arguments.</p>
+<p>See <a href="def-required.html#sec-args-mutually-exclusive"><span>Section&nbsp;11.3.1</span></a>) and <a href="def-required.html#sec-args-compound"><span>Section&nbsp;11.3.2</span></a> for a two exceptions where the dependency is via specific patterns of missing arguments.</p>
 </section><section id="why-is-this-important" class="level2" data-number="9.3"><h2 data-number="9.3" class="anchored" data-anchor-id="why-is-this-important">
 <span class="header-section-number">9.3</span> Why is this important?</h2>
 <p>Having complicated interdependencies between arguments has major downsides:</p>
@@ -522,9 +522,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Splitting the function into multiple functions that each do one thing.</p></li>
 <li><p>Encapulsating related details arguments into a single object.</p></li>
 </ul>
-<p>See also larger case study in Chapter @ref(cs-rep) where this problem is tangled up with other problems.</p>
+<p>See also larger case study in <a href="cs-rep.html"><span>Chapter&nbsp;12</span></a> where this problem is tangled up with other problems.</p>
 <p>If these changes to the interface occur to exported functions in a package, you’ll need to consider how to preserve the interface with deprecation warnings. For important functions, it is worth generating an message that includes new code to copy and paste.</p>
-<section id="cs-fct-lump" class="level3" data-number="9.4.1"><h3 data-number="9.4.1" class="anchored" data-anchor-id="cs-fct-lump">
+<section id="sec-cs-fct-lump" class="level3" data-number="9.4.1"><h3 data-number="9.4.1" class="anchored" data-anchor-id="sec-cs-fct-lump">
 <span class="header-section-number">9.4.1</span> Case study: <code>fct_lump()</code>
 </h3>
 <p>There are many different ways to decide how to lump uncommon factor levels together, and initially we attempted to encode these through arguments to <code>fct_lump()</code>. However, over time as the number of arguments increased, it gets harder and harder to tell what the options are. Currently there are three behaviours:</p>
@@ -559,7 +559,7 @@ https://github.com/wch/r-source/blob/trunk/src/main/grep.c#L891-L1151 -->
 <span><span class="co">#&gt; Warning in grepl("a", letters, fixed = TRUE, perl = TRUE): argument 'perl =</span></span>
 <span><span class="co">#&gt; TRUE' will be ignored</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Part of this problem could be resolved by making it more clear that one important choice is the matching engine to use: POSIX 1003.2 extended regular expressions (the default), Perl-style regular expressions (<code>perl = TRUE</code>) or fixed matching (<code>fixed = TRUE</code>). A better approach would be to use the pattern in Chapter @ref(def-enum), and create a new argument called something like <code>engine = c("POSIX", "perl", "fixed")</code>.</p>
+<p>Part of this problem could be resolved by making it more clear that one important choice is the matching engine to use: POSIX 1003.2 extended regular expressions (the default), Perl-style regular expressions (<code>perl = TRUE</code>) or fixed matching (<code>fixed = TRUE</code>). A better approach would be to use the pattern in <a href="def-enum.html"><span>Chapter&nbsp;13</span></a> and create a new argument called something like <code>engine = c("POSIX", "perl", "fixed")</code>.</p>
 <p>The other problem is that <code>ignore.case</code> can only affect two of the three engines: POSIX and perl. This is hard to remedy without creating a completely new matching engine. Anything to do with case is always harder than you might expect because different languages have different rules.</p>
 <p>stringr takes a different approach, encoding the engine as an attribute of the pattern:</p>
 <div class="cell" data-hash="args-independence_cache/html/unnamed-chunk-6_d4feac09a3224a71e3ea9801a87fb800">

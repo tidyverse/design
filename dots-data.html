@@ -90,7 +90,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
+}</script><script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/script.js"></script>
 </head>
 <body class="nav-sidebar floating">
 
@@ -445,7 +445,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="dots-data" class="quarto-section-identifier"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Making data with …</span></span></h1>
+<h1 class="title"><span id="sec-dots-data" class="quarto-section-identifier"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Making data with …</span></span></h1>
 </div>
 
 
@@ -496,7 +496,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>(See Chapter @ref(dots-position) to learn why this doesn’t give an error message.)</p>
+<p>(See Chapter <a href="dots-position.html"><span>Chapter&nbsp;19</span></a> to learn why this doesn’t give an error message.)</p>
 </li>
 <li>
 <p>It makes it harder to adapt the function for new uses. For example, <code>fct_relevel()</code> can also be called with a function:</p>
@@ -545,13 +545,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section><section id="how-can-i-protect-myself" class="level2" data-number="20.6"><h2 data-number="20.6" class="anchored" data-anchor-id="how-can-i-protect-myself">
 <span class="header-section-number">20.6</span> How can I protect myself?</h2>
 <p>If you do feel that the tradeoff is worth it (i.e.&nbsp;it’s an extremely frequently used function and the savings over time will be considerable), you need to take some steps to minimise the downsides.</p>
-<p>This is easiest if you’re constructing a vector that shouldn’t have names. In this case, you can call <code><a href="https://rlang.r-lib.org/reference/check_dots_unnamed.html">ellipsis::check_dots_unnamed()</a></code> to ensure that no named arguments have been accidentally passed to <code>...</code>. This protects you against the following undesirable behaviour of <code><a href="https://rdrr.io/r/base/sum.html">sum()</a></code>:</p>
-<div class="cell" data-hash="dots-data_cache/html/unnamed-chunk-8_18d3de7e38deaa2bfe8d23f0a25a0f86">
+<p>This is easiest if you’re constructing a vector that shouldn’t have names. In this case, you can call <code><a href="https://rlang.r-lib.org/reference/check_dots_unnamed.html">rlang::check_dots_unnamed()</a></code> to ensure that no named arguments have been accidentally passed to <code>...</code>. This protects you against the following undesirable behaviour of <code><a href="https://rdrr.io/r/base/sum.html">sum()</a></code>:</p>
+<div class="cell" data-hash="dots-data_cache/html/unnamed-chunk-8_a92b214f2c4f19d9f98d0e437bf19165">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, na.omit <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 4</span></span>
 <span></span>
 <span><span class="va">safe_sum</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span>, <span class="va">na.rm</span> <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu">ellipsis</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/check_dots_unnamed.html">check_dots_unnamed</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/check_dots_unnamed.html">check_dots_unnamed</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span>, na.rm <span class="op">=</span> <span class="va">na.rm</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span><span class="fu">safe_sum</span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, na.omit <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>

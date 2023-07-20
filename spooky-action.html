@@ -90,7 +90,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
+}</script><script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/script.js"></script>
 </head>
 <body class="nav-sidebar floating">
 
@@ -458,9 +458,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title">
-<span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Spooky action</span>
-</h1>
+<h1 class="title"><span id="sec-spooky-action" class="quarto-section-identifier"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Spooky action</span></span></h1>
 </div>
 
 
@@ -479,7 +477,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Deleting variables and creating files on your desktop are obviously surprising even if you’ve only just started using R. But there are other actions that are less obviously destructive, and only start to become surprising as your mental model of R matures. These include actions like:</p>
 <ul>
 <li><p><strong>Attaching packages with <code><a href="https://rdrr.io/r/base/library.html">library()</a></code></strong>. For example, <code><a href="https://ggplot2.tidyverse.org/reference/geom_map.html">ggplot2::geom_map()</a></code> used to call <code><a href="https://rdrr.io/r/base/library.html">library(maps)</a></code> in order to make map data available to the function. This seems harmless, but if you were using purrr, it would break <code><a href="https://purrr.tidyverse.org/reference/map.html">map()</a></code> <code><a href="https://purrr.tidyverse.org/reference/map.html">map()</a></code> would now refer to <code>maps::map()</code> rather than <code><a href="https://purrr.tidyverse.org/reference/map.html">purrr::map()</a></code>. Because of functions in different packages can have the same name, attaching a package can change the behaviour of existing code.</p></li>
-<li><p><strong>Installing packages with <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code></strong>. If a script needs dplyr to work, and it’s not installed, it seem polite to install it on behalf of the user. But installing a new package can upgrade existing packages, which might break code in other projects. Install a package is a potentially destructive operation which should be done with care.</p></li>
+<li><p><strong>Installing packages with <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code></strong>. If a script needs dplyr to work, and it’s not installed, it seems polite to install it on behalf of the user. But installing a new package can upgrade existing packages, which might break code in other projects. Install a package is a potentially destructive operation which should be done with care.</p></li>
 <li><p><strong>Deleting objects in the global environment with <code>rm(list = ls())</code></strong>. This might seem like a good way to reset the environment so that your script can run cleanly. But if someone else <code><a href="https://rdrr.io/r/base/source.html">source()</a></code>s your script, it will delete objects that might be important to them. (Of course, you’d hope that all of those objects could easily be recreated from another script, but that is not always the case).</p></li>
 </ul>
 <p>Because R doesn’t constrain the potential scope of functions and scripts, <em>you</em> have to. By avoiding these actions, you will create code that is less surprising to other R users. At first, this might seem like tedious busywork. You might find that spooky action is convenient in the moment, and you might convince yourself that it’s necessary or a good idea. But as you share your code with more people and run more code that has been shared with you<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, you’ll find spooky action to get more and more surprising and frustrating.</p>
@@ -522,7 +520,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/now.html">now</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span><span class="fu">current_time</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "2023-07-20 14:34:32 UTC"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; [1] "2023-07-20 19:16:26 UTC"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section><section id="ask-for-confirmation" class="level3" data-number="32.3.3"><h3 data-number="32.3.3" class="anchored" data-anchor-id="ask-for-confirmation">
 <span class="header-section-number">32.3.3</span> Ask for confirmation</h3>
@@ -673,8 +671,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">out</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]</span></span>
-<span><span class="co">#&gt; x      8   10   11    8   15   13    5    7   12    10</span></span>
-<span><span class="co">#&gt; out    8   18   29   37   52   65   70   77   89    99</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; x      7   13    9    8   14   14    7   13   10    13</span></span>
+<span><span class="co">#&gt; out    7   20   29   37   51   65   72   85   95   108</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>A simple transformation from to use <code><a href="https://purrr.tidyverse.org/reference/map.html">map()</a></code> doesn’t work:</p>
 <div class="cell" data-hash="spooky-action_cache/html/unnamed-chunk-15_88f7eda8454a50bac907f06071f5cfbc">
@@ -687,7 +685,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>    <span class="va">out</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">+</span> <span class="va">out</span><span class="op">[[</span><span class="va">i</span> <span class="op">-</span> <span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span>  <span class="op">}</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  [1]  8 10 11  8 15 13  5  7 12 10</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt;  [1]  7 13  9  8 14 14  7 13 10 13</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Because the modification of <code>out</code> is happening inside of a function, R creates a copy of <code>out</code> (this is called <a href="https://adv-r.hadley.nz/names-values.html#copy-on-modify">copy-on-modify principle</a>). Instead we need to use <code>&lt;&lt;-</code> to reach outside of the function to modify the outer <code>out</code>:</p>
 <div class="cell" data-hash="spooky-action_cache/html/unnamed-chunk-16_8c6961ff51700fbd420c7e2cf12a76b0">
@@ -698,7 +696,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>    <span class="va">out</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;&lt;-</span> <span class="va">x</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">+</span> <span class="va">out</span><span class="op">[[</span><span class="va">i</span> <span class="op">-</span> <span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span>  <span class="op">}</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  [1]  8 18 29 37 52 65 70 77 89 99</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt;  [1]   7  20  29  37  51  65  72  85  95 108</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This use of <code>&lt;&lt;-</code> is a spooky action because we’re reaching up the tree of environments to modify an object created outside of the function. In this case, however, there’s no point in using <code><a href="https://purrr.tidyverse.org/reference/map.html">map()</a></code>: the point of those functions is to restrict what you can do compared to a for loop so that your code is easier to understand. <a href="https://r4ds.had.co.nz/iteration.html#for-loop-variations">R for data science</a> has other examples of for loops that <em>could</em> be rewritten with <code><a href="https://purrr.tidyverse.org/reference/map.html">map()</a></code>, but shouldn’t be.</p>
 <p>Note that we could still wrap this code into a function to eliminate the spooky action:</p>

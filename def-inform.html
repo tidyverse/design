@@ -90,7 +90,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
+}</script><script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/script.js"></script>
 </head>
 <body class="nav-sidebar floating">
 
@@ -442,7 +442,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="def-inform" class="quarto-section-identifier"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Explain important defaults</span></span></h1>
+<h1 class="title"><span id="sec-def-inform" class="quarto-section-identifier"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Explain important defaults</span></span></h1>
 </div>
 
 
@@ -457,7 +457,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header><section id="whats-the-pattern" class="level2" data-number="16.1"><h2 data-number="16.1" class="anchored" data-anchor-id="whats-the-pattern">
 <span class="header-section-number">16.1</span> What’s the pattern?</h2>
-<p>If a default value is important, and the computation is non-trivial, inform the user what value was used. This is particularly important when the default value is an educated guess, and you want the user to change it. It is also important when descriptor arguments (Chapter @ref(args-data-details)) have defaults.</p>
+<p>If a default value is important, and the computation is non-trivial, inform the user what value was used. This is particularly important when the default value is an educated guess, and you want the user to change it. It is also important when descriptor arguments (<a href="args-data-details.html"><span>Chapter&nbsp;8</span></a>)) have defaults.</p>
 </section><section id="what-are-some-examples" class="level2" data-number="16.2"><h2 data-number="16.2" class="anchored" data-anchor-id="what-are-some-examples">
 <span class="header-section-number">16.2</span> What are some examples?</h2>
 <ul>
@@ -555,7 +555,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; [1] "year"    "tailnum"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The technique you use to generate the code will vary from function to function. <code><a href="https://rlang.r-lib.org/reference/expr_label.html">rlang::expr_text()</a></code> is useful here because it automatically creates the code you’d use to build the character vector.</p>
-<p>To avoid creating a magical default (Chapter @ref(def-magical)), either export and document the function, or use the technique of Section @ref(arg-short-null):</p>
+<p>To avoid creating a magical default (<a href="def-magical.html"><span>Chapter&nbsp;14</span></a>), either export and document the function, or use the technique of <a href="def-short.html#sec-arg-short-null"><span>Section&nbsp;15.4.1</span></a>:</p>
 <div class="cell" data-hash="def-inform_cache/html/unnamed-chunk-7_2998a05dc6867a12ce3d4b2772798f99">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">left_join</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">by</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">by</span> <span class="op">&lt;-</span> <span class="va">by</span> <span class="op">%||%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/common_by.html">common_by</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span>

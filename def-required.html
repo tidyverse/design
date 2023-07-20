@@ -90,7 +90,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
+}</script><script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/script.js"></script>
 </head>
 <body class="nav-sidebar floating">
 
@@ -439,15 +439,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li>
 <a href="#what-are-the-exceptions" id="toc-what-are-the-exceptions" class="nav-link" data-scroll-target="#what-are-the-exceptions"><span class="header-section-number">11.3</span> What are the exceptions?</a>
   <ul class="collapse">
-<li><a href="#args-mutually-exclusive" id="toc-args-mutually-exclusive" class="nav-link" data-scroll-target="#args-mutually-exclusive"><span class="header-section-number">11.3.1</span> Pair of mututally exclusive arguments</a></li>
-  <li><a href="#args-compound" id="toc-args-compound" class="nav-link" data-scroll-target="#args-compound"><span class="header-section-number">11.3.2</span> One compound argument vs multiple simple arguments</a></li>
+<li><a href="#sec-args-mutually-exclusive" id="toc-sec-args-mutually-exclusive" class="nav-link" data-scroll-target="#sec-args-mutually-exclusive"><span class="header-section-number">11.3.1</span> Pair of mututally exclusive arguments</a></li>
+  <li><a href="#sec-args-compound" id="toc-sec-args-compound" class="nav-link" data-scroll-target="#sec-args-compound"><span class="header-section-number">11.3.2</span> One compound argument vs multiple simple arguments</a></li>
   </ul>
 </li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/def-required.Rmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="def-required" class="quarto-section-identifier"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Required args shouldn’t have defaults</span></span></h1>
+<h1 class="title"><span id="sec-def-required" class="quarto-section-identifier"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Required args shouldn’t have defaults</span></span></h1>
 </div>
 
 
@@ -473,7 +473,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 1 4 3 2</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 1 2 4 3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; [1] 2 4 1 3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </li>
 <li><p><code><a href="https://rdrr.io/r/stats/TDist.html">rt()</a></code> (draw random numbers from the t-distribution) looks like it requires the <code>ncp</code> parameter but it doesn’t.</p></li>
@@ -508,7 +508,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>When you can either supply one complex object, or a handful of simpler objects.</p></li>
 </ul>
 <p>In both cases, I believe the benefits outweigh the costs of violating a standard pattern.</p>
-<section id="args-mutually-exclusive" class="level3" data-number="11.3.1"><h3 data-number="11.3.1" class="anchored" data-anchor-id="args-mutually-exclusive">
+<section id="sec-args-mutually-exclusive" class="level3" data-number="11.3.1"><h3 data-number="11.3.1" class="anchored" data-anchor-id="sec-args-mutually-exclusive">
 <span class="header-section-number">11.3.1</span> Pair of mututally exclusive arguments</h3>
 <p>A number of functions that allow you to supply exactly one of two possible arguments:</p>
 <ul>
@@ -531,14 +531,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#'   * `drop` will replace listed levels with `other_level`, keeping all</span></span>
 <span><span class="co">#'     as is.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>This technique should only be used for are exactly two possible arguments. If there are more than two , that is generally a sign you should create more functions. See case studies in Chapter @ref(cs-rep) and Section @ref(cs-fct-lump) for examples.</p>
-</section><section id="args-compound" class="level3" data-number="11.3.2"><h3 data-number="11.3.2" class="anchored" data-anchor-id="args-compound">
+<p>This technique should only be used for are exactly two possible arguments. If there are more than two , that is generally a sign you should create more functions. See case studies in <a href="cs-rep.html"><span>Chapter&nbsp;12</span></a> and <a href="args-independence.html#sec-cs-fct-lump"><span>Section&nbsp;9.4.1</span></a> for examples.</p>
+</section><section id="sec-args-compound" class="level3" data-number="11.3.2"><h3 data-number="11.3.2" class="anchored" data-anchor-id="sec-args-compound">
 <span class="header-section-number">11.3.2</span> One compound argument vs multiple simple arguments</h3>
 <p>A related, if less generally useful, form is to allow the user to supply either a single complex argument or several smaller arguments. For example:</p>
 <ul>
 <li><p><code>stringr::str_sub(x, cbind(start, end))</code> is equivalent to <code>str_sub(x, start, end)</code>.</p></li>
 <li><p><code>stringr::str_replace_all(x, c(pattern = replacement))</code> is equivalent to <code>stringr(x, pattern, replacement)</code>.</p></li>
-<li><p><code>rgb(cbind(r, g, b))</code> is equivalent to <code>rgb(r, g, b)</code> (See Chapter @ref(cs-rgb) for more details).</p></li>
+<li><p><code>rgb(cbind(r, g, b))</code> is equivalent to <code>rgb(r, g, b)</code> (See <a href="cs-rgb.html"><span>Chapter&nbsp;18</span></a> for more details).</p></li>
 <li><p><code>options(list(a = 1, b = 2))</code> is equivalent to <code>options(a = 1, b = 2)</code>.</p></li>
 </ul>
 <p>The most compelling reason to provide this sort of interface is when another function might return a complex output that you want to use as an input. For example, it seems reasonable that you should be able to feed the output of <code><a href="https://stringr.tidyverse.org/reference/str_locate.html">str_locate()</a></code> directly into <code><a href="https://stringr.tidyverse.org/reference/str_sub.html">str_sub()</a></code>:</p>

@@ -90,7 +90,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
+}</script><script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/script.js"></script>
 </head>
 <body class="nav-sidebar floating">
 
@@ -440,9 +440,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li>
 <a href="#how-do-i-use-it" id="toc-how-do-i-use-it" class="nav-link" data-scroll-target="#how-do-i-use-it"><span class="header-section-number">15.4</span> How do I use it?</a>
   <ul class="collapse">
-<li><a href="#arg-short-null" id="toc-arg-short-null" class="nav-link" data-scroll-target="#arg-short-null"><span class="header-section-number">15.4.1</span> <code>NULL</code> default</a></li>
+<li><a href="#sec-arg-short-null" id="toc-sec-arg-short-null" class="nav-link" data-scroll-target="#sec-arg-short-null"><span class="header-section-number">15.4.1</span> <code>NULL</code> default</a></li>
   <li><a href="#helper-function" id="toc-helper-function" class="nav-link" data-scroll-target="#helper-function"><span class="header-section-number">15.4.2</span> Helper function</a></li>
-  <li><a href="#args-default-sentinel" id="toc-args-default-sentinel" class="nav-link" data-scroll-target="#args-default-sentinel"><span class="header-section-number">15.4.3</span> Sentinel value</a></li>
+  <li><a href="#sec-args-default-sentinel" id="toc-sec-args-default-sentinel" class="nav-link" data-scroll-target="#sec-args-default-sentinel"><span class="header-section-number">15.4.3</span> Sentinel value</a></li>
   </ul>
 </li>
   <li><a href="#how-do-i-remediate-existing-problems" id="toc-how-do-i-remediate-existing-problems" class="nav-link" data-scroll-target="#how-do-i-remediate-existing-problems"><span class="header-section-number">15.5</span> How do I remediate existing problems?</a></li>
@@ -450,7 +450,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="def-short" class="quarto-section-identifier"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Keep defaults short and sweet</span></span></h1>
+<h1 class="title"><span id="sec-def-short" class="quarto-section-identifier"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Keep defaults short and sweet</span></span></h1>
 </div>
 
 
@@ -490,17 +490,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="header-section-number">15.4</span> How do I use it?</h2>
 <p>There are three approaches:</p>
 <ul>
-<li><p>Set the default value to <code>NULL</code> and calculate the default only when the argument is <code>NULL</code>. Providing a default of <code>NULL</code> signals that the argument is optional (Chapter @ref(def-required)) but that the default requires some calculation.</p></li>
+<li><p>Set the default value to <code>NULL</code> and calculate the default only when the argument is <code>NULL</code>. Providing a default of <code>NULL</code> signals that the argument is optional (<a href="def-required.html"><span>Chapter&nbsp;11</span></a>) but that the default requires some calculation.</p></li>
 <li><p>If the calculation is complex, and the user might find it useful in other scenarios, compute it with an exported function that documents exactly what happens.</p></li>
 <li><p>If <code>NULL</code> is meaningful, so you can’t use the first approach, use a “sentinel” object instead.</p></li>
 </ul>
-<section id="arg-short-null" class="level3" data-number="15.4.1"><h3 data-number="15.4.1" class="anchored" data-anchor-id="arg-short-null">
+<section id="sec-arg-short-null" class="level3" data-number="15.4.1"><h3 data-number="15.4.1" class="anchored" data-anchor-id="sec-arg-short-null">
 <span class="header-section-number">15.4.1</span> <code>NULL</code> default</h3>
 <p>The most common approach is to use <code>NULL</code> as a sentinel value that indicates that the argument is optional, but non-trivial. This pattern is made substantially more elegant with the infix <code>%||%</code> operator. You can either get it by importing it from rlang, or copying and pasting it in to your <code>utils.R</code>:</p>
 <div class="cell" data-hash="def-short_cache/html/unnamed-chunk-4_bdb2d26ae6abf16470ce9c95339e3591">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">`%||%`</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="va">y</span> <span class="kw">else</span> <span class="va">x</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>This allows you to write code like this (extracted from <code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">ggplot2::geom_bar()</a></code>). It computes the width by first looking at the data, then in the paramters, finally falling back to computing it from the resolution of the <code>x</code> variable:</p>
+<p>This allows you to write code like this (extracted from <code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">ggplot2::geom_bar()</a></code>). It computes the width by first looking at the data, then in the parameters, finally falling back to computing it from the resolution of the <code>x</code> variable:</p>
 <div class="cell" data-hash="def-short_cache/html/unnamed-chunk-5_23f6fcc61150932e71ffee198d683156">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">width</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">width</span> <span class="op">%||%</span> <span class="va">params</span><span class="op">$</span><span class="va">width</span> <span class="op">%||%</span> <span class="op">(</span><span class="fu">resolution</span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">x</span>, <span class="cn">FALSE</span><span class="op">)</span> <span class="op">*</span> <span class="fl">0.9</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -527,7 +527,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="header-section-number">15.4.2</span> Helper function</h3>
 <p>For more complicated cases, you’ll probably want to pull the code that computes the default out into a separate function, and in many cases you’ll want to export (and document) the function.</p>
 <p>A good example of this pattern is <code><a href="https://readr.tidyverse.org/reference/show_progress.html">readr::show_progress()</a></code>: it’s used in every <code>read_</code> function in readr and it’s sufficiently complicated that you don’t want to copy and paste it between functions. It’s also nice to document it in its own file, rather than cluttering up file reading functions with incidental details.</p>
-</section><section id="args-default-sentinel" class="level3" data-number="15.4.3"><h3 data-number="15.4.3" class="anchored" data-anchor-id="args-default-sentinel">
+</section><section id="sec-args-default-sentinel" class="level3" data-number="15.4.3"><h3 data-number="15.4.3" class="anchored" data-anchor-id="sec-args-default-sentinel">
 <span class="header-section-number">15.4.3</span> Sentinel value</h3>
 <p>Sometimes a default argument has a complex calculation that you don’t want to include in arguments list. You’d normally use <code>NULL</code> to indicate that it’s calculated by default, but <code>NULL</code> is a meaningful option. In that case, you can use a <strong>sentinel</strong> object.</p>
 <div class="cell" data-hash="def-short_cache/html/unnamed-chunk-8_bdcb74ccdb84aa23327b964672f91e5e">

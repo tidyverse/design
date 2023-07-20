@@ -90,7 +90,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
+}</script><script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/script.js"></script>
 </head>
 <body class="nav-sidebar floating">
 
@@ -443,7 +443,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="def-magical" class="quarto-section-identifier"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Avoid magical defaults</span></span></h1>
+<h1 class="title"><span id="sec-def-magical" class="quarto-section-identifier"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Avoid magical defaults</span></span></h1>
 </div>
 
 
@@ -523,7 +523,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt;         X/(X + rchisq(n, 2 * shape2))</span></span>
 <span><span class="co">#&gt;     }</span></span>
 <span><span class="co">#&gt; }</span></span>
-<span><span class="co">#&gt; &lt;bytecode: 0x5628da501cb8&gt;</span></span>
+<span><span class="co">#&gt; &lt;bytecode: 0x55de2d15ccb8&gt;</span></span>
 <span><span class="co">#&gt; &lt;environment: namespace:stats&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </li>
@@ -607,7 +607,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Don’t use <code><a href="https://rdrr.io/r/base/missing.html">missing()</a></code><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p></li>
 <li><p>Don’t use unexported functions.</p></li>
 </ul>
-<p>If you have a made a mistake in an older function you can remediate it by using a <code>NULL</code> default, as described in Chapter @ref(def-short). If the problem is caused by an unexported function, you can also choose to document and export it.</p>
+<p>If you have a made a mistake in an older function you can remediate it by using a <code>NULL</code> default, as described in <a href="def-short.html"><span>Chapter&nbsp;15</span></a>). If the problem is caused by an unexported function, you can also choose to document and export it.</p>
 <div class="cell" data-hash="def-magical_cache/html/unnamed-chunk-13_10770c8383c35c4df831293f9da8aa29">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">`%||%`</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="va">y</span> <span class="kw">else</span> <span class="va">x</span></span>
 <span></span>
@@ -625,7 +625,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This modification should not break existing code, because expands the function interface: all previous code will continue to work, and the function will also work if the argument is passed <code>NULL</code> input (which probably didn’t previously).</p>
-<p>For functions like <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code> where <code>NULL</code> is already a permissible value, you’ll need to use a sentinel object, as described in Section @ref(args-default-sentinel).</p>
+<p>For functions like <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code> where <code>NULL</code> is already a permissible value, you’ll need to use a sentinel object, as described in <a href="def-short.html#sec-args-default-sentinel"><span>Section&nbsp;15.4.3</span></a>.</p>
 <div class="cell" data-hash="def-magical_cache/html/unnamed-chunk-14_5035cb0c6b42f4552dafa866b629394d">
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sentinel</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/structure.html">structure</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>, class <span class="op">=</span> <span class="st">"sentinel"</span><span class="op">)</span></span>
 <span><span class="va">is_sentinel</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/class.html">inherits</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"sentinel"</span><span class="op">)</span></span>
@@ -640,7 +640,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
 <ol>
-<li id="fn1"><p>The only exceptions are described in Sections @ref(args-mutually-exclusive) and @ref(args-compound).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>The only exceptions are described in <a href="def-required.html#sec-args-mutually-exclusive"><span>Section&nbsp;11.3.1</span></a>) and <a href="def-required.html#sec-args-compound"><span>Section&nbsp;11.3.2</span></a>).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

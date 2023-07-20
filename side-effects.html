@@ -90,7 +90,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
+}</script><script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/script.js"></script>
 </head>
 <body class="nav-sidebar floating">
 
@@ -459,9 +459,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title">
-<span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Side-effect soup</span>
-</h1>
+<h1 class="title"><span id="sec-side-effect-soup" class="quarto-section-identifier"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Side-effect soup</span></span></h1>
 </div>
 
 
@@ -585,10 +583,10 @@ regression. This value is only computed when the summary is printed: you can see
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">xhist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">x</span>, plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">xhist</span><span class="op">)</span></span>
 <span><span class="co">#&gt; List of 6</span></span>
-<span><span class="co">#&gt;  $ breaks  : num [1:20] -5 -4.5 -4 -3.5 -3 -2.5 -2 -1.5 -1 -0.5 ...</span></span>
-<span><span class="co">#&gt;  $ counts  : int [1:19] 1 1 11 105 462 1636 4494 9226 14833 19250 ...</span></span>
-<span><span class="co">#&gt;  $ density : num [1:19] 0.00002 0.00002 0.00022 0.0021 0.00924 ...</span></span>
-<span><span class="co">#&gt;  $ mids    : num [1:19] -4.75 -4.25 -3.75 -3.25 -2.75 -2.25 -1.75 -1.25 -0.75 -0.25 ...</span></span>
+<span><span class="co">#&gt;  $ breaks  : num [1:18] -4 -3.5 -3 -2.5 -2 -1.5 -1 -0.5 0 0.5 ...</span></span>
+<span><span class="co">#&gt;  $ counts  : int [1:17] 14 96 480 1678 4263 9140 14911 19436 19289 14960 ...</span></span>
+<span><span class="co">#&gt;  $ density : num [1:17] 0.00028 0.00192 0.0096 0.03356 0.08526 ...</span></span>
+<span><span class="co">#&gt;  $ mids    : num [1:17] -3.75 -3.25 -2.75 -2.25 -1.75 -1.25 -0.75 -0.25 0.25 0.75 ...</span></span>
 <span><span class="co">#&gt;  $ xname   : chr "x"</span></span>
 <span><span class="co">#&gt;  $ equidist: logi TRUE</span></span>
 <span><span class="co">#&gt;  - attr(*, "class")= chr "histogram"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -619,7 +617,7 @@ regression. This value is only computed when the summary is printed: you can see
 <div class="cell" data-hash="side-effects_cache/html/unnamed-chunk-7_1a8f46ac56dcc76fec583b8f9fde3a7a">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">old</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>my_option1 <span class="op">=</span> <span class="fl">1</span>, my_option2 <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>(I wouldn’t recommend copying this technique, but I’d instead recommend always taking a single named list. This makes the function because it has a single way to call it and makes it easy to extend the API in the future, as discussed in Chapter @ref(dots-data))</p>
+<p>(I wouldn’t recommend copying this technique, but I’d instead recommend always taking a single named list. This makes the function because it has a single way to call it and makes it easy to extend the API in the future, as discussed in <a href="dots-data.html"><span>Chapter&nbsp;20</span></a>)</p>
 </li>
 </ol>
 <p>Together, this means that you easily can set options temporarily.:</p>

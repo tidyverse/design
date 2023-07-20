@@ -90,7 +90,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
+}</script><script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/script.js"></script>
 </head>
 <body class="nav-sidebar floating">
 
@@ -441,7 +441,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="out-invisible" class="quarto-section-identifier"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Side-effect functions should return invisibly</span></span></h1>
+<h1 class="title"><span id="sec-out-invisible" class="quarto-section-identifier"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Side-effect functions should return invisibly</span></span></h1>
 </div>
 
 
@@ -512,20 +512,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="fu"><a href="https://fs.r-lib.org/reference/path.html">path</a></span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://fs.r-lib.org/reference/create.html">file_create</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">paths</span></span>
-<span><span class="co">#&gt; /tmp/RtmpmY1dxw/file1dd542c94b7/a /tmp/RtmpmY1dxw/file1dd542c94b7/b </span></span>
-<span><span class="co">#&gt; /tmp/RtmpmY1dxw/file1dd542c94b7/c /tmp/RtmpmY1dxw/file1dd542c94b7/d </span></span>
-<span><span class="co">#&gt; /tmp/RtmpmY1dxw/file1dd542c94b7/e</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; /tmp/RtmpjkImbZ/file1cde52256884/a /tmp/RtmpjkImbZ/file1cde52256884/b </span></span>
+<span><span class="co">#&gt; /tmp/RtmpjkImbZ/file1cde52256884/c /tmp/RtmpjkImbZ/file1cde52256884/d </span></span>
+<span><span class="co">#&gt; /tmp/RtmpjkImbZ/file1cde52256884/e</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Functions that modify some global state, like <code><a href="https://rdrr.io/r/base/options.html">options()</a></code> or <code><a href="https://rdrr.io/r/graphics/par.html">par()</a></code>, should return the <em>previous</em> value of the variables. This, in combination with Section @ref(args-compound), makes it possible to easily reset the effect of the change:</p>
+<p>Functions that modify some global state, like <code><a href="https://rdrr.io/r/base/options.html">options()</a></code> or <code><a href="https://rdrr.io/r/graphics/par.html">par()</a></code>, should return the <em>previous</em> value of the variables. This, in combination with <a href="def-required.html#sec-args-compound"><span>Section&nbsp;11.3.2</span></a>, makes it possible to easily reset the effect of the change:</p>
 <div class="cell" data-hash="out-invisible_cache/html/unnamed-chunk-6_f8776161c7006bd17b66da7e5c8c3688">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">old</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="va">x</span></span>
-<span><span class="co">#&gt; [1] 0.0693</span></span>
+<span><span class="co">#&gt; [1] 0.73</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span><span class="va">old</span><span class="op">)</span></span>
 <span><span class="va">x</span></span>
-<span><span class="co">#&gt; [1] 0.06925621</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; [1] 0.7296066</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 

@@ -90,7 +90,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
+}</script><script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/script.js"></script>
 </head>
 <body class="nav-sidebar floating">
 
@@ -503,7 +503,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt;    apple   banana     cake </span></span>
 <span><span class="co">#&gt;  "apple" "banana"   "cake"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>But that decision leads to a function signature that violates one of the principles of Chapter @ref(args-data-details): a required argument comes after an optional argument. Fortunately, we can fix this easily and still preserve the useful ability to name a vector with itself:</p>
+<p>But that decision leads to a function signature that violates one of the principles of <a href="args-data-details.html"><span>Chapter&nbsp;8</span></a>: a required argument comes after an optional argument. Fortunately, we can fix this easily and still preserve the useful ability to name a vector with itself:</p>
 <div class="cell" data-hash="cs-setNames_cache/html/unnamed-chunk-6_abab483c93431c699e61ccc56ad9aa99">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">set_names</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">names</span> <span class="op">=</span> <span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">names</span></span>

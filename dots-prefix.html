@@ -90,7 +90,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
+}</script><script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/script.js"></script>
 </head>
 <body class="nav-sidebar floating">
 
@@ -443,7 +443,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="dots-prefix" class="quarto-section-identifier"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Dot prefix</span></span></h1>
+<h1 class="title"><span id="sec-dots-prefix" class="quarto-section-identifier"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Dot prefix</span></span></h1>
 </div>
 
 
@@ -502,7 +502,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section><section id="other-approaches-in-base-r" class="level2" data-number="21.4"><h2 data-number="21.4" class="anchored" data-anchor-id="other-approaches-in-base-r">
 <span class="header-section-number">21.4</span> Other approaches in base R</h2>
 <p>Base R uses two alternative methods: uppercase and <code>_</code> prefix.</p>
-<p>The apply family tends to use uppercase function names for the same reason. Unfortunately the functions are a little inconsitent which makes it hard to see this pattern. I think a dot prefix is better because it’s easier to type (you don’t have to hold down the shift-key with one finger).</p>
+<p>The apply family tends to use uppercase function names for the same reason. Unfortunately the functions are a little inconsistent which makes it hard to see this pattern. I think a dot prefix is better because it’s easier to type (you don’t have to hold down the shift-key with one finger).</p>
 <div class="cell" data-hash="dots-prefix_cache/html/unnamed-chunk-6_b4c50b2622350f1b44adf679e052f1cd">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/args.html">args</a></span><span class="op">(</span><span class="va">lapply</span><span class="op">)</span></span>
 <span><span class="co">#&gt; function (X, FUN, ...) </span></span>
@@ -531,9 +531,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section><section id="what-are-the-exceptions" class="level2" data-number="21.5"><h2 data-number="21.5" class="anchored" data-anchor-id="what-are-the-exceptions">
 <span class="header-section-number">21.5</span> What are the exceptions?</h2>
 <ul>
-<li><p><code><a href="https://rdrr.io/r/base/conditions.html">tryCatch()</a></code>: the names give classes so, as long as you don’t create a condition class called <code>expr</code> or <code>finally</code> (which would be weird!) you don’t need to worry about matches</p></li>
 <li>
-</li></ul>
+<code><a href="https://rdrr.io/r/base/conditions.html">tryCatch()</a></code>: the names give classes so, as long as you don’t create a condition class called <code>expr</code> or <code>finally</code> (which would be weird!) you don’t need to worry about matches.</li>
+</ul>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">

@@ -90,7 +90,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
+}</script><script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/script.js"></script>
 </head>
 <body class="nav-sidebar floating">
 
@@ -443,7 +443,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="args-data-details" class="quarto-section-identifier"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data, descriptors, details</span></span></h1>
+<h1 class="title"><span id="sec-args-data-details" class="quarto-section-identifier"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data, descriptors, details</span></span></h1>
 </div>
 
 
@@ -467,9 +467,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A standard argument order makes it easier to understand a function at a glance, and this order implies that required arguments always come before optional arguments.</p>
 <p>Related patterns:</p>
 <ul>
-<li><p><code>...</code> can play the role of the data argument (i.e.&nbsp;when there are an arbitrary number of inputs), as in <code><a href="https://rdrr.io/r/base/paste.html">paste()</a></code>. This pattern is best using sparingly, and is described in more detail in Chapter @ref(dots-data).</p></li>
-<li><p><code>...</code> can also be used to capture details arguments and pass them on to other functions. See Chapters @ref(dots-position) and @ref(dots-inspect) to how to use <code>...</code> as safely as possible in this situation.</p></li>
-<li><p>If the descriptor has a default value, I think you should inform the user about it, as in Chapter @ref(def-inform).</p></li>
+<li><p><code>...</code> can play the role of the data argument (i.e.&nbsp;when there are an arbitrary number of inputs), as in <code><a href="https://rdrr.io/r/base/paste.html">paste()</a></code>. This pattern is best using sparingly, and is described in more detail in <a href="dots-data.html"><span>Chapter&nbsp;20</span></a>.</p></li>
+<li><p><code>...</code> can also be used to capture details arguments and pass them on to other functions. See <a href="dots-position.html"><span>Chapter&nbsp;19</span></a> and <a href="dots-inspect.html"><span>Chapter&nbsp;22</span></a> to how to use <code>...</code> as safely as possible in this situation.</p></li>
+<li><p>If the descriptor has a default value, I think you should inform the user about it, as in <a href="def-inform.html"><span>Chapter&nbsp;16</span></a>.</p></li>
 </ul></section><section id="what-are-some-examples" class="level2" data-number="8.2"><h2 data-number="8.2" class="anchored" data-anchor-id="what-are-some-examples">
 <span class="header-section-number">8.2</span> What are some examples?</h2>
 <ul>
@@ -502,14 +502,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul></section><section id="why-is-it-important" class="level2" data-number="8.3"><h2 data-number="8.3" class="anchored" data-anchor-id="why-is-it-important">
 <span class="header-section-number">8.3</span> Why is it important?</h2>
 <p>This convention makes it easy to understand the structure of a function at a glance: the most important arguments are always on the left hand side, and it’s obvious what arguments most affect the shape of the output. Strongly connecting the shape of the first argument to the shape of output is what makes dplyr (data frames), stringr (character vectors), and the map family (vectors) easier to learn. These families of functions represent transformations that preserve the shape while modifying the value. When combined with the pipe, this leads to code that focusses on the transformations, not the objects being transformed.</p>
-<p>These argument types as also affect how you <em>call</em> a function. As discussed in Chapter @ref(call-data-details), you should never name data arguments, and always name details arguments. This convention balances concision with readability.</p>
+<p>These argument types as also affect how you <em>call</em> a function. As discussed in <a href="call-data-details.html"><span>Chapter&nbsp;5</span></a>, you should never name data arguments, and always name details arguments. This convention balances concision with readability.</p>
 </section><section id="how-do-i-avoid-the-problem" class="level2" data-number="8.4"><h2 data-number="8.4" class="anchored" data-anchor-id="how-do-i-avoid-the-problem">
 <span class="header-section-number">8.4</span> How do I avoid the problem?</h2>
 <p>To avoid the problem, you have to carefully analyse the arguments to ensure that you correctly categorise each argument. It’s generally easy to tell the difference between a data argument and a details argument, particularly because data arguments are required and details arguments are optional. But it can be harder to distinguish between data and descriptor, or descriptor and details. This is partly because my categorisation is false trichotomy: there’s really more of a continuous gradient from absolutely required to totally optional than discrete steps. Nevertheless, I think these three categories are useful, and even if you don’t get it absolutely right every time, this framework will help you do better on average.</p>
 <p>There are a couple of heuristics that you can also check for:</p>
 <ul>
 <li><p>Are the arguments generally ordered from most important to least important? If an important argument comes before an unimportant argument, you may have assigned an argument to the wrong category. (Note that this ordering isn’t strict: sometimes it’s more important to organise related arguments together than to precisely order by importance.)</p></li>
-<li><p>Do any arguments with defaults come before any arguments without defaults? This may be a sign that the argument order is wrong, or that you’ve assigned a default value to an required argument (See Chapter @ref(#def-required) for more details.)</p></li>
+<li><p>Do any arguments with defaults come before any arguments without defaults? This may be a sign that the argument order is wrong, or that you’ve assigned a default value to an required argument (See <a href="def-required.html"><span>Chapter&nbsp;11</span></a> for more details.)</p></li>
 </ul></section><section id="how-do-i-remediate-past-mistakes" class="level2" data-number="8.5"><h2 data-number="8.5" class="anchored" data-anchor-id="how-do-i-remediate-past-mistakes">
 <span class="header-section-number">8.5</span> How do I remediate past mistakes?</h2>
 <p>Generally, it is not possible to fix an exported function preserving both old behaviour and new behaviour. Typically, you will need to perform major surgery on the function arguments, and it will convey different conventions about which arguments should be named. This implies that you should deprecate the entire existing function and replace it with a new alternative. Because this is invasive to the user, it’s best to do sparingly: if the mistake is minor, you’re better off waiting until you’ve collected other problems before fixing it.</p>
