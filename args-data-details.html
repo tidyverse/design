@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.433">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Hadley Wickham">
-<title>Tidy design principles - 8&nbsp; Data, descriptors, details</title>
+<title>Tidy design principles - 8&nbsp; Put the most important arguments first</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -100,7 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./args.html">Interface: inputs</a></li><li class="breadcrumb-item"><a href="./args-data-details.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data, descriptors, details</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./args-hidden.html">Inputs</a></li><li class="breadcrumb-item"><a href="./args-data-details.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -149,7 +149,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./implementation.html" class="sidebar-item-text sidebar-link">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
  <span class="menu-text">Implementation</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -178,8 +178,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./args.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Interface: inputs</span></a>
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Inputs</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -194,7 +194,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./args-data-details.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data, descriptors, details</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -213,8 +213,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./def.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Interface: default values</span></a>
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Default values</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -272,8 +272,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./dots.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Interface: `...`</span></a>
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text"><code>...</code></span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -313,8 +313,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./out.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Interface: outputs</span></a>
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Outputs</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -348,8 +348,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./err.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Interface: errors</span></a>
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Evolution</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -357,22 +357,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./err-call.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Error call</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./err-constructor.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Error constructors</span></span></a>
+  <a href="./changes-multivers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Work with multiple dependency versions</span></span></a>
   </div>
 </li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./changes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Interface: changes</span></a>
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
+ <span class="menu-text">Side effects</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -380,16 +374,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./changes-multivers.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Work with multiple dependency versions</span></span></a>
+  <a href="./side-effects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Side-effect soup</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./spooky-action.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Spooky action</span></span></a>
   </div>
 </li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./side.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Interface: side effects</span></a>
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
+ <span class="menu-text">Errors</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -397,14 +397,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./side-effects.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Side-effect soup</span></span></a>
+  <a href="./err-call.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Error call</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./spooky-action.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Spooky action</span></span></a>
+  <a href="./err-constructor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Error constructors</span></span></a>
   </div>
 </li>
       </ul>
@@ -438,12 +438,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">8.2</span> What are some examples?</a></li>
   <li><a href="#why-is-it-important" id="toc-why-is-it-important" class="nav-link" data-scroll-target="#why-is-it-important"><span class="header-section-number">8.3</span> Why is it important?</a></li>
   <li><a href="#how-do-i-avoid-the-problem" id="toc-how-do-i-avoid-the-problem" class="nav-link" data-scroll-target="#how-do-i-avoid-the-problem"><span class="header-section-number">8.4</span> How do I avoid the problem?</a></li>
-  <li><a href="#how-do-i-remediate-past-mistakes" id="toc-how-do-i-remediate-past-mistakes" class="nav-link" data-scroll-target="#how-do-i-remediate-past-mistakes"><span class="header-section-number">8.5</span> How do I remediate past mistakes?</a></li>
+  <li><a href="#how-do-i-remediate-it" id="toc-how-do-i-remediate-it" class="nav-link" data-scroll-target="#how-do-i-remediate-it"><span class="header-section-number">8.5</span> How do I remediate it?</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/args-data-details.Rmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-args-data-details" class="quarto-section-identifier"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data, descriptors, details</span></span></h1>
+<h1 class="title"><span id="sec-args-data-details" class="quarto-section-identifier"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></h1>
 </div>
 
 
@@ -458,16 +458,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header><section id="whats-the-pattern" class="level2" data-number="8.1"><h2 data-number="8.1" class="anchored" data-anchor-id="whats-the-pattern">
 <span class="header-section-number">8.1</span> What’s the pattern?</h2>
-<p>Function arguments should always come in the same order: data, then descriptors, then details.</p>
+<p>In a function call, the most important arguments should come first. We can help make this clear by roughly categorising arguments into one of three types: data, then descriptors, then details.</p>
 <ul>
-<li><p><strong>Data</strong> arguments provide the core data. They are required, and are usually vectors and often determine the type and size of the output. Data arguments are often called <code>data</code>, <code>x</code>, or <code>y</code>.</p></li>
+<li><p><strong>Data</strong> arguments provide the core data. They are required, are usually vectors or data frames, typically determine the type and shape of the output. Data arguments are often called <code>data</code>, <code>x</code>, or <code>y</code>.</p></li>
 <li><p><strong>Descriptor</strong> arguments describe essential details of the operation, and are usually required.</p></li>
 <li><p><strong>Details</strong> arguments control the details of the function. These arguments are optional (because they have default values), and are typically scalars (e.g.&nbsp;<code>na.rm = TRUE</code>, <code>n = 10</code>, <code>prop = 0.1</code>).</p></li>
 </ul>
-<p>A standard argument order makes it easier to understand a function at a glance, and this order implies that required arguments always come before optional arguments.</p>
+<p>Then data arguments should always come first, followed by descriptors, and finally by details. A standard argument order makes it easier to understand a function at a glance, and this order implies that required arguments always come before optional arguments.</p>
 <p>Related patterns:</p>
 <ul>
-<li><p><code>...</code> can play the role of the data argument (i.e.&nbsp;when there are an arbitrary number of inputs), as in <code><a href="https://rdrr.io/r/base/paste.html">paste()</a></code>. This pattern is best using sparingly, and is described in more detail in <a href="dots-data.html"><span>Chapter&nbsp;20</span></a>.</p></li>
+<li><p><code>...</code> can play the role of the data argument (e.g.&nbsp;when there are an arbitrary number of inputs), as in <code><a href="https://rdrr.io/r/base/paste.html">paste()</a></code>. This pattern is best using sparingly, and is described in more detail in <a href="dots-data.html"><span>Chapter&nbsp;20</span></a>.</p></li>
 <li><p><code>...</code> can also be used to capture details arguments and pass them on to other functions. See <a href="dots-position.html"><span>Chapter&nbsp;19</span></a> and <a href="dots-inspect.html"><span>Chapter&nbsp;22</span></a> to how to use <code>...</code> as safely as possible in this situation.</p></li>
 <li><p>If the descriptor has a default value, I think you should inform the user about it, as in <a href="def-inform.html"><span>Chapter&nbsp;16</span></a>.</p></li>
 </ul></section><section id="what-are-some-examples" class="level2" data-number="8.2"><h2 data-number="8.2" class="anchored" data-anchor-id="what-are-some-examples">
@@ -476,13 +476,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code> has one data argument (<code>x</code>) and two details (<code>trim</code> and <code>na.rm</code>).</p></li>
 <li><p>The mathematical (<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, …) and comparison (<code>&lt;</code>, <code>&gt;</code>, <code>==</code>, …) operators have two data arguments.</p></li>
 <li><p><code><a href="https://rdrr.io/r/base/ifelse.html">ifelse()</a></code> has three data arguments (<code>test</code>, <code>yes</code>, <code>no</code>).</p></li>
-<li><p><code><a href="https://rdrr.io/r/base/merge.html">merge()</a></code> has two data arguments (<code>x</code>, <code>y</code>), one descriptor (<code>by</code>), and a number of details (<code>all</code>, <code>no.dups</code>, <code>sort</code>, …).</p></li>
-<li>
-<p><code><a href="https://rdrr.io/r/stats/Normal.html">rnorm()</a></code> has no data arguments and three descriptors (<code>n</code>, <code>mean</code>, <code>sd</code>). <code>mean</code> and <code>sd</code> default to 0 and 1 respectively, which makes them feel more like details. I’d argue that they shouldn’t have defaults to make it more clear that they’re descriptors. This would have the side-effect of making <code>rnrorm()</code> more consistent with the other RNGs.</p>
-<p>In <code>rt(n, df, ncp)</code>, however, I think <code>ncp</code> should default to <code>0</code> to make it clear that the non-centrality parameter is detail of the t-distribution, not a core part.</p>
-</li>
-<li><p><code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code> has one data argument (<code>x</code>), one descriptor (<code>pattern</code>), and a number of details (<code>fixed</code>, <code>perl</code>, <code>ignore.case</code>, …).</p></li>
-<li><p><code><a href="https://stringr.tidyverse.org/reference/str_detect.html">stringr::str_detect()</a></code> has one data argument (<code>string</code>), one descriptor (<code>pattern</code>), and one detail argument (<code>negate</code>).</p></li>
+<li><p><code><a href="https://rdrr.io/r/base/merge.html">merge()</a></code> has two data arguments (<code>x</code>, <code>y</code>), one descriptor (<code>by</code>), and a number of details (<code>all</code>, <code>no.dups</code>, <code>sort</code>, …). Similarly, <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">dplyr::left_join()</a></code> has two data arguments (<code>x</code>, <code>y</code>), one descriptor (<code>by)</code>, and a number of details (<code>copy</code>, <code>suffix</code>, <code>keep</code>, ...).</p></li>
+<li><p><code><a href="https://rdrr.io/r/stats/Normal.html">rnorm()</a></code> is an interesting case. It doesn’t really have data arguments, although you could possible argue that <code>n</code> is one, since it fundamentally determines the shape of the output. What about <code>mean</code> and <code>sd</code>? Giving them defaults makes them feels like less important, and inconsistent with the other RNGs which generally require that you specify the parameters of the distribution. On the other hand, the Z-distribution (a normal distribution with mean 0 and sd 1) is an extremely important distribution. In <code><a href="https://rdrr.io/r/stats/TDist.html">rt()</a></code>, however, I’d argue that <code>ncp</code> should have a default (<code>0)</code> to make it clear that the non-centrality parameter is detail of the t-distribution, not a core part.</p></li>
+<li><p><code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code> has one data argument (<code>x</code>), one descriptor (<code>pattern</code>), and a number of details (<code>fixed</code>, <code>perl</code>, <code>ignore.case</code>, …). <code>pattern</code> comes before <code>x</code>. <code><a href="https://stringr.tidyverse.org/reference/str_detect.html">stringr::str_detect()</a></code> has one data argument (<code>string</code>), one descriptor (<code>pattern</code>), and one detail argument (<code>negate</code>).</p></li>
 <li>
 <p><code><a href="https://stringr.tidyverse.org/reference/str_sub.html">stringr::str_sub()</a></code> has three data arguments (<code>string</code>, <code>start</code>, and <code>end</code>). You might wonder what makes <code>start</code> and <code>end</code> data arguments, and I admit it took me a while to figure this out too, but I think the crucial factor is that you can give a single <code>string</code> and multiple <code>start</code>/<code>end</code> positions:</p>
 <div class="cell" data-hash="args-data-details_cache/html/unnamed-chunk-2_4e1f1b49c6a9d3aee0694dd4bd551f29">
@@ -501,7 +497,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
 </ul></section><section id="why-is-it-important" class="level2" data-number="8.3"><h2 data-number="8.3" class="anchored" data-anchor-id="why-is-it-important">
 <span class="header-section-number">8.3</span> Why is it important?</h2>
-<p>This convention makes it easy to understand the structure of a function at a glance: the most important arguments are always on the left hand side, and it’s obvious what arguments most affect the shape of the output. Strongly connecting the shape of the first argument to the shape of output is what makes dplyr (data frames), stringr (character vectors), and the map family (vectors) easier to learn. These families of functions represent transformations that preserve the shape while modifying the value. When combined with the pipe, this leads to code that focusses on the transformations, not the objects being transformed.</p>
+<p>This convention makes it easy to understand the structure of a function at a glance: the most important arguments are always on the left hand side, and it’s obvious what arguments most affect the shape of the output. Strongly connecting the shape of the first argument to the shape of output is what makes dplyr (data frames), stringr (character vectors), and the map family (vectors) easier to learn. These families of functions represent transformations that preserve the shape while modifying the value. When combined with the pipe, this leads to code that focuses on the transformations, not the objects being transformed.</p>
 <p>These argument types as also affect how you <em>call</em> a function. As discussed in <a href="call-data-details.html"><span>Chapter&nbsp;5</span></a>, you should never name data arguments, and always name details arguments. This convention balances concision with readability.</p>
 </section><section id="how-do-i-avoid-the-problem" class="level2" data-number="8.4"><h2 data-number="8.4" class="anchored" data-anchor-id="how-do-i-avoid-the-problem">
 <span class="header-section-number">8.4</span> How do I avoid the problem?</h2>
@@ -510,10 +506,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li><p>Are the arguments generally ordered from most important to least important? If an important argument comes before an unimportant argument, you may have assigned an argument to the wrong category. (Note that this ordering isn’t strict: sometimes it’s more important to organise related arguments together than to precisely order by importance.)</p></li>
 <li><p>Do any arguments with defaults come before any arguments without defaults? This may be a sign that the argument order is wrong, or that you’ve assigned a default value to an required argument (See <a href="def-required.html"><span>Chapter&nbsp;11</span></a> for more details.)</p></li>
-</ul></section><section id="how-do-i-remediate-past-mistakes" class="level2" data-number="8.5"><h2 data-number="8.5" class="anchored" data-anchor-id="how-do-i-remediate-past-mistakes">
-<span class="header-section-number">8.5</span> How do I remediate past mistakes?</h2>
-<p>Generally, it is not possible to fix an exported function preserving both old behaviour and new behaviour. Typically, you will need to perform major surgery on the function arguments, and it will convey different conventions about which arguments should be named. This implies that you should deprecate the entire existing function and replace it with a new alternative. Because this is invasive to the user, it’s best to do sparingly: if the mistake is minor, you’re better off waiting until you’ve collected other problems before fixing it.</p>
-<p>Take <code><a href="https://tidyr.tidyverse.org/reference/gather.html">tidyr::gather()</a></code>, for example. It has a number of problems with its design that made them hard to use. Relevant to this chapter, is that the argument order is wrong.</p>
+</ul></section><section id="how-do-i-remediate-it" class="level2" data-number="8.5"><h2 data-number="8.5" class="anchored" data-anchor-id="how-do-i-remediate-it">
+<span class="header-section-number">8.5</span> How do I remediate it?</h2>
+<p>Generally, it is not possible to remediate an existing exported function with this problem. Typically, you will need to perform major surgery on the function arguments, and this will convey different conventions about which arguments should be named. This implies that you should deprecate the entire existing function and replace it with a new alternative. Because this is invasive to the user, it’s best to do sparingly: if the mistake is minor, you’re better off waiting until you’ve collected other problems before fixing it.</p>
+<p>For example, take <code><a href="https://tidyr.tidyverse.org/reference/gather.html">tidyr::gather()</a></code> for example. It has a number of problems with its design that made them hard to use. Relevant to this chapter, is that the argument order is wrong, because you almost always want to specify which variables to gather, which is the fourth argument, not the second (after the <code>data</code>). Because it wasn’t possible to easily fix this mistake, we accumulated other <code>gather()</code> problems for several years before fixing them all at once in <code>pivot_longer()</code>.</p>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
