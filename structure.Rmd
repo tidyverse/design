@@ -4,7 +4,7 @@
 
 ## Interface
 
-The interface of a function describes how it interfaces with the world, independent of its internal implementation.
+A function's interface describes how, independent of its internal implementation, that function interacts with the external world.
 
 ### Inputs
 
