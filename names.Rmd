@@ -63,15 +63,17 @@ x <- letters[1:3]
 names(x)
 ```
 
-Repair the names to make them minimal.
+This means that the names of `x` are sometimes a character vector the same length of `x`, and sometimes `NULL`.
+rlang papers of this problem by providing `names2()` which always returns a character vector:
 
 ```{r}
-#| eval = FALSE
-# TODO: Figure out where `set_minimal_names()` ended up when name repair moved
-# from tibble to vctrs, then update this chunk. Use rlang in the meantime.
+rlang::names2(x)
+```
 
-# x <- tibble:::set_minimal_names(x)
-x <- rlang::set_names(x, rlang::names2(x))
+And you can also use this to ensure a vector has minimal names:
+
+```{r}
+names(x) <- rlang::names2(x)
 names(x)
 ```
 
@@ -88,16 +90,6 @@ From `?names`:
 > A name can be character `NA`, but such a name will never be matched and is likely to lead to confusion.
 
 `tbl_df` objects created by [tibble::tibble()](https://tibble.tidyverse.org/reference/tibble.html) and [tibble::as_tibble()](https://tibble.tidyverse.org/reference/as_tibble.html) have variable names that are minimal, at the very least.
-
-The function [rlang::names2()](https://rlang.r-lib.org/reference/names2.html) returns the names of an object, after making them minimal.
-
-```{r}
-x <- letters[1:3]
-
-names(x)
-
-rlang::names2(x)
-```
 
 ## Unique names
 
