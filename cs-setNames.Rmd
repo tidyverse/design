@@ -208,7 +208,7 @@ set_names(x, NULL)
 
 However, I think this has muddied the logic.
 To resolve it, I think we should pull out the checking code into a separate function.
-After trying out a [few approaches](https://github.com/tidyverse/principles/issues/79), I ended up with:
+After trying out a [few approaches](https://github.com/tidyverse/design/issues/79), I ended up with:
 
 ```{r}
 check_names <- function(names, x) {
