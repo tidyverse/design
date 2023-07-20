@@ -6,13 +6,13 @@ source("common.R")
 
 Interface:
 
-* Function name and argument names.
-* `alpha` has no default but isn't required.
-* `names` not required (imo).
-* `maxColorValue` doens't have most useful default, and not really needed (imo).
-* Data frame rather than matrix.
-* Error if function specification is correct
-* Check for data type, not missingness.
+-   Function name and argument names.
+-   `alpha` has no default but isn't required.
+-   `names` not required (imo).
+-   `maxColorValue` doens't have most useful default, and not really needed (imo).
+-   Data frame rather than matrix.
+-   Error if function specification is correct
+-   Check for data type, not missingness.
 
 ```{r, error = TRUE}
 library(rlang)
@@ -65,4 +65,3 @@ rgba <- function(r, g, b, a = NULL) {
   rgb(df$r, df$g, df$b, alpha = df$a, maxColorValue = 255)
 }
 ```
-

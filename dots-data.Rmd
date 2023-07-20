@@ -24,37 +24,31 @@ fct_relevel(f, "b", "a")
 
 ```
 
-*  `mapply()`
-
-
+-   `mapply()`
 
 ## Why is it important?
 
 In general, I think it is best to avoid using `...` for this purpose because it has a relatively small benefit, only reducing typing by three letters `c()`, but has a number of costs:
 
-*   It can give the misleading impression that other functions in the same
-    family work the same way. For example, if you're internalised how `sum()`
-    works, you might predict that `mean()` works the same way, but it does
-    not:
-  
+-   It can give the misleading impression that other functions in the same family work the same way.
+    For example, if you're internalised how `sum()` works, you might predict that `mean()` works the same way, but it does not:
+
     ```{r}
     mean(c(1, 2, 3))
     mean(1, 2, 3)
     ```
-    
-    (See Chapter \@ref(dots-position) to learn why this doesn't give an 
-    error message.)
 
-*   It makes it harder to adapt the function for new uses. For example, 
-    `fct_relevel()` can also be called with a function:
-    
+    (See Chapter \@ref(dots-position) to learn why this doesn't give an error message.)
+
+-   It makes it harder to adapt the function for new uses.
+    For example, `fct_relevel()` can also be called with a function:
+
     ```{r}
     fct_relevel(f, sort)
     ```
-    
-    If `fct_relevel()` took its input as a single vector, you could easily 
-    extend it to also work with functions:
-    
+
+    If `fct_relevel()` took its input as a single vector, you could easily extend it to also work with functions:
+
     ```{r}
     fct_relevel <- function(f, x) {
       if (is.function(x)) {
@@ -62,9 +56,8 @@ In general, I think it is best to avoid using `...` for this purpose because it 
       }
     }
     ```
-    
-    However, because `fct_relevel()` uses dots, the implementation needs to be 
-    more complicated:
+
+    However, because `fct_relevel()` uses dots, the implementation needs to be more complicated:
 
     ```{r, eval = FALSE}
     fct_relevel <- function(f, ...) {
@@ -78,7 +71,8 @@ In general, I think it is best to avoid using `...` for this purpose because it 
 
 ## What are the exceptions?
 
-Note that in all the examples above, the `...` are used to collect a single details argument. It's ok to use `...` to collect _data_, as in `paste()`, `data.frame()`, or `list()`.
+Note that in all the examples above, the `...` are used to collect a single details argument.
+It's ok to use `...` to collect *data*, as in `paste()`, `data.frame()`, or `list()`.
 
 ## How can remediate it?
 
@@ -102,7 +96,9 @@ Because this is a interface change, it should be prominently advertised in packa
 
 If you do feel that the tradeoff is worth it (i.e. it's an extremely frequently used function and the savings over time will be considerable), you need to take some steps to minimise the downsides.
 
-This is easiest if you're constructing a vector that shouldn't have names. In this case, you can call `ellipsis::check_dots_unnamed()` to ensure that no named arguments have been accidentally passed to `...`. This protects you against the following undesirable behaviour of `sum()`:
+This is easiest if you're constructing a vector that shouldn't have names.
+In this case, you can call `ellipsis::check_dots_unnamed()` to ensure that no named arguments have been accidentally passed to `...`.
+This protects you against the following undesirable behaviour of `sum()`:
 
 ```{r, error = TRUE}
 sum(1, 1, 1, na.omit = TRUE)
@@ -114,11 +110,14 @@ safe_sum <- function(..., na.rm = TRUE) {
 safe_sum(1, 1, 1, na.omit = TRUE)
 ```
 
-If you want your vector to have names, the problem is harder, and there's relatively little that you can. You'll need to ensure that all other arguments get a `.` prefix (to minimise chances of a mismatch) and then think carefully about how you might detect problems by thinking about the expect type of `c(...)`. As far as I know, there are no general techniques, and you'll have to think about the problem on a case-by-case basis.
+If you want your vector to have names, the problem is harder, and there's relatively little that you can.
+You'll need to ensure that all other arguments get a `.` prefix (to minimise chances of a mismatch) and then think carefully about how you might detect problems by thinking about the expect type of `c(...)`.
+As far as I know, there are no general techniques, and you'll have to think about the problem on a case-by-case basis.
 
 ## Selecting variables
 
-A number of funtions in the tidyverse use `...` for selecting variables. For example, `tidyr::fill()` lets you fill in missing values based on the previous row:
+A number of funtions in the tidyverse use `...` for selecting variables.
+For example, `tidyr::fill()` lets you fill in missing values based on the previous row:
 
 ```{r}
 df <- tribble(
@@ -141,7 +140,9 @@ find_vars <- function(data, ...) {
 find_vars(df, year, month)
 ```
 
-I now think that this interface is a mistake because it suffers from the same problem as `sum()`: we're using `...` to only save a little typing. We can eliminate the use of dots by requiring the user to use `c()`. (This change also requires explicit quoting and unquoting of `vars` since we're no longer using `...`.)
+I now think that this interface is a mistake because it suffers from the same problem as `sum()`: we're using `...` to only save a little typing.
+We can eliminate the use of dots by requiring the user to use `c()`.
+(This change also requires explicit quoting and unquoting of `vars` since we're no longer using `...`.)
 
 ```{r}
 foo <- function(data, vars) {
@@ -157,7 +158,8 @@ In other words, I believe that better interface to `fill()` would be:
 df %>% fill(c(year, month))
 ```
 
-Other tidyverse functions like dplyr's scoped verbs and `ggplot2::facet_grid()` require the user to explicitly quote the input. I now believe that this is also a suboptimal interface because it is more typing (`var()` is longer than `c()`, and you must quote even single variables), and arguments that require their inputs to be explicitly quoted are rare in the tidyverse. 
+Other tidyverse functions like dplyr's scoped verbs and `ggplot2::facet_grid()` require the user to explicitly quote the input.
+I now believe that this is also a suboptimal interface because it is more typing (`var()` is longer than `c()`, and you must quote even single variables), and arguments that require their inputs to be explicitly quoted are rare in the tidyverse.
 
 ```{r, eval = FALSE}
 # existing interface

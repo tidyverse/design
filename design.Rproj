@@ -13,3 +13,6 @@ RnwWeave: Sweave
 LaTeX: pdfLaTeX
 
 BuildType: None
+
+MarkdownWrap: Sentence
+MarkdownCanonical: Yes

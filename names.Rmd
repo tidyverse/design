@@ -11,16 +11,19 @@ library(tidyverse)
 
 Existing name-related topics in <http://style.tidyverse.org>
 
-  * [File names](http://style.tidyverse.org/files.html#names)
-  * [Object names](http://style.tidyverse.org/syntax.html#object-names)
-  * [Argument names](http://style.tidyverse.org/syntax.html#argument-names)
-  * [Function names](http://style.tidyverse.org/functions.html#naming)
-  
+-   [File names](http://style.tidyverse.org/files.html#names)
+-   [Object names](http://style.tidyverse.org/syntax.html#object-names)
+-   [Argument names](http://style.tidyverse.org/syntax.html#argument-names)
+-   [Function names](http://style.tidyverse.org/functions.html#naming)
+
 ## The `names` attribute of an object
 
-Here we address how to manage the `names` attribute of an object. Our initial thinking was motivated by how to handle the column or variable names of a tibble, but is evolving into a name-handling strategy for vectors, in general.
+Here we address how to manage the `names` attribute of an object.
+Our initial thinking was motivated by how to handle the column or variable names of a tibble, but is evolving into a name-handling strategy for vectors, in general.
 
-The name repair described below is exposed to users via the `.name_repair` argument of [tibble::tibble()](https://tibble.tidyverse.org/reference/tibble.html), [tibble::as_tibble()](https://tibble.tidyverse.org/reference/as_tibble.html), [readxl::read_excel()](https://readxl.tidyverse.org/reference/read_excel.html), and, eventually other packages in the tidyverse. This work was initiated in the tibble package, but is migrating to the vctrs package. *Name repair was first introduced in [tibble v2.0.0](https://tibble.tidyverse.org/news/index.html#tibble-2-0-0) and this write-up is being rendered with tibble `r tibble_version` and vctrs `r vctrs_version`.*
+The name repair described below is exposed to users via the `.name_repair` argument of [tibble::tibble()](https://tibble.tidyverse.org/reference/tibble.html), [tibble::as_tibble()](https://tibble.tidyverse.org/reference/as_tibble.html), [readxl::read_excel()](https://readxl.tidyverse.org/reference/read_excel.html), and, eventually other packages in the tidyverse.
+This work was initiated in the tibble package, but is migrating to the vctrs package.
+*Name repair was first introduced in [tibble v2.0.0](https://tibble.tidyverse.org/news/index.html#tibble-2-0-0) and this write-up is being rendered with tibble `r tibble_version` and vctrs `r vctrs_version`.*
 
 These are the kind of names we're talking about:
 
@@ -38,22 +41,19 @@ names(euro)
 
 We identify three nested levels of naminess that are practically useful:
 
-  * Minimal: The `names` attribute is not `NULL`. The name of an unnamed element
-    is `""` (the empty string) and never `NA`.
-  * Unique: No element of `names` appears more than once. A couple specific
-    names are also forbidden in unique names, such as `""` (the empty string).
-    - All columns can be accessed by name via `df[["name"]]` and, more
-      generally, by quoting with backticks: `` df$`name` ``,
-      `` subset(df, select = `name`) ``, and `` dplyr::select(df, `name`) ``.
-  * Universal: The `names` are unique and syntactic.
-    - Names work everywhere, without quoting: `df$name` and
-      `lm(name1 ~ name2, data = df)` and `dplyr::select(df, name)` all work.
-    
+-   Minimal: The `names` attribute is not `NULL`. The name of an unnamed element is `""` (the empty string) and never `NA`.
+-   Unique: No element of `names` appears more than once. A couple specific names are also forbidden in unique names, such as `""` (the empty string).
+    -   All columns can be accessed by name via `df[["name"]]` and, more generally, by quoting with backticks: `` df$`name` ``, `` subset(df, select = `name`) ``, and `` dplyr::select(df, `name`) ``.
+-   Universal: The `names` are unique and syntactic.
+    -   Names work everywhere, without quoting: `df$name` and `lm(name1 ~ name2, data = df)` and `dplyr::select(df, name)` all work.
+
 Below we give more details and describe implementation.
 
 ## Minimal names
 
-**Minimal** names exist. The `names` attribute is not `NULL`. The name of an unnamed element is `""` (the empty string) and never `NA`.
+**Minimal** names exist.
+The `names` attribute is not `NULL`.
+The name of an unnamed element is `""` (the empty string) and never `NA`.
 
 Consider an unnamed vector, i.e. it has names attribute of `NULL`.
 
@@ -73,16 +73,17 @@ x <- rlang::set_names(x, rlang::names2(x))
 names(x)
 ```
 
-Minimal names appear to be a useful baseline requirement, if the `names` attribute of an object is going to be actively managed. Why? General name handling and repair can be implemented more simply if the baseline strategy guarantees that `names(x)` returns a character vector of the correct length with no `NA`s.
+Minimal names appear to be a useful baseline requirement, if the `names` attribute of an object is going to be actively managed.
+Why?
+General name handling and repair can be implemented more simply if the baseline strategy guarantees that `names(x)` returns a character vector of the correct length with no `NA`s.
 
-This is also a reasonable interpretation of base R's *intent* for named vectors, based on the docs for [`names()`](https://stat.ethz.ch/R-manual/R-patched/library/base/html/names.html), although base R's implementation/enforcement of this is uneven. From `?names`:
-  
-> The name `""` is special: it is used to indicate that there is no name
-> associated with an element of a (atomic or generic) vector. Subscripting by
-> `""` will match nothing (not even elements which have no name).
-> 
-> A name can be character `NA`, but such a name will never be matched and is
-> likely to lead to confusion.
+This is also a reasonable interpretation of base R's *intent* for named vectors, based on the docs for [`names()`](https://stat.ethz.ch/R-manual/R-patched/library/base/html/names.html), although base R's implementation/enforcement of this is uneven.
+From `?names`:
+
+> The name `""` is special: it is used to indicate that there is no name associated with an element of a (atomic or generic) vector.
+> Subscripting by `""` will match nothing (not even elements which have no name).
+>
+> A name can be character `NA`, but such a name will never be matched and is likely to lead to confusion.
 
 `tbl_df` objects created by [tibble::tibble()](https://tibble.tidyverse.org/reference/tibble.html) and [tibble::as_tibble()](https://tibble.tidyverse.org/reference/as_tibble.html) have variable names that are minimal, at the very least.
 
@@ -98,7 +99,9 @@ rlang::names2(x)
 
 ## Unique names
 
-**Unique** names meet the requirements for minimal and have no duplicates. In the tidyverse, we go further and repair a few specific names: `""` (the empty string), `...` (R's ellipsis or "dots" construct), and `..j` where `j` is a number. They are basically all treated like `""`, which is always repaired.
+**Unique** names meet the requirements for minimal and have no duplicates.
+In the tidyverse, we go further and repair a few specific names: `""` (the empty string), `...` (R's ellipsis or "dots" construct), and `..j` where `j` is a number.
+They are basically all treated like `""`, which is always repaired.
 
 Example of unique-ified names:
 
@@ -122,7 +125,8 @@ y <- rbind(c("original", "unique-ified"), x[, c("original", "unique")])
 glue::glue_data(justify(y), "{original} {unique}")
 ```
 
-This augmented definition of unique has a specific motivation: it ensures that each element can be identified by name, at least when protected by backtick quotes. Literally, all of these work:
+This augmented definition of unique has a specific motivation: it ensures that each element can be identified by name, at least when protected by backtick quotes.
+Literally, all of these work:
 
 ```{r, eval = FALSE}
 df[["name"]]
@@ -132,7 +136,8 @@ subset(df, select = `name`)
 dplyr::select(df, `name`)
 ```
 
-This has practical significance for variable names inside a data frame, because so many workflows rely on indexing by name. Note that uniqueness refers implicitly to a vector of names.
+This has practical significance for variable names inside a data frame, because so many workflows rely on indexing by name.
+Note that uniqueness refers implicitly to a vector of names.
 
 Let's explore a few edge cases: A single dot followed by a number, `.j`, does not need repair.
 
@@ -143,7 +148,9 @@ subset(df, select = `.1`)
 dplyr::select(df, `.1`)
 ```
 
-Two dots followed by a number, `..j`, does need repair. The same goes for three dots, `...`, the ellipsis or "dots" construct. These can't function as names, even if quoted with backticks, so they have to be repaired.
+Two dots followed by a number, `..j`, does need repair.
+The same goes for three dots, `...`, the ellipsis or "dots" construct.
+These can't function as names, even if quoted with backticks, so they have to be repaired.
 
 ```{r, error = TRUE}
 df <- tibble(`..1` = "not ok")
@@ -159,18 +166,17 @@ Both are repaired as if they were `""`.
 
 ### Making names unique
 
-There are many ways to make names unique. We append a suffix of the form `...j` to any name that is a duplicate or `""` or `...`, where `j` is the position. Why?
+There are many ways to make names unique.
+We append a suffix of the form `...j` to any name that is a duplicate or `""` or `...`, where `j` is the position.
+Why?
 
-  * An absolute position `j` is more helpful than numbering within the elements
-that share a name. Context: troubleshooting data import with lots of columns
-and dysfunctional names.
-  * We hypothesize that it's better have a "level playing field" when repairing
-names, i.e. if `foo` appears twice, both instances get repaired, not just the
-second occurrence.
+-   An absolute position `j` is more helpful than numbering within the elements that share a name. Context: troubleshooting data import with lots of columns and dysfunctional names.
+-   We hypothesize that it's better have a "level playing field" when repairing names, i.e. if `foo` appears twice, both instances get repaired, not just the second occurrence.
 
 The unique level of naminess is regarded as normative for a tibble and a user must expressly request a tibble with names that violate this (but that is possible).
 
-Base R's function for this is [make.unique()](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.unique.html). We revisit the example above, comparing the tidyverse strategy for making names unique vs. what `make.unique()` does.
+Base R's function for this is [make.unique()](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.unique.html).
+We revisit the example above, comparing the tidyverse strategy for making names unique vs. what `make.unique()` does.
 
 ```{r, echo = FALSE, message = FALSE, comment = NA}
 y <- rbind(
@@ -183,7 +189,9 @@ glue::glue_data(justify(y), "{original} {unique} {base}")
 
 ### Roundtrips
 
-When unique-ifying names, we assume that the input names have been repaired by the same strategy, i.e. that we are consuming dogfood. Therefore, pre-existing suffixes of the form `...j` are stripped, prior to (re-)constructing the suffixes. If this interacts poorly with your names, you need to take control of name repair.
+When unique-ifying names, we assume that the input names have been repaired by the same strategy, i.e. that we are consuming dogfood.
+Therefore, pre-existing suffixes of the form `...j` are stripped, prior to (re-)constructing the suffixes.
+If this interacts poorly with your names, you need to take control of name repair.
 
 Example of re-unique-ified names:
 
@@ -201,40 +209,55 @@ glue::glue_data(justify(y), "{suffixed} {resuffixed}")
 
 ### When is minimal better than unique?
 
-Why would you ever want to import a tibble and enforce only minimal names, instead of unique? Sometimes the first row of a data source -- allegedly variable names -- actually contains **data** and the resulting tibble will be reshaped with, e.g., `tidyr::gather()`. In this case, it is better to not munge the names at import. This is a common special case of the "data stored in names" phenomenon.
+Why would you ever want to import a tibble and enforce only minimal names, instead of unique?
+Sometimes the first row of a data source -- allegedly variable names -- actually contains **data** and the resulting tibble will be reshaped with, e.g., `tidyr::gather()`.
+In this case, it is better to not munge the names at import.
+This is a common special case of the "data stored in names" phenomenon.
 
 In general, you may want to tolerate minimal names when the dysfunctional names are just an awkward phase that an object is passing through and a more definitive solution is applied downstream.
 
 ### Ugly, with a purpose
 
-You might say that names like `x...5` are ugly and you would be right. We're calling this a feature, not a bug! Names that have been automatically unique-ified by the tidyverse should catch the eye and give the user strong encouragement to take charge of the situation.
+You might say that names like `x...5` are ugly and you would be right.
+We're calling this a feature, not a bug!
+Names that have been automatically unique-ified by the tidyverse should catch the eye and give the user strong encouragement to take charge of the situation.
 
 ### Why so many dots?
 
-The suffix of `...j`, with 3 leading dots, is the result of jointly satisfying multiple requirements. It is important to anticipate a missing name, where the suffix becomes the entire name. We have elected to make the suffix a syntactic name (more below), because non-syntactic names are a frequent cause of unexpected friction for users. This means the suffix can't be `j`, `.j`, or `..j`, because all are non-syntactic. It must be `...j`.
+The suffix of `...j`, with 3 leading dots, is the result of jointly satisfying multiple requirements.
+It is important to anticipate a missing name, where the suffix becomes the entire name.
+We have elected to make the suffix a syntactic name (more below), because non-syntactic names are a frequent cause of unexpected friction for users.
+This means the suffix can't be `j`, `.j`, or `..j`, because all are non-syntactic.
+It must be `...j`.
 
 ### Why dot(s) in the first place?
 
-The underscore `_` was also considered when choosing the suffix strategy, but was rejected. Why? Because syntactic names can't start with an underscore and we want the suffix itself to be syntactic. Also, the dot `.` is already used by base R's `make.names()` to replace invalid characters. It seems simpler and, therefore, better to use the same character, in the same way, as much as possible in name repair. We use the dot `.`, we put it at the front, as many times as necessary.
+The underscore `_` was also considered when choosing the suffix strategy, but was rejected.
+Why?
+Because syntactic names can't start with an underscore and we want the suffix itself to be syntactic.
+Also, the dot `.` is already used by base R's `make.names()` to replace invalid characters.
+It seems simpler and, therefore, better to use the same character, in the same way, as much as possible in name repair.
+We use the dot `.`, we put it at the front, as many times as necessary.
 
 ## Universal names
 
-**Universal** names are **unique**, in the sense described above, and **syntactic**, in the normal R sense. Universal names are appealing because they play nicely with base R and tidyverse functions that accept unquoted variable names.
+**Universal** names are **unique**, in the sense described above, and **syntactic**, in the normal R sense.
+Universal names are appealing because they play nicely with base R and tidyverse functions that accept unquoted variable names.
 
 ### Syntactic names
 
 A syntactic name in R:
 
- * Consists of letters, numbers, and the dot `.` or underscore `_` characters.
- * Starts with a letter or starts with a dot `.` followed by anything but a
-   number.
- * Is not a reserved word, such as `if` or `function` or `TRUE`.
- * Is not `...`, R's special ellipsis or "dots" construct.
- * Is not of the form `..j`, where `j` is a number.
- 
+-   Consists of letters, numbers, and the dot `.` or underscore `_` characters.
+-   Starts with a letter or starts with a dot `.` followed by anything but a number.
+-   Is not a reserved word, such as `if` or `function` or `TRUE`.
+-   Is not `...`, R's special ellipsis or "dots" construct.
+-   Is not of the form `..j`, where `j` is a number.
+
 See R's documentation for [Reserved words](https://stat.ethz.ch/R-manual/R-patched/library/base/html/Reserved.html) and [Quotes](https://stat.ethz.ch/R-manual/R-patched/library/base/html/Quotes.html), specifically the section on names and identifiers.
 
-A syntactic name can be used "as is" in code. For example, it does not require quoting in order to work with non-standard evaluation, such as list indexing via `$`, in a formula, or in packages like dplyr and ggplot2.
+A syntactic name can be used "as is" in code.
+For example, it does not require quoting in order to work with non-standard evaluation, such as list indexing via `$`, in a formula, or in packages like dplyr and ggplot2.
 
 ```{r}
 ## a syntactic name doesn't require quoting
@@ -260,19 +283,15 @@ Note that being syntactic is a property of an individual name.
 
 ### Making an individual name syntactic
 
-There are many ways to fix a non-syntactic name. Here's how our logic compares to [base::make.names()](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html) for a single name:
+There are many ways to fix a non-syntactic name.
+Here's how our logic compares to [base::make.names()](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html) for a single name:
 
- * Same: Definition of what is syntactically valid.
-   - Claim: If `syn_name` is a name that we have made syntactic, then
-     `syn_name == make.names(syn_name)`. If you find a counterexample, tell us!
- * Same: An invalid character is replaced with a dot `.`.
- * Different: We always fix a name by prepending a dot `.`. [base::make.names()](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html)
-   sometimes prefixes with `X` and at other times appends a dot `.`.
-   - This means we turn `...` into `....` and `..j` into `...j`, where `j` is a
-   number. [base::make.names()](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html) does not modify `...` or `..j`, which could be
-   regarded as a bug (?).
- * Different: We treat `NA` and `""` the same: both become `.`. This is because
-   we first make names minimal. [base::make.names()](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html) turns `NA` into `"NA."` and `""` into `"X"`.
+-   Same: Definition of what is syntactically valid.
+    -   Claim: If `syn_name` is a name that we have made syntactic, then `syn_name == make.names(syn_name)`. If you find a counterexample, tell us!
+-   Same: An invalid character is replaced with a dot `.`.
+-   Different: We always fix a name by prepending a dot `.`. [base::make.names()](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html) sometimes prefixes with `X` and at other times appends a dot `.`.
+    -   This means we turn `...` into `....` and `..j` into `...j`, where `j` is a number. [base::make.names()](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html) does not modify `...` or `..j`, which could be regarded as a bug (?).
+-   Different: We treat `NA` and `""` the same: both become `.`. This is because we first make names minimal. [base::make.names()](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html) turns `NA` into `"NA."` and `""` into `"X"`.
 
 Examples of the tidyverse approach to making individual names syntactic versus [`base::make.names()`](https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html):
 
@@ -300,19 +319,25 @@ Currently implemented in the unexported function `tibble:::make_syntactic()`.
 
 Now we can state the motivation for universal names, which have the group-wise property of being unique and the element-wise property of being syntactic.
 
-In practice, if you want syntactic names, you probably also want them to be unique. You need both in order to refer to individual elements easily, without ambiguity and without quoting.
+In practice, if you want syntactic names, you probably also want them to be unique.
+You need both in order to refer to individual elements easily, without ambiguity and without quoting.
 
 Universal names can be requested in the tidyverse via `.name_repair = "universal"`, in functions that expose name repair.
 
 ### Making names universal
 
-Universal names are implemented as a variation on unique names. Basically, suffixes are stripped and `...` is replaced with `""`. These draft names are transformed with `tibble:::make_syntactic()` (this step is omitted for unique names). Then `...j` suffixes are appended as necessary.
+Universal names are implemented as a variation on unique names.
+Basically, suffixes are stripped and `...` is replaced with `""`.
+These draft names are transformed with `tibble:::make_syntactic()` (this step is omitted for unique names).
+Then `...j` suffixes are appended as necessary.
 
-Note that suffix stripping and the substitution of `""` for `...` happens before the draft names are made syntactic. So, although `tibble:::make_syntactic` turns `...` into `....`, universal or unique name repair will turn `...` into something of the form `...j`.
+Note that suffix stripping and the substitution of `""` for `...` happens before the draft names are made syntactic.
+So, although `tibble:::make_syntactic` turns `...` into `....`, universal or unique name repair will turn `...` into something of the form `...j`.
 
 ## Messaging user about name repair
 
-Name repair should be communicated to the user. Here's how tibble messages:
+Name repair should be communicated to the user.
+Here's how tibble messages:
 
 ```{r}
 x <- tibble::tibble(
