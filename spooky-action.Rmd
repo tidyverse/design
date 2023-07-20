@@ -23,7 +23,7 @@ These include actions like:
     Because of functions in different packages can have the same name, attaching a package can change the behaviour of existing code.
 
 -   **Installing packages with `install.packages()`**.
-    If a script needs dplyr to work, and it's not installed, it seem polite to install it on behalf of the user.
+    If a script needs dplyr to work, and it's not installed, it seems polite to install it on behalf of the user.
     But installing a new package can upgrade existing packages, which might break code in other projects.
     Install a package is a potentially destructive operation which should be done with care.
 
