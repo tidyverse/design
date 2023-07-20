@@ -1,4 +1,4 @@
-# Keep defaults short and sweet {#def-short}
+# Keep defaults short and sweet {#sec-def-short}
 
 ```{r}
 #| include = FALSE
@@ -52,13 +52,13 @@ The following examples, drawn from base R, illustrate some functions that don't 
 There are three approaches:
 
 -   Set the default value to `NULL` and calculate the default only when the argument is `NULL`.
-    Providing a default of `NULL` signals that the argument is optional (Chapter \@ref(def-required)) but that the default requires some calculation.
+    Providing a default of `NULL` signals that the argument is optional (@sec-def-required) but that the default requires some calculation.
 
 -   If the calculation is complex, and the user might find it useful in other scenarios, compute it with an exported function that documents exactly what happens.
 
 -   If `NULL` is meaningful, so you can't use the first approach, use a "sentinel" object instead.
 
-### `NULL` default {#arg-short-null}
+### `NULL` default {#sec-arg-short-null}
 
 The most common approach is to use `NULL` as a sentinel value that indicates that the argument is optional, but non-trivial.
 This pattern is made substantially more elegant with the infix `%||%` operator.
@@ -111,7 +111,7 @@ For more complicated cases, you'll probably want to pull the code that computes 
 A good example of this pattern is `readr::show_progress()`: it's used in every `read_` function in readr and it's sufficiently complicated that you don't want to copy and paste it between functions.
 It's also nice to document it in its own file, rather than cluttering up file reading functions with incidental details.
 
-### Sentinel value {#args-default-sentinel}
+### Sentinel value {#sec-args-default-sentinel}
 
 Sometimes a default argument has a complex calculation that you don't want to include in arguments list.
 You'd normally use `NULL` to indicate that it's calculated by default, but `NULL` is a meaningful option.

@@ -1,4 +1,4 @@
-# Error call {#err-call}
+# Error call {#sec-err-call}
 
 ```{r}
 #| include = FALSE

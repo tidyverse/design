@@ -1,4 +1,4 @@
-# Required args shouldn't have defaults {#def-required}
+# Required args shouldn't have defaults {#sec-def-required}
 
 ```{r}
 #| include = FALSE
@@ -63,7 +63,7 @@ There are two exceptions to this rule:
 
 In both cases, I believe the benefits outweigh the costs of violating a standard pattern.
 
-### Pair of mututally exclusive arguments {#args-mutually-exclusive}
+### Pair of mututally exclusive arguments {#sec-args-mutually-exclusive}
 
 A number of functions that allow you to supply exactly one of two possible arguments:
 
@@ -96,9 +96,9 @@ And in the documentation, make it clear that only one of the pair can be supplie
 
 This technique should only be used for are exactly two possible arguments.
 If there are more than two , that is generally a sign you should create more functions.
-See case studies in Chapter \@ref(cs-rep) and Section \@ref(cs-fct-lump) for examples.
+See case studies in @sec-cs-rep and @sec-cs-fct-lump for examples.
 
-### One compound argument vs multiple simple arguments {#args-compound}
+### One compound argument vs multiple simple arguments {#sec-args-compound}
 
 A related, if less generally useful, form is to allow the user to supply either a single complex argument or several smaller arguments.
 For example:
@@ -107,7 +107,7 @@ For example:
 
 -   `stringr::str_replace_all(x, c(pattern = replacement))` is equivalent to `stringr(x, pattern, replacement)`.
 
--   `rgb(cbind(r, g, b))` is equivalent to `rgb(r, g, b)` (See Chapter \@ref(cs-rgb) for more details).
+-   `rgb(cbind(r, g, b))` is equivalent to `rgb(r, g, b)` (See @sec-cs-rgb for more details).
 
 -   `options(list(a = 1, b = 2))` is equivalent to `options(a = 1, b = 2)`.
 

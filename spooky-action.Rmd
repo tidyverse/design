@@ -1,4 +1,4 @@
-# Spooky action
+# Spooky action {#sec-spooky-action}
 
 ```{r}
 #| include = FALSE

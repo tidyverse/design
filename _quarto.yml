@@ -79,7 +79,9 @@ book:
 
 format:
   html:
-    theme: cosmo
+    theme:
+    - cosmo
+    - r4ds.scss
     code-link: true
 
     author-meta: "Hadley Wickham"

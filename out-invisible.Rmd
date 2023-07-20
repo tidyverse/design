@@ -1,4 +1,4 @@
-# Side-effect functions should return invisibly {#out-invisible}
+# Side-effect functions should return invisibly {#sec-out-invisible}
 
 ```{r}
 #| include = FALSE
@@ -73,7 +73,7 @@ paths
 ```
 
 Functions that modify some global state, like `options()` or `par()`, should return the *previous* value of the variables.
-This, in combination with Section \@ref(args-compound), makes it possible to easily reset the effect of the change:
+This, in combination with @sec-args-compound, makes it possible to easily reset the effect of the change:
 
 ```{r}
 x <- runif(1)

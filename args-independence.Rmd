@@ -1,4 +1,4 @@
-# Avoid dependencies between arguments {#args-independence}
+# Avoid dependencies between arguments {#sec-args-independence}
 
 ```{r}
 #| include = FALSE
@@ -20,7 +20,7 @@ Dependencies between arguments makes functions harder to use because you have to
     rep(1:3, times = 1:3, each = 2)
     ```
 
-    Learn more in Chapter \@ref(cs-rep).
+    Learn more in Chapter @sec-cs-rep.
 
 -   In `var()`, `na.rm` is only used if `use` is not set.
     If you supply both `use` and `na.rm`, `na.rm` is silently ignored.
@@ -59,7 +59,7 @@ Dependencies between arguments makes functions harder to use because you have to
 
 -   In `readr::locale()` there's a complex dependency between `decimal_mark` and `grouping_mark` because they can't be the same value, and the US and Europe use different standards.
 
-See Sections \@ref(args-mutually-exclusive) and \@ref(args-compound) for a two exceptions where the dependency is via specific patterns of missing arguments.
+See @sec-args-mutually-exclusive) and @sec-args-compound for a two exceptions where the dependency is via specific patterns of missing arguments.
 
 ## Why is this important?
 
@@ -89,12 +89,12 @@ There are two common outcomes which are illustrated in the case studies below:
 
 -   Encapulsating related details arguments into a single object.
 
-See also larger case study in Chapter \@ref(cs-rep) where this problem is tangled up with other problems.
+See also larger case study in @sec-cs-rep where this problem is tangled up with other problems.
 
 If these changes to the interface occur to exported functions in a package, you'll need to consider how to preserve the interface with deprecation warnings.
 For important functions, it is worth generating an message that includes new code to copy and paste.
 
-### Case study: `fct_lump()` {#cs-fct-lump}
+### Case study: `fct_lump()` {#sec-cs-fct-lump}
 
 There are many different ways to decide how to lump uncommon factor levels together, and initially we attempted to encode these through arguments to `fct_lump()`.
 However, over time as the number of arguments increased, it gets harder and harder to tell what the options are.
@@ -139,7 +139,7 @@ x <- grepl("a", letters, fixed = TRUE, perl = TRUE)
 ```
 
 Part of this problem could be resolved by making it more clear that one important choice is the matching engine to use: POSIX 1003.2 extended regular expressions (the default), Perl-style regular expressions (`perl = TRUE`) or fixed matching (`fixed = TRUE`).
-A better approach would be to use the pattern in Chapter \@ref(def-enum), and create a new argument called something like `engine = c("POSIX", "perl", "fixed")`.
+A better approach would be to use the pattern in @sec-def-enum and create a new argument called something like `engine = c("POSIX", "perl", "fixed")`.
 
 The other problem is that `ignore.case` can only affect two of the three engines: POSIX and perl.
 This is hard to remedy without creating a completely new matching engine.

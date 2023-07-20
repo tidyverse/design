@@ -1,4 +1,4 @@
-# Returning multiple values {#out-multi}
+# Returning multiple values {#sec-out-multi}
 
 ```{r}
 #| include = FALSE
