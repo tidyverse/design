@@ -1,4 +1,4 @@
-# Data, descriptors, details {#args-data-details}
+# Data, descriptors, details {#sec-args-data-details}
 
 ```{r}
 #| include = FALSE
@@ -23,12 +23,12 @@ A standard argument order makes it easier to understand a function at a glance, 
 Related patterns:
 
 -   `...` can play the role of the data argument (i.e. when there are an arbitrary number of inputs), as in `paste()`.
-    This pattern is best using sparingly, and is described in more detail in Chapter \@ref(dots-data).
+    This pattern is best using sparingly, and is described in more detail in @sec-dots-data.
 
 -   `...` can also be used to capture details arguments and pass them on to other functions.
-    See Chapters \@ref(dots-position) and \@ref(dots-inspect) to how to use `...` as safely as possible in this situation.
+    See @sec-dots-position and @sec-dots-inspect to how to use `...` as safely as possible in this situation.
 
--   If the descriptor has a default value, I think you should inform the user about it, as in Chapter \@ref(def-inform).
+-   If the descriptor has a default value, I think you should inform the user about it, as in @sec-def-inform.
 
 ## What are some examples?
 
@@ -88,7 +88,7 @@ These families of functions represent transformations that preserve the shape wh
 When combined with the pipe, this leads to code that focusses on the transformations, not the objects being transformed.
 
 These argument types as also affect how you *call* a function.
-As discussed in Chapter \@ref(call-data-details), you should never name data arguments, and always name details arguments.
+As discussed in @sec-call-data-details, you should never name data arguments, and always name details arguments.
 This convention balances concision with readability.
 
 ## How do I avoid the problem?
@@ -106,7 +106,7 @@ There are a couple of heuristics that you can also check for:
     (Note that this ordering isn't strict: sometimes it's more important to organise related arguments together than to precisely order by importance.)
 
 -   Do any arguments with defaults come before any arguments without defaults?
-    This may be a sign that the argument order is wrong, or that you've assigned a default value to an required argument (See Chapter \@ref(#def-required) for more details.)
+    This may be a sign that the argument order is wrong, or that you've assigned a default value to an required argument (See @sec-def-required for more details.)
 
 ## How do I remediate past mistakes?
 

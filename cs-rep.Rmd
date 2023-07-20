@@ -4,7 +4,7 @@ depends_on:
 - args-independence
 ---
 
-# Case study: `rep()` {#cs-rep}
+# Case study: `rep()` {#sec-cs-rep}
 
 ```{r}
 #| include = FALSE

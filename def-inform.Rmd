@@ -1,4 +1,4 @@
-# Explain important defaults {#def-inform}
+# Explain important defaults {#sec-def-inform}
 
 ```{r}
 #| include = FALSE
@@ -10,7 +10,7 @@ library(dplyr, warn.conflicts = FALSE)
 
 If a default value is important, and the computation is non-trivial, inform the user what value was used.
 This is particularly important when the default value is an educated guess, and you want the user to change it.
-It is also important when descriptor arguments (Chapter \@ref(args-data-details)) have defaults.
+It is also important when descriptor arguments (@sec-args-data-details)) have defaults.
 
 ## What are some examples?
 
@@ -126,7 +126,7 @@ common_by(flights, planes)
 The technique you use to generate the code will vary from function to function.
 `rlang::expr_text()` is useful here because it automatically creates the code you'd use to build the character vector.
 
-To avoid creating a magical default (Chapter \@ref(def-magical)), either export and document the function, or use the technique of Section \@ref(arg-short-null):
+To avoid creating a magical default (@sec-def-magical), either export and document the function, or use the technique of @sec-arg-short-null:
 
 ```{r}
 left_join <- function(x, y, by = NULL) {

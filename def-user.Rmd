@@ -1,4 +1,4 @@
-# User settable defaults {#def-user}
+# User settable defaults {#sec-def-user}
 
 ```{r}
 #| include = FALSE
@@ -15,7 +15,7 @@ The two primary uses are for controlling the appearance of output, particularly 
 
 Related patterns:
 
--   If a global option affects the results of the computation (not just its side-effects), you have an example of Chapter \@ref(args-hidden).
+-   If a global option affects the results of the computation (not just its side-effects), you have an example of @sec-args-hidden.
 
 ## What are some examples?
 

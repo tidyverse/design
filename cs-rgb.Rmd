@@ -1,4 +1,4 @@
-# Case study: `rgb()` {#cs-rgb}
+# Case study: `rgb()` {#sec-cs-rgb}
 
 ```{r}
 #| include = FALSE

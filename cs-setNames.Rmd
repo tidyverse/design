@@ -59,7 +59,7 @@ It was defined this way to make it possible to name a character vector with itse
 setNames(nm = c("apple", "banana", "cake"))
 ```
 
-But that decision leads to a function signature that violates one of the principles of Chapter \@ref(args-data-details): a required argument comes after an optional argument.
+But that decision leads to a function signature that violates one of the principles of @sec-args-data-details: a required argument comes after an optional argument.
 Fortunately, we can fix this easily and still preserve the useful ability to name a vector with itself:
 
 ```{r}

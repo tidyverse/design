@@ -1,4 +1,4 @@
-# Error constructors {#err-constructor}
+# Error constructors {#sec-err-constructor}
 
 ```{r}
 #| include = FALSE

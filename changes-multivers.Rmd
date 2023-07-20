@@ -1,4 +1,4 @@
-# Work with multiple dependency versions {#changes-multivers}
+# Work with multiple dependency versions {#sec-changes-multivers}
 
 ```{r}
 #| include = FALSE

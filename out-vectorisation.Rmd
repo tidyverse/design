@@ -1,4 +1,4 @@
-# Vectorisation {#out-vectorisation}
+# Vectorisation {#sec-out-vectorisation}
 
 ```{r}
 #| include = FALSE

@@ -1,4 +1,4 @@
-# Avoid magical defaults {#def-magical}
+# Avoid magical defaults {#sec-def-magical}
 
 ```{r}
 #| include = FALSE,
@@ -148,9 +148,9 @@ This problem is generally easy to avoid for new functions:
 
 -   Don't use unexported functions.
 
-[^def-magical-1]: The only exceptions are described in Sections \@ref(args-mutually-exclusive) and \@ref(args-compound).
+[^def-magical-1]: The only exceptions are described in @sec-args-mutually-exclusive) and @sec-args-compound).
 
-If you have a made a mistake in an older function you can remediate it by using a `NULL` default, as described in Chapter \@ref(def-short).
+If you have a made a mistake in an older function you can remediate it by using a `NULL` default, as described in @sec-def-short).
 If the problem is caused by an unexported function, you can also choose to document and export it.
 
 ```{r}
@@ -172,7 +172,7 @@ f2_better <- function(x = NULL) {
 
 This modification should not break existing code, because expands the function interface: all previous code will continue to work, and the function will also work if the argument is passed `NULL` input (which probably didn't previously).
 
-For functions like `data.frame()` where `NULL` is already a permissible value, you'll need to use a sentinel object, as described in Section \@ref(args-default-sentinel).
+For functions like `data.frame()` where `NULL` is already a permissible value, you'll need to use a sentinel object, as described in @sec-args-default-sentinel.
 
 ```{r}
 sentinel <- function() structure(list(), class = "sentinel")

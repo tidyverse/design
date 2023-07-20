@@ -1,4 +1,4 @@
-# Enumerate possible options {#def-enum}
+# Enumerate possible options {#sec-def-enum}
 
 ```{r}
 #| include = FALSE
@@ -115,7 +115,7 @@ rank2(x, ties.method = "r")
 
 This technique is a best used when the set of possible values is short.
 You can see that it's already getting unwieldy in `rank()`.
-If you have a long list of possibilities, there are two options that you could use from Chapter \@ref(def-short).
+If you have a long list of possibilities, there are two options that you could use from @sec-def-short.
 Unfortunately both approaches have major downsides:
 
 -   Set a single default and supply the possible values to `match.arg()`:

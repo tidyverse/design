@@ -1,4 +1,4 @@
-# Type-stability {#out-type-stability}
+# Type-stability {#sec-out-type-stability}
 
 ```{r}
 #| include = FALSE
