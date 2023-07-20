@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Hadley Wickham">
+<title>Tidy design principles - 4&nbsp; Names attribute</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./call-data-details.html" rel="next">
+<link href="./implementation.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
+</head>
+<body class="nav-sidebar floating">
+
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./implementation.html">Implementation</a></li><li class="breadcrumb-item"><a href="./names.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Names attribute</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Tidy design principles</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/tidyverse/design" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Tidyverse design guide</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./structure.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Structure</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./unifying.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Unifying principles</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./implementation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Implementation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./names.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Names attribute</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./call-data-details.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Name details arguments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./function-names.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Function names</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./args.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Interface: inputs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./args-hidden.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Avoid hidden arguments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./args-data-details.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data, descriptors, details</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./args-independence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Avoid dependencies between arguments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cs-setNames.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/stats/setNames.html">setNames()</a></code>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./def.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Interface: default values</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./def-required.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Required args shouldn’t have defaults</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cs-rep.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./def-enum.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Enumerate possible options</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./def-magical.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Avoid magical defaults</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./def-short.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Keep defaults short and sweet</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./def-inform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Explain important defaults</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./def-user.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">User settable defaults</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cs-rgb.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/grDevices/rgb.html">rgb()</a></code>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./dots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Interface: `...`</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dots-position.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Data, dots, details</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dots-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Making data with …</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dots-prefix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Dot prefix</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dots-inspect.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Inspect the dots</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cs-mapply-pmap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/mapply.html">mapply()</a></code> vs <code>pmap()</code>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./out.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Interface: outputs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./out-multi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Returning multiple values</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./out-type-stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Type-stability</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./out-vectorisation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Vectorisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./out-invisible.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Side-effect functions should return invisibly</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./err.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Interface: errors</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./err-call.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Error call</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./err-constructor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Error constructors</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./changes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Interface: changes</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./changes-multivers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Work with multiple dependency versions</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./side.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Interface: side effects</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./side-effects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Side-effect soup</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./spooky-action.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Spooky action</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li><a href="#coverage-in-tidyverse-style-guide" id="toc-coverage-in-tidyverse-style-guide" class="nav-link active" data-scroll-target="#coverage-in-tidyverse-style-guide"><span class="header-section-number">4.1</span> Coverage in tidyverse style guide</a></li>
+  <li><a href="#the-names-attribute-of-an-object" id="toc-the-names-attribute-of-an-object" class="nav-link" data-scroll-target="#the-names-attribute-of-an-object"><span class="header-section-number">4.2</span> The <code>names</code> attribute of an object</a></li>
+  <li><a href="#minimal-unique-universal" id="toc-minimal-unique-universal" class="nav-link" data-scroll-target="#minimal-unique-universal"><span class="header-section-number">4.3</span> Minimal, unique, universal</a></li>
+  <li><a href="#minimal-names" id="toc-minimal-names" class="nav-link" data-scroll-target="#minimal-names"><span class="header-section-number">4.4</span> Minimal names</a></li>
+  <li>
+<a href="#unique-names" id="toc-unique-names" class="nav-link" data-scroll-target="#unique-names"><span class="header-section-number">4.5</span> Unique names</a>
+  <ul class="collapse">
+<li><a href="#making-names-unique" id="toc-making-names-unique" class="nav-link" data-scroll-target="#making-names-unique"><span class="header-section-number">4.5.1</span> Making names unique</a></li>
+  <li><a href="#roundtrips" id="toc-roundtrips" class="nav-link" data-scroll-target="#roundtrips"><span class="header-section-number">4.5.2</span> Roundtrips</a></li>
+  <li><a href="#when-is-minimal-better-than-unique" id="toc-when-is-minimal-better-than-unique" class="nav-link" data-scroll-target="#when-is-minimal-better-than-unique"><span class="header-section-number">4.5.3</span> When is minimal better than unique?</a></li>
+  <li><a href="#ugly-with-a-purpose" id="toc-ugly-with-a-purpose" class="nav-link" data-scroll-target="#ugly-with-a-purpose"><span class="header-section-number">4.5.4</span> Ugly, with a purpose</a></li>
+  <li><a href="#why-so-many-dots" id="toc-why-so-many-dots" class="nav-link" data-scroll-target="#why-so-many-dots"><span class="header-section-number">4.5.5</span> Why so many dots?</a></li>
+  <li><a href="#why-dots-in-the-first-place" id="toc-why-dots-in-the-first-place" class="nav-link" data-scroll-target="#why-dots-in-the-first-place"><span class="header-section-number">4.5.6</span> Why dot(s) in the first place?</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#universal-names" id="toc-universal-names" class="nav-link" data-scroll-target="#universal-names"><span class="header-section-number">4.6</span> Universal names</a>
+  <ul class="collapse">
+<li><a href="#syntactic-names" id="toc-syntactic-names" class="nav-link" data-scroll-target="#syntactic-names"><span class="header-section-number">4.6.1</span> Syntactic names</a></li>
+  <li><a href="#making-an-individual-name-syntactic" id="toc-making-an-individual-name-syntactic" class="nav-link" data-scroll-target="#making-an-individual-name-syntactic"><span class="header-section-number">4.6.2</span> Making an individual name syntactic</a></li>
+  <li><a href="#why-universal" id="toc-why-universal" class="nav-link" data-scroll-target="#why-universal"><span class="header-section-number">4.6.3</span> Why universal?</a></li>
+  <li><a href="#making-names-universal" id="toc-making-names-universal" class="nav-link" data-scroll-target="#making-names-universal"><span class="header-section-number">4.6.4</span> Making names universal</a></li>
+  </ul>
+</li>
+  <li><a href="#messaging-user-about-name-repair" id="toc-messaging-user-about-name-repair" class="nav-link" data-scroll-target="#messaging-user-about-name-repair"><span class="header-section-number">4.7</span> Messaging user about name repair</a></li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/names.Rmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title">
+<span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Names attribute</span>
+</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header><section id="coverage-in-tidyverse-style-guide" class="level2" data-number="4.1"><h2 data-number="4.1" class="anchored" data-anchor-id="coverage-in-tidyverse-style-guide">
+<span class="header-section-number">4.1</span> Coverage in tidyverse style guide</h2>
+<p>Existing name-related topics in <a href="http://style.tidyverse.org" class="uri">http://style.tidyverse.org</a></p>
+<ul>
+<li><a href="http://style.tidyverse.org/files.html#names">File names</a></li>
+<li><a href="http://style.tidyverse.org/syntax.html#object-names">Object names</a></li>
+<li><a href="http://style.tidyverse.org/syntax.html#argument-names">Argument names</a></li>
+<li><a href="http://style.tidyverse.org/functions.html#naming">Function names</a></li>
+</ul></section><section id="the-names-attribute-of-an-object" class="level2" data-number="4.2"><h2 data-number="4.2" class="anchored" data-anchor-id="the-names-attribute-of-an-object">
+<span class="header-section-number">4.2</span> The <code>names</code> attribute of an object</h2>
+<p>Here we address how to manage the <code>names</code> attribute of an object. Our initial thinking was motivated by how to handle the column or variable names of a tibble, but is evolving into a name-handling strategy for vectors, in general.</p>
+<p>The name repair described below is exposed to users via the <code>.name_repair</code> argument of <a href="https://tibble.tidyverse.org/reference/tibble.html">tibble::tibble()</a>, <a href="https://tibble.tidyverse.org/reference/as_tibble.html">tibble::as_tibble()</a>, <a href="https://readxl.tidyverse.org/reference/read_excel.html">readxl::read_excel()</a>, and, eventually other packages in the tidyverse. This work was initiated in the tibble package, but is migrating to the vctrs package. <em>Name repair was first introduced in <a href="https://tibble.tidyverse.org/news/index.html#tibble-2-0-0">tibble v2.0.0</a> and this write-up is being rendered with tibble v3.2.1 and vctrs v0.6.3.</em></p>
+<p>These are the kind of names we’re talking about:</p>
+<div class="cell" data-hash="names_cache/html/unnamed-chunk-2_8f1b4d1821e9642ef7116a56c5ee4cc0">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## variable names</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "Sepal.Length" "Sepal.Width"  "Petal.Length" "Petal.Width"  "Species"</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">ChickWeight</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "weight" "Time"   "Chick"  "Diet"</span></span>
+<span></span>
+<span><span class="co">## names along a vector</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">euro</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1] "ATS" "BEF" "DEM" "ESP" "FIM" "FRF" "IEP" "ITL" "LUF" "NLG" "PTE"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="minimal-unique-universal" class="level2" data-number="4.3"><h2 data-number="4.3" class="anchored" data-anchor-id="minimal-unique-universal">
+<span class="header-section-number">4.3</span> Minimal, unique, universal</h2>
+<p>We identify three nested levels of naminess that are practically useful:</p>
+<ul>
+<li>Minimal: The <code>names</code> attribute is not <code>NULL</code>. The name of an unnamed element is <code>""</code> (the empty string) and never <code>NA</code>.</li>
+<li>Unique: No element of <code>names</code> appears more than once. A couple specific names are also forbidden in unique names, such as <code>""</code> (the empty string).
+<ul>
+<li>All columns can be accessed by name via <code>df[["name"]]</code> and, more generally, by quoting with backticks: <code>df$`name`</code>, <code>subset(df, select = `name`)</code>, and <code>dplyr::select(df, `name`)</code>.</li>
+</ul>
+</li>
+<li>Universal: The <code>names</code> are unique and syntactic.
+<ul>
+<li>Names work everywhere, without quoting: <code>df$name</code> and <code>lm(name1 ~ name2, data = df)</code> and <code>dplyr::select(df, name)</code> all work.</li>
+</ul>
+</li>
+</ul>
+<p>Below we give more details and describe implementation.</p>
+</section><section id="minimal-names" class="level2" data-number="4.4"><h2 data-number="4.4" class="anchored" data-anchor-id="minimal-names">
+<span class="header-section-number">4.4</span> Minimal names</h2>
+<p><strong>Minimal</strong> names exist. The <code>names</code> attribute is not <code>NULL</code>. The name of an unnamed element is <code>""</code> (the empty string) and never <code>NA</code>.</p>
+<p>Consider an unnamed vector, i.e.&nbsp;it has names attribute of <code>NULL</code>.</p>
+<div class="cell" data-hash="names_cache/html/unnamed-chunk-3_9c244e82e299744c46654b7222635f53">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt; NULL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Repair the names to make them minimal.</p>
+<div class="cell" data-hash="names_cache/html/unnamed-chunk-4_ea6a5d6dfba1962842bee17a9e16ea02">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># TODO: Figure out where `set_minimal_names()` ended up when name repair moved</span></span>
+<span><span class="co"># from tibble to vctrs, then update this chunk. Use rlang in the meantime.</span></span>
+<span></span>
+<span><span class="co"># x &lt;- tibble:::set_minimal_names(x)</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/set_names.html">set_names</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/names2.html">names2</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Minimal names appear to be a useful baseline requirement, if the <code>names</code> attribute of an object is going to be actively managed. Why? General name handling and repair can be implemented more simply if the baseline strategy guarantees that <code>names(x)</code> returns a character vector of the correct length with no <code>NA</code>s.</p>
+<p>This is also a reasonable interpretation of base R’s <em>intent</em> for named vectors, based on the docs for <a href="https://stat.ethz.ch/R-manual/R-patched/library/base/html/names.html"><code>names()</code></a>, although base R’s implementation/enforcement of this is uneven. From <code><a href="https://rdrr.io/r/base/names.html">?names</a></code>:</p>
+<blockquote class="blockquote">
+<p>The name <code>""</code> is special: it is used to indicate that there is no name associated with an element of a (atomic or generic) vector. Subscripting by <code>""</code> will match nothing (not even elements which have no name).</p>
+<p>A name can be character <code>NA</code>, but such a name will never be matched and is likely to lead to confusion.</p>
+</blockquote>
+<p><code>tbl_df</code> objects created by <a href="https://tibble.tidyverse.org/reference/tibble.html">tibble::tibble()</a> and <a href="https://tibble.tidyverse.org/reference/as_tibble.html">tibble::as_tibble()</a> have variable names that are minimal, at the very least.</p>
+<p>The function <a href="https://rlang.r-lib.org/reference/names2.html">rlang::names2()</a> returns the names of an object, after making them minimal.</p>
+<div class="cell" data-hash="names_cache/html/unnamed-chunk-5_5c155d64ee1ed9d24fc4b2cf78cd00c6">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt; NULL</span></span>
+<span></span>
+<span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/names2.html">names2</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "" "" ""</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="unique-names" class="level2" data-number="4.5"><h2 data-number="4.5" class="anchored" data-anchor-id="unique-names">
+<span class="header-section-number">4.5</span> Unique names</h2>
+<p><strong>Unique</strong> names meet the requirements for minimal and have no duplicates. In the tidyverse, we go further and repair a few specific names: <code>""</code> (the empty string), <code>...</code> (R’s ellipsis or “dots” construct), and <code>..j</code> where <code>j</code> is a number. They are basically all treated like <code>""</code>, which is always repaired.</p>
+<p>Example of unique-ified names:</p>
+<div class="cell" data-hash="names_cache/html/unnamed-chunk-6_d70d7bb9ffaed33691d996093a697f5a">
+<pre><code>## original unique-ified
+##       ""         ...1
+##        x        x...2
+##       ""         ...3
+##      ...         ...4
+##        y            y
+##        x        x...6</code></pre>
+</div>
+<p>This augmented definition of unique has a specific motivation: it ensures that each element can be identified by name, at least when protected by backtick quotes. Literally, all of these work:</p>
+<div class="cell" data-hash="names_cache/html/unnamed-chunk-7_0f295262ef71c2134b1e66511a8172aa">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span><span class="op">[[</span><span class="st">"name"</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="va">df</span><span class="op">$</span><span class="va">`name`</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">`name`</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">df</span>, select <span class="op">=</span> <span class="va">`name`</span><span class="op">)</span></span>
+<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">`name`</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This has practical significance for variable names inside a data frame, because so many workflows rely on indexing by name. Note that uniqueness refers implicitly to a vector of names.</p>
+<p>Let’s explore a few edge cases: A single dot followed by a number, <code>.j</code>, does not need repair.</p>
+<div class="cell" data-hash="names_cache/html/unnamed-chunk-8_046875854397666728550264d97aa873">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span>`.1` <span class="op">=</span> <span class="st">"ok"</span><span class="op">)</span></span>
+<span><span class="va">df</span><span class="op">$</span><span class="va">`.1`</span></span>
+<span><span class="co">#&gt; [1] "ok"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">df</span>, select <span class="op">=</span> <span class="va">`.1`</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 × 1</span></span>
+<span><span class="co">#&gt;   `.1` </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;</span></span>
+<span><span class="co">#&gt; 1 ok</span></span>
+<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">`.1`</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 × 1</span></span>
+<span><span class="co">#&gt;   `.1` </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;</span></span>
+<span><span class="co">#&gt; 1 ok</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Two dots followed by a number, <code>..j</code>, does need repair. The same goes for three dots, <code>...</code>, the ellipsis or “dots” construct. These can’t function as names, even if quoted with backticks, so they have to be repaired.</p>
+<div class="cell" data-hash="names_cache/html/unnamed-chunk-9_9a5c6a6a2540fc87af4470f7b5493f1b">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span>`..1` <span class="op">=</span> <span class="st">"not ok"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in `tibble()`:</span></span>
+<span><span class="co">#&gt; ! Column 1 must not have names of the form ... or ..j.</span></span>
+<span><span class="co">#&gt; Use `.name_repair` to specify repair.</span></span>
+<span><span class="co">#&gt; Caused by error in `repaired_names()`:</span></span>
+<span><span class="co">#&gt; ! Names can't be of the form `...` or `..j`.</span></span>
+<span><span class="co">#&gt; ✖ These names are invalid:</span></span>
+<span><span class="co">#&gt;   * "..1" at location 1.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">`..1`</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in eval(substitute(expr), data, enclos = parent.frame()): ..1 used in an incorrect context, no ... to look in</span></span>
+<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">`..1`</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in dot_call(capture_dots, frame_env = frame_env, named = named, : '...' used in an incorrect context</span></span>
+<span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span>`...` <span class="op">=</span> <span class="st">"not ok"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in `tibble()`:</span></span>
+<span><span class="co">#&gt; ! Column 1 must not have names of the form ... or ..j.</span></span>
+<span><span class="co">#&gt; Use `.name_repair` to specify repair.</span></span>
+<span><span class="co">#&gt; Caused by error in `repaired_names()`:</span></span>
+<span><span class="co">#&gt; ! Names can't be of the form `...` or `..j`.</span></span>
+<span><span class="co">#&gt; ✖ These names are invalid:</span></span>
+<span><span class="co">#&gt;   * "..." at location 1.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">df</span>, select <span class="op">=</span> <span class="va">`...`</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in eval(expr, envir, enclos): '...' used in an incorrect context</span></span>
+<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">`...`</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in eval(expr, envir, enclos): '...' used in an incorrect context</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Both are repaired as if they were <code>""</code>.</p>
+<section id="making-names-unique" class="level3" data-number="4.5.1"><h3 data-number="4.5.1" class="anchored" data-anchor-id="making-names-unique">
+<span class="header-section-number">4.5.1</span> Making names unique</h3>
+<p>There are many ways to make names unique. We append a suffix of the form <code>...j</code> to any name that is a duplicate or <code>""</code> or <code>...</code>, where <code>j</code> is the position. Why?</p>
+<ul>
+<li>An absolute position <code>j</code> is more helpful than numbering within the elements that share a name. Context: troubleshooting data import with lots of columns and dysfunctional names.</li>
+<li>We hypothesize that it’s better have a “level playing field” when repairing names, i.e.&nbsp;if <code>foo</code> appears twice, both instances get repaired, not just the second occurrence.</li>
+</ul>
+<p>The unique level of naminess is regarded as normative for a tibble and a user must expressly request a tibble with names that violate this (but that is possible).</p>
+<p>Base R’s function for this is <a href="https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.unique.html">make.unique()</a>. We revisit the example above, comparing the tidyverse strategy for making names unique vs.&nbsp;what <code><a href="https://rdrr.io/r/base/make.unique.html">make.unique()</a></code> does.</p>
+<div class="cell" data-hash="names_cache/html/unnamed-chunk-10_2881259f60817ece61f2700543abc0eb">
+<pre><code>## Original Unique names     Result of
+##    names  (tidyverse) make.unique()
+##       ""         ...1            ""
+##        x        x...2             x
+##       ""         ...3            .1
+##      ...         ...4           ...
+##        y            y             y
+##        x        x...6           x.1</code></pre>
+</div>
+</section><section id="roundtrips" class="level3" data-number="4.5.2"><h3 data-number="4.5.2" class="anchored" data-anchor-id="roundtrips">
+<span class="header-section-number">4.5.2</span> Roundtrips</h3>
+<p>When unique-ifying names, we assume that the input names have been repaired by the same strategy, i.e.&nbsp;that we are consuming dogfood. Therefore, pre-existing suffixes of the form <code>...j</code> are stripped, prior to (re-)constructing the suffixes. If this interacts poorly with your names, you need to take control of name repair.</p>
+<p>Example of re-unique-ified names:</p>
+<div class="cell" data-hash="names_cache/html/unnamed-chunk-11_644e7eb4178c2d34db5df3013e0c19ef">
+<pre><code>##  original unique-ified
+##      ...5         ...1
+##         x        x...2
+##     x...3        x...3
+##        ""         ...4
+## x...1...5        x...5</code></pre>
+</div>
+<p><em>JB: it is conceivable that this should be under the control of an argument, e.g.&nbsp;<code>dogfood = TRUE</code>, in the (currently unexported) function that does this</em></p>
+</section><section id="when-is-minimal-better-than-unique" class="level3" data-number="4.5.3"><h3 data-number="4.5.3" class="anchored" data-anchor-id="when-is-minimal-better-than-unique">
+<span class="header-section-number">4.5.3</span> When is minimal better than unique?</h3>
+<p>Why would you ever want to import a tibble and enforce only minimal names, instead of unique? Sometimes the first row of a data source – allegedly variable names – actually contains <strong>data</strong> and the resulting tibble will be reshaped with, e.g., <code><a href="https://tidyr.tidyverse.org/reference/gather.html">tidyr::gather()</a></code>. In this case, it is better to not munge the names at import. This is a common special case of the “data stored in names” phenomenon.</p>
+<p>In general, you may want to tolerate minimal names when the dysfunctional names are just an awkward phase that an object is passing through and a more definitive solution is applied downstream.</p>
+</section><section id="ugly-with-a-purpose" class="level3" data-number="4.5.4"><h3 data-number="4.5.4" class="anchored" data-anchor-id="ugly-with-a-purpose">
+<span class="header-section-number">4.5.4</span> Ugly, with a purpose</h3>
+<p>You might say that names like <code>x...5</code> are ugly and you would be right. We’re calling this a feature, not a bug! Names that have been automatically unique-ified by the tidyverse should catch the eye and give the user strong encouragement to take charge of the situation.</p>
+</section><section id="why-so-many-dots" class="level3" data-number="4.5.5"><h3 data-number="4.5.5" class="anchored" data-anchor-id="why-so-many-dots">
+<span class="header-section-number">4.5.5</span> Why so many dots?</h3>
+<p>The suffix of <code>...j</code>, with 3 leading dots, is the result of jointly satisfying multiple requirements. It is important to anticipate a missing name, where the suffix becomes the entire name. We have elected to make the suffix a syntactic name (more below), because non-syntactic names are a frequent cause of unexpected friction for users. This means the suffix can’t be <code>j</code>, <code>.j</code>, or <code>..j</code>, because all are non-syntactic. It must be <code>...j</code>.</p>
+</section><section id="why-dots-in-the-first-place" class="level3" data-number="4.5.6"><h3 data-number="4.5.6" class="anchored" data-anchor-id="why-dots-in-the-first-place">
+<span class="header-section-number">4.5.6</span> Why dot(s) in the first place?</h3>
+<p>The underscore <code>_</code> was also considered when choosing the suffix strategy, but was rejected. Why? Because syntactic names can’t start with an underscore and we want the suffix itself to be syntactic. Also, the dot <code>.</code> is already used by base R’s <code><a href="https://rdrr.io/r/base/make.names.html">make.names()</a></code> to replace invalid characters. It seems simpler and, therefore, better to use the same character, in the same way, as much as possible in name repair. We use the dot <code>.</code>, we put it at the front, as many times as necessary.</p>
+</section></section><section id="universal-names" class="level2" data-number="4.6"><h2 data-number="4.6" class="anchored" data-anchor-id="universal-names">
+<span class="header-section-number">4.6</span> Universal names</h2>
+<p><strong>Universal</strong> names are <strong>unique</strong>, in the sense described above, and <strong>syntactic</strong>, in the normal R sense. Universal names are appealing because they play nicely with base R and tidyverse functions that accept unquoted variable names.</p>
+<section id="syntactic-names" class="level3" data-number="4.6.1"><h3 data-number="4.6.1" class="anchored" data-anchor-id="syntactic-names">
+<span class="header-section-number">4.6.1</span> Syntactic names</h3>
+<p>A syntactic name in R:</p>
+<ul>
+<li>Consists of letters, numbers, and the dot <code>.</code> or underscore <code>_</code> characters.</li>
+<li>Starts with a letter or starts with a dot <code>.</code> followed by anything but a number.</li>
+<li>Is not a reserved word, such as <code>if</code> or <code>function</code> or <code>TRUE</code>.</li>
+<li>Is not <code>...</code>, R’s special ellipsis or “dots” construct.</li>
+<li>Is not of the form <code>..j</code>, where <code>j</code> is a number.</li>
+</ul>
+<p>See R’s documentation for <a href="https://stat.ethz.ch/R-manual/R-patched/library/base/html/Reserved.html">Reserved words</a> and <a href="https://stat.ethz.ch/R-manual/R-patched/library/base/html/Quotes.html">Quotes</a>, specifically the section on names and identifiers.</p>
+<p>A syntactic name can be used “as is” in code. For example, it does not require quoting in order to work with non-standard evaluation, such as list indexing via <code>$</code>, in a formula, or in packages like dplyr and ggplot2.</p>
+<div class="cell" data-hash="names_cache/html/unnamed-chunk-12_eda1fc9ccc2c705bb63b5855af860c3c">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## a syntactic name doesn't require quoting</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>.else <span class="op">=</span> <span class="st">"else?!"</span><span class="op">)</span></span>
+<span><span class="va">x</span><span class="op">$</span><span class="va">.else</span></span>
+<span><span class="co">#&gt; [1] "else?!"</span></span>
+<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">.else</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 × 1</span></span>
+<span><span class="co">#&gt;   .else </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt; </span></span>
+<span><span class="co">#&gt; 1 else?!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-hash="names_cache/html/unnamed-chunk-13_6a8eb4ab7e7be586f48a7295c45e668a">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## use a non-syntactic name</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>`else` <span class="op">=</span> <span class="st">"else?!"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## this code does not parse</span></span>
+<span><span class="co"># x$else</span></span>
+<span><span class="co"># dplyr::select(x, else)</span></span>
+<span></span>
+<span><span class="co">## a non-syntacitic name requires quoting</span></span>
+<span><span class="va">x</span><span class="op">$</span><span class="va">`else`</span></span>
+<span><span class="co">#&gt; [1] "else?!"</span></span>
+<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">`else`</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 × 1</span></span>
+<span><span class="co">#&gt;   `else`</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt; </span></span>
+<span><span class="co">#&gt; 1 else?!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note that being syntactic is a property of an individual name.</p>
+</section><section id="making-an-individual-name-syntactic" class="level3" data-number="4.6.2"><h3 data-number="4.6.2" class="anchored" data-anchor-id="making-an-individual-name-syntactic">
+<span class="header-section-number">4.6.2</span> Making an individual name syntactic</h3>
+<p>There are many ways to fix a non-syntactic name. Here’s how our logic compares to <a href="https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html">base::make.names()</a> for a single name:</p>
+<ul>
+<li>Same: Definition of what is syntactically valid.
+<ul>
+<li>Claim: If <code>syn_name</code> is a name that we have made syntactic, then <code>syn_name == make.names(syn_name)</code>. If you find a counterexample, tell us!</li>
+</ul>
+</li>
+<li>Same: An invalid character is replaced with a dot <code>.</code>.</li>
+<li>Different: We always fix a name by prepending a dot <code>.</code>. <a href="https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html">base::make.names()</a> sometimes prefixes with <code>X</code> and at other times appends a dot <code>.</code>.
+<ul>
+<li>This means we turn <code>...</code> into <code>....</code> and <code>..j</code> into <code>...j</code>, where <code>j</code> is a number. <a href="https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html">base::make.names()</a> does not modify <code>...</code> or <code>..j</code>, which could be regarded as a bug (?).</li>
+</ul>
+</li>
+<li>Different: We treat <code>NA</code> and <code>""</code> the same: both become <code>.</code>. This is because we first make names minimal. <a href="https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html">base::make.names()</a> turns <code>NA</code> into <code>"NA."</code> and <code>""</code> into <code>"X"</code>.</li>
+</ul>
+<p>Examples of the tidyverse approach to making individual names syntactic versus <a href="https://stat.ethz.ch/R-manual/R-patched/library/base/html/make.names.html"><code>base::make.names()</code></a>:</p>
+<div class="cell" data-hash="names_cache/html/unnamed-chunk-14_d09c0b35a22c43da127549ebaedfbd33">
+<pre><code>## Original Syntactic name    Result of
+##     name    (tidyverse) make.names()
+##       ""              .            X
+##       NA              .          NA.
+##      (y)            .y.         X.y.
+##       _z            ._z          X_z
+##     .2fa          ..2fa        X.2fa
+##    FALSE         .FALSE       FALSE.
+##      ...           ....          ...
+##      ..3           ...3          ..3</code></pre>
+</div>
+<!-- FIXME? point out the non-syntactic names returned by make.names() -->
+<p>Currently implemented in the unexported function <code>tibble:::make_syntactic()</code>.</p>
+</section><section id="why-universal" class="level3" data-number="4.6.3"><h3 data-number="4.6.3" class="anchored" data-anchor-id="why-universal">
+<span class="header-section-number">4.6.3</span> Why universal?</h3>
+<p>Now we can state the motivation for universal names, which have the group-wise property of being unique and the element-wise property of being syntactic.</p>
+<p>In practice, if you want syntactic names, you probably also want them to be unique. You need both in order to refer to individual elements easily, without ambiguity and without quoting.</p>
+<p>Universal names can be requested in the tidyverse via <code>.name_repair = "universal"</code>, in functions that expose name repair.</p>
+</section><section id="making-names-universal" class="level3" data-number="4.6.4"><h3 data-number="4.6.4" class="anchored" data-anchor-id="making-names-universal">
+<span class="header-section-number">4.6.4</span> Making names universal</h3>
+<p>Universal names are implemented as a variation on unique names. Basically, suffixes are stripped and <code>...</code> is replaced with <code>""</code>. These draft names are transformed with <code>tibble:::make_syntactic()</code> (this step is omitted for unique names). Then <code>...j</code> suffixes are appended as necessary.</p>
+<p>Note that suffix stripping and the substitution of <code>""</code> for <code>...</code> happens before the draft names are made syntactic. So, although <code>tibble:::make_syntactic</code> turns <code>...</code> into <code>....</code>, universal or unique name repair will turn <code>...</code> into something of the form <code>...j</code>.</p>
+</section></section><section id="messaging-user-about-name-repair" class="level2" data-number="4.7"><h2 data-number="4.7" class="anchored" data-anchor-id="messaging-user-about-name-repair">
+<span class="header-section-number">4.7</span> Messaging user about name repair</h2>
+<p>Name repair should be communicated to the user. Here’s how tibble messages:</p>
+<div class="cell" data-hash="names_cache/html/unnamed-chunk-15_a5992f35572b2b3d55d00501bdd4357f">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<span>  x <span class="op">=</span> <span class="fl">1</span>, x <span class="op">=</span> <span class="fl">2</span>, `a1:` <span class="op">=</span> <span class="fl">3</span>, `_x_y}` <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  .name_repair <span class="op">=</span> <span class="st">"universal"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; New names:</span></span>
+<span><span class="co">#&gt; • `x` -&gt; `x...1`</span></span>
+<span><span class="co">#&gt; • `x` -&gt; `x...2`</span></span>
+<span><span class="co">#&gt; • `a1:` -&gt; `a1.`</span></span>
+<span><span class="co">#&gt; • `_x_y}` -&gt; `._x_y.`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./implementation.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Implementation</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./call-data-details.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Name details arguments</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">Tidy design principles was written by Hadley Wickham</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a>.</div>
+  </div>
+</footer>
+
+
+</body></html>

@@ -1,216 +1,538 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>8 Avoid dependencies between arguments | Tidyverse design guide</title>
-<meta name="author" content="Tidyverse team">
-<meta name="generator" content="bookdown 0.29 with bs4_book()">
-<meta property="og:title" content="8 Avoid dependencies between arguments | Tidyverse design guide">
-<meta property="og:type" content="book">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="8 Avoid dependencies between arguments | Tidyverse design guide">
-<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.0/transition.js"></script><script src="libs/bs3compat-0.4.0/tabs.js"></script><script src="libs/bs3compat-0.4.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
-<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-115082821-1"></script><script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+<meta name="generator" content="quarto-1.3.433">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Hadley Wickham">
+<title>Tidy design principles - 9&nbsp; Avoid dependencies between arguments</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
 
-      gtag('config', 'UA-115082821-1');
-    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
-    
-    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  </style>
-<meta name="description" content="8.1 What’s the problem? Avoid creating dependencies between details arguments so that only certain combinations are permitted. Dependencies between arguments makes functions harder to use because...">
-<meta property="og:description" content="8.1 What’s the problem? Avoid creating dependencies between details arguments so that only certain combinations are permitted. Dependencies between arguments makes functions harder to use because...">
-<meta name="twitter:description" content="8.1 What’s the problem? Avoid creating dependencies between details arguments so that only certain combinations are permitted. Dependencies between arguments makes functions harder to use because...">
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./cs-setNames.html" rel="next">
+<link href="./args-data-details.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
 </head>
-<body data-spy="scroll" data-target="#toc">
+<body class="nav-sidebar floating">
 
-<div class="container-fluid">
-<div class="row">
-  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
 
-    <div class="d-flex align-items-start justify-content-between">
-      <h1>
-        <a href="index.html" title="">Tidyverse design guide</a>
-      </h1>
-      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./args.html">Interface: inputs</a></li><li class="breadcrumb-item"><a href="./args-independence.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Avoid dependencies between arguments</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
     </div>
-
-    <div id="main-nav" class="collapse-lg">
-      <form role="search">
-        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
-</form>
-
-      <nav aria-label="Table of contents"><h2>Table of contents</h2>
-        <ul class="book-toc list-unstyled">
-<li><a class="" href="index.html">Welcome</a></li>
-<li><a class="" href="structure.html"><span class="header-section-number">1</span> Structure</a></li>
-<li><a class="" href="unifying-principles.html"><span class="header-section-number">2</span> Unifying principles</a></li>
-<li class="book-part">Implementation</li>
-<li><a class="" href="names-attribute.html"><span class="header-section-number">3</span> Names attribute</a></li>
-<li><a class="" href="call-data-details.html"><span class="header-section-number">4</span> Name details arguments</a></li>
-<li><a class="" href="function-names.html"><span class="header-section-number">5</span> Function names</a></li>
-<li class="book-part">Interface: inputs</li>
-<li><a class="" href="args-hidden.html"><span class="header-section-number">6</span> Avoid hidden arguments</a></li>
-<li><a class="" href="args-data-details.html"><span class="header-section-number">7</span> Data, descriptors, details</a></li>
-<li><a class="active" href="args-independence.html"><span class="header-section-number">8</span> Avoid dependencies between arguments</a></li>
-<li><a class="" href="case-study-setnames.html"><span class="header-section-number">9</span> Case study: setNames()</a></li>
-<li class="book-part">Interface: default values</li>
-<li><a class="" href="def-required.html"><span class="header-section-number">10</span> Required args shouldn’t have defaults</a></li>
-<li><a class="" href="cs-rep.html"><span class="header-section-number">11</span> Case study: rep()</a></li>
-<li><a class="" href="def-enum.html"><span class="header-section-number">12</span> Enumerate possible options</a></li>
-<li><a class="" href="def-magical.html"><span class="header-section-number">13</span> Avoid magical defaults</a></li>
-<li><a class="" href="def-short.html"><span class="header-section-number">14</span> Keep defaults short and sweet</a></li>
-<li><a class="" href="def-inform.html"><span class="header-section-number">15</span> Explain important defaults</a></li>
-<li><a class="" href="def-user.html"><span class="header-section-number">16</span> User settable defaults</a></li>
-<li><a class="" href="cs-rgb.html"><span class="header-section-number">17</span> Case study: rgb()</a></li>
-<li class="book-part">Interface: ...</li>
-<li><a class="" href="dots-position.html"><span class="header-section-number">18</span> Data, dots, details</a></li>
-<li><a class="" href="dots-data.html"><span class="header-section-number">19</span> Making data with …</a></li>
-<li><a class="" href="dots-prefix.html"><span class="header-section-number">20</span> Dot prefix</a></li>
-<li><a class="" href="dots-inspect.html"><span class="header-section-number">21</span> Inspect the dots</a></li>
-<li><a class="" href="cs-mapply-pmap.html"><span class="header-section-number">22</span> Case study: mapply() vs pmap()</a></li>
-<li class="book-part">Interface: outputs</li>
-<li><a class="" href="out-multi.html"><span class="header-section-number">23</span> Returning multiple values</a></li>
-<li><a class="" href="out-type-stability.html"><span class="header-section-number">24</span> Type-stability</a></li>
-<li><a class="" href="out-vectorisation.html"><span class="header-section-number">25</span> Vectorisation</a></li>
-<li><a class="" href="out-invisible.html"><span class="header-section-number">26</span> Side-effect functions should return invisibly</a></li>
-<li class="book-part">Interface: errors</li>
-<li><a class="" href="err-call.html"><span class="header-section-number">27</span> Error call</a></li>
-<li><a class="" href="err-constructor.html"><span class="header-section-number">28</span> Error constructors</a></li>
-<li class="book-part">Interface: changes</li>
-<li><a class="" href="changes-multivers.html"><span class="header-section-number">29</span> Work with multiple dependency versions</a></li>
-<li class="book-part">Interface: side effects</li>
-<li><a class="" href="side-effect-soup.html"><span class="header-section-number">30</span> Side-effect soup</a></li>
-<li><a class="" href="spooky-action.html"><span class="header-section-number">31</span> Spooky action</a></li>
-<li class="book-part">Appendix</li>
-<li><a class="" href="glossary.html"><span class="header-section-number">A</span> Glossary</a></li>
-</ul>
-
-        <div class="book-extra">
-          <p><a id="book-repo" href="http://github.com/tidyverse/design">View book source <i class="fab fa-github"></i></a></p>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Tidy design principles</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/tidyverse/design" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
         </div>
-      </nav>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Tidyverse design guide</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./structure.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Structure</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./unifying.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Unifying principles</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./implementation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Implementation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./names.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Names attribute</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./call-data-details.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Name details arguments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./function-names.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Function names</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./args.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Interface: inputs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./args-hidden.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Avoid hidden arguments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./args-data-details.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data, descriptors, details</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./args-independence.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Avoid dependencies between arguments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cs-setNames.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/stats/setNames.html">setNames()</a></code>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./def.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Interface: default values</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./def-required.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Required args shouldn’t have defaults</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cs-rep.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./def-enum.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Enumerate possible options</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./def-magical.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Avoid magical defaults</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./def-short.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Keep defaults short and sweet</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./def-inform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Explain important defaults</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./def-user.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">User settable defaults</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cs-rgb.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/grDevices/rgb.html">rgb()</a></code>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./dots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Interface: `...`</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dots-position.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Data, dots, details</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dots-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Making data with …</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dots-prefix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Dot prefix</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dots-inspect.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Inspect the dots</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cs-mapply-pmap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/mapply.html">mapply()</a></code> vs <code>pmap()</code>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./out.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Interface: outputs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./out-multi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Returning multiple values</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./out-type-stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Type-stability</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./out-vectorisation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Vectorisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./out-invisible.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Side-effect functions should return invisibly</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./err.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Interface: errors</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./err-call.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Error call</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./err-constructor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Error constructors</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./changes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Interface: changes</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./changes-multivers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Work with multiple dependency versions</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./side.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Interface: side effects</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./side-effects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Side-effect soup</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./spooky-action.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Spooky action</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+    </ul>
 </div>
-  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="args-independence" class="section level1" number="8">
-<h1>
-<span class="header-section-number">8</span> Avoid dependencies between arguments<a class="anchor" aria-label="anchor" href="#args-independence"><i class="fas fa-link"></i></a>
-</h1>
-<div id="whats-the-problem-1" class="section level2" number="8.1">
-<h2>
-<span class="header-section-number">8.1</span> What’s the problem?<a class="anchor" aria-label="anchor" href="#whats-the-problem-1"><i class="fas fa-link"></i></a>
-</h2>
+</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li><a href="#whats-the-problem" id="toc-whats-the-problem" class="nav-link active" data-scroll-target="#whats-the-problem"><span class="header-section-number">9.1</span> What’s the problem?</a></li>
+  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">9.2</span> What are some examples?</a></li>
+  <li><a href="#why-is-this-important" id="toc-why-is-this-important" class="nav-link" data-scroll-target="#why-is-this-important"><span class="header-section-number">9.3</span> Why is this important?</a></li>
+  <li>
+<a href="#how-do-i-remediate" id="toc-how-do-i-remediate" class="nav-link" data-scroll-target="#how-do-i-remediate"><span class="header-section-number">9.4</span> How do I remediate?</a>
+  <ul class="collapse">
+<li><a href="#cs-fct-lump" id="toc-cs-fct-lump" class="nav-link" data-scroll-target="#cs-fct-lump"><span class="header-section-number">9.4.1</span> Case study: <code>fct_lump()</code></a></li>
+  <li><a href="#case-study-grepl-vs-stringrstr_detect" id="toc-case-study-grepl-vs-stringrstr_detect" class="nav-link" data-scroll-target="#case-study-grepl-vs-stringrstr_detect"><span class="header-section-number">9.4.2</span> Case study: <code>grepl()</code> vs <code>stringr::str_detect()</code></a></li>
+  </ul>
+</li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/args-independence.Rmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title"><span id="args-independence" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Avoid dependencies between arguments</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header><section id="whats-the-problem" class="level2" data-number="9.1"><h2 data-number="9.1" class="anchored" data-anchor-id="whats-the-problem">
+<span class="header-section-number">9.1</span> What’s the problem?</h2>
 <p>Avoid creating dependencies between details arguments so that only certain combinations are permitted. Dependencies between arguments makes functions harder to use because you have to remember how arguments interact, and you when reading a call, you need to read multiple arguments before interpreting one.</p>
-</div>
-<div id="what-are-some-examples-2" class="section level2" number="8.2">
-<h2>
-<span class="header-section-number">8.2</span> What are some examples?<a class="anchor" aria-label="anchor" href="#what-are-some-examples-2"><i class="fas fa-link"></i></a>
-</h2>
+</section><section id="what-are-some-examples" class="level2" data-number="9.2"><h2 data-number="9.2" class="anchored" data-anchor-id="what-are-some-examples">
+<span class="header-section-number">9.2</span> What are some examples?</h2>
 <ul>
 <li>
-<p>In <code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code> you can supply both <code>times</code> and <code>each</code> <em>unless</em> <code>times</code> is a
-vector:</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, times <span class="op">=</span> <span class="fl">2</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<p>In <code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code> you can supply both <code>times</code> and <code>each</code> <em>unless</em> <code>times</code> is a vector :</p>
+<div class="cell" data-hash="args-independence_cache/html/unnamed-chunk-2_e799baff63d9f397a1ab6702310fdf21">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, times <span class="op">=</span> <span class="fl">2</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  [1] 1 1 1 2 2 2 3 3 3 1 1 1 2 2 2 3 3 3</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, times <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, each <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in rep(1:3, times = 1:3, each = 2): invalid 'times' argument</span></span></code></pre></div>
-<p>Learn more in Chapter <a href="cs-rep.html#cs-rep">11</a>.</p>
+<span><span class="co">#&gt; Error in rep(1:3, times = 1:3, each = 2): invalid 'times' argument</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Learn more in Chapter @ref(cs-rep).</p>
 </li>
-<li><p>In <code><a href="https://rdrr.io/r/stats/cor.html">var()</a></code>, <code>na.rm</code> is only used if <code>use</code> is not set. If you supply both
-<code>use</code> and <code>na.rm</code>, <code>na.rm</code> is silently ignored.</p></li>
+<li><p>In <code><a href="https://rdrr.io/r/stats/cor.html">var()</a></code>, <code>na.rm</code> is only used if <code>use</code> is not set. If you supply both <code>use</code> and <code>na.rm</code>, <code>na.rm</code> is silently ignored.</p></li>
 <li>
-<p>In <code><a href="https://rdrr.io/r/stats/GammaDist.html">rgamma()</a></code> you can provide either <code>scale</code> or <code>rate</code>. If you supply both
-you will get an error or a warning:</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html">rgamma</a></span><span class="op">(</span><span class="fl">5</span>, shape <span class="op">=</span> <span class="fl">1</span>, rate <span class="op">=</span> <span class="fl">2</span>, scale <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span></span>
+<p>In <code><a href="https://rdrr.io/r/stats/GammaDist.html">rgamma()</a></code> you can provide either <code>scale</code> or <code>rate</code>. If you supply both you will get an error or a warning:</p>
+<div class="cell" data-hash="args-independence_cache/html/unnamed-chunk-3_1e34c9026fe379361c63902f06dd91e1">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html">rgamma</a></span><span class="op">(</span><span class="fl">5</span>, shape <span class="op">=</span> <span class="fl">1</span>, rate <span class="op">=</span> <span class="fl">2</span>, scale <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in rgamma(5, shape = 1, rate = 2, scale = 1/2): specify 'rate' or</span></span>
 <span><span class="co">#&gt; 'scale' but not both</span></span>
-<span><span class="co">#&gt; [1] 0.06124463 0.27777043 1.81029217 0.19422776 0.28172955</span></span>
+<span><span class="co">#&gt; [1] 0.1162249 0.2478676 0.3121495 0.6413492 1.4218245</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html">rgamma</a></span><span class="op">(</span><span class="fl">5</span>, shape <span class="op">=</span> <span class="fl">1</span>, rate <span class="op">=</span> <span class="fl">2</span>, scale <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in rgamma(5, shape = 1, rate = 2, scale = 2): specify 'rate' or 'scale' but not both</span></span></code></pre></div>
+<span><span class="co">#&gt; Error in rgamma(5, shape = 1, rate = 2, scale = 2): specify 'rate' or 'scale' but not both</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </li>
-<li><p><code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code> has <code>perl</code>, <code>fixed</code>, and <code>ignore.case</code> arguments which can
-either be <code>TRUE</code> or <code>FALSE</code>. But <code>fixed = TRUE</code> overrides <code>perl = TRUE</code>,
-and <code>ignore.case</code> only works if <code>fixed = FALSE</code>. Both <code>fixed</code> and <code>perl</code>
-change how another argument, <code>pattern</code>, is interpreted.</p></li>
+<li><p><code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code> has <code>perl</code>, <code>fixed</code>, and <code>ignore.case</code> arguments which can either be <code>TRUE</code> or <code>FALSE</code>. But <code>fixed = TRUE</code> overrides <code>perl = TRUE</code>, and <code>ignore.case</code> only works if <code>fixed = FALSE</code>. Both <code>fixed</code> and <code>perl</code> change how another argument, <code>pattern</code>, is interpreted.</p></li>
 <li>
-<p>In <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> the <code>character.only</code> argument changes how <code>package</code> is
-intepreted:</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ggplot2</span> <span class="op">&lt;-</span> <span class="st">"dplyr"</span></span>
+<p>In <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> the <code>character.only</code> argument changes how <code>package</code> is intepreted:</p>
+<div class="cell" data-hash="args-independence_cache/html/unnamed-chunk-4_0d9568815936b6afa338c2502a787326">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ggplot2</span> <span class="op">&lt;-</span> <span class="st">"dplyr"</span></span>
 <span></span>
 <span><span class="co"># Loads ggplot2</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Loads dplyr</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span>, character.only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-</li>
-<li><p><code><a href="https://forcats.tidyverse.org/reference/fct_lump.html">forcats::fct_lump()</a></code> decides which algorithm to use based on a
-combination of the <code>n</code> and <code>prop</code> arguments.</p></li>
-<li><p>In <code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">ggplot2::geom_histogram()</a></code>, you can specify the histogram breaks in
-three ways: as a number of <code>bins</code>, as the width of each bin (<code>binwidth</code>,
-plus <code>center</code> or <code>boundary</code>), or the exact <code>breaks</code>. You can only pick
-one of the three options, which is hard to convey in the documentation.
-There’s also an implied precedence so that if more than one option is
-supplied, one will silently win.</p></li>
-<li><p>In <code><a href="https://readr.tidyverse.org/reference/locale.html">readr::locale()</a></code> there’s a complex dependency between <code>decimal_mark</code>
-and <code>grouping_mark</code> because they can’t be the same value, and the US and
-Europe use different standards.</p></li>
-</ul>
-<p>See Sections <a href="def-required.html#args-mutually-exclusive">10.3.1</a> and <a href="def-required.html#args-compound">10.3.2</a> for a two exceptions where the dependency is via specific patterns of missing arguments.</p>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span>, character.only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="why-is-this-important" class="section level2" number="8.3">
-<h2>
-<span class="header-section-number">8.3</span> Why is this important?<a class="anchor" aria-label="anchor" href="#why-is-this-important"><i class="fas fa-link"></i></a>
-</h2>
+</li>
+<li><p><code><a href="https://forcats.tidyverse.org/reference/fct_lump.html">forcats::fct_lump()</a></code> decides which algorithm to use based on a combination of the <code>n</code> and <code>prop</code> arguments.</p></li>
+<li><p>In <code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">ggplot2::geom_histogram()</a></code>, you can specify the histogram breaks in three ways: as a number of <code>bins</code>, as the width of each bin (<code>binwidth</code>, plus <code>center</code> or <code>boundary</code>), or the exact <code>breaks</code>. You can only pick one of the three options, which is hard to convey in the documentation. There’s also an implied precedence so that if more than one option is supplied, one will silently win.</p></li>
+<li><p>In <code><a href="https://readr.tidyverse.org/reference/locale.html">readr::locale()</a></code> there’s a complex dependency between <code>decimal_mark</code> and <code>grouping_mark</code> because they can’t be the same value, and the US and Europe use different standards.</p></li>
+</ul>
+<p>See Sections @ref(args-mutually-exclusive) and @ref(args-compound) for a two exceptions where the dependency is via specific patterns of missing arguments.</p>
+</section><section id="why-is-this-important" class="level2" data-number="9.3"><h2 data-number="9.3" class="anchored" data-anchor-id="why-is-this-important">
+<span class="header-section-number">9.3</span> Why is this important?</h2>
 <p>Having complicated interdependencies between arguments has major downsides:</p>
 <ul>
-<li><p>It suggests that there are many more viable code paths than there really
-are and all those (unnecessary) possibilities still occupy head space.
-You have to memorise the set of allowed combinations, rather than
-them being implied by the structure of the function.</p></li>
-<li><p>It increases implementation complexity. Interdependence of arguments
-suggests complex implementation paths which are harder to analyse and
-test.</p></li>
-<li><p>It makes documentation harder to write. You have to use extra words to
-explain exactly how combinations of arguments work together, and it’s not
-obvious where those words should go. If there’s an interaction between
-<code>arg_a</code> and <code>arg_b</code> do you document with <code>arg_a</code>, with <code>arg_b</code>, or with
-both?</p></li>
-</ul>
-</div>
-<div id="how-do-i-remediate" class="section level2" number="8.4">
-<h2>
-<span class="header-section-number">8.4</span> How do I remediate?<a class="anchor" aria-label="anchor" href="#how-do-i-remediate"><i class="fas fa-link"></i></a>
-</h2>
+<li><p>It suggests that there are many more viable code paths than there really are and all those (unnecessary) possibilities still occupy head space. You have to memorise the set of allowed combinations, rather than them being implied by the structure of the function.</p></li>
+<li><p>It increases implementation complexity. Interdependence of arguments suggests complex implementation paths which are harder to analyse and test.</p></li>
+<li><p>It makes documentation harder to write. You have to use extra words to explain exactly how combinations of arguments work together, and it’s not obvious where those words should go. If there’s an interaction between <code>arg_a</code> and <code>arg_b</code> do you document with <code>arg_a</code>, with <code>arg_b</code>, or with both?</p></li>
+</ul></section><section id="how-do-i-remediate" class="level2" data-number="9.4"><h2 data-number="9.4" class="anchored" data-anchor-id="how-do-i-remediate">
+<span class="header-section-number">9.4</span> How do I remediate?</h2>
 <p>Often these problems arise because the scope of a function grows over time. When the function was initially designed, the scope was small, and it grew incrementally over time. At no point did it seem worth the additional effort to refactor to a new design, but now you have a large complex function. This makes the problem hard to avoid.</p>
 <p>To remediate the problem, you’ll need to think holistically and reconsider the complete interface. There are two common outcomes which are illustrated in the case studies below:</p>
 <ul>
 <li><p>Splitting the function into multiple functions that each do one thing.</p></li>
 <li><p>Encapulsating related details arguments into a single object.</p></li>
 </ul>
-<p>See also larger case study in Chapter <a href="cs-rep.html#cs-rep">11</a> where this problem is tangled up with other problems.</p>
+<p>See also larger case study in Chapter @ref(cs-rep) where this problem is tangled up with other problems.</p>
 <p>If these changes to the interface occur to exported functions in a package, you’ll need to consider how to preserve the interface with deprecation warnings. For important functions, it is worth generating an message that includes new code to copy and paste.</p>
-<div id="cs-fct-lump" class="section level3" number="8.4.1">
-<h3>
-<span class="header-section-number">8.4.1</span> Case study: <code>fct_lump()</code><a class="anchor" aria-label="anchor" href="#cs-fct-lump"><i class="fas fa-link"></i></a>
+<section id="cs-fct-lump" class="level3" data-number="9.4.1"><h3 data-number="9.4.1" class="anchored" data-anchor-id="cs-fct-lump">
+<span class="header-section-number">9.4.1</span> Case study: <code>fct_lump()</code>
 </h3>
 <p>There are many different ways to decide how to lump uncommon factor levels together, and initially we attempted to encode these through arguments to <code>fct_lump()</code>. However, over time as the number of arguments increased, it gets harder and harder to tell what the options are. Currently there are three behaviours:</p>
 <ul>
-<li><p>Both <code>n</code> and <code>prop</code> missing - merge together the least
-frequent levels, ensuring that <code>other</code> is still the smallest level.
-(For this case, the <code>ties.method</code> argument is ignored.)</p></li>
+<li><p>Both <code>n</code> and <code>prop</code> missing - merge together the least frequent levels, ensuring that <code>other</code> is still the smallest level. (For this case, the <code>ties.method</code> argument is ignored.)</p></li>
 <li><p>Only <code>n</code> supplied: if positive, preserves <code>n</code> most common values.</p></li>
 <li><p>Only <code>prop</code> supplied: if positive, preserves</p></li>
-<li><p>Both <code>n</code> and <code>prop</code> supplied: due to a bug in the code, this is treated
-the same way as both <code>n</code> and <code>prop</code> missing! (But it really should be an
-error)</p></li>
+<li><p>Both <code>n</code> and <code>prop</code> supplied: due to a bug in the code, this is treated the same way as both <code>n</code> and <code>prop</code> missing! (But it really should be an error)</p></li>
 </ul>
 <p>Would be better to break into three functions:</p>
 <ul>
@@ -222,93 +544,302 @@ error)</p></li>
 <ul>
 <li><p>The name of function helps remind you of the purpose.</p></li>
 <li><p>There’s no way to supply both <code>n</code> and <code>prop</code>.</p></li>
-<li><p>The <code>ties.method</code> argument would only appear in <code>fct_lump_n()</code> and <code>_prop()</code>,
-not <code>_smallest()</code>.</p></li>
-</ul>
-</div>
-<div id="case-study-grepl-vs-stringrstr_detect" class="section level3" number="8.4.2">
-<h3>
-<span class="header-section-number">8.4.2</span> Case study: <code>grepl()</code> vs <code>stringr::str_detect()</code><a class="anchor" aria-label="anchor" href="#case-study-grepl-vs-stringrstr_detect"><i class="fas fa-link"></i></a>
+<li><p>The <code>ties.method</code> argument would only appear in <code>fct_lump_n()</code> and <code>_prop()</code>, not <code>_smallest()</code>.</p></li>
+</ul></section><section id="case-study-grepl-vs-stringrstr_detect" class="level3" data-number="9.4.2"><h3 data-number="9.4.2" class="anchored" data-anchor-id="case-study-grepl-vs-stringrstr_detect">
+<span class="header-section-number">9.4.2</span> Case study: <code>grepl()</code> vs <code>stringr::str_detect()</code>
 </h3>
 <!-- 
 https://github.com/wch/r-source/blob/trunk/src/main/grep.c#L891-L1151 -->
 <p><code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code>, has three arguments that take either <code>FALSE</code> or <code>TRUE</code>: <code>ignore.case</code>, <code>perl</code>, <code>fixed</code>, which might suggest that there are 2 ^ 3 = 16 possible invocations. However, a number of combinations are not allowed:</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="va">letters</span>, fixed <span class="op">=</span> <span class="cn">TRUE</span>, ignore.case <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<div class="cell" data-hash="args-independence_cache/html/unnamed-chunk-5_16a003f72e8aec2fa708d63581477285">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="va">letters</span>, fixed <span class="op">=</span> <span class="cn">TRUE</span>, ignore.case <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in grepl("a", letters, fixed = TRUE, ignore.case = TRUE): argument</span></span>
 <span><span class="co">#&gt; 'ignore.case = TRUE' will be ignored</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="va">letters</span>, fixed <span class="op">=</span> <span class="cn">TRUE</span>, perl <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in grepl("a", letters, fixed = TRUE, perl = TRUE): argument 'perl =</span></span>
-<span><span class="co">#&gt; TRUE' will be ignored</span></span></code></pre></div>
-<p>Part of this problem could be resolved by making it more clear that one important choice is the matching engine to use: POSIX 1003.2 extended regular expressions (the default), Perl-style regular expressions (<code>perl = TRUE</code>) or fixed matching (<code>fixed = TRUE</code>). A better approach would be to use the pattern in Chapter <a href="def-enum.html#def-enum">12</a>, and create a new argument called something like <code>engine = c("POSIX", "perl", "fixed")</code>.</p>
+<span><span class="co">#&gt; TRUE' will be ignored</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Part of this problem could be resolved by making it more clear that one important choice is the matching engine to use: POSIX 1003.2 extended regular expressions (the default), Perl-style regular expressions (<code>perl = TRUE</code>) or fixed matching (<code>fixed = TRUE</code>). A better approach would be to use the pattern in Chapter @ref(def-enum), and create a new argument called something like <code>engine = c("POSIX", "perl", "fixed")</code>.</p>
 <p>The other problem is that <code>ignore.case</code> can only affect two of the three engines: POSIX and perl. This is hard to remedy without creating a completely new matching engine. Anything to do with case is always harder than you might expect because different languages have different rules.</p>
 <p>stringr takes a different approach, encoding the engine as an attribute of the pattern:</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://stringr.tidyverse.org">stringr</a></span><span class="op">)</span></span>
+<div class="cell" data-hash="args-independence_cache/html/unnamed-chunk-6_d4feac09a3224a71e3ea9801a87fb800">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://stringr.tidyverse.org">stringr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">letters</span>, <span class="st">"a"</span><span class="op">)</span></span>
 <span><span class="co"># short for:</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">letters</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">regex</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">letters</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">fixed</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">letters</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">coll</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">letters</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">coll</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>This has the advantage that each engine can take different arguments.</p>
 <p>An alternative approach would be to have a separate engine argument:</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">letters</span>, <span class="st">"a"</span>, engine <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">regex</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<div class="cell" data-hash="args-independence_cache/html/unnamed-chunk-7_630650ed179ea853ddc34bcb47810f94">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">letters</span>, <span class="st">"a"</span>, engine <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">regex</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">letters</span>, <span class="st">"a"</span>, engine <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">fixed</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">letters</span>, <span class="st">"a"</span>, engine <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">coll</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">letters</span>, <span class="st">"a"</span>, engine <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">coll</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>This approach is a bit more discoverable (because there’s clearly another argument that affects the pattern), but it’s slightly less general, because of the <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">boundary()</a></code> engine, which doesn’t match patterns but boundaries:</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">letters</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">boundary</a></span><span class="op">(</span><span class="st">"word"</span><span class="op">)</span><span class="op">)</span></span>
+<div class="cell" data-hash="args-independence_cache/html/unnamed-chunk-8_e1dc1a2e99736b9cd8364770f192b7c7">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">letters</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">boundary</a></span><span class="op">(</span><span class="st">"word"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># Seems confusing: now you can omit the pattern argument?</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">letters</span>, engine <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">boundary</a></span><span class="op">(</span><span class="st">"word"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">letters</span>, engine <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">boundary</a></span><span class="op">(</span><span class="st">"word"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>It would also mean that you had an argument <code>engine</code>, that affected how another argument, <code>pattern</code>, was interpreted, so it would repeat the problem in a slightly different form.</p>
 <p>It’s appealing to all the details of the match wrapped up into a single object.</p>
 
-</div>
-</div>
-</div>
-  <div class="chapter-nav">
-<div class="prev"><a href="args-data-details.html"><span class="header-section-number">7</span> Data, descriptors, details</a></div>
-<div class="next"><a href="case-study-setnames.html"><span class="header-section-number">9</span> Case study: setNames()</a></div>
-</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
-    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
-      <ul class="nav navbar-nav">
-<li><a class="nav-link" href="#args-independence"><span class="header-section-number">8</span> Avoid dependencies between arguments</a></li>
-<li><a class="nav-link" href="#whats-the-problem-1"><span class="header-section-number">8.1</span> What’s the problem?</a></li>
-<li><a class="nav-link" href="#what-are-some-examples-2"><span class="header-section-number">8.2</span> What are some examples?</a></li>
-<li><a class="nav-link" href="#why-is-this-important"><span class="header-section-number">8.3</span> Why is this important?</a></li>
-<li>
-<a class="nav-link" href="#how-do-i-remediate"><span class="header-section-number">8.4</span> How do I remediate?</a><ul class="nav navbar-nav">
-<li><a class="nav-link" href="#cs-fct-lump"><span class="header-section-number">8.4.1</span> Case study: fct_lump()</a></li>
-<li><a class="nav-link" href="#case-study-grepl-vs-stringrstr_detect"><span class="header-section-number">8.4.2</span> Case study: grepl() vs stringr::str_detect()</a></li>
-</ul>
-</li>
-</ul>
 
-      <div class="book-extra">
-        <ul class="list-unstyled">
-<li><a id="book-source" href="http://github.com/tidyverse/design/blob/main/args-independence.Rmd">View source <i class="fab fa-github"></i></a></li>
-          <li><a id="book-edit" href="http://github.com/tidyverse/design/edit/main/args-independence.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
-        </ul>
-</div>
-    </nav>
-</div>
-
-</div>
-</div> <!-- .container -->
-
-<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
-
-  <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Tidyverse design guide</strong>" was written by Tidyverse team. </p>
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./args-data-details.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data, descriptors, details</span></span>
+      </a>          
   </div>
-
-  <div class="col-12 col-md-6 mt-3">
-    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  <div class="nav-page nav-page-next">
+      <a href="./cs-setNames.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/stats/setNames.html">setNames()</a></code> <i class="bi bi-arrow-right-short"></i>
+      
   </div>
-
-</div></div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">Tidy design principles was written by Hadley Wickham</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a>.</div>
+  </div>
 </footer>
-</body>
-</html>
+
+
+</body></html>

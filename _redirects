@@ -1,0 +1,4 @@
+https://principles.tidyverse.org/* https://design.tidyverse.org/:splat 301!
+
+# Optional: Redirect default Netlify subdomain to primary domain
+https://gallant-minsky-15c9e2.netlify.com/* https://design.tidyverse.org/:splat 301!

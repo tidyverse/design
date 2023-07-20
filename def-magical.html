@@ -1,122 +1,473 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>13 Avoid magical defaults | Tidyverse design guide</title>
-<meta name="author" content="Tidyverse team">
-<meta name="generator" content="bookdown 0.29 with bs4_book()">
-<meta property="og:title" content="13 Avoid magical defaults | Tidyverse design guide">
-<meta property="og:type" content="book">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="13 Avoid magical defaults | Tidyverse design guide">
-<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.0/transition.js"></script><script src="libs/bs3compat-0.4.0/tabs.js"></script><script src="libs/bs3compat-0.4.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
-<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-115082821-1"></script><script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+<meta name="generator" content="quarto-1.3.433">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Hadley Wickham">
+<title>Tidy design principles - 14&nbsp; Avoid magical defaults</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
 
-      gtag('config', 'UA-115082821-1');
-    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
-    
-    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  </style>
-<meta name="description" content="13.1 What’s the problem? If a function behaves differently when the default value is supplied explicitly, we say it has a magical default. Magical defaults are best avoided because they make it...">
-<meta property="og:description" content="13.1 What’s the problem? If a function behaves differently when the default value is supplied explicitly, we say it has a magical default. Magical defaults are best avoided because they make it...">
-<meta name="twitter:description" content="13.1 What’s the problem? If a function behaves differently when the default value is supplied explicitly, we say it has a magical default. Magical defaults are best avoided because they make it...">
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./def-short.html" rel="next">
+<link href="./def-enum.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
 </head>
-<body data-spy="scroll" data-target="#toc">
+<body class="nav-sidebar floating">
 
-<div class="container-fluid">
-<div class="row">
-  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
 
-    <div class="d-flex align-items-start justify-content-between">
-      <h1>
-        <a href="index.html" title="">Tidyverse design guide</a>
-      </h1>
-      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./def.html">Interface: default values</a></li><li class="breadcrumb-item"><a href="./def-magical.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Avoid magical defaults</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
     </div>
-
-    <div id="main-nav" class="collapse-lg">
-      <form role="search">
-        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
-</form>
-
-      <nav aria-label="Table of contents"><h2>Table of contents</h2>
-        <ul class="book-toc list-unstyled">
-<li><a class="" href="index.html">Welcome</a></li>
-<li><a class="" href="structure.html"><span class="header-section-number">1</span> Structure</a></li>
-<li><a class="" href="unifying-principles.html"><span class="header-section-number">2</span> Unifying principles</a></li>
-<li class="book-part">Implementation</li>
-<li><a class="" href="names-attribute.html"><span class="header-section-number">3</span> Names attribute</a></li>
-<li><a class="" href="call-data-details.html"><span class="header-section-number">4</span> Name details arguments</a></li>
-<li><a class="" href="function-names.html"><span class="header-section-number">5</span> Function names</a></li>
-<li class="book-part">Interface: inputs</li>
-<li><a class="" href="args-hidden.html"><span class="header-section-number">6</span> Avoid hidden arguments</a></li>
-<li><a class="" href="args-data-details.html"><span class="header-section-number">7</span> Data, descriptors, details</a></li>
-<li><a class="" href="args-independence.html"><span class="header-section-number">8</span> Avoid dependencies between arguments</a></li>
-<li><a class="" href="case-study-setnames.html"><span class="header-section-number">9</span> Case study: setNames()</a></li>
-<li class="book-part">Interface: default values</li>
-<li><a class="" href="def-required.html"><span class="header-section-number">10</span> Required args shouldn’t have defaults</a></li>
-<li><a class="" href="cs-rep.html"><span class="header-section-number">11</span> Case study: rep()</a></li>
-<li><a class="" href="def-enum.html"><span class="header-section-number">12</span> Enumerate possible options</a></li>
-<li><a class="active" href="def-magical.html"><span class="header-section-number">13</span> Avoid magical defaults</a></li>
-<li><a class="" href="def-short.html"><span class="header-section-number">14</span> Keep defaults short and sweet</a></li>
-<li><a class="" href="def-inform.html"><span class="header-section-number">15</span> Explain important defaults</a></li>
-<li><a class="" href="def-user.html"><span class="header-section-number">16</span> User settable defaults</a></li>
-<li><a class="" href="cs-rgb.html"><span class="header-section-number">17</span> Case study: rgb()</a></li>
-<li class="book-part">Interface: ...</li>
-<li><a class="" href="dots-position.html"><span class="header-section-number">18</span> Data, dots, details</a></li>
-<li><a class="" href="dots-data.html"><span class="header-section-number">19</span> Making data with …</a></li>
-<li><a class="" href="dots-prefix.html"><span class="header-section-number">20</span> Dot prefix</a></li>
-<li><a class="" href="dots-inspect.html"><span class="header-section-number">21</span> Inspect the dots</a></li>
-<li><a class="" href="cs-mapply-pmap.html"><span class="header-section-number">22</span> Case study: mapply() vs pmap()</a></li>
-<li class="book-part">Interface: outputs</li>
-<li><a class="" href="out-multi.html"><span class="header-section-number">23</span> Returning multiple values</a></li>
-<li><a class="" href="out-type-stability.html"><span class="header-section-number">24</span> Type-stability</a></li>
-<li><a class="" href="out-vectorisation.html"><span class="header-section-number">25</span> Vectorisation</a></li>
-<li><a class="" href="out-invisible.html"><span class="header-section-number">26</span> Side-effect functions should return invisibly</a></li>
-<li class="book-part">Interface: errors</li>
-<li><a class="" href="err-call.html"><span class="header-section-number">27</span> Error call</a></li>
-<li><a class="" href="err-constructor.html"><span class="header-section-number">28</span> Error constructors</a></li>
-<li class="book-part">Interface: changes</li>
-<li><a class="" href="changes-multivers.html"><span class="header-section-number">29</span> Work with multiple dependency versions</a></li>
-<li class="book-part">Interface: side effects</li>
-<li><a class="" href="side-effect-soup.html"><span class="header-section-number">30</span> Side-effect soup</a></li>
-<li><a class="" href="spooky-action.html"><span class="header-section-number">31</span> Spooky action</a></li>
-<li class="book-part">Appendix</li>
-<li><a class="" href="glossary.html"><span class="header-section-number">A</span> Glossary</a></li>
-</ul>
-
-        <div class="book-extra">
-          <p><a id="book-repo" href="http://github.com/tidyverse/design">View book source <i class="fab fa-github"></i></a></p>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Tidy design principles</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/tidyverse/design" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
         </div>
-      </nav>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Tidyverse design guide</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./structure.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Structure</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./unifying.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Unifying principles</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./implementation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Implementation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./names.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Names attribute</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./call-data-details.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Name details arguments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./function-names.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Function names</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./args.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Interface: inputs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./args-hidden.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Avoid hidden arguments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./args-data-details.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data, descriptors, details</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./args-independence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Avoid dependencies between arguments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cs-setNames.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/stats/setNames.html">setNames()</a></code>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./def.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Interface: default values</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./def-required.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Required args shouldn’t have defaults</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cs-rep.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./def-enum.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Enumerate possible options</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./def-magical.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Avoid magical defaults</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./def-short.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Keep defaults short and sweet</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./def-inform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Explain important defaults</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./def-user.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">User settable defaults</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cs-rgb.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/grDevices/rgb.html">rgb()</a></code>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./dots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Interface: `...`</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dots-position.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Data, dots, details</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dots-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Making data with …</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dots-prefix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Dot prefix</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dots-inspect.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Inspect the dots</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cs-mapply-pmap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/mapply.html">mapply()</a></code> vs <code>pmap()</code>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./out.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Interface: outputs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./out-multi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Returning multiple values</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./out-type-stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Type-stability</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./out-vectorisation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Vectorisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./out-invisible.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Side-effect functions should return invisibly</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./err.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Interface: errors</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./err-call.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Error call</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./err-constructor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Error constructors</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./changes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Interface: changes</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./changes-multivers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Work with multiple dependency versions</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./side.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Interface: side effects</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./side-effects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Side-effect soup</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./spooky-action.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Spooky action</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+    </ul>
 </div>
-  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="def-magical" class="section level1" number="13">
-<h1>
-<span class="header-section-number">13</span> Avoid magical defaults<a class="anchor" aria-label="anchor" href="#def-magical"><i class="fas fa-link"></i></a>
-</h1>
-<div id="whats-the-problem-3" class="section level2" number="13.1">
-<h2>
-<span class="header-section-number">13.1</span> What’s the problem?<a class="anchor" aria-label="anchor" href="#whats-the-problem-3"><i class="fas fa-link"></i></a>
-</h2>
+</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li><a href="#whats-the-problem" id="toc-whats-the-problem" class="nav-link active" data-scroll-target="#whats-the-problem"><span class="header-section-number">14.1</span> What’s the problem?</a></li>
+  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">14.2</span> What are some examples?</a></li>
+  <li><a href="#what-are-the-exceptions" id="toc-what-are-the-exceptions" class="nav-link" data-scroll-target="#what-are-the-exceptions"><span class="header-section-number">14.3</span> What are the exceptions?</a></li>
+  <li><a href="#what-causes-the-problem" id="toc-what-causes-the-problem" class="nav-link" data-scroll-target="#what-causes-the-problem"><span class="header-section-number">14.4</span> What causes the problem?</a></li>
+  <li><a href="#how-do-i-remediate-the-problem" id="toc-how-do-i-remediate-the-problem" class="nav-link" data-scroll-target="#how-do-i-remediate-the-problem"><span class="header-section-number">14.5</span> How do I remediate the problem?</a></li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/def-magical.Rmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title"><span id="def-magical" class="quarto-section-identifier"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Avoid magical defaults</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header><section id="whats-the-problem" class="level2" data-number="14.1"><h2 data-number="14.1" class="anchored" data-anchor-id="whats-the-problem">
+<span class="header-section-number">14.1</span> What’s the problem?</h2>
 <p>If a function behaves differently when the default value is supplied explicitly, we say it has a <strong>magical default</strong>. Magical defaults are best avoided because they make it harder to interpret the function specification.</p>
-</div>
-<div id="what-are-some-examples-5" class="section level2" number="13.2">
-<h2>
-<span class="header-section-number">13.2</span> What are some examples?<a class="anchor" aria-label="anchor" href="#what-are-some-examples-5"><i class="fas fa-link"></i></a>
-</h2>
+</section><section id="what-are-some-examples" class="level2" data-number="14.2"><h2 data-number="14.2" class="anchored" data-anchor-id="what-are-some-examples">
+<span class="header-section-number">14.2</span> What are some examples?</h2>
 <ul>
 <li>
-<p>In <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code>, the default argument for <code>row.names</code> is <code>NULL</code>, but
-if you supply it directly you get a different result:</p>
-<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">fun_call</span><span class="op">(</span><span class="va">data.frame</span><span class="op">)</span></span>
+<p>In <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code>, the default argument for <code>row.names</code> is <code>NULL</code>, but if you supply it directly you get a different result:</p>
+<div class="cell" data-hash="def-magical_cache/html/unnamed-chunk-3_9102ce694857d290772c1dc7e13a4742">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">fun_call</span><span class="op">(</span><span class="va">data.frame</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Use of pairlists in map functions was deprecated in purrr 1.0.0.</span></span>
+<span><span class="co">#&gt; ℹ Please coerce explicitly with `as.list()`</span></span>
 <span><span class="co">#&gt; base::data.frame(..., row.names = NULL, check.rows = FALSE, check.names = TRUE, </span></span>
 <span><span class="co">#&gt;     fix.empty.names = TRUE, stringsAsFactors = FALSE)</span></span>
 <span></span>
@@ -130,14 +481,13 @@ if you supply it directly you get a different result:</p>
 <span><span class="co">#&gt;   x</span></span>
 <span><span class="co">#&gt; 1 a</span></span>
 <span><span class="co">#&gt; 2 b</span></span>
-<span><span class="co">#&gt; 3 c</span></span></code></pre></div>
+<span><span class="co">#&gt; 3 c</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </li>
 <li>
-<p>In <code><a href="https://rdrr.io/r/graphics/hist.html">hist()</a></code>, the default value of <code>xlim</code> is <code>range(breaks)</code>, and the
-default value for <code>breaks</code> is <code>"Sturges"</code>. <code>range("Sturges")</code> returns
-<code>c("Sturges", "Sturges")</code> which doesn’t work when supplied explicitly:</p>
-<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">fun_call</span><span class="op">(</span><span class="va">hist.default</span><span class="op">)</span></span>
+<p>In <code><a href="https://rdrr.io/r/graphics/hist.html">hist()</a></code>, the default value of <code>xlim</code> is <code>range(breaks)</code>, and the default value for <code>breaks</code> is <code>"Sturges"</code>. <code>range("Sturges")</code> returns <code>c("Sturges", "Sturges")</code> which doesn’t work when supplied explicitly:</p>
+<div class="cell" data-hash="def-magical_cache/html/unnamed-chunk-4_378883d5570c71ef82d63af79bb3b782">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">fun_call</span><span class="op">(</span><span class="va">hist.default</span><span class="op">)</span></span>
 <span><span class="co">#&gt; graphics::hist.default(x, breaks = "Sturges", freq = NULL, probability = !freq, </span></span>
 <span><span class="co">#&gt;     include.lowest = TRUE, right = TRUE, fuzz = 1e-07, density = NULL, </span></span>
 <span><span class="co">#&gt;     angle = 45, col = "lightgray", border = NULL, main = paste("Histogram of", </span></span>
@@ -146,25 +496,24 @@ default value for <code>breaks</code> is <code>"Sturges"</code>. <code>range("St
 <span><span class="co">#&gt;     warn.unused = TRUE, ...)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Sturges"</span>, <span class="st">"Sturges"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in plot.window(xlim, ylim, "", ...): invalid 'xlim' value</span></span></code></pre></div>
+<span><span class="co">#&gt; Error in plot.window(xlim, ylim, "", ...): invalid 'xlim' value</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </li>
 <li>
-<p>In <code><a href="https://rdrr.io/r/base/Vectorize.html">Vectorize()</a></code>, the default argument for <code>vectorize.args</code> is <code>arg.names</code>,
-but this variable is defined inside of <code><a href="https://rdrr.io/r/base/Vectorize.html">Vectorize()</a></code>, so if you supply it
-explicitly you get an error.</p>
-<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">fun_call</span><span class="op">(</span><span class="va">Vectorize</span><span class="op">)</span></span>
+<p>In <code><a href="https://rdrr.io/r/base/Vectorize.html">Vectorize()</a></code>, the default argument for <code>vectorize.args</code> is <code>arg.names</code>, but this variable is defined inside of <code><a href="https://rdrr.io/r/base/Vectorize.html">Vectorize()</a></code>, so if you supply it explicitly you get an error.</p>
+<div class="cell" data-hash="def-magical_cache/html/unnamed-chunk-5_15ddbccbfb831926ac5bfe65a6d42a0b">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">fun_call</span><span class="op">(</span><span class="va">Vectorize</span><span class="op">)</span></span>
 <span><span class="co">#&gt; base::Vectorize(FUN, vectorize.args = arg.names, SIMPLIFY = TRUE, </span></span>
 <span><span class="co">#&gt;     USE.NAMES = TRUE)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Vectorize.html">Vectorize</a></span><span class="op">(</span><span class="va">rep.int</span>, vectorize.args <span class="op">=</span> <span class="va">arg.names</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in Vectorize(rep.int, vectorize.args = arg.names): object 'arg.names' not found</span></span></code></pre></div>
+<span><span class="co">#&gt; Error in eval(expr, envir, enclos): object 'arg.names' not found</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </li>
 <li>
-<p>In <code><a href="https://rdrr.io/r/stats/Beta.html">rbeta()</a></code>, the default value of <code>ncp</code> is 0, but if you explicitly supply
-it the function uses a different algorithm:</p>
-<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">rbeta</span></span>
+<p>In <code><a href="https://rdrr.io/r/stats/Beta.html">rbeta()</a></code>, the default value of <code>ncp</code> is 0, but if you explicitly supply it the function uses a different algorithm:</p>
+<div class="cell" data-hash="def-magical_cache/html/unnamed-chunk-6_12ad7d8835cd00627bbd9e0a1aefb761">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rbeta</span></span>
 <span><span class="co">#&gt; function (n, shape1, shape2, ncp = 0) </span></span>
 <span><span class="co">#&gt; {</span></span>
 <span><span class="co">#&gt;     if (missing(ncp)) </span></span>
@@ -174,79 +523,68 @@ it the function uses a different algorithm:</p>
 <span><span class="co">#&gt;         X/(X + rchisq(n, 2 * shape2))</span></span>
 <span><span class="co">#&gt;     }</span></span>
 <span><span class="co">#&gt; }</span></span>
-<span><span class="co">#&gt; &lt;bytecode: 0x55f37b5aa310&gt;</span></span>
-<span><span class="co">#&gt; &lt;environment: namespace:stats&gt;</span></span></code></pre></div>
-</li>
-<li><p>In <code><a href="https://rdrr.io/r/base/table.html">table()</a></code>, the default value of <code>dnn</code> is <code>list.names(...)</code>; but
-<code>list.names()</code> is only defined inside of <code><a href="https://rdrr.io/r/base/table.html">table()</a></code>.</p></li>
-<li>
-<p><code><a href="https://readr.tidyverse.org/reference/read_delim.html">readr::read_csv()</a></code> has <code>progress = show_progress()</code>, but until version
-1.3.1, <code>show_progress()</code> was not exported from the package. That means if you
-attempted to run it yourself, you’d see an error message:</p>
-<div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">show_progress</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in show_progress(): could not find function "show_progress"</span></span></code></pre></div>
-</li>
-<li><p>In <code>usethis::use_rmarkdown_template()</code>, <code>template_dir</code> has the default value
-of <code>tolower(asciify(template_name))</code>, but <code>asciify</code> is not exported. That
-means there’s no way to interactively explore this default value.</p></li>
-</ul>
+<span><span class="co">#&gt; &lt;bytecode: 0x5628da501cb8&gt;</span></span>
+<span><span class="co">#&gt; &lt;environment: namespace:stats&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="what-are-the-exceptions-2" class="section level2" number="13.3">
-<h2>
-<span class="header-section-number">13.3</span> What are the exceptions?<a class="anchor" aria-label="anchor" href="#what-are-the-exceptions-2"><i class="fas fa-link"></i></a>
-</h2>
+</li>
+<li><p>In <code><a href="https://rdrr.io/r/base/table.html">table()</a></code>, the default value of <code>dnn</code> is <code>list.names(...)</code>; but <code>list.names()</code> is only defined inside of <code><a href="https://rdrr.io/r/base/table.html">table()</a></code>.</p></li>
+<li>
+<p><code><a href="https://readr.tidyverse.org/reference/read_delim.html">readr::read_csv()</a></code> has <code>progress = show_progress()</code>, but until version 1.3.1, <code>show_progress()</code> was not exported from the package. That means if you attempted to run it yourself, you’d see an error message:</p>
+<div class="cell" data-hash="def-magical_cache/html/unnamed-chunk-7_9dace78677c4cc091781a78282382625">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">show_progress</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in show_progress(): could not find function "show_progress"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</li>
+<li><p>In <code>usethis::use_rmarkdown_template()</code>, <code>template_dir</code> has the default value of <code>tolower(asciify(template_name))</code>, but <code>asciify</code> is not exported. That means there’s no way to interactively explore this default value.</p></li>
+</ul></section><section id="what-are-the-exceptions" class="level2" data-number="14.3"><h2 data-number="14.3" class="anchored" data-anchor-id="what-are-the-exceptions">
+<span class="header-section-number">14.3</span> What are the exceptions?</h2>
 <p>It’s ok to use this behaviour when you want the default value of one argument to be the same as another. For example, take <code><a href="https://rlang.r-lib.org/reference/set_names.html">rlang::set_names()</a></code>, which allows you to create a named vector from two inputs:</p>
-<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">fun_call</span><span class="op">(</span><span class="va">set_names</span><span class="op">)</span></span>
+<div class="cell" data-hash="def-magical_cache/html/unnamed-chunk-8_87120bd14b1f62f08c23b7c990ff093c">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">fun_call</span><span class="op">(</span><span class="va">set_names</span><span class="op">)</span></span>
 <span><span class="co">#&gt; rlang::set_names(x, nm = x, ...)</span></span>
 <span></span>
 <span><span class="fu">set_names</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="co">#&gt; a b c </span></span>
-<span><span class="co">#&gt; 1 2 3</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 2 3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>The default value for the names is the vector itself. This provides a convenient shortcut for naming a vector with itself:</p>
-<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">set_names</span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
+<div class="cell" data-hash="def-magical_cache/html/unnamed-chunk-9_566af9e806e38f4835e12f34a8a5032d">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">set_names</span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   a   b   c </span></span>
-<span><span class="co">#&gt; "a" "b" "c"</span></span></code></pre></div>
+<span><span class="co">#&gt; "a" "b" "c"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>You can see this same technique in <code><a href="https://rdrr.io/r/base/merge.html">merge()</a></code>, where <code>all.x</code> and <code>all.y</code> default to the same value as <code>all</code>, and in <code><a href="https://rdrr.io/r/base/factor.html">factor()</a></code> where <code>labels</code> defaults to the same value as <code>levels</code>.</p>
 <p>If you use this technique, make sure that you never use the value of an argument that comes later in the argument list. For example, in <code><a href="https://rdrr.io/r/base/files.html">file.copy()</a></code> <code>overwrite</code> defaults to the same value as <code>recursive</code>, but the <code>recursive</code> argument is defined after <code>overwrite</code>:</p>
-<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">fun_call</span><span class="op">(</span><span class="va">file.copy</span><span class="op">)</span></span>
+<div class="cell" data-hash="def-magical_cache/html/unnamed-chunk-10_751d6901adc3d942bed4a65243bb1e13">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">fun_call</span><span class="op">(</span><span class="va">file.copy</span><span class="op">)</span></span>
 <span><span class="co">#&gt; base::file.copy(from, to, overwrite = recursive, recursive = FALSE, </span></span>
-<span><span class="co">#&gt;     copy.mode = TRUE, copy.date = FALSE)</span></span></code></pre></div>
-<p>This makes the defaults arguments harder to understand because you can’t just read from left-to-right.</p>
+<span><span class="co">#&gt;     copy.mode = TRUE, copy.date = FALSE)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="what-causes-the-problem" class="section level2" number="13.4">
-<h2>
-<span class="header-section-number">13.4</span> What causes the problem?<a class="anchor" aria-label="anchor" href="#what-causes-the-problem"><i class="fas fa-link"></i></a>
-</h2>
+<p>This makes the defaults arguments harder to understand because you can’t just read from left-to-right.</p>
+</section><section id="what-causes-the-problem" class="level2" data-number="14.4"><h2 data-number="14.4" class="anchored" data-anchor-id="what-causes-the-problem">
+<span class="header-section-number">14.4</span> What causes the problem?</h2>
 <p>There are three primary causes:</p>
 <ul>
 <li>
-<p>Overuse of lazy evaluation of default values, which are evaluated in the
-environment of the function, as described in
-<a href="https://adv-r.hadley.nz/functions.html#default-arguments">Advanced R</a>.
-Here’s a simple example:</p>
-<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">f1</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span> <span class="op">=</span> <span class="va">y</span><span class="op">)</span> <span class="op">{</span></span>
+<p>Overuse of lazy evaluation of default values, which are evaluated in the environment of the function, as described in <a href="https://adv-r.hadley.nz/functions.html#default-arguments">Advanced R</a>. Here’s a simple example:</p>
+<div class="cell" data-hash="def-magical_cache/html/unnamed-chunk-11_ea64753970ad3e9a6814602c4902e7e8">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">f1</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span> <span class="op">=</span> <span class="va">y</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">trunc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span>, units <span class="op">=</span> <span class="st">"months"</span><span class="op">)</span></span>
 <span>  <span class="va">x</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
 <span><span class="fu">f1</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "2022-11-01 UTC"</span></span>
+<span><span class="co">#&gt; [1] "2023-07-01 UTC"</span></span>
 <span><span class="fu">f1</span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 1</span></span></code></pre></div>
-<p>When <code>x</code> takes the value <code>y</code> from its default, it’s evaluated inside the
-function, yielding <code>1</code>. When <code>y</code> is supplied explicitly, it is evaluated
-in the caller environment, yielding <code>2</code>.</p>
+<span><span class="co">#&gt; [1] 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>When <code>x</code> takes the value <code>y</code> from its default, it’s evaluated inside the function, yielding <code>1</code>. When <code>y</code> is supplied explicitly, it is evaluated in the caller environment, yielding <code>2</code>.</p>
 </li>
 <li>
 <p>Use of <code><a href="https://rdrr.io/r/base/missing.html">missing()</a></code> so that the default value is never consulted:</p>
-<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">f2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span> <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span></span>
+<div class="cell" data-hash="def-magical_cache/html/unnamed-chunk-12_465a4ed8e8ae996d0cbe9d791f9d71d0">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">f2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span> <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="fl">2</span></span>
 <span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
@@ -257,27 +595,21 @@ in the caller environment, yielding <code>2</code>.</p>
 <span><span class="fu">f2</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 2</span></span>
 <span><span class="fu">f2</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 1</span></span></code></pre></div>
-</li>
-<li><p>In packages, it’s easy to use a non-exported function without thinking
-about it. This function is available to you, the package author, but not
-the user of the package, which makes it harder for them to understand
-how a package works.</p></li>
-</ul>
+<span><span class="co">#&gt; [1] 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="how-do-i-remediate-the-problem" class="section level2" number="13.5">
-<h2>
-<span class="header-section-number">13.5</span> How do I remediate the problem?<a class="anchor" aria-label="anchor" href="#how-do-i-remediate-the-problem"><i class="fas fa-link"></i></a>
-</h2>
+</li>
+<li><p>In packages, it’s easy to use a non-exported function without thinking about it. This function is available to you, the package author, but not the user of the package, which makes it harder for them to understand how a package works.</p></li>
+</ul></section><section id="how-do-i-remediate-the-problem" class="level2" data-number="14.5"><h2 data-number="14.5" class="anchored" data-anchor-id="how-do-i-remediate-the-problem">
+<span class="header-section-number">14.5</span> How do I remediate the problem?</h2>
 <p>This problem is generally easy to avoid for new functions:</p>
 <ul>
 <li><p>Don’t use default values that depend on variables defined inside the function.</p></li>
-<li><p>Don’t use <code><a href="https://rdrr.io/r/base/missing.html">missing()</a></code><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;The only exceptions are described in Sections &lt;a href="def-required.html#args-mutually-exclusive"&gt;10.3.1&lt;/a&gt; and &lt;a href="def-required.html#args-compound"&gt;10.3.2&lt;/a&gt;.&lt;/p&gt;'><sup>4</sup></a>.</p></li>
+<li><p>Don’t use <code><a href="https://rdrr.io/r/base/missing.html">missing()</a></code><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p></li>
 <li><p>Don’t use unexported functions.</p></li>
 </ul>
-<p>If you have a made a mistake in an older function you can remediate it by using a <code>NULL</code> default, as described in Chapter <a href="def-short.html#def-short">14</a>. If the problem is caused by an unexported function, you can also choose to document and export it.</p>
-<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">`%||%`</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="va">y</span> <span class="kw">else</span> <span class="va">x</span></span>
+<p>If you have a made a mistake in an older function you can remediate it by using a <code>NULL</code> default, as described in Chapter @ref(def-short). If the problem is caused by an unexported function, you can also choose to document and export it.</p>
+<div class="cell" data-hash="def-magical_cache/html/unnamed-chunk-13_10770c8383c35c4df831293f9da8aa29">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">`%||%`</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="va">y</span> <span class="kw">else</span> <span class="va">x</span></span>
 <span></span>
 <span><span class="va">f1_better</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">trunc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span>, units <span class="op">=</span> <span class="st">"weeks"</span><span class="op">)</span></span>
@@ -290,59 +622,277 @@ how a package works.</p></li>
 <span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%||%</span> <span class="fl">2</span></span>
 <span>  </span>
 <span>  <span class="va">x</span></span>
-<span><span class="op">}</span></span></code></pre></div>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>This modification should not break existing code, because expands the function interface: all previous code will continue to work, and the function will also work if the argument is passed <code>NULL</code> input (which probably didn’t previously).</p>
-<p>For functions like <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code> where <code>NULL</code> is already a permissible value, you’ll need to use a sentinel object, as described in Section <a href="def-short.html#args-default-sentinel">14.4.3</a>.</p>
-<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sentinel</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/structure.html">structure</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>, class <span class="op">=</span> <span class="st">"sentinel"</span><span class="op">)</span></span>
+<p>For functions like <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code> where <code>NULL</code> is already a permissible value, you’ll need to use a sentinel object, as described in Section @ref(args-default-sentinel).</p>
+<div class="cell" data-hash="def-magical_cache/html/unnamed-chunk-14_5035cb0c6b42f4552dafa866b629394d">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sentinel</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/structure.html">structure</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>, class <span class="op">=</span> <span class="st">"sentinel"</span><span class="op">)</span></span>
 <span><span class="va">is_sentinel</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/class.html">inherits</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"sentinel"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">data.frame_better</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span>, <span class="va">row.names</span> <span class="op">=</span> <span class="fu">sentinel</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="fu">is_sentinel</span><span class="op">(</span><span class="va">row.names</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="co"># old default behaviour</span></span>
 <span>  <span class="op">}</span></span>
-<span><span class="op">}</span></span></code></pre></div>
-
-</div>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
-  <div class="chapter-nav">
-<div class="prev"><a href="def-enum.html"><span class="header-section-number">12</span> Enumerate possible options</a></div>
-<div class="next"><a href="def-short.html"><span class="header-section-number">14</span> Keep defaults short and sweet</a></div>
-</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
-    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
-      <ul class="nav navbar-nav">
-<li><a class="nav-link" href="#def-magical"><span class="header-section-number">13</span> Avoid magical defaults</a></li>
-<li><a class="nav-link" href="#whats-the-problem-3"><span class="header-section-number">13.1</span> What’s the problem?</a></li>
-<li><a class="nav-link" href="#what-are-some-examples-5"><span class="header-section-number">13.2</span> What are some examples?</a></li>
-<li><a class="nav-link" href="#what-are-the-exceptions-2"><span class="header-section-number">13.3</span> What are the exceptions?</a></li>
-<li><a class="nav-link" href="#what-causes-the-problem"><span class="header-section-number">13.4</span> What causes the problem?</a></li>
-<li><a class="nav-link" href="#how-do-i-remediate-the-problem"><span class="header-section-number">13.5</span> How do I remediate the problem?</a></li>
-</ul>
 
-      <div class="book-extra">
-        <ul class="list-unstyled">
-<li><a id="book-source" href="http://github.com/tidyverse/design/blob/main/def-magical.Rmd">View source <i class="fab fa-github"></i></a></li>
-          <li><a id="book-edit" href="http://github.com/tidyverse/design/edit/main/def-magical.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
-        </ul>
-</div>
-    </nav>
-</div>
-
-</div>
-</div> <!-- .container -->
-
-<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
-
-  <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Tidyverse design guide</strong>" was written by Tidyverse team. </p>
+</section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+<ol>
+<li id="fn1"><p>The only exceptions are described in Sections @ref(args-mutually-exclusive) and @ref(args-compound).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./def-enum.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Enumerate possible options</span></span>
+      </a>          
   </div>
-
-  <div class="col-12 col-md-6 mt-3">
-    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  <div class="nav-page nav-page-next">
+      <a href="./def-short.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Keep defaults short and sweet</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
-
-</div></div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">Tidy design principles was written by Hadley Wickham</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a>.</div>
+  </div>
 </footer>
-</body>
-</html>
+
+
+</body></html>
