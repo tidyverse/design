@@ -1,11 +1,15 @@
 # Avoid magical defaults {#def-magical}
 
-```{r, include = FALSE, cache = FALSE}
+```{r}
+#| include = FALSE,
+#| cache = FALSE
 source("common.R")
 source("fun_def.R")
 ```
 
-```{r, eval = FALSE, include = FALSE}
+```{r}
+#| eval = FALSE,
+#| include = FALSE
 funs <- c(pkg_funs("base"), pkg_funs("stats"), pkg_funs("utils"))
 funs %>% funs_formals_keep(~ is_symbol(.x) && !is_missing(.x))
 pkg_funs("base") %>% funs_body_keep(has_call, "missing")
@@ -13,66 +17,64 @@ pkg_funs("base") %>% funs_body_keep(has_call, "missing")
 
 ## What's the problem?
 
-If a function behaves differently when the default value is supplied explicitly, we say it has a __magical default__. Magical defaults are best avoided because they make it harder to interpret the function specification.
+If a function behaves differently when the default value is supplied explicitly, we say it has a **magical default**.
+Magical defaults are best avoided because they make it harder to interpret the function specification.
 
 ## What are some examples?
 
-*   In `data.frame()`, the default argument for `row.names` is `NULL`, but
-    if you supply it directly you get a different result:
+-   In `data.frame()`, the default argument for `row.names` is `NULL`, but if you supply it directly you get a different result:
 
     ```{r}
     fun_call(data.frame)
-    
+
     x <- setNames(nm = letters[1:3])
     data.frame(x)
     data.frame(x, row.names = NULL)
     ```
-    
-*   In `hist()`, the default value of `xlim` is `range(breaks)`, and the
-    default value for `breaks` is `"Sturges"`. `range("Sturges")` returns 
-    `c("Sturges", "Sturges")` which doesn't work when supplied explicitly:
-    
-    ```{r, error = TRUE, fig.show = "hide"}
+
+-   In `hist()`, the default value of `xlim` is `range(breaks)`, and the default value for `breaks` is `"Sturges"`.
+    `range("Sturges")` returns `c("Sturges", "Sturges")` which doesn't work when supplied explicitly:
+
+    ```{r}
+    #| error = TRUE,
+    #| fig.show = "hide"
     fun_call(hist.default)
-    
+
     hist(1:10, xlim = c("Sturges", "Sturges"))
     ```
 
-*   In `Vectorize()`, the default argument for `vectorize.args` is `arg.names`, 
-    but this variable is defined inside of `Vectorize()`, so if you supply it
-    explicitly you get an error.
+-   In `Vectorize()`, the default argument for `vectorize.args` is `arg.names`, but this variable is defined inside of `Vectorize()`, so if you supply it explicitly you get an error.
 
-    ```{r, error = TRUE}
+    ```{r}
+    #| error = TRUE
     fun_call(Vectorize)
-    
+
     Vectorize(rep.int, vectorize.args = arg.names)
     ```
 
-*   In `rbeta()`, the default value of `ncp` is 0, but if you explicitly supply
-    it the function uses a different algorithm:
-    
+-   In `rbeta()`, the default value of `ncp` is 0, but if you explicitly supply it the function uses a different algorithm:
+
     ```{r}
     rbeta
     ```
-    
-*   In `table()`, the default value of `dnn` is `list.names(...)`; but 
-    `list.names()` is only defined inside of `table()`. 
-    
-*   `readr::read_csv()` has `progress = show_progress()`, but until version
-    1.3.1, `show_progress()` was not exported from the package. That means if you 
-    attempted to run it yourself, you'd see an error message:
-   
-    ```{r, error = TRUE}
+
+-   In `table()`, the default value of `dnn` is `list.names(...)`; but `list.names()` is only defined inside of `table()`.
+
+-   `readr::read_csv()` has `progress = show_progress()`, but until version 1.3.1, `show_progress()` was not exported from the package.
+    That means if you attempted to run it yourself, you'd see an error message:
+
+    ```{r}
+    #| error = TRUE
     show_progress()
     ```
 
-*   In `usethis::use_rmarkdown_template()`, `template_dir` has the default value
-    of `tolower(asciify(template_name))`, but `asciify` is not exported. That
-    means there's no way to interactively explore this default value.
+-   In `usethis::use_rmarkdown_template()`, `template_dir` has the default value of `tolower(asciify(template_name))`, but `asciify` is not exported.
+    That means there's no way to interactively explore this default value.
 
 ## What are the exceptions?
 
-It's ok to use this behaviour when you want the default value of one argument to be the same as another. For example, take `rlang::set_names()`, which allows you to create a named vector from two inputs:
+It's ok to use this behaviour when you want the default value of one argument to be the same as another.
+For example, take `rlang::set_names()`, which allows you to create a named vector from two inputs:
 
 ```{r}
 fun_call(set_names)
@@ -80,7 +82,8 @@ fun_call(set_names)
 set_names(1:3, letters[1:3])
 ```
 
-The default value for the names is the vector itself. This provides a convenient shortcut for naming a vector with itself:
+The default value for the names is the vector itself.
+This provides a convenient shortcut for naming a vector with itself:
 
 ```{r}
 set_names(letters[1:3])
@@ -88,7 +91,8 @@ set_names(letters[1:3])
 
 You can see this same technique in `merge()`, where `all.x` and `all.y` default to the same value as `all`, and in `factor()` where `labels` defaults to the same value as `levels`.
 
-If you use this technique, make sure that you never use the value of an argument that comes later in the argument list. For example, in `file.copy()` `overwrite` defaults to the same value as `recursive`, but the `recursive` argument is defined after `overwrite`:
+If you use this technique, make sure that you never use the value of an argument that comes later in the argument list.
+For example, in `file.copy()` `overwrite` defaults to the same value as `recursive`, but the `recursive` argument is defined after `overwrite`:
 
 ```{r}
 fun_call(file.copy)
@@ -100,27 +104,23 @@ This makes the defaults arguments harder to understand because you can't just re
 
 There are three primary causes:
 
-*   Overuse of lazy evaluation of default values, which are evaluated in the
-    environment of the function, as described in 
-    [Advanced R](https://adv-r.hadley.nz/functions.html#default-arguments). 
-    Here's a simple example:
-    
+-   Overuse of lazy evaluation of default values, which are evaluated in the environment of the function, as described in [Advanced R](https://adv-r.hadley.nz/functions.html#default-arguments). Here's a simple example:
+
     ```{r}
     f1 <- function(x = y) {
       y <- trunc(Sys.time(), units = "months")
       x
     }
-    
+
     y <- 1
     f1()
     f1(y)
     ```
-    
-    When `x` takes the value `y` from its default, it's evaluated inside the 
-    function, yielding `1`. When `y` is supplied explicitly, it is evaluated 
-    in the caller environment, yielding `2`.
 
-*   Use of `missing()` so that the default value is never consulted:
+    When `x` takes the value `y` from its default, it's evaluated inside the function, yielding `1`.
+    When `y` is supplied explicitly, it is evaluated in the caller environment, yielding `2`.
+
+-   Use of `missing()` so that the default value is never consulted:
 
     ```{r}
     f2 <- function(x = 1) {
@@ -130,29 +130,28 @@ There are three primary causes:
         x
       }
     }
-    
+
     f2()
     f2(1)
     ```
 
-*   In packages, it's easy to use a non-exported function without thinking 
-    about it. This function is available to you, the package author, but not 
-    the user of the package, which makes it harder for them to understand
-    how a package works.
+-   In packages, it's easy to use a non-exported function without thinking about it.
+    This function is available to you, the package author, but not the user of the package, which makes it harder for them to understand how a package works.
 
 ## How do I remediate the problem?
 
 This problem is generally easy to avoid for new functions:
 
-* Don't use default values that depend on variables defined inside the function.
+-   Don't use default values that depend on variables defined inside the function.
 
-* Don't use `missing()`[^missing-exceptions].
-  
-* Don't use unexported functions.
+-   Don't use `missing()`[^def-magical-1].
 
-[^missing-exceptions]: The only exceptions are described in Sections \@ref(args-mutually-exclusive) and \@ref(args-compound).
+-   Don't use unexported functions.
 
-If you have a made a mistake in an older function you can remediate it by using a `NULL` default, as described in Chapter \@ref(def-short). If the problem is caused by an unexported function, you can also choose to document and export it.
+[^def-magical-1]: The only exceptions are described in Sections \@ref(args-mutually-exclusive) and \@ref(args-compound).
+
+If you have a made a mistake in an older function you can remediate it by using a `NULL` default, as described in Chapter \@ref(def-short).
+If the problem is caused by an unexported function, you can also choose to document and export it.
 
 ```{r}
 `%||%` <- function(x, y) if (is.null(x)) y else x

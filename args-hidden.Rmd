@@ -1,101 +1,97 @@
 # Avoid hidden arguments {#args-hidden}
 
-```{r, include = FALSE}
+```{r}
+#| include = FALSE
 source("common.R")
 ```
 
 ## What's the problem?
 
-Functions are easier to understand if the results depend only on the values of the inputs. If a function returns surprisingly different results with the same inputs, then we say it has __hidden arguments__. Hidden arguments make code harder to reason about, because to correctly predict the output you also need to know some other state.
+Functions are easier to understand if the results depend only on the values of the inputs.
+If a function returns surprisingly different results with the same inputs, then we say it has **hidden arguments**.
+Hidden arguments make code harder to reason about, because to correctly predict the output you also need to know some other state.
 
 Related:
 
-* This pattern is about surprising inputs; [Spooky action] is about
-  suprising outputs.
+-   This pattern is about surprising inputs; \[Spooky action\] is about suprising outputs.
 
 ## What are some examples?
 
-One common source of hidden arguments is the use of global options. These can be useful to control display but, as discussed in Chapter \@ref(def-user)), should not affect computation:
+One common source of hidden arguments is the use of global options.
+These can be useful to control display but, as discussed in Chapter \@ref(def-user)), should not affect computation:
 
-*   The result of `data.frame(x = "a")$x` depends on the value of the global
-    `stringsAsFactors` option: if it's `TRUE` (the default) you get a factor;
-    if it's false, you get a character vector. 
-  
-*   `lm()`'s handling of missing values depends on the global option of
-    `na.action`. The default is `na.omit` which drops the missing values
-    prior to fitting the model (which is inconvenient because then the results 
-    of `predict()` don't line up with the input data. `modelr::na.warn()`
-    provides an approach more in line with other base behaviours: it drops 
-    missing values with a warning.)
+-   The result of `data.frame(x = "a")$x` depends on the value of the global `stringsAsFactors` option: if it's `TRUE` (the default) you get a factor; if it's false, you get a character vector.
+
+-   `lm()`'s handling of missing values depends on the global option of `na.action`.
+    The default is `na.omit` which drops the missing values prior to fitting the model (which is inconvenient because then the results of `predict()` don't line up with the input data.
+    `modelr::na.warn()` provides an approach more in line with other base behaviours: it drops missing values with a warning.)
 
 Another common source of hidden inputs is the system locale:
-  
-*   `strptime()` relies on the names of weekdays and months in the current 
-    locale. That means `strptime("1 Jan 2020", "%d %b %Y")` will work on 
-    computers with an English locale, and fail elsewhere. This is particularly
-    troublesome for Europeans who frequently have colleagues who speak a 
-    different language.
-  
-*  `as.POSIXct()` depends on the current timezone. The following code returns
-   different underlying times when run on different computers:
+
+-   `strptime()` relies on the names of weekdays and months in the current locale.
+    That means `strptime("1 Jan 2020", "%d %b %Y")` will work on computers with an English locale, and fail elsewhere.
+    This is particularly troublesome for Europeans who frequently have colleagues who speak a different language.
+
+-   `as.POSIXct()` depends on the current timezone.
+    The following code returns different underlying times when run on different computers:
 
     ```{r}
     as.POSIXct("2020-01-01 09:00")
     ```
-  
-*   `toupper()` and `tolower()` depend on the current locale. It is faily 
-    uncommon for this to cause problems because most languages either
-    use their own character set, or use the same rules for capitalisation as 
-    English. However, this behaviour did cause a bug in ggplot2 because 
-    internally it takes `geom = "identity"` and turns it into `GeomIdentity` 
-    to find the object that actually does computation. In Turkish, however, the 
-    upper case version of i is İ, and `Geomİdentity` does not exist. This 
-    meant that for some time ggplot2 did not work on Turkish computers.
-  
+
+-   `toupper()` and `tolower()` depend on the current locale.
+    It is faily uncommon for this to cause problems because most languages either use their own character set, or use the same rules for capitalisation as English.
+    However, this behaviour did cause a bug in ggplot2 because internally it takes `geom = "identity"` and turns it into `GeomIdentity` to find the object that actually does computation.
+    In Turkish, however, the upper case version of i is İ, and `Geomİdentity` does not exist.
+    This meant that for some time ggplot2 did not work on Turkish computers.
+
     ```{r}
     library(stringr)
-    
+
     str_to_upper("i")
     str_to_upper("i", locale = "tr")
     ```
-  
-*   For similar reasons, `sort()` and `order()` rely on the lexicographic
-    order defined by the current locale. `factor()` uses `order()`, so the
-    results from factor depend implicitly on the current locale. (This is
-    not an imaginary problem as this 
-    [SO question](https://stackoverflow.com/questions/39339489)) attests).
+
+-   For similar reasons, `sort()` and `order()` rely on the lexicographic order defined by the current locale.
+    `factor()` uses `order()`, so the results from factor depend implicitly on the current locale.
+    (This is not an imaginary problem as this [SO question](https://stackoverflow.com/questions/39339489)) attests).
 
 Some functions depend on external settings, but not in a surprising way:
-  
-* `Sys.time()` depends on the system time, but it's not a surprise: getting
-  the current time is to the whole point of the function!
 
-* `read.csv(path)` depends not on the value of `path` but the contents of the 
-  file at that location. Reading from the file system necessarily implies that
-  the results depend on the contents of the file, not its path, so this is not
-  a surprise.
+-   `Sys.time()` depends on the system time, but it's not a surprise: getting the current time is to the whole point of the function!
 
-* Random number generators like `runif()` peek at the value of the special 
-  global variable `.Random.seed`. This is a little surprising, but if they 
-  didn't have some global state every call to `runif()` would return the 
-  same value.
+-   `read.csv(path)` depends not on the value of `path` but the contents of the file at that location.
+    Reading from the file system necessarily implies that the results depend on the contents of the file, not its path, so this is not a surprise.
+
+-   Random number generators like `runif()` peek at the value of the special global variable `.Random.seed`.
+    This is a little surprising, but if they didn't have some global state every call to `runif()` would return the same value.
 
 ## Why is it important?
 
-Hidden arguments are bad because they make it much harder to predict the output of a fuction. The worst offender by far is the `stringsAsFactors` option which changes how a number of functions (including `data.frame()`, `as.data.frame()`, and `read.csv()`) treat character vectors. This exists mostly for historical reasons, as described in [*stringsAsFactors: An unauthorized biography*](http://simplystatistics.org/2015/07/24/stringsasfactors-an-unauthorized-biography/) by Roger Peng and [*stringsAsFactors = \<sigh\>*](http://notstatschat.tumblr.com/post/124987394001/stringsasfactors-sigh)
-by Thomas Lumley. )
+Hidden arguments are bad because they make it much harder to predict the output of a fuction.
+The worst offender by far is the `stringsAsFactors` option which changes how a number of functions (including `data.frame()`, `as.data.frame()`, and `read.csv()`) treat character vectors.
+This exists mostly for historical reasons, as described in [*stringsAsFactors: An unauthorized biography*](http://simplystatistics.org/2015/07/24/stringsasfactors-an-unauthorized-biography/) by Roger Peng and [*stringsAsFactors = \<sigh\>*](http://notstatschat.tumblr.com/post/124987394001/stringsasfactors-sigh) by Thomas Lumley.
+)
 
-Allowing the system locale to affect the result of a function is a subtle source of bugs when sharing code between people who work in different countries. To be clear, these defaults on rarely cause problems because most languages that share the same writing system share (most of) the same collation rules. The main exceptions tend to be European languages which have varying rules for modified letters, e.g. in Norwegian, å comes at the end of the alphabet. However, when they do cause problems they will take a long time to track down: you're unlikely to expect that the coefficients of a linear model are different[^alpha-contrast] because your code is run in a different country! 
+Allowing the system locale to affect the result of a function is a subtle source of bugs when sharing code between people who work in different countries.
+To be clear, these defaults on rarely cause problems because most languages that share the same writing system share (most of) the same collation rules.
+The main exceptions tend to be European languages which have varying rules for modified letters, e.g. in Norwegian, å comes at the end of the alphabet.
+However, when they do cause problems they will take a long time to track down: you're unlikely to expect that the coefficients of a linear model are different[^args-hidden-1] because your code is run in a different country!
 
-[^alpha-contrast]: You'll get different coefficients for a categorical predictor if the ordering means that a different levels comes first in the alphabet. The predictions and other diagnostics won't be affected, but you're likely to be surprised that your coefficients are different.
+[^args-hidden-1]: You'll get different coefficients for a categorical predictor if the ordering means that a different levels comes first in the alphabet.
+    The predictions and other diagnostics won't be affected, but you're likely to be surprised that your coefficients are different.
 
 ## How can I remediate the problem?
 
-Generally, hidden arguments are easy to avoid when creating new functions: simply avoid depending on environment variables (like the locale), or global options (like `stringsAsFactors`). The easiest way for problems to creep in is for you to not realise a function has hidden inputs; make sure to consult the list of common offenders provided above.
+Generally, hidden arguments are easy to avoid when creating new functions: simply avoid depending on environment variables (like the locale), or global options (like `stringsAsFactors`).
+The easiest way for problems to creep in is for you to not realise a function has hidden inputs; make sure to consult the list of common offenders provided above.
 
-If you must depend on an environment variable or option, make sure it's an explicit argument, as in Chapter \@ref(def-user). Such arguments generally should not affect computation (only side-effects like printed output or status messages); if they do affect results, follow Chapter \@ref(def-inform) to make sure to inform the user what's happening.
+If you must depend on an environment variable or option, make sure it's an explicit argument, as in Chapter \@ref(def-user).
+Such arguments generally should not affect computation (only side-effects like printed output or status messages); if they do affect results, follow Chapter \@ref(def-inform) to make sure to inform the user what's happening.
 
-If you have an existing function with a hidden input, you'll need to take both steps above. First make sure the input is an explicit option, and then make sure it's printed. For example, lets take `as.POSIXct()` which basically looks something like this:
+If you have an existing function with a hidden input, you'll need to take both steps above.
+First make sure the input is an explicit option, and then make sure it's printed.
+For example, lets take `as.POSIXct()` which basically looks something like this:
 
 ```{r}
 as.POSIXct <- function(x, tz = "") {
@@ -104,7 +100,8 @@ as.POSIXct <- function(x, tz = "") {
 as.POSIXct("2020-01-01 09:00")
 ```
 
-The `tz` argument is present, but it's not obvious that `""` means take from the system timezone. Let's first make that explicit:
+The `tz` argument is present, but it's not obvious that `""` means take from the system timezone.
+Let's first make that explicit:
 
 ```{r}
 as.POSIXct <- function(x, tz = Sys.timezone()) {
@@ -124,5 +121,3 @@ as.POSIXct <- function(x, tz = Sys.timezone()) {
 }
 as.POSIXct("2020-01-01 09:00")
 ```
-
-

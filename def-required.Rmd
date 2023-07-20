@@ -1,6 +1,7 @@
 # Required args shouldn't have defaults {#def-required}
 
-```{r, include = FALSE}
+```{r}
+#| include = FALSE
 source("common.R")
 ```
 
@@ -8,53 +9,46 @@ source("common.R")
 
 The absence of a default value should imply than an argument is required; the presence of a default should imply that an argument is optional.
 
-When reading a function, it's important to be able to tell at a glance which arguments must be supplied and which are optional. Otherwise you need to rely on the user having carefully read the documentation.
+When reading a function, it's important to be able to tell at a glance which arguments must be supplied and which are optional.
+Otherwise you need to rely on the user having carefully read the documentation.
 
 ## What are some examples?
 
-*   In `sample()` neither `x` not `size` has a default value, suggesting that
-    both are required, and the function would error if you didn't supply them.
+-   In `sample()` neither `x` not `size` has a default value, suggesting that both are required, and the function would error if you didn't supply them.
     But `size` is optional, determined by a complex conditional.
-    
+
     ```{r}
     sample(1:4)
     sample(4)
     ```
 
-*   `rt()` (draw random numbers from the t-distribution) looks like it 
-    requires the `ncp` parameter but it doesn't.
+-   `rt()` (draw random numbers from the t-distribution) looks like it requires the `ncp` parameter but it doesn't.
 
-*   `download.file()` looks like it requires the `method` argument but 
-    actually consults a global option (`download.file.method`) if it's not
-    supplied.
+-   `download.file()` looks like it requires the `method` argument but actually consults a global option (`download.file.method`) if it's not supplied.
 
-*   `lm()` does not have defaults for `formula`, `data`, `subset`, `weights`, 
-    `na.action`, or `offset`. Only `formula` is actually required, but even 
-    its absence fails to generate a clear error message:
-    
-    ```{r, error = TRUE}
+-   `lm()` does not have defaults for `formula`, `data`, `subset`, `weights`, `na.action`, or `offset`.
+    Only `formula` is actually required, but even its absence fails to generate a clear error message:
+
+    ```{r}
+    #| error = TRUE
     lm()
     ```
-    
-*   `help()` and `vignette()` have no default for their first argument, 
-    suggesting that they're required. But they're not: calling `help()` or
-    `vignette()` without any arguments lists all help topics and vignettes 
-    respectively.
- 
-*   In `diag()`, the argument `x` has a default `1`, but it's required: if 
-    you don't supply it you get an error:
-    
-    ```{r, error = TRUE}
+
+-   `help()` and `vignette()` have no default for their first argument, suggesting that they're required.
+    But they're not: calling `help()` or `vignette()` without any arguments lists all help topics and vignettes respectively.
+
+-   In `diag()`, the argument `x` has a default `1`, but it's required: if you don't supply it you get an error:
+
+    ```{r}
+    #| error = TRUE
     diag()
     diag(x = 1)
     ```
-    
+
     Conversely, `nrow` and `ncol` don't have defaults but aren't required.
 
-*   In `ggplot2::geom_abline()`, `slope` and `intercept` don't have defaults 
-    but are not required. If you don't supply them they default to `slope = 1` 
-    and `intercept = 0`, *or* are taken from `aes()` if they're provided
-    there.
+-   In `ggplot2::geom_abline()`, `slope` and `intercept` don't have defaults but are not required.
+    If you don't supply them they default to `slope = 1` and `intercept = 0`, *or* are taken from `aes()` if they're provided there.
 
 A common warning sign is the use of `missing()` inside the function.
 
@@ -62,11 +56,10 @@ A common warning sign is the use of `missing()` inside the function.
 
 There are two exceptions to this rule:
 
-* A pair of arguments that provide an alternative specification for the same
-  underlying concept. It is only ever possible to supply one argument.
-  
-* When you can either supply one complex object, or a handful of simpler 
-  objects.
+-   A pair of arguments that provide an alternative specification for the same underlying concept.
+    It is only ever possible to supply one argument.
+
+-   When you can either supply one complex object, or a handful of simpler objects.
 
 In both cases, I believe the benefits outweigh the costs of violating a standard pattern.
 
@@ -74,22 +67,18 @@ In both cases, I believe the benefits outweigh the costs of violating a standard
 
 A number of functions that allow you to supply exactly one of two possible arguments:
 
-* `read.table()` allows you to supply data either with a path to a `file`,
-  or inline as `text`.
+-   `read.table()` allows you to supply data either with a path to a `file`, or inline as `text`.
 
-* `rvest::html_node()` allows you to select HTML nodes either with a `css` 
-  selector or an `xpath` expression.
-  
-* `forcats::fct_other()` allows you to either `keep` or `drop` specified 
-  factor values.
+-   `rvest::html_node()` allows you to select HTML nodes either with a `css` selector or an `xpath` expression.
 
-* `modelr::seq_range()` allows you create a sequence over the range of `x` by 
-  either specifying the length of the sequence (with `n`) or the distance 
-  between values (with `by`).
-  
+-   `forcats::fct_other()` allows you to either `keep` or `drop` specified factor values.
+
+-   `modelr::seq_range()` allows you create a sequence over the range of `x` by either specifying the length of the sequence (with `n`) or the distance between values (with `by`).
+
 If you use this technique, use `xor()` and `missing()` to check that exactly one argument is supplied:
 
-```{r, eval = FALSE}
+```{r}
+#| eval = FALSE
 if (!xor(missing(keep), missing(drop))) {
   stop("Must supply exactly one of `keep` and `drop`", call. = FALSE)
 }
@@ -105,24 +94,25 @@ And in the documentation, make it clear that only one of the pair can be supplie
 #'     as is.
 ```
 
-This technique should only be used for are exactly two possible arguments. If there are more than two , that is generally a sign you should create more functions. See case studies in Chapter \@ref(cs-rep) and Section \@ref(cs-fct-lump) for examples.
+This technique should only be used for are exactly two possible arguments.
+If there are more than two , that is generally a sign you should create more functions.
+See case studies in Chapter \@ref(cs-rep) and Section \@ref(cs-fct-lump) for examples.
 
 ### One compound argument vs multiple simple arguments {#args-compound}
 
-A related, if less generally useful, form is to allow the user to supply either a single complex argument or several smaller arguments. For example:
+A related, if less generally useful, form is to allow the user to supply either a single complex argument or several smaller arguments.
+For example:
 
-* `stringr::str_sub(x, cbind(start, end))` is equivalent to 
-  `str_sub(x, start, end)`.
-  
-* `stringr::str_replace_all(x, c(pattern = replacement))` is equivalent to
-  `stringr(x, pattern, replacement)`.
-  
-* `rgb(cbind(r, g, b))` is equivalent to `rgb(r, g, b)` (See Chapter 
-  \@ref(cs-rgb) for more details).
-  
-* `options(list(a = 1, b = 2))` is equivalent to `options(a = 1, b = 2)`.
+-   `stringr::str_sub(x, cbind(start, end))` is equivalent to `str_sub(x, start, end)`.
 
-The most compelling reason to provide this sort of interface is when another function might return a complex output that you want to use as an input. For example, it seems reasonable that you should be able to feed the output of `str_locate()` directly into `str_sub()`:
+-   `stringr::str_replace_all(x, c(pattern = replacement))` is equivalent to `stringr(x, pattern, replacement)`.
+
+-   `rgb(cbind(r, g, b))` is equivalent to `rgb(r, g, b)` (See Chapter \@ref(cs-rgb) for more details).
+
+-   `options(list(a = 1, b = 2))` is equivalent to `options(a = 1, b = 2)`.
+
+The most compelling reason to provide this sort of interface is when another function might return a complex output that you want to use as an input.
+For example, it seems reasonable that you should be able to feed the output of `str_locate()` directly into `str_sub()`:
 
 ```{r}
 library(stringr)

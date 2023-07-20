@@ -1,15 +1,16 @@
 # Case study: `mapply()` vs `pmap()` {#cs-mapply-pmap}
 
-```{r, include = FALSE}
+```{r}
+#| include = FALSE
 source("common.R")
 ```
-
 
 ```{r}
 library(purrr)
 ```
 
-It's useful to compare `mapply()` to `purrr::pmap()`. They both are an attempt to solve a similar problem, extending `lapply()`/`map()` to handle iterating over any number of arguments. 
+It's useful to compare `mapply()` to `purrr::pmap()`.
+They both are an attempt to solve a similar problem, extending `lapply()`/`map()` to handle iterating over any number of arguments.
 
 ```{r}
 args(mapply)
@@ -27,7 +28,9 @@ mapply(gsub, pattern, replacement, x)
 purrr::pmap_chr(list(pattern, replacement, x), gsub)
 ```
 
-Here we'll ignore `simplify = TRUE` which makes `mapply()` type-unstable by default. I'll also ignore `USE.NAMES = TRUE` which isn't just about using names, but about using character vector input as names for output. I think it's reused from `lapply()` without too much thought as it's only the names of the first argument that matter.
+Here we'll ignore `simplify = TRUE` which makes `mapply()` type-unstable by default.
+I'll also ignore `USE.NAMES = TRUE` which isn't just about using names, but about using character vector input as names for output.
+I think it's reused from `lapply()` without too much thought as it's only the names of the first argument that matter.
 
 ```{r}
 mapply(toupper, letters[1:3])
@@ -37,15 +40,19 @@ mapply(toupper, setNames(letters[1:3], c("X", "Y", "Z")))
 pmap_chr(list(letters[1:3]), toupper)
 ```
 
-`mapply()` takes the function to apply as the first argument, followed by an arbitrary number of arguments to pass to the function. This makes it different to the other `apply()` functions (including `lapply()`, `sapply()` and `tapply()`), which take the data as the first argument. `mapply()` could take `...` as the first arguments, but that would force `FUN` to always be named, which would also make it inconsistent with the other `apply()` functions. 
+`mapply()` takes the function to apply as the first argument, followed by an arbitrary number of arguments to pass to the function.
+This makes it different to the other `apply()` functions (including `lapply()`, `sapply()` and `tapply()`), which take the data as the first argument.
+`mapply()` could take `...` as the first arguments, but that would force `FUN` to always be named, which would also make it inconsistent with the other `apply()` functions.
 
-`pmap()` avoids this problem by taking a list of vectors, rather than individual vectors in `...`. This allows `pmap()` to use `...` for another purpose, instead of the `MoreArg` argument (a list), `pmap()` passes `...` on to `.f`.
+`pmap()` avoids this problem by taking a list of vectors, rather than individual vectors in `...`.
+This allows `pmap()` to use `...` for another purpose, instead of the `MoreArg` argument (a list), `pmap()` passes `...` on to `.f`.
 
 ```{r}
 mapply(gsub, pattern, replacement, x, fixed = TRUE)
 purrr::pmap_chr(list(pattern, replacement, x), gsub, fixed = TRUE)
 ```
 
-There's a subtle difference here that doesn't matter in most cases - in the `mapply()` `fixed` is recycled to the same length as `pattern` whereas it is not `pmap()`. TODO: figure out example where that's more clear.
+There's a subtle difference here that doesn't matter in most cases - in the `mapply()` `fixed` is recycled to the same length as `pattern` whereas it is not `pmap()`.
+TODO: figure out example where that's more clear.
 
 (Also note that `pmap()` uses the `.` prefix to avoid the problem described in Chapter \@ref(dots-prefix).)

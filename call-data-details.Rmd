@@ -1,21 +1,20 @@
 # Name details arguments {#call-data-details}
 
-```{r, include = FALSE}
+```{r}
+#| include = FALSE
 source("common.R")
 ```
 
 ## What are data and details arguments?
 
-The arguments to a function typically fall into two broad sets: one set supplies the __data__ to compute on, and the other supplies arguments that control the __details__ of the computation. For example:
+The arguments to a function typically fall into two broad sets: one set supplies the **data** to compute on, and the other supplies arguments that control the **details** of the computation.
+For example:
 
-* In `log()`, the data is `x`, and the detail is the `base` of the logarithm.
+-   In `log()`, the data is `x`, and the detail is the `base` of the logarithm.
 
-* In `mean()`, the data is `x`, and the details are how much data to trim
-  from the ends (`trim`) and how to handle missing values (`na.rm`).
+-   In `mean()`, the data is `x`, and the details are how much data to trim from the ends (`trim`) and how to handle missing values (`na.rm`).
 
-* In `t.test()`, the data are `x` and `y`, and the details of the test are
-  specified by the `alternative`, `mu`, `paired`, `var.equal`, and `conf.level`
-  arguments.
+-   In `t.test()`, the data are `x` and `y`, and the details of the test are specified by the `alternative`, `mu`, `paired`, `var.equal`, and `conf.level` arguments.
 
 Typically, data arguments don't have default values, and work with vectors or data frames, while details arguments have defaults, and take single values (like `TRUE` or `FALSE`, or a single string that specifies a method).
 
@@ -33,9 +32,12 @@ mean(x = y, , TRUE)
 mean(, TRUE, x = y)
 ```
 
-Never use partial matching, which allows you to refer to an argument by a unique prefix, e.g. `mean(x, n = TRUE)`. Partial matching was useful in the early days of R because when you were doing a quick and dirty interactive analysis you could save a little time by shortening argument names. However, today, most R editing environments support autocomplete so partial matching only saves you a single keystroke, and it makes code substantially harder to read.
+Never use partial matching, which allows you to refer to an argument by a unique prefix, e.g. `mean(x, n = TRUE)`.
+Partial matching was useful in the early days of R because when you were doing a quick and dirty interactive analysis you could save a little time by shortening argument names.
+However, today, most R editing environments support autocomplete so partial matching only saves you a single keystroke, and it makes code substantially harder to read.
 
-You can make R give you are warning that you're using a partially named argument with a special option. Call `usethis::use_partial_warnings()` to make this the default for all R sessions.
+You can make R give you are warning that you're using a partially named argument with a special option.
+Call `usethis::use_partial_warnings()` to make this the default for all R sessions.
 
 ```{r}
 options(warnPartialMatchArgs = TRUE)
@@ -44,23 +46,29 @@ mean(x = 1:10, n = FALSE)
 
 ## Why is this useful?
 
-I think it's reasonable to assume that the reader knows what a function does then they know what the data arguments are (and their order), and repeating their names just takes up space without aiding communication. This then leads naturally to `%>%` where you don't specify the name of the first argument either (since it comes from the left-hand side of `%>%`.)
+I think it's reasonable to assume that the reader knows what a function does then they know what the data arguments are (and their order), and repeating their names just takes up space without aiding communication.
+This then leads naturally to `%>%` where you don't specify the name of the first argument either (since it comes from the left-hand side of `%>%`.)
 
-However, I don't think it's reasonable to expect that people will remember the order of the details arguments. For example, I don't think that most people know that the second argument to `mean()` is `trim`, even though `mean()` is an extremely commonly used function. Spelling the names out in 
+However, I don't think it's reasonable to expect that people will remember the order of the details arguments.
+For example, I don't think that most people know that the second argument to `mean()` is `trim`, even though `mean()` is an extremely commonly used function.
+Spelling the names out in
 
 ## What are the exceptions?
 
-I think the main exception to this rule is when you are teaching a function for the first time. It makes sense to emphasis the names of the data arguments to help people understand exactly what's going on. For example, in [R for data science](https://r4ds.had.co.nz/data-visualisation.html) when we introduce ggplot2 we write code like:
+I think the main exception to this rule is when you are teaching a function for the first time.
+It makes sense to emphasis the names of the data arguments to help people understand exactly what's going on.
+For example, in [R for data science](https://r4ds.had.co.nz/data-visualisation.html) when we introduce ggplot2 we write code like:
 
-```{r, eval = FALSE}
+```{r}
+#| eval = FALSE
 ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
   geom_point()
 ```
 
 At the end of the chapter, we assume that the reader is familiar with the basic structure and so the rest of the book uses the style recommended here:
 
-```{r, eval = FALSE}
+```{r}
+#| eval = FALSE
 ggplot(mpg, aes(displ, hwy)) + 
   geom_point()
 ```
-
