@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.433">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Hadley Wickham">
-<title>Tidy design principles - 27&nbsp; Side-effect functions should return invisibly</title>
+<title>Tidy design principles - 26&nbsp; Side-effect functions should return invisibly</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -100,7 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./out-multi.html">Outputs</a></li><li class="breadcrumb-item"><a href="./out-invisible.html"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Side-effect functions should return invisibly</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./out-multi.html">Outputs</a></li><li class="breadcrumb-item"><a href="./out-invisible.html"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Side-effect functions should return invisibly</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -137,14 +137,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./structure.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Structure</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./unifying.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Unifying principles</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Unifying principles</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -159,19 +153,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./names.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Names attribute</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Names attribute</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./call-data-details.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Name details arguments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Name details arguments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./function-names.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Function names</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Function names</span></span></a>
   </div>
 </li>
       </ul>
@@ -188,13 +182,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./args-hidden.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Avoid hidden arguments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Avoid hidden arguments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./args-data-details.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dots-position.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Put <code>…</code> before optional arguments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -281,32 +281,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./dots-position.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Data, dots, details</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./dots-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Making data with …</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Making data with …</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dots-prefix.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Dot prefix</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Dot prefix</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dots-inspect.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Inspect the dots</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Inspect the dots</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-mapply-pmap.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/mapply.html">mapply()</a></code> vs <code>pmap()</code>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/mapply.html">mapply()</a></code> vs <code>pmap()</code>
   </div>
 </li>
       </ul>
@@ -323,25 +317,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-multi.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Returning multiple values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Returning multiple values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-type-stability.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Type-stability</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Type-stability</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-vectorisation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Vectorisation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Vectorisation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-invisible.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Side-effect functions should return invisibly</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Side-effect functions should return invisibly</span></span></a>
   </div>
 </li>
       </ul>
@@ -358,7 +352,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./changes-multivers.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Work with multiple dependency versions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Work with multiple dependency versions</span></span></a>
   </div>
 </li>
       </ul>
@@ -375,13 +369,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./side-effects.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Side-effect soup</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Side-effect soup</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./spooky-action.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Spooky action</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Spooky action</span></span></a>
   </div>
 </li>
       </ul>
@@ -398,13 +392,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./err-call.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Error call</span></span></a>
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Error call</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./err-constructor.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Error constructors</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Error constructors</span></span></a>
   </div>
 </li>
       </ul>
@@ -434,14 +428,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#whats-the-pattern" id="toc-whats-the-pattern" class="nav-link active" data-scroll-target="#whats-the-pattern"><span class="header-section-number">27.1</span> What’s the pattern?</a></li>
-  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">27.2</span> What are some examples?</a></li>
-  <li><a href="#why-is-it-important" id="toc-why-is-it-important" class="nav-link" data-scroll-target="#why-is-it-important"><span class="header-section-number">27.3</span> Why is it important?</a></li>
+<li><a href="#whats-the-pattern" id="toc-whats-the-pattern" class="nav-link active" data-scroll-target="#whats-the-pattern"><span class="header-section-number">26.1</span> What’s the pattern?</a></li>
+  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">26.2</span> What are some examples?</a></li>
+  <li><a href="#why-is-it-important" id="toc-why-is-it-important" class="nav-link" data-scroll-target="#why-is-it-important"><span class="header-section-number">26.3</span> Why is it important?</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/out-invisible.Rmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-out-invisible" class="quarto-section-identifier"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Side-effect functions should return invisibly</span></span></h1>
+<h1 class="title"><span id="sec-out-invisible" class="quarto-section-identifier"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Side-effect functions should return invisibly</span></span></h1>
 </div>
 
 
@@ -454,11 +448,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header><section id="whats-the-pattern" class="level2" data-number="27.1"><h2 data-number="27.1" class="anchored" data-anchor-id="whats-the-pattern">
-<span class="header-section-number">27.1</span> What’s the pattern?</h2>
+</header><section id="whats-the-pattern" class="level2" data-number="26.1"><h2 data-number="26.1" class="anchored" data-anchor-id="whats-the-pattern">
+<span class="header-section-number">26.1</span> What’s the pattern?</h2>
 <p>If a function is called primarily for its side-effects, it should invisibly return a useful output. If there’s no obvious output, return the first argument. This makes it possible to use the function with in a pipeline.</p>
-</section><section id="what-are-some-examples" class="level2" data-number="27.2"><h2 data-number="27.2" class="anchored" data-anchor-id="what-are-some-examples">
-<span class="header-section-number">27.2</span> What are some examples?</h2>
+</section><section id="what-are-some-examples" class="level2" data-number="26.2"><h2 data-number="26.2" class="anchored" data-anchor-id="what-are-some-examples">
+<span class="header-section-number">26.2</span> What are some examples?</h2>
 <ul>
 <li><p><code>print(x)</code> invisibly returns the printed object.</p></li>
 <li><p><code>x &lt;- y</code> invisible returns <code>y</code>. This is what makes it possible to chain together multiple assignments <code>x &lt;- y &lt;- z &lt;- 1</code></p></li>
@@ -466,8 +460,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><code><a href="https://purrr.tidyverse.org/reference/map.html">purrr::walk()</a></code> invisibly returns the vector iterated over.</p></li>
 <li><p><code>fs:file_copy(from, to)</code> returns <code>to</code></p></li>
 <li><p><code><a href="https://rdrr.io/r/base/options.html">options()</a></code> and <code><a href="https://rdrr.io/r/graphics/par.html">par()</a></code> invisibly return the previous value so you can reset with <code><a href="https://rdrr.io/r/base/on.exit.html">on.exit()</a></code>.</p></li>
-</ul></section><section id="why-is-it-important" class="level2" data-number="27.3"><h2 data-number="27.3" class="anchored" data-anchor-id="why-is-it-important">
-<span class="header-section-number">27.3</span> Why is it important?</h2>
+</ul></section><section id="why-is-it-important" class="level2" data-number="26.3"><h2 data-number="26.3" class="anchored" data-anchor-id="why-is-it-important">
+<span class="header-section-number">26.3</span> Why is it important?</h2>
 <p>Invisibly returning the first argument allows to call the function mid-pipe for its side-effects while allow the primary data to continue flowing through the pipe. This is useful for generating intermediate diagnostics, or for saving multiple output formats.</p>
 <div class="cell" data-hash="out-invisible_cache/html/unnamed-chunk-3_e99f74d5baa74d7b648f1da54188d5f6">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span>, warn.conflicts <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
@@ -512,20 +506,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="fu"><a href="https://fs.r-lib.org/reference/path.html">path</a></span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://fs.r-lib.org/reference/create.html">file_create</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">paths</span></span>
-<span><span class="co">#&gt; /tmp/RtmpmGggse/file1bf73668c7fb/a /tmp/RtmpmGggse/file1bf73668c7fb/b </span></span>
-<span><span class="co">#&gt; /tmp/RtmpmGggse/file1bf73668c7fb/c /tmp/RtmpmGggse/file1bf73668c7fb/d </span></span>
-<span><span class="co">#&gt; /tmp/RtmpmGggse/file1bf73668c7fb/e</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; /tmp/RtmporP7jL/file1bbe4590fb10/a /tmp/RtmporP7jL/file1bbe4590fb10/b </span></span>
+<span><span class="co">#&gt; /tmp/RtmporP7jL/file1bbe4590fb10/c /tmp/RtmporP7jL/file1bbe4590fb10/d </span></span>
+<span><span class="co">#&gt; /tmp/RtmporP7jL/file1bbe4590fb10/e</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Functions that modify some global state, like <code><a href="https://rdrr.io/r/base/options.html">options()</a></code> or <code><a href="https://rdrr.io/r/graphics/par.html">par()</a></code>, should return the <em>previous</em> value of the variables. This, in combination with <a href="def-required.html#sec-args-compound"><span>Section&nbsp;11.3.2</span></a>, makes it possible to easily reset the effect of the change:</p>
 <div class="cell" data-hash="out-invisible_cache/html/unnamed-chunk-6_f8776161c7006bd17b66da7e5c8c3688">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">old</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="va">x</span></span>
-<span><span class="co">#&gt; [1] 0.0528</span></span>
+<span><span class="co">#&gt; [1] 0.366</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span><span class="va">old</span><span class="op">)</span></span>
 <span><span class="va">x</span></span>
-<span><span class="co">#&gt; [1] 0.05279008</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; [1] 0.3664838</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
@@ -763,12 +757,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./out-vectorisation.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Vectorisation</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Vectorisation</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./changes-multivers.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Work with multiple dependency versions</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Work with multiple dependency versions</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

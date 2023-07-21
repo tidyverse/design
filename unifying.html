@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.433">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Hadley Wickham">
-<title>Tidy design principles - 3&nbsp; Unifying principles</title>
+<title>Tidy design principles - 2&nbsp; Unifying principles</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -28,7 +28,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./names.html" rel="next">
-<link href="./structure.html" rel="prev">
+<link href="./index.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -66,7 +66,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./unifying.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Unifying principles</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./unifying.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Unifying principles</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -103,14 +103,8 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./structure.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Structure</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./unifying.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Unifying principles</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Unifying principles</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -125,19 +119,19 @@ ul.task-list li input[type="checkbox"] {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./names.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Names attribute</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Names attribute</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./call-data-details.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Name details arguments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Name details arguments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./function-names.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Function names</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Function names</span></span></a>
   </div>
 </li>
       </ul>
@@ -154,13 +148,19 @@ ul.task-list li input[type="checkbox"] {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./args-hidden.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Avoid hidden arguments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Avoid hidden arguments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./args-data-details.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dots-position.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Put <code>…</code> before optional arguments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -247,32 +247,26 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./dots-position.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Data, dots, details</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./dots-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Making data with …</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Making data with …</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dots-prefix.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Dot prefix</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Dot prefix</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dots-inspect.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Inspect the dots</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Inspect the dots</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-mapply-pmap.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/mapply.html">mapply()</a></code> vs <code>pmap()</code>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/mapply.html">mapply()</a></code> vs <code>pmap()</code>
   </div>
 </li>
       </ul>
@@ -289,25 +283,25 @@ ul.task-list li input[type="checkbox"] {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-multi.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Returning multiple values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Returning multiple values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-type-stability.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Type-stability</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Type-stability</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-vectorisation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Vectorisation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Vectorisation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-invisible.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Side-effect functions should return invisibly</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Side-effect functions should return invisibly</span></span></a>
   </div>
 </li>
       </ul>
@@ -324,7 +318,7 @@ ul.task-list li input[type="checkbox"] {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./changes-multivers.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Work with multiple dependency versions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Work with multiple dependency versions</span></span></a>
   </div>
 </li>
       </ul>
@@ -341,13 +335,13 @@ ul.task-list li input[type="checkbox"] {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./side-effects.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Side-effect soup</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Side-effect soup</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./spooky-action.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Spooky action</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Spooky action</span></span></a>
   </div>
 </li>
       </ul>
@@ -364,13 +358,13 @@ ul.task-list li input[type="checkbox"] {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./err-call.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Error call</span></span></a>
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Error call</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./err-constructor.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Error constructors</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Error constructors</span></span></a>
   </div>
 </li>
       </ul>
@@ -401,16 +395,16 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
 <li><a href="#related-work" id="toc-related-work" class="nav-link active" data-scroll-target="#related-work">Related work</a></li>
-  <li><a href="#human-centered" id="toc-human-centered" class="nav-link" data-scroll-target="#human-centered"><span class="header-section-number">3.1</span> Human centered</a></li>
-  <li><a href="#consistent" id="toc-consistent" class="nav-link" data-scroll-target="#consistent"><span class="header-section-number">3.2</span> Consistent</a></li>
-  <li><a href="#composable" id="toc-composable" class="nav-link" data-scroll-target="#composable"><span class="header-section-number">3.3</span> Composable</a></li>
-  <li><a href="#inclusive" id="toc-inclusive" class="nav-link" data-scroll-target="#inclusive"><span class="header-section-number">3.4</span> Inclusive</a></li>
+  <li><a href="#human-centered" id="toc-human-centered" class="nav-link" data-scroll-target="#human-centered"><span class="header-section-number">2.1</span> Human centered</a></li>
+  <li><a href="#consistent" id="toc-consistent" class="nav-link" data-scroll-target="#consistent"><span class="header-section-number">2.2</span> Consistent</a></li>
+  <li><a href="#composable" id="toc-composable" class="nav-link" data-scroll-target="#composable"><span class="header-section-number">2.3</span> Composable</a></li>
+  <li><a href="#inclusive" id="toc-inclusive" class="nav-link" data-scroll-target="#inclusive"><span class="header-section-number">2.4</span> Inclusive</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/unifying.Rmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title">
-<span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Unifying principles</span>
+<span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Unifying principles</span>
 </h1>
 </div>
 
@@ -439,8 +433,8 @@ ul.task-list li input[type="checkbox"] {
 <li><a href="https://homepage.cs.uri.edu/~thenry/resources/unix_art/ch01s06.html">The Unix philsophy</a></li>
 <li><a href="https://www.python.org/dev/peps/pep-0020/">The Zen of Python</a></li>
 <li><a href="https://refs.devinmcgloin.com/smalltalk/Design-Principles-Behind-Smalltalk.pdf">Design Principles Behind Smalltalk</a></li>
-</ul></section><section id="human-centered" class="level2" data-number="3.1"><h2 data-number="3.1" class="anchored" data-anchor-id="human-centered">
-<span class="header-section-number">3.1</span> Human centered</h2>
+</ul></section><section id="human-centered" class="level2" data-number="2.1"><h2 data-number="2.1" class="anchored" data-anchor-id="human-centered">
+<span class="header-section-number">2.1</span> Human centered</h2>
 <blockquote class="blockquote">
 <p>Programs must be written for people to read, and only incidentally for machines to execute.</p>
 <p>— Hal Abelson</p>
@@ -454,8 +448,8 @@ ul.task-list li input[type="checkbox"] {
 <p>Idea of “chunking” is important. Some setup cost to learn a new chunk, but once you’ve internalised it, it only takes up one spot in your working memory. In some sense the goal of the tidyverse is to discover the minimal set of chunks needed to do data science and have some sense of the priority of the remainder.</p>
 <p>Other useful ideas come from design. One particularly powerful idea is that of “affordance”: the exterior of a tool should suggest how to use it. We want to avoid <a href="https://99percentinvisible.org/article/norman-doors/">“Norman doors”</a> where the exterior clues and cues point you in the wrong direction.</p>
 <p>This principle is deeply connected to our beliefs about performance. Most importantly performance of code depends not only on how long it takes to run, but also how long it takes to <em>write</em> and <em>read</em>. Human brains are typically slower than computers, so this means we spend a lot of time thinking about how to create intuitve interfaces, focussing on writing and reading speed. Intuitive interfaces sometimes are at odds with running speed, because writing the fastest code for a problem often requires designing the interface for performance rather than usability. Generally, we optimise first for humans, then use profiling to discover bottlenecks that cause friction in data analysis. Once we have identified an important bottleneck, then performance becomes a priority and we rewrite the existing code. Generally, we’ll attempt to preserve the existing interface, only changing it when the performance implications are significant.</p>
-</section><section id="consistent" class="level2" data-number="3.2"><h2 data-number="3.2" class="anchored" data-anchor-id="consistent">
-<span class="header-section-number">3.2</span> Consistent</h2>
+</section><section id="consistent" class="level2" data-number="2.2"><h2 data-number="2.2" class="anchored" data-anchor-id="consistent">
+<span class="header-section-number">2.2</span> Consistent</h2>
 <blockquote class="blockquote">
 <p>A system should be built with a minimum set of unchangeable parts; those parts should be as general as possible; and all parts of the system should be held in a uniform framework.</p>
 <p>— Daniel H. H. Ingalls</p>
@@ -476,8 +470,8 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <p>But consistency also applies to data structures: we want to ensure we use the same data structures again and again and again. Principally, we expect data to be stored in <a href="https://www.jstatsoft.org/article/view/v059i10">tidy</a> data frames or <a href="https://github.com/hadley/tibble/">tibbles</a>. This means that tools for converting other formats can be centralised in one place, and that packages development is simplified by assuming that data is already in a standard format.</p>
 <p>Valuing consistency is a trade-off, and we explicitly value it over performance. There are cases where a different data structure or a different interface might make a solution simpler to express or much faster. However, one-off solutions create a much higher cognitive load.</p>
-</section><section id="composable" class="level2" data-number="3.3"><h2 data-number="3.3" class="anchored" data-anchor-id="composable">
-<span class="header-section-number">3.3</span> Composable</h2>
+</section><section id="composable" class="level2" data-number="2.3"><h2 data-number="2.3" class="anchored" data-anchor-id="composable">
+<span class="header-section-number">2.3</span> Composable</h2>
 <blockquote class="blockquote">
 <p>No matter how complex and polished the individual operations are, it is often the quality of the glue that most directly determines the power of the system.</p>
 <p>— Hal Abelson</p>
@@ -492,8 +486,8 @@ ul.task-list li input[type="checkbox"] {
 <li><p>Immutable objects. Enforces independence between components.</p></li>
 <li><p>Partition side-effects.</p></li>
 <li><p>Type-stable.</p></li>
-</ul></section><section id="inclusive" class="level2" data-number="3.4"><h2 data-number="3.4" class="anchored" data-anchor-id="inclusive">
-<span class="header-section-number">3.4</span> Inclusive</h2>
+</ul></section><section id="inclusive" class="level2" data-number="2.4"><h2 data-number="2.4" class="anchored" data-anchor-id="inclusive">
+<span class="header-section-number">2.4</span> Inclusive</h2>
 <p>We value not just the interface between the human and the computer, but also the interface between humans. We want the tidyverse to be a diverse, inclusive, and welcoming community.</p>
 <ul>
 <li><p>We develop educational materials that are accessible to people with many different skill levels.</p></li>
@@ -740,13 +734,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./structure.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Structure</span></span>
+      <a href="./index.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Tidyverse design guide</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./names.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Names attribute</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Names attribute</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

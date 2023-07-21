@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.433">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Hadley Wickham">
-<title>Tidy design principles - 24&nbsp; Returning multiple values</title>
+<title>Tidy design principles - 23&nbsp; Returning multiple values</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -66,7 +66,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./out-multi.html">Outputs</a></li><li class="breadcrumb-item"><a href="./out-multi.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Returning multiple values</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./out-multi.html">Outputs</a></li><li class="breadcrumb-item"><a href="./out-multi.html"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Returning multiple values</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -103,14 +103,8 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./structure.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Structure</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./unifying.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Unifying principles</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Unifying principles</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -125,19 +119,19 @@ ul.task-list li input[type="checkbox"] {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./names.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Names attribute</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Names attribute</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./call-data-details.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Name details arguments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Name details arguments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./function-names.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Function names</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Function names</span></span></a>
   </div>
 </li>
       </ul>
@@ -154,13 +148,19 @@ ul.task-list li input[type="checkbox"] {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./args-hidden.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Avoid hidden arguments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Avoid hidden arguments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./args-data-details.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dots-position.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Put <code>…</code> before optional arguments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -247,32 +247,26 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./dots-position.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Data, dots, details</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./dots-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Making data with …</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Making data with …</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dots-prefix.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Dot prefix</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Dot prefix</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dots-inspect.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Inspect the dots</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Inspect the dots</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-mapply-pmap.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/mapply.html">mapply()</a></code> vs <code>pmap()</code>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/mapply.html">mapply()</a></code> vs <code>pmap()</code>
   </div>
 </li>
       </ul>
@@ -289,25 +283,25 @@ ul.task-list li input[type="checkbox"] {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-multi.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Returning multiple values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Returning multiple values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-type-stability.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Type-stability</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Type-stability</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-vectorisation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Vectorisation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Vectorisation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-invisible.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Side-effect functions should return invisibly</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Side-effect functions should return invisibly</span></span></a>
   </div>
 </li>
       </ul>
@@ -324,7 +318,7 @@ ul.task-list li input[type="checkbox"] {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./changes-multivers.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Work with multiple dependency versions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Work with multiple dependency versions</span></span></a>
   </div>
 </li>
       </ul>
@@ -341,13 +335,13 @@ ul.task-list li input[type="checkbox"] {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./side-effects.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Side-effect soup</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Side-effect soup</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./spooky-action.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Spooky action</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Spooky action</span></span></a>
   </div>
 </li>
       </ul>
@@ -364,13 +358,13 @@ ul.task-list li input[type="checkbox"] {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./err-call.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Error call</span></span></a>
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Error call</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./err-constructor.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Error constructors</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Error constructors</span></span></a>
   </div>
 </li>
       </ul>
@@ -400,14 +394,14 @@ ul.task-list li input[type="checkbox"] {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#different-sizes" id="toc-different-sizes" class="nav-link active" data-scroll-target="#different-sizes"><span class="header-section-number">24.1</span> Different sizes</a></li>
-  <li><a href="#same-size" id="toc-same-size" class="nav-link" data-scroll-target="#same-size"><span class="header-section-number">24.2</span> Same size</a></li>
-  <li><a href="#case-study-str_locate" id="toc-case-study-str_locate" class="nav-link" data-scroll-target="#case-study-str_locate"><span class="header-section-number">24.3</span> Case study: <code>str_locate()</code></a></li>
+<li><a href="#different-sizes" id="toc-different-sizes" class="nav-link active" data-scroll-target="#different-sizes"><span class="header-section-number">23.1</span> Different sizes</a></li>
+  <li><a href="#same-size" id="toc-same-size" class="nav-link" data-scroll-target="#same-size"><span class="header-section-number">23.2</span> Same size</a></li>
+  <li><a href="#case-study-str_locate" id="toc-case-study-str_locate" class="nav-link" data-scroll-target="#case-study-str_locate"><span class="header-section-number">23.3</span> Case study: <code>str_locate()</code></a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/out-multi.Rmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-out-multi" class="quarto-section-identifier"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Returning multiple values</span></span></h1>
+<h1 class="title"><span id="sec-out-multi" class="quarto-section-identifier"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Returning multiple values</span></span></h1>
 </div>
 
 
@@ -420,19 +414,19 @@ ul.task-list li input[type="checkbox"] {
   </div>
   
 
-</header><section id="different-sizes" class="level2" data-number="24.1"><h2 data-number="24.1" class="anchored" data-anchor-id="different-sizes">
-<span class="header-section-number">24.1</span> Different sizes</h2>
+</header><section id="different-sizes" class="level2" data-number="23.1"><h2 data-number="23.1" class="anchored" data-anchor-id="different-sizes">
+<span class="header-section-number">23.1</span> Different sizes</h2>
 <p>Use a list. Name it.</p>
 <p>If you return the same type of output from multiple functions, you should create a function that consistently creates exact the same format (to avoid accidentally inconsistency), and consider making it an S3 class (so you can have a custom print method).</p>
-</section><section id="same-size" class="level2" data-number="24.2"><h2 data-number="24.2" class="anchored" data-anchor-id="same-size">
-<span class="header-section-number">24.2</span> Same size</h2>
+</section><section id="same-size" class="level2" data-number="23.2"><h2 data-number="23.2" class="anchored" data-anchor-id="same-size">
+<span class="header-section-number">23.2</span> Same size</h2>
 <p>When a function returns two vectors of the same size, as a general rule should you return a tibble:</p>
 <ul>
 <li><p>A matrix would only work if the vectors were the same type (and not factor or Date), doesn’t make it easy to extract the individual values, and is not easily input to other tidyverse functions.</p></li>
 <li><p>A list doesn’t capture the constraint that both vectors are the same length.</p></li>
 <li><p>A data frame is ok if you don’t want to take a dependency on tibble, but you need to remember the drawbacks: if the columns are character vectors you’ll need to remember to use <code>stringsAsFactors = FALSE</code>, and the print method is confusing for list- and df-cols (and you have to create by modifying an existing data frame, not by calling <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code>). (Example: it would be weird if glue returned tibbles from a function.)</p></li>
-</ul></section><section id="case-study-str_locate" class="level2" data-number="24.3"><h2 data-number="24.3" class="anchored" data-anchor-id="case-study-str_locate">
-<span class="header-section-number">24.3</span> Case study: <code>str_locate()</code>
+</ul></section><section id="case-study-str_locate" class="level2" data-number="23.3"><h2 data-number="23.3" class="anchored" data-anchor-id="case-study-str_locate">
+<span class="header-section-number">23.3</span> Case study: <code>str_locate()</code>
 </h2>
 <p>e.g.&nbsp;<code>str_locate()</code>, <code>str_locate_all()</code></p>
 <p>Interaction with <code>str_sub()</code>.</p>
@@ -672,12 +666,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./cs-mapply-pmap.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/mapply.html">mapply()</a></code> vs <code>pmap()</code>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/mapply.html">mapply()</a></code> vs <code>pmap()</code>
                 
   </div>
   <div class="nav-page nav-page-next">
       <a href="./out-type-stability.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Type-stability</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Type-stability</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

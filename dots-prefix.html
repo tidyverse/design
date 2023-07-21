@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.433">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Hadley Wickham">
-<title>Tidy design principles - 21&nbsp; Dot prefix</title>
+<title>Tidy design principles - 20&nbsp; Dot prefix</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -100,7 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./dots-position.html"><code>...</code></a></li><li class="breadcrumb-item"><a href="./dots-prefix.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Dot prefix</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./dots-data.html"><code>...</code></a></li><li class="breadcrumb-item"><a href="./dots-prefix.html"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Dot prefix</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -137,14 +137,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./structure.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Structure</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./unifying.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Unifying principles</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Unifying principles</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -159,19 +153,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./names.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Names attribute</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Names attribute</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./call-data-details.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Name details arguments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Name details arguments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./function-names.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Function names</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Function names</span></span></a>
   </div>
 </li>
       </ul>
@@ -188,13 +182,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./args-hidden.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Avoid hidden arguments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Avoid hidden arguments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./args-data-details.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dots-position.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Put <code>…</code> before optional arguments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -281,32 +281,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./dots-position.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Data, dots, details</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./dots-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Making data with …</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Making data with …</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dots-prefix.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Dot prefix</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Dot prefix</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dots-inspect.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Inspect the dots</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Inspect the dots</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-mapply-pmap.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/mapply.html">mapply()</a></code> vs <code><a href="https://purrr.tidyverse.org/reference/pmap.html">pmap()</a></code>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/mapply.html">mapply()</a></code> vs <code><a href="https://purrr.tidyverse.org/reference/pmap.html">pmap()</a></code>
   </div>
 </li>
       </ul>
@@ -323,25 +317,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-multi.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Returning multiple values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Returning multiple values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-type-stability.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Type-stability</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Type-stability</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-vectorisation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Vectorisation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Vectorisation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-invisible.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Side-effect functions should return invisibly</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Side-effect functions should return invisibly</span></span></a>
   </div>
 </li>
       </ul>
@@ -358,7 +352,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./changes-multivers.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Work with multiple dependency versions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Work with multiple dependency versions</span></span></a>
   </div>
 </li>
       </ul>
@@ -375,13 +369,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./side-effects.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Side-effect soup</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Side-effect soup</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./spooky-action.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Spooky action</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Spooky action</span></span></a>
   </div>
 </li>
       </ul>
@@ -398,13 +392,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./err-call.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Error call</span></span></a>
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Error call</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./err-constructor.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Error constructors</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Error constructors</span></span></a>
   </div>
 </li>
       </ul>
@@ -434,16 +428,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#whats-the-pattern" id="toc-whats-the-pattern" class="nav-link active" data-scroll-target="#whats-the-pattern"><span class="header-section-number">21.1</span> What’s the pattern?</a></li>
-  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">21.2</span> What are some examples?</a></li>
-  <li><a href="#case-study-dplyr-verbs" id="toc-case-study-dplyr-verbs" class="nav-link" data-scroll-target="#case-study-dplyr-verbs"><span class="header-section-number">21.3</span> Case study: dplyr verbs</a></li>
-  <li><a href="#other-approaches-in-base-r" id="toc-other-approaches-in-base-r" class="nav-link" data-scroll-target="#other-approaches-in-base-r"><span class="header-section-number">21.4</span> Other approaches in base R</a></li>
-  <li><a href="#what-are-the-exceptions" id="toc-what-are-the-exceptions" class="nav-link" data-scroll-target="#what-are-the-exceptions"><span class="header-section-number">21.5</span> What are the exceptions?</a></li>
+<li><a href="#whats-the-pattern" id="toc-whats-the-pattern" class="nav-link active" data-scroll-target="#whats-the-pattern"><span class="header-section-number">20.1</span> What’s the pattern?</a></li>
+  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">20.2</span> What are some examples?</a></li>
+  <li><a href="#case-study-dplyr-verbs" id="toc-case-study-dplyr-verbs" class="nav-link" data-scroll-target="#case-study-dplyr-verbs"><span class="header-section-number">20.3</span> Case study: dplyr verbs</a></li>
+  <li><a href="#other-approaches-in-base-r" id="toc-other-approaches-in-base-r" class="nav-link" data-scroll-target="#other-approaches-in-base-r"><span class="header-section-number">20.4</span> Other approaches in base R</a></li>
+  <li><a href="#what-are-the-exceptions" id="toc-what-are-the-exceptions" class="nav-link" data-scroll-target="#what-are-the-exceptions"><span class="header-section-number">20.5</span> What are the exceptions?</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/dots-prefix.Rmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-dots-prefix" class="quarto-section-identifier"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Dot prefix</span></span></h1>
+<h1 class="title"><span id="sec-dots-prefix" class="quarto-section-identifier"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Dot prefix</span></span></h1>
 </div>
 
 
@@ -456,15 +450,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header><section id="whats-the-pattern" class="level2" data-number="21.1"><h2 data-number="21.1" class="anchored" data-anchor-id="whats-the-pattern">
-<span class="header-section-number">21.1</span> What’s the pattern?</h2>
+</header><section id="whats-the-pattern" class="level2" data-number="20.1"><h2 data-number="20.1" class="anchored" data-anchor-id="whats-the-pattern">
+<span class="header-section-number">20.1</span> What’s the pattern?</h2>
 <p>When using <code>...</code> to create a data structure, or when passing <code>...</code> to a user-supplied function, add a <code>.</code> prefix to all named arguments. This reduces (but does not eliminate) the chances of matching an argument at the wrong level. Additionally, you should always provide some mechanism that allows you to escape and use that name if needed.</p>
 <div class="cell" data-hash="dots-prefix_cache/html/setup_4c696c60a3e1b08cb38a6988da05871a">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://purrr.tidyverse.org/">purrr</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>(Not important if you ignore names: e.g.&nbsp;<code><a href="https://rdrr.io/r/base/cat.html">cat()</a></code>.)</p>
-</section><section id="what-are-some-examples" class="level2" data-number="21.2"><h2 data-number="21.2" class="anchored" data-anchor-id="what-are-some-examples">
-<span class="header-section-number">21.2</span> What are some examples?</h2>
+</section><section id="what-are-some-examples" class="level2" data-number="20.2"><h2 data-number="20.2" class="anchored" data-anchor-id="what-are-some-examples">
+<span class="header-section-number">20.2</span> What are some examples?</h2>
 <p>Look at the arguments to some functions in purrr:</p>
 <div class="cell" data-hash="dots-prefix_cache/html/unnamed-chunk-3_ba69cf555b046dede8e604be467ce6ca">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/args.html">args</a></span><span class="op">(</span><span class="va">map</span><span class="op">)</span></span>
@@ -481,8 +475,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Notice that all named arguments start with <code>.</code>. This reduces the chance that you will incorrectly match an argument to <code><a href="https://purrr.tidyverse.org/reference/map.html">map()</a></code>, rather than to an argument of <code>.f</code>. Obviously it can’t eliminate it.</p>
 <p>Escape mechanism is the anonymous function. Little easier to access in <code><a href="https://purrr.tidyverse.org/reference/map.html">purrr::map()</a></code> since you can create with <code>~</code>, which is much less typing than <code>function() {}</code>. For example, imagine you want to…</p>
 <p>Example: https://jennybc.github.io/purrr-tutorial/ls02_map-extraction-advanced.html#list_inside_a_data_frame</p>
-</section><section id="case-study-dplyr-verbs" class="level2" data-number="21.3"><h2 data-number="21.3" class="anchored" data-anchor-id="case-study-dplyr-verbs">
-<span class="header-section-number">21.3</span> Case study: dplyr verbs</h2>
+</section><section id="case-study-dplyr-verbs" class="level2" data-number="20.3"><h2 data-number="20.3" class="anchored" data-anchor-id="case-study-dplyr-verbs">
+<span class="header-section-number">20.3</span> Case study: dplyr verbs</h2>
 <div class="cell" data-hash="dots-prefix_cache/html/unnamed-chunk-4_6d7234c84e581d3b23458f21874375d7">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/args.html">args</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="va"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; function (.data, ..., .by = NULL, .preserve = FALSE) </span></span>
@@ -499,8 +493,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt;     ..., keep = NULL) </span></span>
 <span><span class="co">#&gt; NULL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section><section id="other-approaches-in-base-r" class="level2" data-number="21.4"><h2 data-number="21.4" class="anchored" data-anchor-id="other-approaches-in-base-r">
-<span class="header-section-number">21.4</span> Other approaches in base R</h2>
+</section><section id="other-approaches-in-base-r" class="level2" data-number="20.4"><h2 data-number="20.4" class="anchored" data-anchor-id="other-approaches-in-base-r">
+<span class="header-section-number">20.4</span> Other approaches in base R</h2>
 <p>Base R uses two alternative methods: uppercase and <code>_</code> prefix.</p>
 <p>The apply family tends to use uppercase function names for the same reason. Unfortunately the functions are a little inconsistent which makes it hard to see this pattern. I think a dot prefix is better because it’s easier to type (you don’t have to hold down the shift-key with one finger).</p>
 <div class="cell" data-hash="dots-prefix_cache/html/unnamed-chunk-6_b4c50b2622350f1b44adf679e052f1cd">
@@ -528,8 +522,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; NULL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Using a non-syntactic variable names means that it must always be surrounded in <code>`</code>. This means that a user is even less likely to use it that with <code>.</code>, but it increases friction when writing the function. In my opinion, this trade-off is not worth it.</p>
-</section><section id="what-are-the-exceptions" class="level2" data-number="21.5"><h2 data-number="21.5" class="anchored" data-anchor-id="what-are-the-exceptions">
-<span class="header-section-number">21.5</span> What are the exceptions?</h2>
+</section><section id="what-are-the-exceptions" class="level2" data-number="20.5"><h2 data-number="20.5" class="anchored" data-anchor-id="what-are-the-exceptions">
+<span class="header-section-number">20.5</span> What are the exceptions?</h2>
 <ul>
 <li>
 <code><a href="https://rdrr.io/r/base/conditions.html">tryCatch()</a></code>: the names give classes so, as long as you don’t create a condition class called <code>expr</code> or <code>finally</code> (which would be weird!) you don’t need to worry about matches.</li>
@@ -770,12 +764,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./dots-data.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Making data with …</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Making data with …</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./dots-inspect.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Inspect the dots</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Inspect the dots</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
