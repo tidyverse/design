@@ -22,9 +22,37 @@ Otherwise you need to rely on the user having carefully read the documentation.
     sample(4)
     ```
 
+-   `rnorm()` is an interesting case.
+    It doesn't really have data arguments, although you could possible argue that `n` is one, since it fundamentally determines the shape of the output.
+    What about `mean` and `sd`?
+    Giving them defaults makes them feels like less important, and inconsistent with the other RNGs which generally require that you specify the parameters of the distribution.
+    On the other hand, the Z-distribution (a normal distribution with mean 0 and sd 1) is an extremely important distribution.
+    In `rt()`, however, I'd argue that `ncp` should have a default (`0)` to make it clear that the non-centrality parameter is detail of the t-distribution, not a core part.
+
+-   `stringr::str_sub()` has three data arguments (`string`, `start`, and `end`).
+    You might wonder what makes `start` and `end` data arguments, and I admit it took me a while to figure this out too, but I think the crucial factor is that you can give a single `string` and multiple `start`/`end` positions:
+
+    ```{r}
+    stringr::str_sub("Hello", 1:5, -1)
+    ```
+
+    If I was to write `str_sub()` today, I'd call the first argument `x`, and I wouldn't give `start` and `end` default values.
+
+-   `predict()`
+
 -   `rt()` (draw random numbers from the t-distribution) looks like it requires the `ncp` parameter but it doesn't.
 
 -   `download.file()` looks like it requires the `method` argument but actually consults a global option (`download.file.method`) if it's not supplied.
+
+-   `help()` and `vignette()` have no default for their first argument, suggesting that they're required.
+    But they're not: calling `help()` or `vignette()` without any arguments lists all help topics and vignettes respectively.
+
+-   In `ggplot2::geom_abline()`, `slope` and `intercept` don't have defaults but are not required.
+    If you don't supply them they default to `slope = 1` and `intercept = 0`, *or* are taken from `aes()` if they're provided there.
+
+A common warning sign is the use of `missing()` inside the function.
+
+Base R functions that use `missing()` in a weird way:
 
 -   `lm()` does not have defaults for `formula`, `data`, `subset`, `weights`, `na.action`, or `offset`.
     Only `formula` is actually required, but even its absence fails to generate a clear error message:
@@ -34,9 +62,9 @@ Otherwise you need to rely on the user having carefully read the documentation.
     lm()
     ```
 
--   `help()` and `vignette()` have no default for their first argument, suggesting that they're required.
-    But they're not: calling `help()` or `vignette()` without any arguments lists all help topics and vignettes respectively.
-
+```{=html}
+<!-- -->
+```
 -   In `diag()`, the argument `x` has a default `1`, but it's required: if you don't supply it you get an error:
 
     ```{r}
@@ -47,10 +75,7 @@ Otherwise you need to rely on the user having carefully read the documentation.
 
     Conversely, `nrow` and `ncol` don't have defaults but aren't required.
 
--   In `ggplot2::geom_abline()`, `slope` and `intercept` don't have defaults but are not required.
-    If you don't supply them they default to `slope = 1` and `intercept = 0`, *or* are taken from `aes()` if they're provided there.
-
-A common warning sign is the use of `missing()` inside the function.
+-   
 
 ## What are the exceptions?
 

@@ -1,98 +1,87 @@
-# Data, dots, details {#sec-dots-position}
+# Put `…` before optional arguments {#sec-dots-position}
 
 ```{r}
 #| include = FALSE
 source("common.R")
 ```
 
-<!-- Rename to details in dots? dots-details -->
-
 ## What's the pattern?
 
-When you use `...` in a function, where should you put it?
-It's obvious that the data arguments must come first.
-But which should come next, the dots or the details?
-This pattern tells you to place `...` between the data arguments (the required arguments that supply the key "data" to the function) and the details arguments (optional additional arguments that control the finer details of the function).
-
-## What are some examples?
-
-Many functions in base R take data, then details, then dots:
-
-```{r}
-args(unique)
-args(median)
-```
-
-This doesn't cause many problems because most people will fully spell out the names of details arguments.
-However, there are other summary functions that take the data *via dots*, then details.
-
-```{r}
-sum(2, 3, 10)
-prod(2, 3, 10)
-
-args(sum)
-args(prod)
-```
-
-This allows these functions to take any number of input vectors, but these two different interfaces make it very easy for users to construct calls that are technically valid, but that don't return the desired result.
-
-If you're expecting `median()` to work like `sum()`, you might call it the same way:
-
-```{r}
-median(2, 3, 10)
-```
-
-This silently returns an incorrect result because `median()` has arguments `x`, `na.rm`, and `...`.
-The user must remember that `median()` -- and `mean()` too!
--- require data that is packed into a single vector.
-
-```{r}
-median(c(2, 3, 10))
-mean(c(2, 3, 10))
-```
+If you use `…` in a function, put it after the required arguments and before the optional arguments.
+(If `…` is the only required argument, see @sec-dots-data).
 
 ## Why is it important?
 
 There are three primary advantages:
 
--   It forces the user of your function to fully name the detail arguments, because arguments that come after `...` are never matched by position or partially by name.
-    Using full names for details arguments is good practice, because it makes code easier to read.
+-   It forces the user of your function to fully name optional arguments, because arguments that come after `...` are never matched by position or partially by name.
+    Using full names for details arguments is good practice, because we believe it makes code easier to read.
 
--   You can easily add new detail arguments without changing the meaning of existing function calls.
-    This makes it easy to extend your function with new capabilities, because you don't need to worry about changing existing code.
+-   You can easily add new optional arguments or change the order of existing arguments without affecting existing calls.
+    This makes it easy to extend your function with new capabilities, because you don't need to worry about breaking existing code.
 
 -   When coupled with "inspect the dots" (@sec-dots-inspect), or "dot prefix" (@sec-dots-prefix) it minimises the chances that misspelled arguments names will silently go astray.
 
 The payoff of this pattern is not huge: it protects against a fairly unusual failure mode.
-However, the failure mode is silent (so easy to miss), and the pattern is very easy to apply, so I think the payoff is still worth it.
+However, since the failure mode is silent (and hence easy to miss) and the pattern is very easy to apply, I think it's still worth it.
 
-## How do I do it?
+## What are some examples?
 
-Following this pattern is simple: just identity which arguments are data, and which arguments are details and then put the ... in between.
+The arguments to `mean()` are `x`, `trim`, `na.rm` and `…`.
+This means that you can write code like this:
 
-## How do I remediate it?
+```{r}
+x <- c(1, 2, 10, NA)
+mean(x, , TRUE)
+mean(x, n = TRUE, t = 0.1)
+```
+
+Not only does allow confusing code[^dots-position-1], it also makes it hard to later change the order of these arguments, or introduce new arguments that might be more important.
+
+[^dots-position-1]: As much as we recommended people don't write code like this, you know someone will!
+
+If `mean()` instead placed `…` before `trim` and `na.rm`, like `mean2()`[^dots-position-2] below, then you must fully name each argument:
+
+[^dots-position-2]: Note that I moved `na.rm = TRUE` in front of `trim` because I believe `na.rm` is the more important argument because it's used vastly more often than `trim` and I'm following @sec-args-data-details.
+
+```{r}
+mean2 <- function(x, ..., na.rm = FALSE, trim = 0) {
+  mean(x, ..., na.rm = na.rm, trim = trim)
+}
+
+mean2(x, na.rm = TRUE)
+mean2(x, na.rm = TRUE, trim = 0.1)
+```
+
+## How do I remediate past mistakes?
 
 If you've already published a function where you've put `...` in the wrong place, it's easy to fix.
-You'll need to use a function from the rlang package to check that `...` is as expected (e.g. from @sec-dots-inspect or @sec-dots-data).
+You'll need to use a function from the rlang package to check that `...` is as expected (e.g. from @sec-dots-data or @sec-dots-inspect).
 Since using the full names for details arguments is good practice, making this change will typically affect little existing code, but it is an interface change so should be advertised prominently.
 
 ```{r}
+#| error = TRUE
+
 old_interface <- function(x, data1 = 1, data2 = 2, ...) {
 }
+old_interface(1, 2)
 
-new_interace <- function(x, ..., data1 = 1, data2 = 2) {
+new_interface <- function(x, ..., data1 = 1, data2 = 2) {
   rlang::check_dots_used()
 }
+new_interface(1, 2)
 ```
 
-We can use this approach to make a safer version of `median()`:
+We can use this approach to make a safer version of `mean()`:
 
 ```{r}
 #| error = TRUE
-safe_median <- function(x, ..., na.rm = FALSE) {
+mean3 <- function(x, ..., na.rm = FALSE, trim = 0) {
   rlang::check_dots_used()
-  median(x, ..., na.rm = na.rm)
+  mean(x, ..., na.rm = na.rm, trim = trim)
 }
 
-safe_median(2, 3, 10)
+mean3(x, , TRUE)
+
+mean3(x, n = TRUE, t = 0.1)
 ```

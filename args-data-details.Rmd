@@ -8,85 +8,43 @@ source("common.R")
 ## What's the pattern?
 
 In a function call, the most important arguments should come first.
-We can help make this clear by roughly categorising arguments into one of three types: data, then descriptors, then details.
+How can you tell what arguments are most important?
+That's largely a judgement call that you'll need to make based on your beliefs about the function but there are some general principles that can help:
 
--   **Data** arguments provide the core data.
-    They are required, are usually vectors or data frames, typically determine the type and shape of the output.
-    Data arguments are often called `data`, `x`, or `y`.
-
--   **Descriptor** arguments describe essential details of the operation, and are usually required.
-
--   **Details** arguments control the details of the function.
-    These arguments are optional (because they have default values), and are typically scalars (e.g. `na.rm = TRUE`, `n = 10`, `prop = 0.1`).
-
-Then data arguments should always come first, followed by descriptors, and finally by details.
-A standard argument order makes it easier to understand a function at a glance, and this order implies that required arguments always come before optional arguments.
+-   Arguments that determine the type of the output are typically the most important and should come first. This is particularly true for functions whose output is a transformation of one or more of the input arguments (e.g. `log()`, `stringr::str_replace()`, `dplyr::left_join()`).
+-   Optional arguments (i.e. arguments with a default) are the least important, and should come last.
+-   If the function uses `…`, the optional arguments should always come after `…`; see @sec-dots-position for more details.
 
 Related patterns:
 
 -   `...` can play the role of the data argument (e.g. when there are an arbitrary number of inputs), as in `paste()`.
     This pattern is best using sparingly, and is described in more detail in @sec-dots-data.
 
--   `...` can also be used to capture details arguments and pass them on to other functions.
-    See @sec-dots-position and @sec-dots-inspect to how to use `...` as safely as possible in this situation.
-
 -   If the descriptor has a default value, I think you should inform the user about it, as in @sec-def-inform.
 
 ## What are some examples?
 
--   `mean()` has one data argument (`x`) and two details (`trim` and `na.rm`).
+The vast majority of functions get this right, so we'll pick on a few examples which I think get it wrong:
 
--   The mathematical (`+`, `-`, `*`, `/`, ...) and comparison (`<`, `>`, `==`, ...) operators have two data arguments.
+-   I think the arguments to base R string functions (`grepl()`, `gsub()`, etc) are in the wrong order because they consistently make the regular expression (`pattern`) the first argument, rather than the character vector being manipulated.
+    I think the character vector is more important because it's the argument the fundamentally determines the size of the output.
 
--   `ifelse()` has three data arguments (`test`, `yes`, `no`).
+-   The first two arguments to `lm()` are `formula` and `data`.
+    I'd argue that `data` should be the first argument; even though it doesn't affect the shape of the output (which is always an lm S3 object), it affects the shape of many important functions like `predict()`.
+    However, the designers of `lm()` wanted `data` to be optional, so you could still fit models even if you hadn't collected the individual variables into a data frame.
+    Because `formula` is required and `data` is not, `formula` must come first.
 
--   `merge()` has two data arguments (`x`, `y`), one descriptor (`by`), and a number of details (`all`, `no.dups`, `sort`, ...).
-    Similarly, `dplyr::left_join()` has two data arguments (`x`, `y`), one descriptor (`by)`, and a number of details (`copy`, `suffix`, `keep`, \...).
+-   The first two arguments to `ggplot()` are `data` and `mapping`.
+    Both data and mapping are required for every plot, so why make `data` first?
+    I picked this ordering because in most plots there's one dataset shared across all layers and only the mapping changes.
 
--   `rnorm()` is an interesting case.
-    It doesn't really have data arguments, although you could possible argue that `n` is one, since it fundamentally determines the shape of the output.
-    What about `mean` and `sd`?
-    Giving them defaults makes them feels like less important, and inconsistent with the other RNGs which generally require that you specify the parameters of the distribution.
-    On the other hand, the Z-distribution (a normal distribution with mean 0 and sd 1) is an extremely important distribution.
-    In `rt()`, however, I'd argue that `ncp` should have a default (`0)` to make it clear that the non-centrality parameter is detail of the t-distribution, not a core part.
-
--   `grepl()` has one data argument (`x`), one descriptor (`pattern`), and a number of details (`fixed`, `perl`, `ignore.case`, ...).
-    `pattern` comes before `x`.
-    `stringr::str_detect()` has one data argument (`string`), one descriptor (`pattern`), and one detail argument (`negate`).
-
--   `stringr::str_sub()` has three data arguments (`string`, `start`, and `end`).
-    You might wonder what makes `start` and `end` data arguments, and I admit it took me a while to figure this out too, but I think the crucial factor is that you can give a single `string` and multiple `start`/`end` positions:
-
-    ```{r}
-    stringr::str_sub("Hello", 1:5, -1)
-    ```
-
-    If I was to write `str_sub()` today, I'd call the first argument `x`, and I wouldn't give `start` and `end` default values.
-
--   `ggplot2::ggplot()` has one data argument (`data`) and one descriptor (`mapping`).
-
--   `lm()` has one data argument (`data`), one descriptor (`formula`), and many details (`weights`, `na.action`, `method`, ...).
-    Unfortunately `formula` comes before `data`.
-    This is a historical accident, because putting all model variables into a data frame is a relatively recent innovation in the long life cycle of `lm()`.
-
--   `purrr::map()` has one data argument (`.x`) and one descriptor (`.f`).
-    `purrr::map2()` has two data arguments (`.x`, `.y`) and one descrptor (`.f`).
-
--   `mapply()` has any number of data arguments (...), one descriptor (`FUN`), and a number of details (`SIMPLIFY`, `USE.NAMES`, ...).
-    The descriptor comes before the data arguments.
-
--   At first glance it looks like the ggplot2 layer functions, like `geom_point()`, don't obey this principle because the first argument is `mapping` (a descriptor) and the second is `data` (presumably a data argument).
-    However, this is because ggplot2 doesn't use the pipe.
-    If it did (like [ggplot1](https://github.com/hadley/ggplot1)), the first argument would be the plot to modify, which is the data object in this case, because the output is also a plot.
-    Here `data` acts a descriptor, because it modifies the behaviour of the layer.
-
-    The argument order differs between the layers and `ggplot()`, because you more commonly specify the data for the plot, and the aesthetic mappings for the layers.
-    This is a little confusing, but I think time has shown it to be a reasonable design decision.
+    It's worth noting the layer functions, like `geom_point()`, flip the order of these arguments, because in an individual layer you're more likely to specify `mapping` than `data`, and in many cases if you do specify `data` you'll want `mapping` as well.
+    This makes these the argument order inconsistent with `ggplot()`, but I think time has shown it to be a reasonable design decision.
 
 ## Why is it important?
 
 This convention makes it easy to understand the structure of a function at a glance: the most important arguments are always on the left hand side, and it's obvious what arguments most affect the shape of the output.
-Strongly connecting the shape of the first argument to the shape of output is what makes dplyr (data frames), stringr (character vectors), and the map family (vectors) easier to learn.
+Strongly connecting the shape of the first argument to the shape of output is what makes dplyr (data frames), stringr (character vectors), and purrr functions (vectors) easier to learn.
 These families of functions represent transformations that preserve the shape while modifying the value.
 When combined with the pipe, this leads to code that focuses on the transformations, not the objects being transformed.
 
@@ -94,24 +52,7 @@ These argument types as also affect how you *call* a function.
 As discussed in @sec-call-data-details, you should never name data arguments, and always name details arguments.
 This convention balances concision with readability.
 
-## How do I avoid the problem?
-
-To avoid the problem, you have to carefully analyse the arguments to ensure that you correctly categorise each argument.
-It's generally easy to tell the difference between a data argument and a details argument, particularly because data arguments are required and details arguments are optional.
-But it can be harder to distinguish between data and descriptor, or descriptor and details.
-This is partly because my categorisation is false trichotomy: there's really more of a continuous gradient from absolutely required to totally optional than discrete steps.
-Nevertheless, I think these three categories are useful, and even if you don't get it absolutely right every time, this framework will help you do better on average.
-
-There are a couple of heuristics that you can also check for:
-
--   Are the arguments generally ordered from most important to least important?
-    If an important argument comes before an unimportant argument, you may have assigned an argument to the wrong category.
-    (Note that this ordering isn't strict: sometimes it's more important to organise related arguments together than to precisely order by importance.)
-
--   Do any arguments with defaults come before any arguments without defaults?
-    This may be a sign that the argument order is wrong, or that you've assigned a default value to an required argument (See @sec-def-required for more details.)
-
-## How do I remediate it?
+## How do I remediate past mistakes?
 
 Generally, it is not possible to remediate an existing exported function with this problem.
 Typically, you will need to perform major surgery on the function arguments, and this will convey different conventions about which arguments should be named.
