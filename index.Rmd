@@ -12,7 +12,7 @@ documentclass: book
 The goal of this book is to help you write better R code.
 It has four main components:
 
--   Design **problems** which lead to suboptimal outcomes.
+-   A review of design **problems** which lead to suboptimal outcomes.
 
 -   Useful **patterns** that help solve common problems.
 
