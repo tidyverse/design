@@ -9,18 +9,20 @@ source("common.R")
 
 In a function call, the most important arguments should come first.
 How can you tell what arguments are most important?
-That's largely a judgement call that you'll need to make based on your beliefs about the function but there are some general principles that can help:
+That's largely a judgement call that you'll need to make based on your beliefs about which arguments will be used most commonly.
+However, there are a few general principles:
 
--   Arguments that determine the type of the output are typically the most important and should come first. This is particularly true for functions whose output is a transformation of one or more of the input arguments (e.g. `log()`, `stringr::str_replace()`, `dplyr::left_join()`).
+-   If the output is a transformation of an input (e.g. `log()`, `stringr::str_replace()`, `dplyr::left_join()`) that's the most important argument.
+-   Other arguments that determine the type or shape of the output are typically very important.
 -   Optional arguments (i.e. arguments with a default) are the least important, and should come last.
--   If the function uses `…`, the optional arguments should always come after `…`; see @sec-dots-position for more details.
+-   If the function uses `…`, the optional arguments should come after `…`; see @sec-dots-position for more details.
 
-Related patterns:
+## Why is it important?
 
--   `...` can play the role of the data argument (e.g. when there are an arbitrary number of inputs), as in `paste()`.
-    This pattern is best using sparingly, and is described in more detail in @sec-dots-data.
+This convention makes it easy to understand the structure of a function at a glance: the more important an argument is, the earlier you see it.
 
--   If the descriptor has a default value, I think you should inform the user about it, as in @sec-def-inform.
+When the output is very strongly tied to an input, putting first also ensures that you function works well with the pipe, leading to code that focuses on the transformations rather than the object being transformed.
+I believe that ensuring the first argument is always the object being transformed is helps make stringr and purrr functions easier to learn than their base equivalents.
 
 ## What are some examples?
 
@@ -41,16 +43,9 @@ The vast majority of functions get this right, so we'll pick on a few examples w
     It's worth noting the layer functions, like `geom_point()`, flip the order of these arguments, because in an individual layer you're more likely to specify `mapping` than `data`, and in many cases if you do specify `data` you'll want `mapping` as well.
     This makes these the argument order inconsistent with `ggplot()`, but I think time has shown it to be a reasonable design decision.
 
-## Why is it important?
-
-This convention makes it easy to understand the structure of a function at a glance: the most important arguments are always on the left hand side, and it's obvious what arguments most affect the shape of the output.
-Strongly connecting the shape of the first argument to the shape of output is what makes dplyr (data frames), stringr (character vectors), and purrr functions (vectors) easier to learn.
-These families of functions represent transformations that preserve the shape while modifying the value.
-When combined with the pipe, this leads to code that focuses on the transformations, not the objects being transformed.
-
-These argument types as also affect how you *call* a function.
-As discussed in @sec-call-data-details, you should never name data arguments, and always name details arguments.
-This convention balances concision with readability.
+-   ggplot2 functions work by creating some object that's then added on to a plot object, so the plot, which is arguably the most important argument, is not used at all.
+    ggplot2 works this way in part because it was invented before the pipe was discovered, and the best way I came up to write plots from left to right was to rely on `+` (so-called operator overloading).
+    As an interesting historical fact, ggplot (the precursor to ggplot2) actually works great with the pipe, and a couple of years ago I bought it back to life as [ggplot1](https://github.com/hadley/ggplot1).
 
 ## How do I remediate past mistakes?
 
@@ -59,7 +54,7 @@ Typically, you will need to perform major surgery on the function arguments, and
 This implies that you should deprecate the entire existing function and replace it with a new alternative.
 Because this is invasive to the user, it's best to do sparingly: if the mistake is minor, you're better off waiting until you've collected other problems before fixing it.
 
-For example, take `tidyr::gather()` for example.
+For example, take `tidyr::gather()`.
 It has a number of problems with its design that made them hard to use.
-Relevant to this chapter, is that the argument order is wrong, because you almost always want to specify which variables to gather, which is the fourth argument, not the second (after the `data`).
+Relevant to this chapter is that the argument order is wrong, because you almost always want to specify which variables to gather, which is the fourth argument, not the second (after the `data`).
 Because it wasn't possible to easily fix this mistake, we accumulated other `gather()` problems for several years before fixing them all at once in `pivot_longer()`.

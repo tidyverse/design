@@ -97,21 +97,17 @@ rep_each <- function(x, times) {
 }
 
 rep_full <- function(x, times, length) {
-  if (!xor(missing(times), missing(length))) {
-    stop("Must supply exactly one of `times` and `length`", call. = FALSE)
-  } 
+  rlang::check_exclusive(times, length)
   
-  if (!missing(times)) {
-    length <- times * base::length(x)
+  if (!missing(length)) {
+    rep(x, length.out = length)
+  } else {
+    rep(x, length.out = times * base::length(x))
   }
-  
-  rep(x, length.out = length)
 }
 ```
 
-The implementation of `rep_full()` and `rep_each()` in terms of `rep.int()` and `rep_len()` suggests that R-core members are aware of the problem.
-
-(Note the downside of using `length` as the argument name: we have to call `base::length()` to avoid evaluating the missing `length` when times is supplied.)
+(Note the downside of using `length` as the argument name: we have to call [`base::length()`](https://rdrr.io/r/base/length.html) to avoid evaluating the missing `length` when times is supplied.)
 
 ```{r}
 x <- c(1, 2, 4)
@@ -127,13 +123,6 @@ rep_full(x, length = 5)
 One downside of this approach is if you want to both replicate each component *and* the entire vector, you have to use two function calls, which is much more verbose than the `rep()` equivalent.
 However, I don't think this is a terribly common use case, and so I think a longer call is more readable.
 
-That said, one argument for a single rep function is that `rep_each()` and `rep_full()` return the same result if you change their order (i.e. they're commutative):
-
-```{r}
-rep_full(rep_each(x, times = 2), times = 3)
-rep_each(rep_full(x, times = 3), times = 2) 
-```
-
 ## Dealing with bad inputs
 
 The implementations above work well for correct inputs, but will also work without error for a number of incorrect inputs:
@@ -142,34 +131,34 @@ The implementations above work well for correct inputs, but will also work witho
 rep_full(1:3, 1:3)
 ```
 
-In the code below, I have used `vec_assert()` and `vec_recycle()` to make the desired types, sizes, and recycling rules explicit.
+Need to think about the types
 
 ```{r}
-library(vctrs)
-
 rep_each <- function(x, times) {
-  vec_assert(times, numeric())
-  times <- vec_recycle(times, vec_size(x))
+  times <- vctrs::vec_cast(times, integer())
+  times <- vctrs::vec_recycle(times, vctrs::vec_size(x), x_arg = "times")
   
   rep.int(x, times)
 }
 
 rep_full <- function(x, times, length) {
-  if (!xor(missing(times), missing(length))) {
-    stop("Must supply exactly one of `times` and `length`", call. = FALSE)
-  } else if (!missing(times)) {
-    vec_assert(times, numeric(), 1L)
-    length <- times * base::length(x)
-  } else if (!missing(length)) {
-    vec_assert(length, numeric(), 1L)
-  }
+  rlang::check_exclusive(times, length)
   
-  rep_len(x, length)
+  if (!missing(length)) {
+    rlang:::check_number_whole(length)
+    rep(x, length.out = length)
+  } else {
+    rlang:::check_number_decimal(times)
+    rep(x, length.out = times * base::length(x))
+  }
 }
 ```
 
 ```{r}
 #| error = TRUE
+rep_each(1:3, 1:2)
+rep_each(1:3, "x")
+
 rep_full(1:3, "x")
 rep_full(1:3, c(1, 2))
 ```
