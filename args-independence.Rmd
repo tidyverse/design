@@ -22,23 +22,11 @@ Dependencies between arguments makes functions harder to use because you have to
 
     Learn more in Chapter @sec-cs-rep.
 
--   In `var()`, `na.rm` is only used if `use` is not set.
-    If you supply both `use` and `na.rm`, `na.rm` is silently ignored.
-
--   In `rgamma()` you can provide either `scale` or `rate`.
-    If you supply both you will get an error or a warning:
-
-    ```{r}
-    #| error = TRUE
-    rgamma(5, shape = 1, rate = 2, scale = 1/2)
-    rgamma(5, shape = 1, rate = 2, scale = 2)
-    ```
-
 -   `grepl()` has `perl`, `fixed`, and `ignore.case` arguments which can either be `TRUE` or `FALSE`.
-    But `fixed = TRUE` overrides `perl = TRUE`, and `ignore.case` only works if `fixed = FALSE`.
+    But `fixed = TRUE` overrides `perl = TRUE`, and `ignore.case = TRUE` only works if `fixed = FALSE`.
     Both `fixed` and `perl` change how another argument, `pattern`, is interpreted.
 
--   In `library()` the `character.only` argument changes how `package` is intepreted:
+-   In `library()` the `character.only` argument changes how `package` is interpreted:
 
     ```{r}
     #| eval = FALSE
@@ -57,16 +45,18 @@ Dependencies between arguments makes functions harder to use because you have to
     You can only pick one of the three options, which is hard to convey in the documentation.
     There's also an implied precedence so that if more than one option is supplied, one will silently win.
 
--   In `readr::locale()` there's a complex dependency between `decimal_mark` and `grouping_mark` because they can't be the same value, and the US and Europe use different standards.
+-   In `readr::locale()` there's a complex dependency between `decimal_mark` and `grouping_mark` because they can't be the same value, and Europe and the US Europe use different standards.
 
 See @sec-args-mutually-exclusive) and @sec-args-compound for a two exceptions where the dependency is via specific patterns of missing arguments.
+
+(Other examples for you to explore: `rate` and `scale` in `rgamma()`, `na.rm` and `use` in `var()`)
 
 ## Why is this important?
 
 Having complicated interdependencies between arguments has major downsides:
 
 -   It suggests that there are many more viable code paths than there really are and all those (unnecessary) possibilities still occupy head space.
-    You have to memorise the set of allowed combinations, rather than them being implied by the structure of the function.
+    You have to learn and the remember the set of allowed combinations, rather than them being implied by the structure of the function.
 
 -   It increases implementation complexity.
     Interdependence of arguments suggests complex implementation paths which are harder to analyse and test.
@@ -87,7 +77,7 @@ There are two common outcomes which are illustrated in the case studies below:
 
 -   Splitting the function into multiple functions that each do one thing.
 
--   Encapulsating related details arguments into a single object.
+-   Encapsulating related details arguments into a single object.
 
 See also larger case study in @sec-cs-rep where this problem is tangled up with other problems.
 
@@ -138,12 +128,16 @@ x <- grepl("a", letters, fixed = TRUE, ignore.case = TRUE)
 x <- grepl("a", letters, fixed = TRUE, perl = TRUE)
 ```
 
-Part of this problem could be resolved by making it more clear that one important choice is the matching engine to use: POSIX 1003.2 extended regular expressions (the default), Perl-style regular expressions (`perl = TRUE`) or fixed matching (`fixed = TRUE`).
-A better approach would be to use the pattern in @sec-def-enum and create a new argument called something like `engine = c("POSIX", "perl", "fixed")`.
+Part of this problem could be resolved by making it more clear that this function provides three engines for matching text:
 
-The other problem is that `ignore.case` can only affect two of the three engines: POSIX and perl.
-This is hard to remedy without creating a completely new matching engine.
-Anything to do with case is always harder than you might expect because different languages have different rules.
+-   POSIX 1003.2 extended regular expressions (the default),
+-   Perl-style regular expressions (`perl = TRUE`)
+-   Fixed matching (`fixed = TRUE`).
+
+One way to make this more clear would be to use @sec-def-enum and create a new argument called something like `engine = c("POSIX", "perl", "fixed")`.
+
+The other problem is that `ignore.case` only works with two of the three engines: POSIX and perl.
+This is hard to remedy without creating a completely new matching engine for fixed case, which is particularly hard because different languages have different rules for case.
 
 stringr takes a different approach, encoding the engine as an attribute of the pattern:
 
@@ -153,11 +147,12 @@ library(stringr)
 x <- str_detect(letters, "a")
 # short for:
 x <- str_detect(letters, regex("a"))
-x <- str_detect(letters, fixed("a"))
-x <- str_detect(letters, coll("a"))
+
+# Which is where you supply additional arguments
+x <- str_detect(letters, regex("a", ignore_case = TRUE))
 ```
 
-This has the advantage that each engine can take different arguments.
+This has the advantage that each engine can take different arguments, but has the disadvantage that it's harder to know that these options exist because you have to travel at least another level in the documentation.
 
 An alternative approach would be to have a separate engine argument:
 
@@ -178,5 +173,3 @@ x <- str_detect(letters, engine = boundary("word"))
 ```
 
 It would also mean that you had an argument `engine`, that affected how another argument, `pattern`, was interpreted, so it would repeat the problem in a slightly different form.
-
-It's appealing to all the details of the match wrapped up into a single object.
