@@ -1,12 +1,3 @@
----
-title: "Tidyverse design guide"
-author: ["Tidyverse team"]
-site: bookdown::bookdown_site
-output: bookdown::gitbook
-github-repo: tidyverse/design
-documentclass: book
----
-
 # Welcome {.unnumbered}
 
 The goal of this book is to help you write better R code.
