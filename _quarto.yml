@@ -17,63 +17,63 @@ book:
   repo-actions: [edit, issue]
   
   chapters:
-    - index.Rmd
-    - unifying.Rmd
+    - index.qmd
+    - unifying.qmd
     
     - part: Implementation
       chapters:
-      - names.Rmd
-      - call-data-details.Rmd
-      - function-names.Rmd
+      - names.qmd
+      - call-data-details.qmd
+      - function-names.qmd
         
     - part: Scannable definitions
       chapters:
-      - args-data-details.Rmd
-      - args-hidden.Rmd
-      - dots-position.Rmd
-      - def-required.Rmd
-      - args-independence.Rmd
-      - def-enum.Rmd
-      - def-short.Rmd
-      - cs-setNames.Rmd
-      - cs-stringr.Rmd
+      - args-data-details.qmd
+      - args-hidden.qmd
+      - dots-position.qmd
+      - def-required.qmd
+      - args-independence.qmd
+      - def-enum.qmd
+      - def-short.qmd
+      - cs-setNames.qmd
+      - cs-stringr.qmd
     
     - part: Function arguments
       chapters: 
-      - cs-rep.Rmd
-      - def-magical.Rmd
-      - def-inform.Rmd
-      - def-user.Rmd
-      - cs-rgb.Rmd
-      - dots-data.Rmd
-      - dots-prefix.Rmd
-      - dots-inspect.Rmd
-      - cs-mapply-pmap.Rmd
+      - cs-rep.qmd
+      - def-magical.qmd
+      - def-inform.qmd
+      - def-user.qmd
+      - cs-rgb.qmd
+      - dots-data.qmd
+      - dots-prefix.qmd
+      - dots-inspect.qmd
+      - cs-mapply-pmap.qmd
     
     - part: Outputs
       chapters: 
-      - out-multi.Rmd
-      - out-type-stability.Rmd
-      - out-vectorisation.Rmd
-      - out-invisible.Rmd
+      - out-multi.qmd
+      - out-type-stability.qmd
+      - out-vectorisation.qmd
+      - out-invisible.qmd
 
     - part: Evolution
       chapters: 
-      - changes-multivers.Rmd
+      - changes-multivers.qmd
     
     - part: Side effects
       chapters: 
-      - side-effects.Rmd
-      - spooky-action.Rmd
+      - side-effects.qmd
+      - spooky-action.qmd
 
     - part: Errors
       chapters: 
-      - err-call.Rmd
-      - err-constructor.Rmd
+      - err-call.qmd
+      - err-constructor.qmd
     
     
   appendices:
-    - glossary.Rmd
+    - glossary.qmd
 
 format:
   html:
