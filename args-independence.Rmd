@@ -1,4 +1,4 @@
-# Keep arguments indepedent {#sec-args-independence}
+# Keep arguments independent {#sec-args-independence}
 
 ```{r}
 #| include = FALSE

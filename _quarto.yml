@@ -26,28 +26,25 @@ book:
       - call-data-details.Rmd
       - function-names.Rmd
         
-    - part: Inputs
+    - part: Scannable definitions
       chapters:
-      - args-hidden.Rmd
       - args-data-details.Rmd
+      - args-hidden.Rmd
       - dots-position.Rmd
+      - def-required.Rmd
       - args-independence.Rmd
+      - def-enum.Rmd
+      - def-short.Rmd
       - cs-setNames.Rmd
       - cs-stringr.Rmd
     
-    - part: Default values
+    - part: Function arguments
       chapters: 
-      - def-required.Rmd
       - cs-rep.Rmd
-      - def-enum.Rmd
       - def-magical.Rmd
-      - def-short.Rmd
       - def-inform.Rmd
       - def-user.Rmd
       - cs-rgb.Rmd
-    
-    - part: "`...`"
-      chapters: 
       - dots-data.Rmd
       - dots-prefix.Rmd
       - dots-inspect.Rmd
