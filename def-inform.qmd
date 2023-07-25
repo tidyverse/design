@@ -10,7 +10,7 @@ library(dplyr, warn.conflicts = FALSE)
 
 If a default value is important, and the computation is non-trivial, inform the user what value was used.
 This is particularly important when the default value is an educated guess, and you want the user to change it.
-It is also important when descriptor arguments (@sec-args-data-details)) have defaults.
+It is also important when descriptor arguments (@sec-important-args-first)) have defaults.
 
 ## What are some examples?
 

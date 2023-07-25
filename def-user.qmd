@@ -15,7 +15,7 @@ The two primary uses are for controlling the appearance of output, particularly 
 
 Related patterns:
 
--   If a global option affects the results of the computation (not just its side-effects), you have an example of @sec-args-hidden.
+-   If a global option affects the results of the computation (not just its side-effects), you have an example of @sec-inputs-explicit.
 
 ## What are some examples?
 

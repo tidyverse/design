@@ -1,4 +1,4 @@
-# Put `…` before optional arguments {#sec-dots-position}
+# Put `…` after required arguments {#sec-dots-after-required}
 
 ```{r}
 #| include = FALSE
@@ -40,7 +40,7 @@ Not only does allow confusing code[^dots-position-1], it also makes it hard to l
 
 If `mean()` instead placed `…` before `trim` and `na.rm`, like `mean2()`[^dots-position-2] below, then you must fully name each argument:
 
-[^dots-position-2]: Note that I moved `na.rm = TRUE` in front of `trim` because I believe `na.rm` is the more important argument because it's used vastly more often than `trim` and I'm following @sec-args-data-details.
+[^dots-position-2]: Note that I moved `na.rm = TRUE` in front of `trim` because I believe `na.rm` is the more important argument because it's used vastly more often than `trim` and I'm following @sec-important-args-first.
 
 ```{r}
 mean2 <- function(x, ..., na.rm = FALSE, trim = 0) {

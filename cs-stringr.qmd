@@ -23,7 +23,7 @@ Part of this problem could be resolved by making it more clear that this functio
 -   Perl-style regular expressions (`perl = TRUE`)
 -   Fixed matching (`fixed = TRUE`).
 
-One way to make this more clear would be to use @sec-def-enum and create a new argument called something like `engine = c("POSIX", "perl", "fixed")`.
+One way to make this more clear would be to use @sec-enumerate-options and create a new argument called something like `engine = c("POSIX", "perl", "fixed")`.
 
 The other problem is that `ignore.case` only works with two of the three engines: POSIX and perl.
 This is hard to remedy without creating a completely new matching engine for fixed case, which is particularly hard because different languages have different rules for case.

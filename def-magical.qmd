@@ -128,7 +128,7 @@ This problem is generally easy to avoid for new functions:
 
 ## How do I remediate the problem?
 
-If you have a made a mistake in an older function you can remediate it by using a `NULL` default, as described in @sec-def-short).
+If you have a made a mistake in an older function you can remediate it by using a `NULL` default, as described in @sec-defaults-short-and-sweet).
 If the problem is caused by an unexported function, you can also choose to document and export it.
 Remediating this problem shouldn't break existing code, because it expands the function interface: all previous code will continue to work, and the function will also work if the argument is passed `NULL` input (which probably didn't previously).
 

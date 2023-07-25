@@ -28,13 +28,13 @@ book:
         
     - part: Scannable definitions
       chapters:
-      - args-data-details.qmd
-      - args-hidden.qmd
-      - dots-position.qmd
-      - def-required.qmd
-      - args-independence.qmd
-      - def-enum.qmd
-      - def-short.qmd
+      - important-args-first.qmd
+      - inputs-explicit.qmd
+      - dots-after-required.qmd
+      - required-no-defaults.qmd
+      - arguments-independent.qmd
+      - enumerate-options.qmd
+      - defaults-short-and-sweet.qmd
       - cs-setNames.qmd
       - cs-stringr.qmd
     

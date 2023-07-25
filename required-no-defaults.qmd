@@ -1,4 +1,4 @@
-# Required args don't have defaults {#sec-def-required}
+# Required args don't have defaults {#sec-required-no-defaults}
 
 ```{r}
 #| include = FALSE

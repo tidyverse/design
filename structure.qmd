@@ -8,23 +8,23 @@ A function's interface describes how, independent of its internal implementation
 
 ### Inputs
 
--   @sec-args-hidden: All inputs to a function should be explicit arguments.
+-   @sec-inputs-explicit: All inputs to a function should be explicit arguments.
     Avoid functions that suprise the user by returning different results when the inputs look the same.
 
--   @sec-args-data-details: Required arguments should come before optional arguments.
+-   @sec-important-args-first: Required arguments should come before optional arguments.
 
--   @sec-args-independence: Make arguments as orthogonal as possible.
+-   @sec-arguments-independent: Make arguments as orthogonal as possible.
     Avoid complex interdependencies.
 
 #### Default values
 
--   @sec-def-required: the absence of a default value should indicate that an argument is required; the presence of a default value should indicate that an argument is optional.
+-   @sec-required-no-defaults: the absence of a default value should indicate that an argument is required; the presence of a default value should indicate that an argument is optional.
 
--   @sec-def-enum: If a details argument can take one of a fixed set of possible strings, record them in the default value and use `match.arg()` or `rlang::arg_match()` inside the function.
+-   @sec-enumerate-options: If a details argument can take one of a fixed set of possible strings, record them in the default value and use `match.arg()` or `rlang::arg_match()` inside the function.
 
 -   @sec-def-magical: Default values should return the same answer when set directly.
 
--   @sec-def-short: Default values should be short.
+-   @sec-defaults-short-and-sweet: Default values should be short.
     If you have a complex calculation, either use `NULL` or an exported function.
 
 -   @sec-def-inform: If a default value is particularly important, as has non-trivial calculation, let the user know what it is.
@@ -33,7 +33,7 @@ A function's interface describes how, independent of its internal implementation
 
 #### Dots
 
--   @sec-dots-position: `...` should be placed between the data and details arguments.
+-   @sec-dots-after-required: `...` should be placed between the data and details arguments.
 
 -   @sec-dots-data: don't use `...` just to save the user from typing `c()` (unless the function is purely for data structure creation).
 

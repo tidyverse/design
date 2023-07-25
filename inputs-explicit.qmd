@@ -1,4 +1,4 @@
-# Make inputs explicit {#sec-args-hidden}
+# Make inputs explicit {#sec-inputs-explicit}
 
 ```{r}
 #| include = FALSE

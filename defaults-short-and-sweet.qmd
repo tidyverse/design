@@ -1,4 +1,4 @@
-# Keep defaults short and sweet {#sec-def-short}
+# Keep defaults short and sweet {#sec-defaults-short-and-sweet}
 
 ```{r}
 #| include = FALSE
@@ -52,7 +52,7 @@ The following examples, drawn from base R, illustrate some functions that don't 
 There are three approaches:
 
 -   Set the default value to `NULL` and calculate the default only when the argument is `NULL`.
-    Providing a default of `NULL` signals that the argument is optional (@sec-def-required) but that the default requires some calculation.
+    Providing a default of `NULL` signals that the argument is optional (@sec-required-no-defaults) but that the default requires some calculation.
 
 -   If the calculation is complex, and the user might find it useful in other scenarios, compute it with an exported function that documents exactly what happens.
 
