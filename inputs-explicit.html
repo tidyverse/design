@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.433">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Hadley Wickham">
-<title>Tidy design principles - 18&nbsp; Case study: rgb()</title>
+<title>Tidy design principles - 6&nbsp; Make inputs explicit</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -61,8 +61,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./dots-data.html" rel="next">
-<link href="./def-user.html" rel="prev">
+<link href="./dots-after-required.html" rel="next">
+<link href="./important-args-first.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -100,7 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./cs-rep.html">Function arguments</a></li><li class="breadcrumb-item"><a href="./cs-rgb.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Case study: `rgb()`</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./important-args-first.html">Scannable definitions</a></li><li class="breadcrumb-item"><a href="./inputs-explicit.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Make inputs explicit</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -187,7 +187,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./inputs-explicit.html" class="sidebar-item-text sidebar-link">
+  <a href="./inputs-explicit.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Make inputs explicit</span></span></a>
   </div>
 </li>
@@ -270,7 +270,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./cs-rgb.html" class="sidebar-item-text sidebar-link active">
+  <a href="./cs-rgb.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/grDevices/rgb.html">rgb()</a></code>
   </div>
 </li>
@@ -420,11 +420,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li><a href="#whats-the-problem" id="toc-whats-the-problem" class="nav-link active" data-scroll-target="#whats-the-problem"><span class="header-section-number">6.1</span> What’s the problem?</a></li>
+  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">6.2</span> What are some examples?</a></li>
+  <li>
+<a href="#how-can-i-remediate-the-problem" id="toc-how-can-i-remediate-the-problem" class="nav-link" data-scroll-target="#how-can-i-remediate-the-problem"><span class="header-section-number">6.3</span> How can I remediate the problem?</a>
+  <ul class="collapse">
+<li><a href="#see-also" id="toc-see-also" class="nav-link" data-scroll-target="#see-also"><span class="header-section-number">6.3.1</span> See also</a></li>
+  </ul>
+</li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/inputs-explicit.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-cs-rgb" class="quarto-section-identifier"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Case study: <code>rgb()</code></span></span></h1>
+<h1 class="title"><span id="sec-inputs-explicit" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Make inputs explicit</span></span></h1>
 </div>
 
 
@@ -437,79 +448,73 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header><p>Interface:</p>
+</header><section id="whats-the-problem" class="level2" data-number="6.1"><h2 data-number="6.1" class="anchored" data-anchor-id="whats-the-problem">
+<span class="header-section-number">6.1</span> What’s the problem?</h2>
+<p>A function is easier to understand if it’s output depends only on its arguments. If a function returns different results with the same inputs, then it some inputs must be implicit. Typically this is because the function relies on an option or environment variable.</p>
+<p>Implicit inputs are not always bad, as there are some functions that rely on them in order to their job, like <code><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time()</a></code>, <code><a href="https://rdrr.io/r/utils/read.table.html">read.csv()</a></code>, and the random number generators. But these difference are not the key part of the function’s job then it’s going to be surprising.</p>
+<p>Explicit arguments make code easier to understand because all the inputs are explicit in the code; you don’t need to run it in order to predict what it will do. Functions with implicit inputs can also return different results on different computers, and the differences will be hard to track down because you have to look in many different places.</p>
+</section><section id="what-are-some-examples" class="level2" data-number="6.2"><h2 data-number="6.2" class="anchored" data-anchor-id="what-are-some-examples">
+<span class="header-section-number">6.2</span> What are some examples?</h2>
+<p>One common source of hidden arguments is the use of global options. These can be useful to control display but, as discussed in <a href="def-user.html"><span>Chapter&nbsp;17</span></a>, should not affect computation:</p>
 <ul>
-<li>Function name and argument names.</li>
-<li>
-<code>alpha</code> has no default but isn’t required.</li>
-<li>
-<code>names</code> not required (imo).</li>
-<li>
-<code>maxColorValue</code> doens’t have most useful default, and not really needed (imo).</li>
-<li>Data frame rather than matrix.</li>
-<li>Error if function specification is correct</li>
-<li>Check for data type, not missingness.</li>
+<li><p>Historically, the worst offender was the <code>stringsAsFactors</code> option which changed how a number of functions<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> treated character vectors. This option was part of a multiyear procedure to move R away toward charcter vectors and away from vectors. You can learn more in <a href="https://simplystatistics.org/posts/2015-07-24-stringsasfactors-an-unauthorized-biography/"><em>stringsAsFactors: An unauthorized biography</em></a> by Roger Peng and <a href="http://notstatschat.tumblr.com/post/124987394001/stringsasfactors-sigh"><em>stringsAsFactors = &lt;sigh&gt;</em></a> by Thomas Lumley.</p></li>
+<li><p><code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>’s handling of missing values depends on the global option of <code>na.action</code>. The default is <code>na.omit</code> which drops the missing values prior to fitting the model (which is inconvenient because then the results of <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> don’t line up with the input data. <code><a href="https://modelr.tidyverse.org/reference/na.warn.html">modelr::na.warn()</a></code> provides an approach more in line with other base behaviours: it drops missing values with a warning.)</p></li>
 </ul>
+<p>Allowing the system locale to affect the result of a function is a subtle source of bugs when sharing code between people who work in different countries. These defaults on rarely cause problems because most languages that share the same writing system share (most of) the same collation rules. The main exceptions tend to be European languages which have varying rules for modified letters, e.g.&nbsp;in Norwegian, å comes at the end of the alphabet. However, when they do cause problems they will take a long time to track down: you’re unlikely to expect that the coefficients of a linear model are different<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> because your code is run in a different country!</p>
+<ul>
+<li><p><code><a href="https://rdrr.io/r/base/strptime.html">strptime()</a></code> relies on the names of weekdays and months in the current locale. That means <code>strptime("1 Jan 2020", "%d %b %Y")</code> will work on computers with an English locale, and fail elsewhere. This is particularly troublesome for Europeans who frequently have colleagues who speak a different language.</p></li>
+<li>
+<p><code><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct()</a></code> depends on the current timezone. The following code returns different underlying times when run on different computers:</p>
 <div class="cell">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rlang.r-lib.org">rlang</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">rgba</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">r</span>, <span class="va">g</span>, <span class="va">b</span>, <span class="va">a</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">is.data.frame</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">df</span> <span class="op">&lt;-</span> <span class="va">r</span></span>
-<span>    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3L</span>, <span class="fl">4L</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>      <span class="fu"><a href="https://rlang.r-lib.org/reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"If `r` is data frame, it must have 3 or 4 columns."</span><span class="op">)</span></span>
-<span>    <span class="op">}</span></span>
-<span>    </span>
-<span>    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">b</span><span class="op">)</span> <span class="op">||</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span> <span class="op">||</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>      <span class="fu"><a href="https://rlang.r-lib.org/reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"If `r` is a data frame, `b`, `g`, and `a` must not be set."</span><span class="op">)</span></span>
-<span>    <span class="op">}</span></span>
-<span>    </span>
-<span>    <span class="va">r</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[[</span><span class="fl">1L</span><span class="op">]</span><span class="op">]</span></span>
-<span>    <span class="va">g</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[[</span><span class="fl">2L</span><span class="op">]</span><span class="op">]</span></span>
-<span>    <span class="va">b</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[[</span><span class="fl">3L</span><span class="op">]</span><span class="op">]</span></span>
-<span>    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">==</span> <span class="fl">4</span><span class="op">)</span> <span class="op">{</span></span>
-<span>      <span class="va">a</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[[</span><span class="fl">4L</span><span class="op">]</span><span class="op">]</span></span>
-<span>    <span class="op">}</span></span>
-<span>  <span class="op">}</span></span>
-<span>  </span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/grDevices/rgb.html">rgb</a></span><span class="op">(</span><span class="va">r</span>, <span class="va">g</span>, <span class="va">b</span>, alpha <span class="op">=</span> <span class="va">a</span>, maxColorValue <span class="op">=</span> <span class="fl">255</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="st">"2020-01-01 09:00"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "2020-01-01 09:00:00 UTC"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</li>
+<li><p><code><a href="https://rdrr.io/r/base/chartr.html">toupper()</a></code> and <code><a href="https://rdrr.io/r/base/chartr.html">tolower()</a></code> depend on the current locale. It is fairly uncommon for this to cause problems because most languages either use their own character set, or use the same rules for capitalisation as English. However, this behaviour did cause a bug in ggplot2 because internally it takes <code>geom = "identity"</code> and turns it into <code>GeomIdentity</code> to find the object that actually does computation. In Turkish, however, the upper case version of i is İ, and <code>Geomİdentity</code> does not exist. This meant that for some time ggplot2 did not work on Turkish computers.</p></li>
+<li><p>For similar reasons, <code><a href="https://rdrr.io/r/base/sort.html">sort()</a></code> and <code><a href="https://rdrr.io/r/base/order.html">order()</a></code> rely on the lexicographic order defined by the current locale. <code><a href="https://rdrr.io/r/base/factor.html">factor()</a></code> uses <code><a href="https://rdrr.io/r/base/order.html">order()</a></code>, so the results from factor depend implicitly on the current locale. (This is not an imaginary problem as this <a href="https://stackoverflow.com/questions/39339489">SO question</a> attests).</p></li>
+</ul></section><section id="how-can-i-remediate-the-problem" class="level2" data-number="6.3"><h2 data-number="6.3" class="anchored" data-anchor-id="how-can-i-remediate-the-problem">
+<span class="header-section-number">6.3</span> How can I remediate the problem?</h2>
+<p>Generally, hidden arguments are easy to avoid when creating new functions: simply refrain from using environment variables (like the locale) or global options (like <code>stringsAsFactors</code>). The easiest way for problems to creep in is indirectly, when you call a function not knowing that it has hidden inputs. The best way to prevent that is to consult the list of common offenders provided above.</p>
+<p>If you want depend on an environment variable or option, make sure it’s an explicit argument. Such arguments generally should not affect computation (only side-effects like printed output or status messages); if they do affect results, follow <a href="def-inform.html"><span>Chapter&nbsp;16</span></a> to make sure the user knows what’s happening. For example, lets take <code><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct()</a></code> which basically looks something like this:</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">as.POSIXct</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">tz</span> <span class="op">=</span> <span class="st">""</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="va">x</span>, tz <span class="op">=</span> <span class="va">tz</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
-<span></span>
-<span><span class="fu">rgba</span><span class="op">(</span><span class="fl">16</span>, <span class="fl">16</span>, <span class="fl">16</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "#101010"</span></span>
-<span><span class="fu">rgba</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="fl">16</span>, <span class="fl">16</span>, <span class="fl">16</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "#101010"</span></span>
-<span><span class="fu">rgba</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="fl">16</span>, <span class="fl">16</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in `rgba()`:</span></span>
-<span><span class="co">#&gt; ! If `r` is data frame, it must have 3 or 4 columns.</span></span>
-<span><span class="fu">rgba</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="fl">16</span>, <span class="fl">16</span>, <span class="fl">16</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in `rgba()`:</span></span>
-<span><span class="co">#&gt; ! If `r` is a data frame, `b`, `g`, and `a` must not be set.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="st">"2020-01-01 09:00"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "2020-01-01 09:00:00 UTC"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>The <code>tz</code> argument is present, but it’s not obvious that <code>""</code> means the currrent time zone. Let’s first make that explicit:</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rgba</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">r</span>, <span class="va">g</span>, <span class="va">b</span>, <span class="va">a</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">is.data.frame</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">df</span> <span class="op">&lt;-</span> <span class="va">r</span></span>
-<span>    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/all.html">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"r"</span>, <span class="st">"g"</span>, <span class="st">"b"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>      <span class="fu"><a href="https://rlang.r-lib.org/reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"If first argument is a data frame, it must have r, g, and b columns."</span><span class="op">)</span></span>
-<span>    <span class="op">}</span></span>
-<span>    </span>
-<span>    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">b</span><span class="op">)</span> <span class="op">||</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span> <span class="op">||</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>      <span class="fu"><a href="https://rlang.r-lib.org/reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"If `r` is a data frame, `b`, `g`, and `a` must not be set."</span><span class="op">)</span></span>
-<span>    <span class="op">}</span></span>
-<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span>    <span class="co"># Handles vectorisation</span></span>
-<span>    <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span>r <span class="op">=</span> <span class="va">r</span>, g <span class="op">=</span> <span class="va">g</span>, b <span class="op">=</span> <span class="va">b</span>, a <span class="op">=</span> <span class="va">a</span><span class="op">)</span> </span>
-<span>  <span class="op">}</span></span>
-<span>  </span>
-<span>  <span class="co"># Assumes this function checks types and gives informative error messages</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/grDevices/rgb.html">rgb</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">r</span>, <span class="va">df</span><span class="op">$</span><span class="va">g</span>, <span class="va">df</span><span class="op">$</span><span class="va">b</span>, alpha <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">a</span>, maxColorValue <span class="op">=</span> <span class="fl">255</span><span class="op">)</span></span>
-<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">as.POSIXct</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">tz</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/timezones.html">Sys.timezone</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="va">x</span>, tz <span class="op">=</span> <span class="va">tz</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="st">"2020-01-01 09:00"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "2020-01-01 09:00:00 UTC"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Since this is an important default whose value can change, we also print it out if the user hasn’t explicitly set it:</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">as.POSIXct</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">tz</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/timezones.html">Sys.timezone</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">tz</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span><span class="op">(</span><span class="st">"Using `tz = '"</span>, <span class="va">tz</span>, <span class="st">"'`"</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="va">x</span>, tz <span class="op">=</span> <span class="va">tz</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="st">"2020-01-01 09:00"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Using `tz = 'UTC'`</span></span>
+<span><span class="co">#&gt; [1] "2020-01-01 09:00:00 UTC"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="see-also" class="level3" data-number="6.3.1"><h3 data-number="6.3.1" class="anchored" data-anchor-id="see-also">
+<span class="header-section-number">6.3.1</span> See also</h3>
+<ul>
+<li>In hidden arguments, a function depends on global state in a surprising way; in spooky action (<a href="spooky-action.html"><span>Chapter&nbsp;29</span></a>), a function changes global state in a surprising way.</li>
+</ul>
 
 
-
-</main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+<ol>
+<li id="fn1"><p>Such as <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code>, <code><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame()</a></code>, and <code><a href="https://rdrr.io/r/utils/read.table.html">read.csv()</a></code><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>You’ll get different coefficients for a categorical predictor if the ordering means that a different levels comes first in the alphabet. The predictions and other diagnostics won’t be affected, but you’re likely to be surprised that your coefficients are different.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -742,13 +747,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./def-user.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">User settable defaults</span></span>
+      <a href="./important-args-first.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./dots-data.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Making data with …</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./dots-after-required.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Put <code>…</code> after required arguments</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -757,7 +762,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-left">Tidy design principles was written by Hadley Wickham</div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/cs-rgb.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></div>
+    </div>
     <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a>.</div>
   </div>
 </footer>

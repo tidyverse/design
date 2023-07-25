@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.433">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Hadley Wickham">
-<title>Tidy design principles - 13&nbsp; Enumerate possible options</title>
+<title>Tidy design principles - 11&nbsp; Keep defaults short and sweet</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -61,8 +61,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./def-magical.html" rel="next">
-<link href="./cs-rep.html" rel="prev">
+<link href="./cs-setNames.html" rel="next">
+<link href="./enumerate-options.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -100,7 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./def-required.html">Default values</a></li><li class="breadcrumb-item"><a href="./def-enum.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Enumerate possible options</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./important-args-first.html">Scannable definitions</a></li><li class="breadcrumb-item"><a href="./defaults-short-and-sweet.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Keep defaults short and sweet</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -132,13 +132,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Tidyverse design guide</span></span></a>
+ <span class="menu-text">Welcome</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./unifying.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Unifying principles</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Unifying principles</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -153,19 +153,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./names.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Names attribute</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Names attribute</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./call-data-details.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Name details arguments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Name all but the most important arguments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./function-names.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Function names</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Function names</span></span></a>
   </div>
 </li>
       </ul>
@@ -173,7 +173,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text">Inputs</span></a>
+ <span class="menu-text">Scannable definitions</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -181,32 +181,56 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./args-hidden.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Avoid hidden arguments</span></span></a>
+  <a href="./important-args-first.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./args-data-details.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></a>
+  <a href="./inputs-explicit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Make inputs explicit</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./dots-position.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Put <code>…</code> before optional arguments</span></span></a>
+  <a href="./dots-after-required.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Put <code>…</code> after required arguments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./args-independence.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Avoid dependencies between arguments</span></span></a>
+  <a href="./required-no-defaults.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Required args don’t have defaults</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./arguments-independent.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Keep arguments independent</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./enumerate-options.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Enumerate possible options</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./defaults-short-and-sweet.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Keep defaults short and sweet</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-setNames.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/stats/setNames.html">setNames()</a></code>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/stats/setNames.html">setNames()</a></code>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cs-stringr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Case study: stringr</span></span></a>
   </div>
 </li>
       </ul>
@@ -214,7 +238,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
- <span class="menu-text">Default values</span></a>
+ <span class="menu-text">Function arguments</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -222,32 +246,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./def-required.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Required args shouldn’t have defaults</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./cs-rep.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./def-enum.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Enumerate possible options</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./def-magical.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Avoid magical defaults</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./def-short.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Keep defaults short and sweet</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Avoid magical defaults</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -268,18 +274,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/grDevices/rgb.html">rgb()</a></code>
   </div>
 </li>
-      </ul>
-</li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
- <span class="menu-text"><code>...</code></span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dots-data.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Making data with …</span></span></a>
@@ -307,13 +302,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
  <span class="menu-text">Outputs</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-multi.html" class="sidebar-item-text sidebar-link">
@@ -342,13 +337,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
  <span class="menu-text">Evolution</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./changes-multivers.html" class="sidebar-item-text sidebar-link">
@@ -359,13 +354,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
  <span class="menu-text">Side effects</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./side-effects.html" class="sidebar-item-text sidebar-link">
@@ -382,13 +377,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
  <span class="menu-text">Errors</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./err-call.html" class="sidebar-item-text sidebar-link">
@@ -405,13 +400,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
  <span class="menu-text">Appendices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./glossary.html" class="sidebar-item-text sidebar-link">
@@ -428,20 +423,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#whats-the-pattern" id="toc-whats-the-pattern" class="nav-link active" data-scroll-target="#whats-the-pattern"><span class="header-section-number">13.1</span> What’s the pattern?</a></li>
-  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">13.2</span> What are some examples?</a></li>
-  <li><a href="#why-is-it-important" id="toc-why-is-it-important" class="nav-link" data-scroll-target="#why-is-it-important"><span class="header-section-number">13.3</span> Why is it important?</a></li>
+<li><a href="#whats-the-pattern" id="toc-whats-the-pattern" class="nav-link active" data-scroll-target="#whats-the-pattern"><span class="header-section-number">11.1</span> What’s the pattern?</a></li>
+  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">11.2</span> What are some examples?</a></li>
   <li>
-<a href="#how-do-i-use-it" id="toc-how-do-i-use-it" class="nav-link" data-scroll-target="#how-do-i-use-it"><span class="header-section-number">13.4</span> How do I use it?</a>
+<a href="#how-do-i-use-it" id="toc-how-do-i-use-it" class="nav-link" data-scroll-target="#how-do-i-use-it"><span class="header-section-number">11.3</span> How do I use it?</a>
   <ul class="collapse">
-<li><a href="#how-keep-defaults-short" id="toc-how-keep-defaults-short" class="nav-link" data-scroll-target="#how-keep-defaults-short"><span class="header-section-number">13.4.1</span> How keep defaults short?</a></li>
+<li><a href="#sec-arg-short-null" id="toc-sec-arg-short-null" class="nav-link" data-scroll-target="#sec-arg-short-null"><span class="header-section-number">11.3.1</span> <code>NULL</code> default</a></li>
+  <li><a href="#helper-function" id="toc-helper-function" class="nav-link" data-scroll-target="#helper-function"><span class="header-section-number">11.3.2</span> Helper function</a></li>
+  <li><a href="#sec-args-default-sentinel" id="toc-sec-args-default-sentinel" class="nav-link" data-scroll-target="#sec-args-default-sentinel"><span class="header-section-number">11.3.3</span> Sentinel value</a></li>
   </ul>
 </li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/def-enum.Rmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+  <li><a href="#how-do-i-remediate-existing-problems" id="toc-how-do-i-remediate-existing-problems" class="nav-link" data-scroll-target="#how-do-i-remediate-existing-problems"><span class="header-section-number">11.4</span> How do I remediate existing problems?</a></li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/defaults-short-and-sweet.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-def-enum" class="quarto-section-identifier"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Enumerate possible options</span></span></h1>
+<h1 class="title"><span id="sec-defaults-short-and-sweet" class="quarto-section-identifier"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Keep defaults short and sweet</span></span></h1>
 </div>
 
 
@@ -454,112 +451,112 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header><section id="whats-the-pattern" class="level2" data-number="13.1"><h2 data-number="13.1" class="anchored" data-anchor-id="whats-the-pattern">
-<span class="header-section-number">13.1</span> What’s the pattern?</h2>
-<p>If the possible values of an argument are a small set of strings, set the default argument to the set of possible values, and then use <code><a href="https://rdrr.io/r/base/match.arg.html">match.arg()</a></code> or <code><a href="https://rlang.r-lib.org/reference/arg_match.html">rlang::arg_match()</a></code> in the function body. This convention advertises to the user what the possible values, and makes it easy to generate an informative error message for inappropriate inputs.</p>
-</section><section id="what-are-some-examples" class="level2" data-number="13.2"><h2 data-number="13.2" class="anchored" data-anchor-id="what-are-some-examples">
-<span class="header-section-number">13.2</span> What are some examples?</h2>
+</header><section id="whats-the-pattern" class="level2" data-number="11.1"><h2 data-number="11.1" class="anchored" data-anchor-id="whats-the-pattern">
+<span class="header-section-number">11.1</span> What’s the pattern?</h2>
+<p>Default values should be short and sweet. This makes the function specification easier to scan.</p>
+<p>This pattern is important because it ensures that when scanning the function definition you can understand quickly how the defaults will be computed.</p>
+</section><section id="what-are-some-examples" class="level2" data-number="11.2"><h2 data-number="11.2" class="anchored" data-anchor-id="what-are-some-examples">
+<span class="header-section-number">11.2</span> What are some examples?</h2>
+<p>The following examples, drawn from base R, illustrate some functions that don’t follow this pattern:</p>
 <ul>
-<li><p>In <code><a href="https://rdrr.io/r/base/difftime.html">difftime()</a></code>, <code>units</code> can be any one of “auto”, “secs”, “mins”, “hours”, “days”, or “weeks”.</p></li>
-<li><p>In <code><a href="https://rdrr.io/r/base/format.html">format()</a></code>, <code>justify</code> can be “left”, “right”, “center”, or “none”.</p></li>
-<li><p>In <code><a href="https://rdrr.io/r/base/trimws.html">trimws()</a></code>, you can choose <code>which</code> side to remove whitespace from: “both”, “left”, or “right”.</p></li>
-<li><p>In <code><a href="https://rdrr.io/r/base/rank.html">rank()</a></code>, you can select the <code>ties.method</code> from one of “average”, “first”, “last”, “random”, “max”, or “min”.</p></li>
-<li><p>In <code><a href="https://rdrr.io/r/utils/RSiteSearch.html">RSiteSearch()</a></code>, you can <code>restrict</code> results to be “functions”, “vignettes”, “views”, or any combination of the three.</p></li>
-</ul></section><section id="why-is-it-important" class="level2" data-number="13.3"><h2 data-number="13.3" class="anchored" data-anchor-id="why-is-it-important">
-<span class="header-section-number">13.3</span> Why is it important?</h2>
-<p>This convention makes it possible to advertise the possible set of values for an argument. The advertisement happens in the function specification, so you see in tooltips and autocomplete, without having to look at the documentation.</p>
-</section><section id="how-do-i-use-it" class="level2" data-number="13.4"><h2 data-number="13.4" class="anchored" data-anchor-id="how-do-i-use-it">
-<span class="header-section-number">13.4</span> How do I use it?</h2>
-<p>To use this technique, set the default value to a character vector, where the first value is the default. Inside the function, use <code><a href="https://rdrr.io/r/base/match.arg.html">match.arg()</a></code> or <code><a href="https://rlang.r-lib.org/reference/arg_match.html">rlang::arg_match()</a></code> which checks that the value comes from the known good set. This interface pattern is often coupled with an implementation that uses <code><a href="https://rdrr.io/r/base/switch.html">switch()</a></code>.</p>
-<p>Take <code><a href="https://rdrr.io/r/base/rank.html">rank()</a></code>, for example. The heart of its implementation looks like this:</p>
-<div class="cell" data-hash="def-enum_cache/html/unnamed-chunk-3_4987956240510cf514edb94beb558c51">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rank</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, </span>
-<span>                 <span class="va">ties.method</span> <span class="op">=</span> </span>
-<span>                  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"average"</span>, <span class="st">"first"</span>, <span class="st">"last"</span>, <span class="st">"random"</span>, <span class="st">"max"</span>, <span class="st">"min"</span><span class="op">)</span></span>
-<span>                 <span class="op">)</span> <span class="op">{</span></span>
-<span>  </span>
-<span>  <span class="va">ties.method</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/match.arg.html">match.arg</a></span><span class="op">(</span><span class="va">ties.method</span><span class="op">)</span></span>
-<span>  </span>
-<span>  <span class="kw"><a href="https://rdrr.io/r/base/switch.html">switch</a></span><span class="op">(</span><span class="va">ties.method</span>, </span>
-<span>    average <span class="op">=</span> , </span>
-<span>    min <span class="op">=</span> , </span>
-<span>    max <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Internal.html">.Internal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rank.html">rank</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="va">ties.method</span><span class="op">)</span><span class="op">)</span>, </span>
-<span>    first <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/order.html">sort.list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/order.html">sort.list</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    last <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/order.html">sort.list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rev.html">rev.default</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/order.html">sort.list</a></span><span class="op">(</span><span class="va">x</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, </span>
-<span>    random <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/order.html">sort.list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/rank.html">rank</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 1.0 2.5 2.5 5.0 5.0 5.0</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/rank.html">rank</a></span><span class="op">(</span><span class="va">x</span>, ties.method <span class="op">=</span> <span class="st">"first"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 1 2 3 4 5 6</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/rank.html">rank</a></span><span class="op">(</span><span class="va">x</span>, ties.method <span class="op">=</span> <span class="st">"min"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 1 2 2 4 4 4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<li><p><code><a href="https://rdrr.io/r/base/sample.html">sample.int()</a></code> uses a complicated rule to determine whether or not to use a faster hash based method that’s only applicable in some circumstances: <code>useHash = (!replace &amp;&amp; is.null(prob) &amp;&amp; size &lt;= n/2 &amp;&amp; n &gt; 1e+07))</code></p></li>
+<li><p><code><a href="https://rdrr.io/r/base/exists.html">exists()</a></code>, which figures out if a variable exists in a given environment, uses a complex default to determine which environment to look in if not specifically provided: <code>envir = (if (missing(frame)) as.environment(where) else sys.frame(frame))</code> (NB: <code><a href="https://rdrr.io/r/base/exists.html">?exists</a></code> cheats and hides the long default in the documentation.)</p></li>
+<li>
+<p><code><a href="https://rdrr.io/r/stats/reshape.html">reshape()</a></code> has the longest default argument in the base and stats packages. The <code>split</code> argument is one of two possible lists depending on the value of the <code>sep</code> argument:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">reshape</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">split =</span> <span class="cf">if</span> (sep <span class="sc">==</span> <span class="st">""</span>) {</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(<span class="at">regexp =</span> <span class="st">"[A-Za-z][0-9]"</span>, <span class="at">include =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(<span class="at">regexp =</span> sep, <span class="at">include =</span> <span class="cn">FALSE</span>, <span class="at">fixed =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="er">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Note that <code><a href="https://rdrr.io/r/base/match.arg.html">match.arg()</a></code> will automatically throw an error if the value is not in the set:</p>
-<div class="cell" data-hash="def-enum_cache/html/unnamed-chunk-4_a90ac21ed189ddf8742b0ea75ba96247">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/rank.html">rank</a></span><span class="op">(</span><span class="va">x</span>, ties.method <span class="op">=</span> <span class="st">"middle"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in match.arg(ties.method): 'arg' should be one of "average", "first", "last", "random", "max", "min"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>It also supports partial matching so that the following code is shorthand for `ties.method = “random”:</p>
-<div class="cell" data-hash="def-enum_cache/html/unnamed-chunk-5_d2417d6a7600cec9406ec012af6dbb1b">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/rank.html">rank</a></span><span class="op">(</span><span class="va">x</span>, ties.method <span class="op">=</span> <span class="st">"r"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 1 2 3 5 6 4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>I generally believe that partial matching is a bad idea, because it makes code harder to read. <code><a href="https://rlang.r-lib.org/reference/arg_match.html">rlang::arg_match()</a></code> is an alternative to <code>match.args()</code> that doesn’t support partial matching. Instead it provides a helpful error message:</p>
-<div class="cell" data-hash="def-enum_cache/html/unnamed-chunk-6_7fb67aac1d1ef9395fd6919233e855cd">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rank2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, </span>
-<span>                 <span class="va">ties.method</span> <span class="op">=</span> </span>
-<span>                  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"average"</span>, <span class="st">"first"</span>, <span class="st">"last"</span>, <span class="st">"random"</span>, <span class="st">"max"</span>, <span class="st">"min"</span><span class="op">)</span></span>
-<span>                 <span class="op">)</span> <span class="op">{</span></span>
-<span>  </span>
-<span>  <span class="va">ties.method</span> <span class="op">&lt;-</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/arg_match.html">arg_match</a></span><span class="op">(</span><span class="va">ties.method</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/rank.html">rank</a></span><span class="op">(</span><span class="va">x</span>, ties.method <span class="op">=</span> <span class="va">ties.method</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="fu">rank2</span><span class="op">(</span><span class="va">x</span>, ties.method <span class="op">=</span> <span class="st">"r"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in `rank2()`:</span></span>
-<span><span class="co">#&gt; ! `ties.method` must be one of "average", "first", "last", "random",</span></span>
-<span><span class="co">#&gt;   "max", or "min", not "r".</span></span>
-<span><span class="co">#&gt; ℹ Did you mean "random"?</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<section id="how-keep-defaults-short" class="level3" data-number="13.4.1"><h3 data-number="13.4.1" class="anchored" data-anchor-id="how-keep-defaults-short">
-<span class="header-section-number">13.4.1</span> How keep defaults short?</h3>
-<p>This technique is a best used when the set of possible values is short. You can see that it’s already getting unwieldy in <code><a href="https://rdrr.io/r/base/rank.html">rank()</a></code>. If you have a long list of possibilities, there are two options that you could use from <a href="def-short.html"><span>Chapter&nbsp;15</span></a>. Unfortunately both approaches have major downsides:</p>
+</li>
+</ul></section><section id="how-do-i-use-it" class="level2" data-number="11.3"><h2 data-number="11.3" class="anchored" data-anchor-id="how-do-i-use-it">
+<span class="header-section-number">11.3</span> How do I use it?</h2>
+<p>There are three approaches:</p>
 <ul>
-<li>
-<p>Set a single default and supply the possible values to <code><a href="https://rdrr.io/r/base/match.arg.html">match.arg()</a></code>:</p>
-<div class="cell" data-hash="def-enum_cache/html/unnamed-chunk-7_ac7a9c4e2346a7191be8f4a1fa0b6267">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rank2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">ties.method</span> <span class="op">=</span> <span class="st">"average"</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">ties.method</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/match.arg.html">match.arg</a></span><span class="op">(</span></span>
-<span>    <span class="va">ties.method</span>, </span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"average"</span>, <span class="st">"first"</span>, <span class="st">"last"</span>, <span class="st">"random"</span>, <span class="st">"max"</span>, <span class="st">"min"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>The downside of this approach is that you can no longer see which values are permitted, and you’d have to describe them separately in the documentation. You can, however, still see the default value in the function specification.</p>
-</li>
-<li>
-<p>Store the options in an exported function, and use it in the defaults:</p>
-<div class="cell" data-hash="def-enum_cache/html/unnamed-chunk-8_89f48fd690a2f8881014dc413ac4685b">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ties_method</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"average"</span>, <span class="st">"first"</span>, <span class="st">"last"</span>, <span class="st">"random"</span>, <span class="st">"max"</span>, <span class="st">"min"</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="va">rank2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">ties.method</span> <span class="op">=</span> <span class="fu">ties_method</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">ties.method</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/match.arg.html">match.arg</a></span><span class="op">(</span><span class="va">ties.method</span><span class="op">)</span></span>
-<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>The downside of this approach is that when looking at the function spec, you can no longer easily see the default value, or the set of possible values. However, the possible values can easily be found programmatically.</p>
-<p>This is more worthwhile if you want to share the permitted values across multiple functions. For example <code><a href="https://rdrr.io/r/stats/p.adjust.html">stats::p.adjust()</a></code>, <code><a href="https://rdrr.io/r/stats/pairwise.prop.test.html">stats::pairwise.prop.test()</a></code>, <code><a href="https://rdrr.io/r/stats/pairwise.t.test.html">stats::pairwise.t.test()</a></code>, <code><a href="https://rdrr.io/r/stats/pairwise.wilcox.test.html">stats::pairwise.wilcox.test()</a></code> all use <code>p.adjust.method = p.adjust.methods</code>.</p>
-</li>
+<li><p>Set the default value to <code>NULL</code> and calculate the default only when the argument is <code>NULL</code>. Providing a default of <code>NULL</code> signals that the argument is optional (<a href="required-no-defaults.html"><span>Chapter&nbsp;8</span></a>) but that the default requires some calculation.</p></li>
+<li><p>If the calculation is complex, and the user might find it useful in other scenarios, compute it with an exported function that documents exactly what happens.</p></li>
+<li><p>If <code>NULL</code> is meaningful, so you can’t use the first approach, use a “sentinel” object instead.</p></li>
 </ul>
+<section id="sec-arg-short-null" class="level3" data-number="11.3.1"><h3 data-number="11.3.1" class="anchored" data-anchor-id="sec-arg-short-null">
+<span class="header-section-number">11.3.1</span> <code>NULL</code> default</h3>
+<p>The most common approach is to use <code>NULL</code> as a sentinel value that indicates that the argument is optional, but non-trivial. This pattern is made substantially more elegant with the infix <code>%||%</code> operator. You can either get it by importing it from rlang, or copying and pasting it in to your <code>utils.R</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">`%||%`</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="va">y</span> <span class="kw">else</span> <span class="va">x</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This allows you to write code like this (extracted from <code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">ggplot2::geom_bar()</a></code>). It computes the width by first looking at the data, then in the parameters, finally falling back to computing it from the resolution of the <code>x</code> variable:</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">width</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">width</span> <span class="op">%||%</span> <span class="va">params</span><span class="op">$</span><span class="va">width</span> <span class="op">%||%</span> <span class="op">(</span><span class="fu">resolution</span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">x</span>, <span class="cn">FALSE</span><span class="op">)</span> <span class="op">*</span> <span class="fl">0.9</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Or this code from the colourbar legend: it finds the horizontal justification by first looking in the guide settings, then in the specific theme setting, then then title element, finally using <code>0</code> if nothing else is set:</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">title.hjust</span> <span class="op">&lt;-</span> <span class="va">guide</span><span class="op">$</span><span class="va">title.hjust</span> <span class="op">%||%</span> </span>
+<span>  <span class="va">theme</span><span class="op">$</span><span class="va">legend.title.align</span> <span class="op">%||%</span> </span>
+<span>  <span class="va">title.theme</span><span class="op">$</span><span class="va">hjust</span> <span class="op">%||%</span> </span>
+<span>  <span class="fl">0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>As you can see, <code>%||%</code> is particularly well suited to arguments where the default value is found through a cascading system of fallbacks.</p>
+<p>Don’t use <code>%||%</code> for more complex examples where the individual clauses can’t fit on their own line. For example in <code><a href="https://rdrr.io/r/stats/reshape.html">reshape()</a></code> I would set <code>split = NULL</code> and then write:</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">split</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">sep</span> <span class="op">==</span> <span class="st">""</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">split</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>regexp <span class="op">=</span> <span class="st">"[A-Za-z][0-9]"</span>, include <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>    <span class="va">split</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>regexp <span class="op">=</span> <span class="va">sep</span>, include <span class="op">=</span> <span class="cn">FALSE</span>, fixed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="helper-function" class="level3" data-number="11.3.2"><h3 data-number="11.3.2" class="anchored" data-anchor-id="helper-function">
+<span class="header-section-number">11.3.2</span> Helper function</h3>
+<p>For more complicated cases, you’ll probably want to pull the code that computes the default out into a separate function, and in many cases you’ll want to export (and document) the function.</p>
+<p>A good example of this pattern is <code><a href="https://readr.tidyverse.org/reference/show_progress.html">readr::show_progress()</a></code>: it’s used in every <code>read_</code> function in readr and it’s sufficiently complicated that you don’t want to copy and paste it between functions. It’s also nice to document it in its own file, rather than cluttering up file reading functions with incidental details.</p>
+</section><section id="sec-args-default-sentinel" class="level3" data-number="11.3.3"><h3 data-number="11.3.3" class="anchored" data-anchor-id="sec-args-default-sentinel">
+<span class="header-section-number">11.3.3</span> Sentinel value</h3>
+<p>Sometimes a default argument has a complex calculation that you don’t want to include in arguments list. You’d normally use <code>NULL</code> to indicate that it’s calculated by default, but <code>NULL</code> is a meaningful option. In that case, you can use a <strong>sentinel</strong> object.</p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/waiver.html">waiver</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  list()</span></span>
+<span><span class="co">#&gt;  - attr(*, "class")= chr "waiver"</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/done.html">done</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; List of 1</span></span>
+<span><span class="co">#&gt;  $ : symbol </span></span>
+<span><span class="co">#&gt;  - attr(*, "class")= chr [1:2] "rlang_box_done" "rlang_box"</span></span>
+<span><span class="co">#&gt;  - attr(*, "empty")= logi TRUE</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/zap.html">zap</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  list()</span></span>
+<span><span class="co">#&gt;  - attr(*, "class")= chr "rlang_zap"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Take <code><a href="https://purrr.tidyverse.org/reference/reduce.html">purrr::reduce()</a></code>: it has an optional details argument called <code>init</code>. When supplied, it serves as the initial value for the computation. But any value (including <code>NULL</code>) can a valid value. And using a sentinel value for this one case seemed like overkill.</p>
+</section></section><section id="how-do-i-remediate-existing-problems" class="level2" data-number="11.4"><h2 data-number="11.4" class="anchored" data-anchor-id="how-do-i-remediate-existing-problems">
+<span class="header-section-number">11.4</span> How do I remediate existing problems?</h2>
+<p>If you have a function with a long default, you can use any of the three approaches above to remediate it. As long as you don’t accidentally change the default value, this does not affect the function interface. Make sure you have a test for the default operation of the function before embarking on this change.</p>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># BEFORE</span></span>
+<span><span class="va">sample.int</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span>, </span>
+<span>                       <span class="va">size</span> <span class="op">=</span> <span class="va">n</span>, </span>
+<span>                       <span class="va">replace</span> <span class="op">=</span> <span class="cn">FALSE</span>, </span>
+<span>                       <span class="va">prob</span> <span class="op">=</span> <span class="cn">NULL</span>, </span>
+<span>                       <span class="va">useHash</span> <span class="op">=</span> <span class="op">(</span><span class="op">!</span><span class="va">replace</span> <span class="op">&amp;&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">prob</span><span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="va">size</span> <span class="op">&lt;=</span> <span class="va">n</span><span class="op">/</span><span class="fl">2</span> <span class="op">&amp;&amp;</span> <span class="va">n</span> <span class="op">&gt;</span> <span class="fl">1e+07</span><span class="op">)</span></span>
+<span>                       <span class="op">)</span> <span class="op">{</span></span>
+<span>  </span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># AFTER</span></span>
+<span><span class="va">sample.int</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span>, <span class="va">size</span> <span class="op">=</span> <span class="va">n</span>, <span class="va">replace</span> <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">prob</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">useHash</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">useHash</span> <span class="op">&lt;-</span> <span class="va">useHash</span> <span class="op">%||%</span> <span class="op">(</span><span class="op">!</span><span class="va">replace</span> <span class="op">&amp;&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">prob</span><span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="va">size</span> <span class="op">&lt;=</span> <span class="va">n</span><span class="op">/</span><span class="fl">2</span> <span class="op">&amp;&amp;</span> <span class="va">n</span> <span class="op">&gt;</span> <span class="fl">1e+07</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 
 
-</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -792,14 +789,14 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./cs-rep.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code>
-                
+      <a href="./enumerate-options.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Enumerate possible options</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./def-magical.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Avoid magical defaults</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
+      <a href="./cs-setNames.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/stats/setNames.html">setNames()</a></code> <i class="bi bi-arrow-right-short"></i>
+      
   </div>
 </nav>
 </div> <!-- /content -->

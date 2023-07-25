@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.433">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Hadley Wickham">
-<title>Tidy design principles - 12&nbsp; Case study: rep()</title>
+<title>Tidy design principles - 14&nbsp; Case study: rep()</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -61,8 +61,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./def-enum.html" rel="next">
-<link href="./def-required.html" rel="prev">
+<link href="./def-magical.html" rel="next">
+<link href="./cs-stringr.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -100,7 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./def-required.html">Default values</a></li><li class="breadcrumb-item"><a href="./cs-rep.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Case study: `rep()`</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./cs-rep.html">Function arguments</a></li><li class="breadcrumb-item"><a href="./cs-rep.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Case study: `rep()`</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -132,13 +132,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Tidyverse design guide</span></span></a>
+ <span class="menu-text">Welcome</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./unifying.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Unifying principles</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Unifying principles</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -153,19 +153,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./names.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Names attribute</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Names attribute</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./call-data-details.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Name details arguments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Name all but the most important arguments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./function-names.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Function names</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Function names</span></span></a>
   </div>
 </li>
       </ul>
@@ -173,7 +173,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text">Inputs</span></a>
+ <span class="menu-text">Scannable definitions</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -181,32 +181,56 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./args-hidden.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Avoid hidden arguments</span></span></a>
+  <a href="./important-args-first.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./args-data-details.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></a>
+  <a href="./inputs-explicit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Make inputs explicit</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./dots-position.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Put <code>…</code> before optional arguments</span></span></a>
+  <a href="./dots-after-required.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Put <code>…</code> after required arguments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./args-independence.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Avoid dependencies between arguments</span></span></a>
+  <a href="./required-no-defaults.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Required args don’t have defaults</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./arguments-independent.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Keep arguments independent</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./enumerate-options.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Enumerate possible options</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./defaults-short-and-sweet.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Keep defaults short and sweet</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-setNames.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/stats/setNames.html">setNames()</a></code>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/stats/setNames.html">setNames()</a></code>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cs-stringr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Case study: stringr</span></span></a>
   </div>
 </li>
       </ul>
@@ -214,7 +238,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
- <span class="menu-text">Default values</span></a>
+ <span class="menu-text">Function arguments</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -222,32 +246,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./def-required.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Required args shouldn’t have defaults</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./cs-rep.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./def-enum.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Enumerate possible options</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./def-magical.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Avoid magical defaults</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./def-short.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Keep defaults short and sweet</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Avoid magical defaults</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -268,18 +274,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/grDevices/rgb.html">rgb()</a></code>
   </div>
 </li>
-      </ul>
-</li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
- <span class="menu-text"><code>...</code></span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dots-data.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Making data with …</span></span></a>
@@ -307,13 +302,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
  <span class="menu-text">Outputs</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-multi.html" class="sidebar-item-text sidebar-link">
@@ -342,13 +337,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
  <span class="menu-text">Evolution</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./changes-multivers.html" class="sidebar-item-text sidebar-link">
@@ -359,13 +354,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
  <span class="menu-text">Side effects</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./side-effects.html" class="sidebar-item-text sidebar-link">
@@ -382,13 +377,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
  <span class="menu-text">Errors</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./err-call.html" class="sidebar-item-text sidebar-link">
@@ -405,13 +400,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
  <span class="menu-text">Appendices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./glossary.html" class="sidebar-item-text sidebar-link">
@@ -428,15 +423,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#what-does-rep-do" id="toc-what-does-rep-do" class="nav-link active" data-scroll-target="#what-does-rep-do"><span class="header-section-number">12.1</span> What does <code>rep()</code> do?</a></li>
-  <li><a href="#what-makes-this-function-hard-to-understand" id="toc-what-makes-this-function-hard-to-understand" class="nav-link" data-scroll-target="#what-makes-this-function-hard-to-understand"><span class="header-section-number">12.2</span> What makes this function hard to understand?</a></li>
-  <li><a href="#how-might-we-improve-the-situation" id="toc-how-might-we-improve-the-situation" class="nav-link" data-scroll-target="#how-might-we-improve-the-situation"><span class="header-section-number">12.3</span> How might we improve the situation?</a></li>
-  <li><a href="#dealing-with-bad-inputs" id="toc-dealing-with-bad-inputs" class="nav-link" data-scroll-target="#dealing-with-bad-inputs"><span class="header-section-number">12.4</span> Dealing with bad inputs</a></li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/cs-rep.Rmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<li><a href="#what-does-rep-do" id="toc-what-does-rep-do" class="nav-link active" data-scroll-target="#what-does-rep-do"><span class="header-section-number">14.1</span> What does <code>rep()</code> do?</a></li>
+  <li><a href="#what-makes-this-function-hard-to-understand" id="toc-what-makes-this-function-hard-to-understand" class="nav-link" data-scroll-target="#what-makes-this-function-hard-to-understand"><span class="header-section-number">14.2</span> What makes this function hard to understand?</a></li>
+  <li><a href="#how-might-we-improve-the-situation" id="toc-how-might-we-improve-the-situation" class="nav-link" data-scroll-target="#how-might-we-improve-the-situation"><span class="header-section-number">14.3</span> How might we improve the situation?</a></li>
+  <li><a href="#dealing-with-bad-inputs" id="toc-dealing-with-bad-inputs" class="nav-link" data-scroll-target="#dealing-with-bad-inputs"><span class="header-section-number">14.4</span> Dealing with bad inputs</a></li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/cs-rep.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-cs-rep" class="quarto-section-identifier"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Case study: <code>rep()</code></span></span></h1>
+<h1 class="title"><span id="sec-cs-rep" class="quarto-section-identifier"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Case study: <code>rep()</code></span></span></h1>
 </div>
 
 
@@ -449,10 +444,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header><section id="what-does-rep-do" class="level2" data-number="12.1"><h2 data-number="12.1" class="anchored" data-anchor-id="what-does-rep-do">
-<span class="header-section-number">12.1</span> What does <code>rep()</code> do?</h2>
+</header><section id="what-does-rep-do" class="level2" data-number="14.1"><h2 data-number="14.1" class="anchored" data-anchor-id="what-does-rep-do">
+<span class="header-section-number">14.1</span> What does <code>rep()</code> do?</h2>
 <p><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code> is an extremely useful base R function that repeats a vector <code>x</code> in various ways. It has three details arguments: <code>times</code>, <code>each</code>, and <code>length.out</code><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> that interact in complicated ways. Let’s explore the basics first:</p>
-<div class="cell" data-hash="cs-rep_cache/html/unnamed-chunk-2_eb5be50eb3778633feb87ae96d4c6ef8">
+<div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">x</span>, times <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
@@ -461,38 +456,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt;  [1] 1 2 4 1 2 4 1 2 4 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><code>times</code> and <code>length.out</code> replicate the vector in the same way, but <code>length.out</code> allows you to specify a non-integer number of replications. If you specify both, <code>length.out</code> wins.</p>
-<div class="cell" data-hash="cs-rep_cache/html/unnamed-chunk-3_b5274ab4356fd705ec2b47a9cb26d455">
+<div class="cell">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">x</span>, times <span class="op">=</span> <span class="fl">3</span>, length.out <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  [1] 1 2 4 1 2 4 1 2 4 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The <code>each</code> argument repeats individual components of the vector rather than the whole vector:</p>
-<div class="cell" data-hash="cs-rep_cache/html/unnamed-chunk-4_5e5d73592d2d0b99e0818b9bdeb1f803">
+<div class="cell">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">x</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 1 1 1 2 2 2 4 4 4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>And you can combine that with <code>times</code>:</p>
-<div class="cell" data-hash="cs-rep_cache/html/unnamed-chunk-5_77cd2550ccbaca9817de199e15b12cc3">
+<div class="cell">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">x</span>, each <span class="op">=</span> <span class="fl">3</span>, times <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  [1] 1 1 1 2 2 2 4 4 4 1 1 1 2 2 2 4 4 4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>If you supply a vector to <code>times</code> it works a similar way to <code>each</code>, repeating each component the specified number of times:</p>
-<div class="cell" data-hash="cs-rep_cache/html/unnamed-chunk-6_2852be6cbaa0d4fa593c7b0b230364ad">
+<div class="cell">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">x</span>, times <span class="op">=</span> <span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 1 2 2 4 4 4 4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section><section id="what-makes-this-function-hard-to-understand" class="level2" data-number="12.2"><h2 data-number="12.2" class="anchored" data-anchor-id="what-makes-this-function-hard-to-understand">
-<span class="header-section-number">12.2</span> What makes this function hard to understand?</h2>
+</section><section id="what-makes-this-function-hard-to-understand" class="level2" data-number="14.2"><h2 data-number="14.2" class="anchored" data-anchor-id="what-makes-this-function-hard-to-understand">
+<span class="header-section-number">14.2</span> What makes this function hard to understand?</h2>
 <ul>
 <li>
 <p>There’s a complicated dependency between <code>times</code>, <code>length.out</code>, and <code>each</code>. <code>times</code> and <code>length.out</code> both control the same underlying variable in different ways, and you can not set them simultaneously. <code>times</code> and <code>each</code> are mostly independent, but if you specify a vector for <code>times</code> you can’t use each.</p>
-<div class="cell" data-hash="cs-rep_cache/html/unnamed-chunk-7_423117cf63be0692e47a11f7cf486364">
+<div class="cell">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, times <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error in rep(1:3, times = c(2, 2, 2), each = 2): invalid 'times' argument</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </li>
 <li>
 <p>I think using <code>times</code> with a vector is confusing because it switches from replicating the whole vector to replicating individual values of the vector, like <code>each</code> usually does.</p>
-<div class="cell" data-hash="cs-rep_cache/html/unnamed-chunk-8_c75680e9c256a9b42f610efb197c97da">
+<div class="cell">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, each <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 1 1 2 2 3 3</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, times <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
@@ -503,32 +498,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
 </ul>
 <p>I think these two problems have the same underlying cause: <code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code> is trying to do too much in a single function. I think we can make things simpler by turning <code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code> into two functions: one that replicates the full vector, and one that replicates each element of the vector.</p>
-</section><section id="how-might-we-improve-the-situation" class="level2" data-number="12.3"><h2 data-number="12.3" class="anchored" data-anchor-id="how-might-we-improve-the-situation">
-<span class="header-section-number">12.3</span> How might we improve the situation?</h2>
+</section><section id="how-might-we-improve-the-situation" class="level2" data-number="14.3"><h2 data-number="14.3" class="anchored" data-anchor-id="how-might-we-improve-the-situation">
+<span class="header-section-number">14.3</span> How might we improve the situation?</h2>
 <p>Two create two new functions, we need to first come up with names: I like <code>rep_each()</code> and <code>rep_full()</code>. <code>rep_each()</code> was a fairly easy name to come up with. <code>rep_full()</code> was a little harder and took a few iterations: I like that <code>full</code> has the same number of letters as <code>each</code>, which makes the two functions look like they belong together.</p>
 <p>Next, we need to think about their arguments. Both will have a single data argument: <code>x</code>, the vector to replicate. <code>rep_each()</code> has a single details argument which specifies the number of times to replicate each element. <code>rep_time()</code> has two mutually exclusive details arguments, the number of times to repeat the whole vector, or the desired length of the output.</p>
 <p>What should we call the arguments? We’ve already captured the different replication strategies (each vs.&nbsp;full) in the function name, so I think the argument that specifies the number of times to replicate can be the same, and <code>times</code> seems reasonable. For the second argument to <code>rep_full()</code>, I draw inspiration from <code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code> which uses <code>length.out</code>. I think it’s obvious that the argument controls the output, so <code>length</code> is adequate.</p>
-<div class="cell" data-hash="cs-rep_cache/html/unnamed-chunk-9_e7b5c2c2d202063aa7aebeebc98eab21">
+<div class="cell">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rep_each</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">times</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">times</span>, length.out <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">x</span>, times <span class="op">=</span> <span class="va">times</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">rep_full</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">times</span>, <span class="va">length</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/Logic.html">xor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">length</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="kw"><a href="https://rdrr.io/r/base/stop.html">stop</a></span><span class="op">(</span><span class="st">"Must supply exactly one of `times` and `length`"</span>, call. <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span>  <span class="op">}</span> </span>
+<span>  <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/check_exclusive.html">check_exclusive</a></span><span class="op">(</span><span class="va">times</span>, <span class="va">length</span><span class="op">)</span></span>
 <span>  </span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">length</span> <span class="op">&lt;-</span> <span class="va">times</span> <span class="op">*</span> <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">length</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">x</span>, length.out <span class="op">=</span> <span class="va">length</span><span class="op">)</span></span>
+<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">x</span>, length.out <span class="op">=</span> <span class="va">times</span> <span class="op">*</span> <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
-<span>  </span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">x</span>, length.out <span class="op">=</span> <span class="va">length</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The implementation of <code>rep_full()</code> and <code>rep_each()</code> in terms of <code><a href="https://rdrr.io/r/base/rep.html">rep.int()</a></code> and <code><a href="https://rdrr.io/r/base/rep.html">rep_len()</a></code> suggests that R-core members are aware of the problem.</p>
-<p>(Note the downside of using <code>length</code> as the argument name: we have to call <code><a href="https://rdrr.io/r/base/length.html">base::length()</a></code> to avoid evaluating the missing <code>length</code> when times is supplied.)</p>
-<div class="cell" data-hash="cs-rep_cache/html/unnamed-chunk-10_ca0a8061359e070cd0d8fdd47fe8d503">
+<p>(Note the downside of using&nbsp;<code>length</code>&nbsp;as the argument name: we have to call&nbsp;<a href="https://rdrr.io/r/base/length.html"><code>base::length()</code></a>&nbsp;to avoid evaluating the missing&nbsp;<code>length</code>&nbsp;when times is supplied.)</p>
+<div class="cell">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">rep_each</span><span class="op">(</span><span class="va">x</span>, times <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
@@ -543,54 +535,50 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; [1] 1 2 4 1 2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>One downside of this approach is if you want to both replicate each component <em>and</em> the entire vector, you have to use two function calls, which is much more verbose than the <code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code> equivalent. However, I don’t think this is a terribly common use case, and so I think a longer call is more readable.</p>
-<p>That said, one argument for a single rep function is that <code>rep_each()</code> and <code>rep_full()</code> return the same result if you change their order (i.e.&nbsp;they’re commutative):</p>
-<div class="cell" data-hash="cs-rep_cache/html/unnamed-chunk-11_c0126341361c4458b57368255e1ce4ba">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">rep_full</span><span class="op">(</span><span class="fu">rep_each</span><span class="op">(</span><span class="va">x</span>, times <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  [1] 1 1 2 2 4 4 1 1 2 2 4 4 1 1 2 2 4 4</span></span>
-<span><span class="fu">rep_each</span><span class="op">(</span><span class="fu">rep_full</span><span class="op">(</span><span class="va">x</span>, times <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> </span>
-<span><span class="co">#&gt;  [1] 1 1 2 2 4 4 1 1 2 2 4 4 1 1 2 2 4 4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section><section id="dealing-with-bad-inputs" class="level2" data-number="12.4"><h2 data-number="12.4" class="anchored" data-anchor-id="dealing-with-bad-inputs">
-<span class="header-section-number">12.4</span> Dealing with bad inputs</h2>
+</section><section id="dealing-with-bad-inputs" class="level2" data-number="14.4"><h2 data-number="14.4" class="anchored" data-anchor-id="dealing-with-bad-inputs">
+<span class="header-section-number">14.4</span> Dealing with bad inputs</h2>
 <p>The implementations above work well for correct inputs, but will also work without error for a number of incorrect inputs:</p>
-<div class="cell" data-hash="cs-rep_cache/html/unnamed-chunk-12_182fd8fdb475b2e3cb4f5c28526e7e23">
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">rep_full</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in rep(x, length.out = length): first element used of 'length.out'</span></span>
-<span><span class="co">#&gt; argument</span></span>
+<div class="cell">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">rep_full</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in rep(x, length.out = times * base::length(x)): first element used of</span></span>
+<span><span class="co">#&gt; 'length.out' argument</span></span>
 <span><span class="co">#&gt; [1] 1 2 3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>In the code below, I have used <code><a href="https://vctrs.r-lib.org/reference/vec_assert.html">vec_assert()</a></code> and <code><a href="https://vctrs.r-lib.org/reference/vec_recycle.html">vec_recycle()</a></code> to make the desired types, sizes, and recycling rules explicit.</p>
-<div class="cell" data-hash="cs-rep_cache/html/unnamed-chunk-13_58b90291d76b731536d935c575dfafd8">
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://vctrs.r-lib.org/">vctrs</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">rep_each</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">times</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="https://vctrs.r-lib.org/reference/vec_assert.html">vec_assert</a></span><span class="op">(</span><span class="va">times</span>, <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="va">times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://vctrs.r-lib.org/reference/vec_recycle.html">vec_recycle</a></span><span class="op">(</span><span class="va">times</span>, <span class="fu"><a href="https://vctrs.r-lib.org/reference/vec_size.html">vec_size</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<p>Need to think about the types</p>
+<div class="cell">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rep_each</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">times</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">times</span> <span class="op">&lt;-</span> <span class="fu">vctrs</span><span class="fu">::</span><span class="fu"><a href="https://vctrs.r-lib.org/reference/vec_cast.html">vec_cast</a></span><span class="op">(</span><span class="va">times</span>, <span class="fu"><a href="https://rdrr.io/r/base/integer.html">integer</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">times</span> <span class="op">&lt;-</span> <span class="fu">vctrs</span><span class="fu">::</span><span class="fu"><a href="https://vctrs.r-lib.org/reference/vec_recycle.html">vec_recycle</a></span><span class="op">(</span><span class="va">times</span>, <span class="fu">vctrs</span><span class="fu">::</span><span class="fu"><a href="https://vctrs.r-lib.org/reference/vec_size.html">vec_size</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, x_arg <span class="op">=</span> <span class="st">"times"</span><span class="op">)</span></span>
 <span>  </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep.int</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">times</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">rep_full</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">times</span>, <span class="va">length</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/Logic.html">xor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">length</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="kw"><a href="https://rdrr.io/r/base/stop.html">stop</a></span><span class="op">(</span><span class="st">"Must supply exactly one of `times` and `length`"</span>, call. <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span>  <span class="op">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="https://vctrs.r-lib.org/reference/vec_assert.html">vec_assert</a></span><span class="op">(</span><span class="va">times</span>, <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="op">)</span>, <span class="fl">1L</span><span class="op">)</span></span>
-<span>    <span class="va">length</span> <span class="op">&lt;-</span> <span class="va">times</span> <span class="op">*</span> <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span>  <span class="op">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">length</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="https://vctrs.r-lib.org/reference/vec_assert.html">vec_assert</a></span><span class="op">(</span><span class="va">length</span>, <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="op">)</span>, <span class="fl">1L</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
+<span>  <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/check_exclusive.html">check_exclusive</a></span><span class="op">(</span><span class="va">times</span>, <span class="va">length</span><span class="op">)</span></span>
 <span>  </span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep_len</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">length</span><span class="op">)</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">length</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu">rlang</span><span class="fu">:::</span><span class="fu">check_number_whole</span><span class="op">(</span><span class="va">length</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">x</span>, length.out <span class="op">=</span> <span class="va">length</span><span class="op">)</span></span>
+<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>    <span class="fu">rlang</span><span class="fu">:::</span><span class="fu">check_number_decimal</span><span class="op">(</span><span class="va">times</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">x</span>, length.out <span class="op">=</span> <span class="va">times</span> <span class="op">*</span> <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
 <span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-hash="cs-rep_cache/html/unnamed-chunk-14_95cfeb4fe6043c8ea6e0135c551a920e">
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">rep_full</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="st">"x"</span><span class="op">)</span></span>
+<div class="cell">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">rep_each</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in `rep_each()`:</span></span>
+<span><span class="co">#&gt; ! Can't recycle `times` (size 2) to size 3.</span></span>
+<span><span class="fu">rep_each</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="st">"x"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in `rep_each()`:</span></span>
+<span><span class="co">#&gt; ! Can't convert `times` &lt;character&gt; to &lt;integer&gt;.</span></span>
+<span></span>
+<span><span class="fu">rep_full</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="st">"x"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error in `rep_full()`:</span></span>
-<span><span class="co">#&gt; ! `times` must be a vector with type &lt;double&gt;.</span></span>
-<span><span class="co">#&gt; Instead, it has type &lt;character&gt;.</span></span>
+<span><span class="co">#&gt; ! `times` must be a number, not the string "x".</span></span>
 <span><span class="fu">rep_full</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error in `rep_full()`:</span></span>
-<span><span class="co">#&gt; ! `times` must have size 1, not size 2.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; ! `times` must be a number, not a double vector.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
@@ -830,13 +818,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./def-required.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Required args shouldn’t have defaults</span></span>
+      <a href="./cs-stringr.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Case study: stringr</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./def-enum.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Enumerate possible options</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./def-magical.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Avoid magical defaults</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

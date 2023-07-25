@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.433">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Hadley Wickham">
-<title>Tidy design principles - 14&nbsp; Avoid magical defaults</title>
+<title>Tidy design principles - 15&nbsp; Avoid magical defaults</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -61,8 +61,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./def-short.html" rel="next">
-<link href="./def-enum.html" rel="prev">
+<link href="./def-inform.html" rel="next">
+<link href="./cs-rep.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -100,7 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./def-required.html">Default values</a></li><li class="breadcrumb-item"><a href="./def-magical.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Avoid magical defaults</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./cs-rep.html">Function arguments</a></li><li class="breadcrumb-item"><a href="./def-magical.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Avoid magical defaults</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -132,13 +132,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Tidyverse design guide</span></span></a>
+ <span class="menu-text">Welcome</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./unifying.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Unifying principles</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Unifying principles</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -153,19 +153,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./names.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Names attribute</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Names attribute</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./call-data-details.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Name details arguments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Name all but the most important arguments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./function-names.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Function names</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Function names</span></span></a>
   </div>
 </li>
       </ul>
@@ -173,7 +173,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text">Inputs</span></a>
+ <span class="menu-text">Scannable definitions</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -181,32 +181,56 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./args-hidden.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Avoid hidden arguments</span></span></a>
+  <a href="./important-args-first.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./args-data-details.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></a>
+  <a href="./inputs-explicit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Make inputs explicit</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./dots-position.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Put <code>…</code> before optional arguments</span></span></a>
+  <a href="./dots-after-required.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Put <code>…</code> after required arguments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./args-independence.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Avoid dependencies between arguments</span></span></a>
+  <a href="./required-no-defaults.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Required args don’t have defaults</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./arguments-independent.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Keep arguments independent</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./enumerate-options.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Enumerate possible options</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./defaults-short-and-sweet.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Keep defaults short and sweet</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-setNames.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/stats/setNames.html">setNames()</a></code>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/stats/setNames.html">setNames()</a></code>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cs-stringr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Case study: stringr</span></span></a>
   </div>
 </li>
       </ul>
@@ -214,7 +238,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
- <span class="menu-text">Default values</span></a>
+ <span class="menu-text">Function arguments</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -222,32 +246,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./def-required.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Required args shouldn’t have defaults</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./cs-rep.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./def-enum.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Enumerate possible options</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./def-magical.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Avoid magical defaults</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./def-short.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Keep defaults short and sweet</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Avoid magical defaults</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -268,18 +274,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/grDevices/rgb.html">rgb()</a></code>
   </div>
 </li>
-      </ul>
-</li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
- <span class="menu-text"><code>...</code></span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dots-data.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Making data with …</span></span></a>
@@ -307,13 +302,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
  <span class="menu-text">Outputs</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-multi.html" class="sidebar-item-text sidebar-link">
@@ -342,13 +337,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
  <span class="menu-text">Evolution</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./changes-multivers.html" class="sidebar-item-text sidebar-link">
@@ -359,13 +354,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
  <span class="menu-text">Side effects</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./side-effects.html" class="sidebar-item-text sidebar-link">
@@ -382,13 +377,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
  <span class="menu-text">Errors</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./err-call.html" class="sidebar-item-text sidebar-link">
@@ -405,13 +400,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
  <span class="menu-text">Appendices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./glossary.html" class="sidebar-item-text sidebar-link">
@@ -428,16 +423,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#whats-the-problem" id="toc-whats-the-problem" class="nav-link active" data-scroll-target="#whats-the-problem"><span class="header-section-number">14.1</span> What’s the problem?</a></li>
-  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">14.2</span> What are some examples?</a></li>
-  <li><a href="#what-are-the-exceptions" id="toc-what-are-the-exceptions" class="nav-link" data-scroll-target="#what-are-the-exceptions"><span class="header-section-number">14.3</span> What are the exceptions?</a></li>
-  <li><a href="#what-causes-the-problem" id="toc-what-causes-the-problem" class="nav-link" data-scroll-target="#what-causes-the-problem"><span class="header-section-number">14.4</span> What causes the problem?</a></li>
-  <li><a href="#how-do-i-remediate-the-problem" id="toc-how-do-i-remediate-the-problem" class="nav-link" data-scroll-target="#how-do-i-remediate-the-problem"><span class="header-section-number">14.5</span> How do I remediate the problem?</a></li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/def-magical.Rmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<li><a href="#whats-the-problem" id="toc-whats-the-problem" class="nav-link active" data-scroll-target="#whats-the-problem"><span class="header-section-number">15.1</span> What’s the problem?</a></li>
+  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">15.2</span> What are some examples?</a></li>
+  <li><a href="#what-are-the-exceptions" id="toc-what-are-the-exceptions" class="nav-link" data-scroll-target="#what-are-the-exceptions"><span class="header-section-number">15.3</span> What are the exceptions?</a></li>
+  <li><a href="#what-causes-the-problem" id="toc-what-causes-the-problem" class="nav-link" data-scroll-target="#what-causes-the-problem"><span class="header-section-number">15.4</span> What causes the problem?</a></li>
+  <li><a href="#how-do-i-remediate-the-problem" id="toc-how-do-i-remediate-the-problem" class="nav-link" data-scroll-target="#how-do-i-remediate-the-problem"><span class="header-section-number">15.5</span> How do I remediate the problem?</a></li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/def-magical.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-def-magical" class="quarto-section-identifier"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Avoid magical defaults</span></span></h1>
+<h1 class="title"><span id="sec-def-magical" class="quarto-section-identifier"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Avoid magical defaults</span></span></h1>
 </div>
 
 
@@ -450,135 +445,111 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header><section id="whats-the-problem" class="level2" data-number="14.1"><h2 data-number="14.1" class="anchored" data-anchor-id="whats-the-problem">
-<span class="header-section-number">14.1</span> What’s the problem?</h2>
+</header><section id="whats-the-problem" class="level2" data-number="15.1"><h2 data-number="15.1" class="anchored" data-anchor-id="whats-the-problem">
+<span class="header-section-number">15.1</span> What’s the problem?</h2>
 <p>If a function behaves differently when the default value is supplied explicitly, we say it has a <strong>magical default</strong>. Magical defaults are best avoided because they make it harder to interpret the function specification.</p>
-</section><section id="what-are-some-examples" class="level2" data-number="14.2"><h2 data-number="14.2" class="anchored" data-anchor-id="what-are-some-examples">
-<span class="header-section-number">14.2</span> What are some examples?</h2>
+</section><section id="what-are-some-examples" class="level2" data-number="15.2"><h2 data-number="15.2" class="anchored" data-anchor-id="what-are-some-examples">
+<span class="header-section-number">15.2</span> What are some examples?</h2>
 <ul>
 <li>
 <p>In <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code>, the default argument for <code>row.names</code> is <code>NULL</code>, but if you supply it directly you get a different result:</p>
-<div class="cell" data-hash="def-magical_cache/html/unnamed-chunk-3_9102ce694857d290772c1dc7e13a4742">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">fun_call</span><span class="op">(</span><span class="va">data.frame</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Use of pairlists in map functions was deprecated in purrr 1.0.0.</span></span>
-<span><span class="co">#&gt; ℹ Please coerce explicitly with `as.list()`</span></span>
-<span><span class="co">#&gt; base::data.frame(..., row.names = NULL, check.rows = FALSE, check.names = TRUE, </span></span>
-<span><span class="co">#&gt;     fix.empty.names = TRUE, stringsAsFactors = FALSE)</span></span>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/args.html">args</a></span><span class="op">(</span><span class="va">data.frame</span><span class="op">)</span></span>
+<span><span class="co">#&gt; function (..., row.names = NULL, check.rows = FALSE, check.names = TRUE, </span></span>
+<span><span class="co">#&gt;     fix.empty.names = TRUE, stringsAsFactors = FALSE) </span></span>
+<span><span class="co">#&gt; NULL</span></span>
 <span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span>nm <span class="op">=</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span>nm <span class="op">=</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">x</span></span>
+<span><span class="co">#&gt;   a   b </span></span>
+<span><span class="co">#&gt; "a" "b"</span></span>
+<span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   x</span></span>
 <span><span class="co">#&gt; a a</span></span>
 <span><span class="co">#&gt; b b</span></span>
-<span><span class="co">#&gt; c c</span></span>
+<span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">x</span>, row.names <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   x</span></span>
 <span><span class="co">#&gt; 1 a</span></span>
-<span><span class="co">#&gt; 2 b</span></span>
-<span><span class="co">#&gt; 3 c</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; 2 b</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </li>
 <li>
 <p>In <code><a href="https://rdrr.io/r/graphics/hist.html">hist()</a></code>, the default value of <code>xlim</code> is <code>range(breaks)</code>, and the default value for <code>breaks</code> is <code>"Sturges"</code>. <code>range("Sturges")</code> returns <code>c("Sturges", "Sturges")</code> which doesn’t work when supplied explicitly:</p>
-<div class="cell" data-hash="def-magical_cache/html/unnamed-chunk-4_378883d5570c71ef82d63af79bb3b782">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">fun_call</span><span class="op">(</span><span class="va">hist.default</span><span class="op">)</span></span>
-<span><span class="co">#&gt; graphics::hist.default(x, breaks = "Sturges", freq = NULL, probability = !freq, </span></span>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/args.html">args</a></span><span class="op">(</span><span class="va">hist.default</span><span class="op">)</span></span>
+<span><span class="co">#&gt; function (x, breaks = "Sturges", freq = NULL, probability = !freq, </span></span>
 <span><span class="co">#&gt;     include.lowest = TRUE, right = TRUE, fuzz = 1e-07, density = NULL, </span></span>
 <span><span class="co">#&gt;     angle = 45, col = "lightgray", border = NULL, main = paste("Histogram of", </span></span>
 <span><span class="co">#&gt;         xname), xlim = range(breaks), ylim = NULL, xlab = xname, </span></span>
 <span><span class="co">#&gt;     ylab, axes = TRUE, plot = TRUE, labels = FALSE, nclass = NULL, </span></span>
-<span><span class="co">#&gt;     warn.unused = TRUE, ...)</span></span>
+<span><span class="co">#&gt;     warn.unused = TRUE, ...) </span></span>
+<span><span class="co">#&gt; NULL</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Sturges"</span>, <span class="st">"Sturges"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error in plot.window(xlim, ylim, "", ...): invalid 'xlim' value</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </li>
 <li>
-<p>In <code><a href="https://rdrr.io/r/base/Vectorize.html">Vectorize()</a></code>, the default argument for <code>vectorize.args</code> is <code>arg.names</code>, but this variable is defined inside of <code><a href="https://rdrr.io/r/base/Vectorize.html">Vectorize()</a></code>, so if you supply it explicitly you get an error.</p>
-<div class="cell" data-hash="def-magical_cache/html/unnamed-chunk-5_15ddbccbfb831926ac5bfe65a6d42a0b">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">fun_call</span><span class="op">(</span><span class="va">Vectorize</span><span class="op">)</span></span>
-<span><span class="co">#&gt; base::Vectorize(FUN, vectorize.args = arg.names, SIMPLIFY = TRUE, </span></span>
-<span><span class="co">#&gt;     USE.NAMES = TRUE)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Vectorize.html">Vectorize</a></span><span class="op">(</span><span class="va">rep.int</span>, vectorize.args <span class="op">=</span> <span class="va">arg.names</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in eval(expr, envir, enclos): object 'arg.names' not found</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</li>
-<li>
-<p>In <code><a href="https://rdrr.io/r/stats/Beta.html">rbeta()</a></code>, the default value of <code>ncp</code> is 0, but if you explicitly supply it the function uses a different algorithm:</p>
-<div class="cell" data-hash="def-magical_cache/html/unnamed-chunk-6_12ad7d8835cd00627bbd9e0a1aefb761">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rbeta</span></span>
-<span><span class="co">#&gt; function (n, shape1, shape2, ncp = 0) </span></span>
-<span><span class="co">#&gt; {</span></span>
-<span><span class="co">#&gt;     if (missing(ncp)) </span></span>
-<span><span class="co">#&gt;         .Call(C_rbeta, n, shape1, shape2)</span></span>
-<span><span class="co">#&gt;     else {</span></span>
-<span><span class="co">#&gt;         X &lt;- rchisq(n, 2 * shape1, ncp = ncp)</span></span>
-<span><span class="co">#&gt;         X/(X + rchisq(n, 2 * shape2))</span></span>
-<span><span class="co">#&gt;     }</span></span>
-<span><span class="co">#&gt; }</span></span>
-<span><span class="co">#&gt; &lt;bytecode: 0x55b2d17d45c0&gt;</span></span>
-<span><span class="co">#&gt; &lt;environment: namespace:stats&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</li>
-<li><p>In <code><a href="https://rdrr.io/r/base/table.html">table()</a></code>, the default value of <code>dnn</code> is <code>list.names(...)</code>; but <code>list.names()</code> is only defined inside of <code><a href="https://rdrr.io/r/base/table.html">table()</a></code>.</p></li>
-<li>
 <p><code><a href="https://readr.tidyverse.org/reference/read_delim.html">readr::read_csv()</a></code> has <code>progress = show_progress()</code>, but until version 1.3.1, <code>show_progress()</code> was not exported from the package. That means if you attempted to run it yourself, you’d see an error message:</p>
-<div class="cell" data-hash="def-magical_cache/html/unnamed-chunk-7_9dace78677c4cc091781a78282382625">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">show_progress</span><span class="op">(</span><span class="op">)</span></span>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">show_progress</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error in show_progress(): could not find function "show_progress"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </li>
-<li><p>In <code>usethis::use_rmarkdown_template()</code>, <code>template_dir</code> has the default value of <code>tolower(asciify(template_name))</code>, but <code>asciify</code> is not exported. That means there’s no way to interactively explore this default value.</p></li>
-</ul></section><section id="what-are-the-exceptions" class="level2" data-number="14.3"><h2 data-number="14.3" class="anchored" data-anchor-id="what-are-the-exceptions">
-<span class="header-section-number">14.3</span> What are the exceptions?</h2>
+</ul></section><section id="what-are-the-exceptions" class="level2" data-number="15.3"><h2 data-number="15.3" class="anchored" data-anchor-id="what-are-the-exceptions">
+<span class="header-section-number">15.3</span> What are the exceptions?</h2>
 <p>It’s ok to use this behaviour when you want the default value of one argument to be the same as another. For example, take <code><a href="https://rlang.r-lib.org/reference/set_names.html">rlang::set_names()</a></code>, which allows you to create a named vector from two inputs:</p>
-<div class="cell" data-hash="def-magical_cache/html/unnamed-chunk-8_87120bd14b1f62f08c23b7c990ff093c">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">fun_call</span><span class="op">(</span><span class="va">set_names</span><span class="op">)</span></span>
-<span><span class="co">#&gt; rlang::set_names(x, nm = x, ...)</span></span>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rlang.r-lib.org">rlang</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/args.html">args</a></span><span class="op">(</span><span class="va">set_names</span><span class="op">)</span></span>
+<span><span class="co">#&gt; function (x, nm = x, ...) </span></span>
+<span><span class="co">#&gt; NULL</span></span>
 <span></span>
-<span><span class="fu">set_names</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rlang.r-lib.org/reference/set_names.html">set_names</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="co">#&gt; a b c </span></span>
 <span><span class="co">#&gt; 1 2 3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The default value for the names is the vector itself. This provides a convenient shortcut for naming a vector with itself:</p>
-<div class="cell" data-hash="def-magical_cache/html/unnamed-chunk-9_566af9e806e38f4835e12f34a8a5032d">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">set_names</span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rlang.r-lib.org/reference/set_names.html">set_names</a></span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   a   b   c </span></span>
 <span><span class="co">#&gt; "a" "b" "c"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You can see this same technique in <code><a href="https://rdrr.io/r/base/merge.html">merge()</a></code>, where <code>all.x</code> and <code>all.y</code> default to the same value as <code>all</code>, and in <code><a href="https://rdrr.io/r/base/factor.html">factor()</a></code> where <code>labels</code> defaults to the same value as <code>levels</code>.</p>
 <p>If you use this technique, make sure that you never use the value of an argument that comes later in the argument list. For example, in <code><a href="https://rdrr.io/r/base/files.html">file.copy()</a></code> <code>overwrite</code> defaults to the same value as <code>recursive</code>, but the <code>recursive</code> argument is defined after <code>overwrite</code>:</p>
-<div class="cell" data-hash="def-magical_cache/html/unnamed-chunk-10_751d6901adc3d942bed4a65243bb1e13">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">fun_call</span><span class="op">(</span><span class="va">file.copy</span><span class="op">)</span></span>
-<span><span class="co">#&gt; base::file.copy(from, to, overwrite = recursive, recursive = FALSE, </span></span>
-<span><span class="co">#&gt;     copy.mode = TRUE, copy.date = FALSE)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/args.html">args</a></span><span class="op">(</span><span class="va">file.copy</span><span class="op">)</span></span>
+<span><span class="co">#&gt; function (from, to, overwrite = recursive, recursive = FALSE, </span></span>
+<span><span class="co">#&gt;     copy.mode = TRUE, copy.date = FALSE) </span></span>
+<span><span class="co">#&gt; NULL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This makes the defaults arguments harder to understand because you can’t just read from left-to-right.</p>
-</section><section id="what-causes-the-problem" class="level2" data-number="14.4"><h2 data-number="14.4" class="anchored" data-anchor-id="what-causes-the-problem">
-<span class="header-section-number">14.4</span> What causes the problem?</h2>
-<p>There are three primary causes:</p>
+</section><section id="what-causes-the-problem" class="level2" data-number="15.4"><h2 data-number="15.4" class="anchored" data-anchor-id="what-causes-the-problem">
+<span class="header-section-number">15.4</span> What causes the problem?</h2>
+<p>This problem is generally easy to avoid for new functions:</p>
 <ul>
 <li>
-<p>Overuse of lazy evaluation of default values, which are evaluated in the environment of the function, as described in <a href="https://adv-r.hadley.nz/functions.html#default-arguments">Advanced R</a>. Here’s a simple example:</p>
-<div class="cell" data-hash="def-magical_cache/html/unnamed-chunk-11_ea64753970ad3e9a6814602c4902e7e8">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">f1</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span> <span class="op">=</span> <span class="va">y</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">trunc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span>, units <span class="op">=</span> <span class="st">"months"</span><span class="op">)</span></span>
+<p>Don’t use default values that depend on variables defined inside the function. The default values of function arguments are lazily evaluated in the environment of the function when they are first used, as described in <a href="https://adv-r.hadley.nz/functions.html#default-arguments">Advanced R</a>. Here’s a simple example:</p>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">f1</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span> <span class="op">=</span> <span class="va">y</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">2</span></span>
 <span>  <span class="va">x</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
 <span><span class="fu">f1</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "2023-07-01 UTC"</span></span>
+<span><span class="co">#&gt; [1] 2</span></span>
 <span><span class="fu">f1</span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>When <code>x</code> takes the value <code>y</code> from its default, it’s evaluated inside the function, yielding <code>1</code>. When <code>y</code> is supplied explicitly, it is evaluated in the caller environment, yielding <code>2</code>.</p>
 </li>
 <li>
-<p>Use of <code><a href="https://rdrr.io/r/base/missing.html">missing()</a></code> so that the default value is never consulted:</p>
-<div class="cell" data-hash="def-magical_cache/html/unnamed-chunk-12_465a4ed8e8ae996d0cbe9d791f9d71d0">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">f2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span> <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span></span>
+<p>Don’t use <code><a href="https://rdrr.io/r/base/missing.html">missing()</a></code><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">f2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span> <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="fl">2</span></span>
 <span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
@@ -592,36 +563,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; [1] 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </li>
-<li><p>In packages, it’s easy to use a non-exported function without thinking about it. This function is available to you, the package author, but not the user of the package, which makes it harder for them to understand how a package works.</p></li>
-</ul></section><section id="how-do-i-remediate-the-problem" class="level2" data-number="14.5"><h2 data-number="14.5" class="anchored" data-anchor-id="how-do-i-remediate-the-problem">
-<span class="header-section-number">14.5</span> How do I remediate the problem?</h2>
-<p>This problem is generally easy to avoid for new functions:</p>
-<ul>
-<li><p>Don’t use default values that depend on variables defined inside the function.</p></li>
-<li><p>Don’t use <code><a href="https://rdrr.io/r/base/missing.html">missing()</a></code><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p></li>
-<li><p>Don’t use unexported functions.</p></li>
-</ul>
-<p>If you have a made a mistake in an older function you can remediate it by using a <code>NULL</code> default, as described in <a href="def-short.html"><span>Chapter&nbsp;15</span></a>). If the problem is caused by an unexported function, you can also choose to document and export it.</p>
-<div class="cell" data-hash="def-magical_cache/html/unnamed-chunk-13_10770c8383c35c4df831293f9da8aa29">
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">`%||%`</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="va">y</span> <span class="kw">else</span> <span class="va">x</span></span>
-<span></span>
-<span><span class="va">f1_better</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">trunc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span>, units <span class="op">=</span> <span class="st">"weeks"</span><span class="op">)</span></span>
-<span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%||%</span> <span class="va">y</span></span>
-<span>  </span>
-<span>  <span class="va">x</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="va">f2_better</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%||%</span> <span class="fl">2</span></span>
-<span>  </span>
-<span>  <span class="va">x</span></span>
-<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>This modification should not break existing code, because expands the function interface: all previous code will continue to work, and the function will also work if the argument is passed <code>NULL</code> input (which probably didn’t previously).</p>
-<p>For functions like <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code> where <code>NULL</code> is already a permissible value, you’ll need to use a sentinel object, as described in <a href="def-short.html#sec-args-default-sentinel"><span>Section&nbsp;15.4.3</span></a>.</p>
-<div class="cell" data-hash="def-magical_cache/html/unnamed-chunk-14_5035cb0c6b42f4552dafa866b629394d">
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sentinel</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/structure.html">structure</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>, class <span class="op">=</span> <span class="st">"sentinel"</span><span class="op">)</span></span>
+<li><p>Don’t use unexported functions. In packages, it’s easy to use a non-exported function without thinking about it. This function is available to you, the package author, but not the user of the package, which makes it harder for them to understand how a package works.</p></li>
+</ul></section><section id="how-do-i-remediate-the-problem" class="level2" data-number="15.5"><h2 data-number="15.5" class="anchored" data-anchor-id="how-do-i-remediate-the-problem">
+<span class="header-section-number">15.5</span> How do I remediate the problem?</h2>
+<p>If you have a made a mistake in an older function you can remediate it by using a <code>NULL</code> default, as described in <a href="defaults-short-and-sweet.html"><span>Chapter&nbsp;11</span></a>). If the problem is caused by an unexported function, you can also choose to document and export it. Remediating this problem shouldn’t break existing code, because it expands the function interface: all previous code will continue to work, and the function will also work if the argument is passed <code>NULL</code> input (which probably didn’t previously).</p>
+<p>For functions like <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code> where <code>NULL</code> is already a permissible value, you’ll need to use a sentinel object, as described in <a href="defaults-short-and-sweet.html#sec-args-default-sentinel"><span>Section&nbsp;11.3.3</span></a>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sentinel</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/structure.html">structure</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>, class <span class="op">=</span> <span class="st">"sentinel"</span><span class="op">)</span></span>
 <span><span class="va">is_sentinel</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/class.html">inherits</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"sentinel"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">data.frame_better</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span>, <span class="va">row.names</span> <span class="op">=</span> <span class="fu">sentinel</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
@@ -634,7 +582,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
 <ol>
-<li id="fn1"><p>The only exceptions are described in <a href="def-required.html#sec-args-mutually-exclusive"><span>Section&nbsp;11.3.1</span></a>) and <a href="def-required.html#sec-args-compound"><span>Section&nbsp;11.3.2</span></a>).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>The only exceptions are described in <a href="required-no-defaults.html#sec-args-mutually-exclusive"><span>Section&nbsp;8.3.1</span></a> and <a href="required-no-defaults.html#sec-args-compound"><span>Section&nbsp;8.3.2</span></a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -868,13 +816,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./def-enum.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Enumerate possible options</span></span>
-      </a>          
+      <a href="./cs-rep.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code>
+                
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./def-short.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Keep defaults short and sweet</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./def-inform.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Explain important defaults</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

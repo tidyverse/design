@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.433">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Hadley Wickham">
-<title>Tidy design principles - 18&nbsp; Case study: rgb()</title>
+<title>Tidy design principles - 7&nbsp; Put … after required arguments</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -61,8 +61,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./dots-data.html" rel="next">
-<link href="./def-user.html" rel="prev">
+<link href="./required-no-defaults.html" rel="next">
+<link href="./inputs-explicit.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -100,7 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./cs-rep.html">Function arguments</a></li><li class="breadcrumb-item"><a href="./cs-rgb.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Case study: `rgb()`</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./important-args-first.html">Scannable definitions</a></li><li class="breadcrumb-item"><a href="./dots-after-required.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Put `…` after required arguments</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -193,7 +193,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./dots-after-required.html" class="sidebar-item-text sidebar-link">
+  <a href="./dots-after-required.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Put <code>…</code> after required arguments</span></span></a>
   </div>
 </li>
@@ -270,7 +270,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./cs-rgb.html" class="sidebar-item-text sidebar-link active">
+  <a href="./cs-rgb.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/grDevices/rgb.html">rgb()</a></code>
   </div>
 </li>
@@ -420,11 +420,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li><a href="#whats-the-pattern" id="toc-whats-the-pattern" class="nav-link active" data-scroll-target="#whats-the-pattern"><span class="header-section-number">7.1</span> What’s the pattern?</a></li>
+  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">7.2</span> What are some examples?</a></li>
+  <li><a href="#how-do-i-remediate-past-mistakes" id="toc-how-do-i-remediate-past-mistakes" class="nav-link" data-scroll-target="#how-do-i-remediate-past-mistakes"><span class="header-section-number">7.3</span> How do I remediate past mistakes?</a></li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/dots-after-required.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-cs-rgb" class="quarto-section-identifier"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Case study: <code>rgb()</code></span></span></h1>
+<h1 class="title"><span id="sec-dots-after-required" class="quarto-section-identifier"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Put <code>…</code> after required arguments</span></span></h1>
 </div>
 
 
@@ -437,79 +443,86 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header><p>Interface:</p>
+</header><section id="whats-the-pattern" class="level2" data-number="7.1"><h2 data-number="7.1" class="anchored" data-anchor-id="whats-the-pattern">
+<span class="header-section-number">7.1</span> What’s the pattern?</h2>
+<p>If you use <code>…</code> in a function, put it after the required arguments and before the optional arguments. (See <a href="dots-data.html"><span>Chapter&nbsp;19</span></a> if <code>…</code> requires at least one argument because it’s used to combine an arbitrary number of objects.)</p>
+<p>There are three primary advantages:</p>
 <ul>
-<li>Function name and argument names.</li>
-<li>
-<code>alpha</code> has no default but isn’t required.</li>
-<li>
-<code>names</code> not required (imo).</li>
-<li>
-<code>maxColorValue</code> doens’t have most useful default, and not really needed (imo).</li>
-<li>Data frame rather than matrix.</li>
-<li>Error if function specification is correct</li>
-<li>Check for data type, not missingness.</li>
+<li><p>It forces the user of your function to fully name optional arguments, because arguments that come after <code>...</code> are never matched by position or partially by name. Using full names for details arguments is good practice, because we believe it makes code easier to read.</p></li>
+<li><p>You can easily add new optional arguments or change the order of existing arguments without affecting existing calls. This makes it easy to extend your function with new capabilities, because you don’t need to worry about breaking existing code.</p></li>
+<li><p>When coupled with “inspect the dots” (<a href="dots-inspect.html"><span>Chapter&nbsp;21</span></a>), or “dot prefix” (<a href="dots-prefix.html"><span>Chapter&nbsp;20</span></a>) it minimises the chances that misspelled arguments names will silently go astray.</p></li>
 </ul>
+<p>The payoff of this pattern is not huge: it protects against a fairly unusual failure mode. However, since the failure mode is silent (and hence easy to miss) and the pattern is very easy to apply, I think it’s still worth it.</p>
+</section><section id="what-are-some-examples" class="level2" data-number="7.2"><h2 data-number="7.2" class="anchored" data-anchor-id="what-are-some-examples">
+<span class="header-section-number">7.2</span> What are some examples?</h2>
+<p>The arguments to <code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code> are <code>x</code>, <code>trim</code>, <code>na.rm</code> and <code>…</code>. This means that you can write code like this:</p>
 <div class="cell">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rlang.r-lib.org">rlang</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">rgba</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">r</span>, <span class="va">g</span>, <span class="va">b</span>, <span class="va">a</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">is.data.frame</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">df</span> <span class="op">&lt;-</span> <span class="va">r</span></span>
-<span>    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3L</span>, <span class="fl">4L</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>      <span class="fu"><a href="https://rlang.r-lib.org/reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"If `r` is data frame, it must have 3 or 4 columns."</span><span class="op">)</span></span>
-<span>    <span class="op">}</span></span>
-<span>    </span>
-<span>    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">b</span><span class="op">)</span> <span class="op">||</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span> <span class="op">||</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>      <span class="fu"><a href="https://rlang.r-lib.org/reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"If `r` is a data frame, `b`, `g`, and `a` must not be set."</span><span class="op">)</span></span>
-<span>    <span class="op">}</span></span>
-<span>    </span>
-<span>    <span class="va">r</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[[</span><span class="fl">1L</span><span class="op">]</span><span class="op">]</span></span>
-<span>    <span class="va">g</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[[</span><span class="fl">2L</span><span class="op">]</span><span class="op">]</span></span>
-<span>    <span class="va">b</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[[</span><span class="fl">3L</span><span class="op">]</span><span class="op">]</span></span>
-<span>    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">==</span> <span class="fl">4</span><span class="op">)</span> <span class="op">{</span></span>
-<span>      <span class="va">a</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[[</span><span class="fl">4L</span><span class="op">]</span><span class="op">]</span></span>
-<span>    <span class="op">}</span></span>
-<span>  <span class="op">}</span></span>
-<span>  </span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/grDevices/rgb.html">rgb</a></span><span class="op">(</span><span class="va">r</span>, <span class="va">g</span>, <span class="va">b</span>, alpha <span class="op">=</span> <span class="va">a</span>, maxColorValue <span class="op">=</span> <span class="fl">255</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">10</span>, <span class="cn">NA</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span>, , <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 4.333333</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span>, n <span class="op">=</span> <span class="cn">TRUE</span>, t <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 4.333333</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Not only does allow confusing code<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, it also makes it hard to later change the order of these arguments, or introduce new arguments that might be more important.</p>
+<p>If <code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code> instead placed <code>…</code> before <code>trim</code> and <code>na.rm</code>, like <code>mean2()</code><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> below, then you must fully name each argument:</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mean2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, <span class="va">na.rm</span> <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">trim</span> <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, na.rm <span class="op">=</span> <span class="va">na.rm</span>, trim <span class="op">=</span> <span class="va">trim</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="fu">rgba</span><span class="op">(</span><span class="fl">16</span>, <span class="fl">16</span>, <span class="fl">16</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "#101010"</span></span>
-<span><span class="fu">rgba</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="fl">16</span>, <span class="fl">16</span>, <span class="fl">16</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "#101010"</span></span>
-<span><span class="fu">rgba</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="fl">16</span>, <span class="fl">16</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in `rgba()`:</span></span>
-<span><span class="co">#&gt; ! If `r` is data frame, it must have 3 or 4 columns.</span></span>
-<span><span class="fu">rgba</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="fl">16</span>, <span class="fl">16</span>, <span class="fl">16</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in `rgba()`:</span></span>
-<span><span class="co">#&gt; ! If `r` is a data frame, `b`, `g`, and `a` must not be set.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu">mean2</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 4.333333</span></span>
+<span><span class="fu">mean2</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, trim <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 4.333333</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section><section id="how-do-i-remediate-past-mistakes" class="level2" data-number="7.3"><h2 data-number="7.3" class="anchored" data-anchor-id="how-do-i-remediate-past-mistakes">
+<span class="header-section-number">7.3</span> How do I remediate past mistakes?</h2>
+<p>If you’ve already published a function where you’ve put <code>...</code> in the wrong place, it’s easy to fix. You’ll need to use a function from the rlang package to check that <code>...</code> is as expected (e.g.&nbsp;from <a href="dots-data.html"><span>Chapter&nbsp;19</span></a> or <a href="dots-inspect.html"><span>Chapter&nbsp;21</span></a>). Since using the full names for details arguments is good practice, making this change will typically affect little existing code, but it is an interface change so should be advertised prominently.</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rgba</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">r</span>, <span class="va">g</span>, <span class="va">b</span>, <span class="va">a</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">is.data.frame</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">df</span> <span class="op">&lt;-</span> <span class="va">r</span></span>
-<span>    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/all.html">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"r"</span>, <span class="st">"g"</span>, <span class="st">"b"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>      <span class="fu"><a href="https://rlang.r-lib.org/reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"If first argument is a data frame, it must have r, g, and b columns."</span><span class="op">)</span></span>
-<span>    <span class="op">}</span></span>
-<span>    </span>
-<span>    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">b</span><span class="op">)</span> <span class="op">||</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span> <span class="op">||</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>      <span class="fu"><a href="https://rlang.r-lib.org/reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"If `r` is a data frame, `b`, `g`, and `a` must not be set."</span><span class="op">)</span></span>
-<span>    <span class="op">}</span></span>
-<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span>    <span class="co"># Handles vectorisation</span></span>
-<span>    <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span>r <span class="op">=</span> <span class="va">r</span>, g <span class="op">=</span> <span class="va">g</span>, b <span class="op">=</span> <span class="va">b</span>, a <span class="op">=</span> <span class="va">a</span><span class="op">)</span> </span>
-<span>  <span class="op">}</span></span>
-<span>  </span>
-<span>  <span class="co"># Assumes this function checks types and gives informative error messages</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/grDevices/rgb.html">rgb</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">r</span>, <span class="va">df</span><span class="op">$</span><span class="va">g</span>, <span class="va">df</span><span class="op">$</span><span class="va">b</span>, alpha <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">a</span>, maxColorValue <span class="op">=</span> <span class="fl">255</span><span class="op">)</span></span>
-<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">old_interface</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">data1</span> <span class="op">=</span> <span class="fl">1</span>, <span class="va">data2</span> <span class="op">=</span> <span class="fl">2</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span><span class="op">}</span></span>
+<span><span class="fu">old_interface</span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; NULL</span></span>
+<span></span>
+<span><span class="va">new_interface</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, <span class="va">data1</span> <span class="op">=</span> <span class="fl">1</span>, <span class="va">data2</span> <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/check_dots_used.html">check_dots_used</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="fu">new_interface</span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in `new_interface()`:</span></span>
+<span><span class="co">#&gt; ! Arguments in `...` must be used.</span></span>
+<span><span class="co">#&gt; ✖ Problematic argument:</span></span>
+<span><span class="co">#&gt; • ..1 = 2</span></span>
+<span><span class="co">#&gt; ℹ Did you misspell an argument name?</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can use this approach to make a safer version of <code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mean3</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, <span class="va">na.rm</span> <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">trim</span> <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/check_dots_used.html">check_dots_used</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, na.rm <span class="op">=</span> <span class="va">na.rm</span>, trim <span class="op">=</span> <span class="va">trim</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">mean3</span><span class="op">(</span><span class="va">x</span>, , <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in `mean3()`:</span></span>
+<span><span class="co">#&gt; ! Arguments in `...` must be used.</span></span>
+<span><span class="co">#&gt; ✖ Problematic argument:</span></span>
+<span><span class="co">#&gt; • ..1 = TRUE</span></span>
+<span><span class="co">#&gt; ℹ Did you misspell an argument name?</span></span>
+<span></span>
+<span><span class="fu">mean3</span><span class="op">(</span><span class="va">x</span>, n <span class="op">=</span> <span class="cn">TRUE</span>, t <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in `mean3()`:</span></span>
+<span><span class="co">#&gt; ! Arguments in `...` must be used.</span></span>
+<span><span class="co">#&gt; ✖ Problematic arguments:</span></span>
+<span><span class="co">#&gt; • n = TRUE</span></span>
+<span><span class="co">#&gt; • t = 0.1</span></span>
+<span><span class="co">#&gt; ℹ Did you misspell an argument name?</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
-
-</main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+<ol>
+<li id="fn1"><p>As much as we recommended people don’t write code like this, you know someone will!<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Note that I moved <code>na.rm = TRUE</code> in front of <code>trim</code> because I believe <code>na.rm</code> is the more important argument because it’s used vastly more often than <code>trim</code> and I’m following <a href="important-args-first.html"><span>Chapter&nbsp;5</span></a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -742,13 +755,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./def-user.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">User settable defaults</span></span>
+      <a href="./inputs-explicit.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Make inputs explicit</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./dots-data.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Making data with …</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./required-no-defaults.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Required args don’t have defaults</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -757,7 +770,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-left">Tidy design principles was written by Hadley Wickham</div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/cs-rgb.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></div>
+    </div>
     <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a>.</div>
   </div>
 </footer>

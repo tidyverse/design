@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.433">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Hadley Wickham">
-<title>Tidy design principles - 10&nbsp; Case study: setNames()</title>
+<title>Tidy design principles - 12&nbsp; Case study: setNames()</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -61,8 +61,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./def-required.html" rel="next">
-<link href="./args-independence.html" rel="prev">
+<link href="./cs-stringr.html" rel="next">
+<link href="./defaults-short-and-sweet.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -100,7 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./args-hidden.html">Inputs</a></li><li class="breadcrumb-item"><a href="./cs-setNames.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Case study: `setNames()`</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./important-args-first.html">Scannable definitions</a></li><li class="breadcrumb-item"><a href="./cs-setNames.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Case study: `setNames()`</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -132,13 +132,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Tidyverse design guide</span></span></a>
+ <span class="menu-text">Welcome</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./unifying.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Unifying principles</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Unifying principles</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -153,19 +153,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./names.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Names attribute</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Names attribute</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./call-data-details.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Name details arguments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Name all but the most important arguments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./function-names.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Function names</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Function names</span></span></a>
   </div>
 </li>
       </ul>
@@ -173,7 +173,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text">Inputs</span></a>
+ <span class="menu-text">Scannable definitions</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -181,32 +181,56 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./args-hidden.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Avoid hidden arguments</span></span></a>
+  <a href="./important-args-first.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./args-data-details.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></a>
+  <a href="./inputs-explicit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Make inputs explicit</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./dots-position.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Put <code>…</code> before optional arguments</span></span></a>
+  <a href="./dots-after-required.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Put <code>…</code> after required arguments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./args-independence.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Avoid dependencies between arguments</span></span></a>
+  <a href="./required-no-defaults.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Required args don’t have defaults</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./arguments-independent.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Keep arguments independent</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./enumerate-options.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Enumerate possible options</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./defaults-short-and-sweet.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Keep defaults short and sweet</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-setNames.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/stats/setNames.html">setNames()</a></code>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/stats/setNames.html">setNames()</a></code>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cs-stringr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Case study: stringr</span></span></a>
   </div>
 </li>
       </ul>
@@ -214,7 +238,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
- <span class="menu-text">Default values</span></a>
+ <span class="menu-text">Function arguments</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -222,32 +246,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./def-required.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Required args shouldn’t have defaults</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./cs-rep.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./def-enum.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Enumerate possible options</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./def-magical.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Avoid magical defaults</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./def-short.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Keep defaults short and sweet</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Avoid magical defaults</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -268,18 +274,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/grDevices/rgb.html">rgb()</a></code>
   </div>
 </li>
-      </ul>
-</li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
- <span class="menu-text"><code>...</code></span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dots-data.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Making data with …</span></span></a>
@@ -307,13 +302,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
  <span class="menu-text">Outputs</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-multi.html" class="sidebar-item-text sidebar-link">
@@ -342,13 +337,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
  <span class="menu-text">Evolution</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./changes-multivers.html" class="sidebar-item-text sidebar-link">
@@ -359,13 +354,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
  <span class="menu-text">Side effects</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./side-effects.html" class="sidebar-item-text sidebar-link">
@@ -382,13 +377,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
  <span class="menu-text">Errors</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./err-call.html" class="sidebar-item-text sidebar-link">
@@ -405,13 +400,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
  <span class="menu-text">Appendices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./glossary.html" class="sidebar-item-text sidebar-link">
@@ -428,18 +423,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#what-does-setnames-do" id="toc-what-does-setnames-do" class="nav-link active" data-scroll-target="#what-does-setnames-do"><span class="header-section-number">10.1</span> What does <code>setNames()</code> do?</a></li>
-  <li><a href="#how-can-we-improve-the-names" id="toc-how-can-we-improve-the-names" class="nav-link" data-scroll-target="#how-can-we-improve-the-names"><span class="header-section-number">10.2</span> How can we improve the names?</a></li>
-  <li><a href="#what-about-the-default-values" id="toc-what-about-the-default-values" class="nav-link" data-scroll-target="#what-about-the-default-values"><span class="header-section-number">10.3</span> What about the default values?</a></li>
-  <li><a href="#what-about-bad-inputs" id="toc-what-about-bad-inputs" class="nav-link" data-scroll-target="#what-about-bad-inputs"><span class="header-section-number">10.4</span> What about bad inputs?</a></li>
-  <li><a href="#how-could-we-extend-this-function" id="toc-how-could-we-extend-this-function" class="nav-link" data-scroll-target="#how-could-we-extend-this-function"><span class="header-section-number">10.5</span> How could we extend this function?</a></li>
-  <li><a href="#compared-to-rlangset_names" id="toc-compared-to-rlangset_names" class="nav-link" data-scroll-target="#compared-to-rlangset_names"><span class="header-section-number">10.6</span> Compared to <code>rlang::set_names()</code></a></li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/cs-setNames.Rmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<li><a href="#what-does-setnames-do" id="toc-what-does-setnames-do" class="nav-link active" data-scroll-target="#what-does-setnames-do"><span class="header-section-number">12.1</span> What does <code>setNames()</code> do?</a></li>
+  <li><a href="#how-can-we-improve-the-names" id="toc-how-can-we-improve-the-names" class="nav-link" data-scroll-target="#how-can-we-improve-the-names"><span class="header-section-number">12.2</span> How can we improve the names?</a></li>
+  <li><a href="#what-about-the-default-values" id="toc-what-about-the-default-values" class="nav-link" data-scroll-target="#what-about-the-default-values"><span class="header-section-number">12.3</span> What about the default values?</a></li>
+  <li><a href="#what-about-bad-inputs" id="toc-what-about-bad-inputs" class="nav-link" data-scroll-target="#what-about-bad-inputs"><span class="header-section-number">12.4</span> What about bad inputs?</a></li>
+  <li><a href="#how-could-we-extend-this-function" id="toc-how-could-we-extend-this-function" class="nav-link" data-scroll-target="#how-could-we-extend-this-function"><span class="header-section-number">12.5</span> How could we extend this function?</a></li>
+  <li><a href="#compared-to-rlangset_names" id="toc-compared-to-rlangset_names" class="nav-link" data-scroll-target="#compared-to-rlangset_names"><span class="header-section-number">12.6</span> Compared to <code>rlang::set_names()</code></a></li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/cs-setNames.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title">
-<span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Case study: <code>setNames()</code></span>
+<span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Case study: <code>setNames()</code></span>
 </h1>
 </div>
 
@@ -453,17 +448,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header><section id="what-does-setnames-do" class="level2" data-number="10.1"><h2 data-number="10.1" class="anchored" data-anchor-id="what-does-setnames-do">
-<span class="header-section-number">10.1</span> What does <code>setNames()</code> do?</h2>
+</header><section id="what-does-setnames-do" class="level2" data-number="12.1"><h2 data-number="12.1" class="anchored" data-anchor-id="what-does-setnames-do">
+<span class="header-section-number">12.1</span> What does <code>setNames()</code> do?</h2>
 <p><code><a href="https://rdrr.io/r/stats/setNames.html">stats::setNames()</a></code> is a shorthand that allows you to set vector names inline (it’s a little surprising that it lives in the stats package). It has a simple definition:</p>
-<div class="cell" data-hash="cs-setNames_cache/html/unnamed-chunk-2_6697974af9f7d57fcd927053e2fbfa52">
+<div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">setNames</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span> <span class="op">=</span> <span class="va">nm</span>, <span class="va">nm</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">nm</span></span>
 <span>  <span class="va">object</span></span>
 <span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>And is easy to use:</p>
-<div class="cell" data-hash="cs-setNames_cache/html/unnamed-chunk-3_155dc3fbb78d723c7f16ce3e92436190">
+<div class="cell">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Instead of</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span><span class="op">)</span></span>
@@ -475,30 +470,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; 1 2 3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This function is short (just two lines of code!) but yields a surprisingly rich analysis.</p>
-</section><section id="how-can-we-improve-the-names" class="level2" data-number="10.2"><h2 data-number="10.2" class="anchored" data-anchor-id="how-can-we-improve-the-names">
-<span class="header-section-number">10.2</span> How can we improve the names?</h2>
+</section><section id="how-can-we-improve-the-names" class="level2" data-number="12.2"><h2 data-number="12.2" class="anchored" data-anchor-id="how-can-we-improve-the-names">
+<span class="header-section-number">12.2</span> How can we improve the names?</h2>
 <p>Firstly, I prefer snake_case to camelCase, so I’d call the function <code>set_names()</code>. Then we need to consider the arguments:</p>
 <ul>
 <li><p>I think the first argument, <code>object</code>, would be better called <code>x</code> in order to emphasise that this function only works with vectors (because only vectors have names).</p></li>
 <li><p>The second argument, <code>nm</code> is rather terse, and I don’t see any disadvantage in calling it <code>names</code>. I think you could also argue that it should be called <code>y</code> since its meaning should be obvious from the function name.</p></li>
 </ul>
 <p>This yields:</p>
-<div class="cell" data-hash="cs-setNames_cache/html/unnamed-chunk-4_828467380756e9c29afcd1b7f135322f">
+<div class="cell">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">set_names</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span> <span class="op">=</span> <span class="va">names</span>, <span class="va">names</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">names</span></span>
 <span>  <span class="va">x</span></span>
 <span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section><section id="what-about-the-default-values" class="level2" data-number="10.3"><h2 data-number="10.3" class="anchored" data-anchor-id="what-about-the-default-values">
-<span class="header-section-number">10.3</span> What about the default values?</h2>
+</section><section id="what-about-the-default-values" class="level2" data-number="12.3"><h2 data-number="12.3" class="anchored" data-anchor-id="what-about-the-default-values">
+<span class="header-section-number">12.3</span> What about the default values?</h2>
 <p>The default values of <code><a href="https://rdrr.io/r/stats/setNames.html">setNames()</a></code> are a little hard to understand, because the default value of the first argument is the second argument. It was defined this way to make it possible to name a character vector with itself:</p>
-<div class="cell" data-hash="cs-setNames_cache/html/unnamed-chunk-5_c682cc5c9de9953d1fc4246e99dd9dfe">
+<div class="cell">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span>nm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"cake"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    apple   banana     cake </span></span>
 <span><span class="co">#&gt;  "apple" "banana"   "cake"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>But that decision leads to a function signature that violates one of the principles of <a href="args-data-details.html"><span>Chapter&nbsp;7</span></a>: a required argument comes after an optional argument. Fortunately, we can fix this easily and still preserve the useful ability to name a vector with itself:</p>
-<div class="cell" data-hash="cs-setNames_cache/html/unnamed-chunk-6_abab483c93431c699e61ccc56ad9aa99">
+<p>But that decision leads to a function signature that violates one of the principles of <a href="important-args-first.html"><span>Chapter&nbsp;5</span></a>: a required argument comes after an optional argument. Fortunately, we can fix this easily and still preserve the useful ability to name a vector with itself:</p>
+<div class="cell">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">set_names</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">names</span> <span class="op">=</span> <span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">names</span></span>
 <span>  <span class="va">x</span></span>
@@ -509,10 +504,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt;  "apple" "banana"   "cake"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This helps to emphasise that <code>x</code> is the primary argument.</p>
-</section><section id="what-about-bad-inputs" class="level2" data-number="10.4"><h2 data-number="10.4" class="anchored" data-anchor-id="what-about-bad-inputs">
-<span class="header-section-number">10.4</span> What about bad inputs?</h2>
+</section><section id="what-about-bad-inputs" class="level2" data-number="12.4"><h2 data-number="12.4" class="anchored" data-anchor-id="what-about-bad-inputs">
+<span class="header-section-number">12.4</span> What about bad inputs?</h2>
 <p>Now that we’ve considered how the function works with correct inputs, it’s time to consider how it should work with malformed inputs. The current function checks neither the length not the type:</p>
-<div class="cell" data-hash="cs-setNames_cache/html/unnamed-chunk-7_efd55c5c688a7807ce4bb5a79a0eac4a">
+<div class="cell">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">set_names</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="st">"a"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    a &lt;NA&gt; &lt;NA&gt; </span></span>
 <span><span class="co">#&gt;    1    2    3</span></span>
@@ -522,7 +517,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt;                1                2                3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can resolve this by asserting that the names should always be a character vector, and should have the same length as <code>x</code>:</p>
-<div class="cell" data-hash="cs-setNames_cache/html/unnamed-chunk-8_be5ebe5027e3c0a8e315e012178c081d">
+<div class="cell">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">set_names</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">names</span> <span class="op">=</span> <span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/character.html">is.character</a></span><span class="op">(</span><span class="va">names</span><span class="op">)</span> <span class="op">||</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">names</span><span class="op">)</span> <span class="op">!=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="kw"><a href="https://rdrr.io/r/base/stop.html">stop</a></span><span class="op">(</span><span class="st">"`names` must be a character vector the same length as `x`."</span>, call. <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
@@ -538,7 +533,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; Error: `names` must be a character vector the same length as `x`.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You could also frame this test using vctrs assertions:</p>
-<div class="cell" data-hash="cs-setNames_cache/html/unnamed-chunk-9_3039f2c4aa4b6ec34886e71982167fdf">
+<div class="cell">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://vctrs.r-lib.org/">vctrs</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">set_names</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">names</span> <span class="op">=</span> <span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
@@ -550,7 +545,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Note that I slipped in an assertion that <code>x</code> should be a vector. This slightly improves the error message if you accidentally supply the wrong sort of input to <code>set_names()</code>:</p>
-<div class="cell" data-hash="cs-setNames_cache/html/unnamed-chunk-10_eaa05f53579ac6b4d4a9c92bc8ba77f3">
+<div class="cell">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="va">mean</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error in names(object) &lt;- nm: names() applied to a non-vector</span></span>
 <span><span class="fu">set_names</span><span class="op">(</span><span class="va">mean</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span>
@@ -558,10 +553,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; ! `x` must be a vector, not a function.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Note that we’re simply checking the length of <code>names</code> here, rather than recycling it, i.e.&nbsp;the invariant is <code>vec_size(set_names(x, y))</code> is <code>vec_size(x)</code>, not <code>vec_size_common(x, y)</code>. I think this is the correct behaviour because you usually add names to a vector to create a lookup table, and a lookup table is not useful if there are duplicated names. This makes <code>set_names()</code> less general in return for better error messages when you do something suspicious (and you can always use an explicit <code>rep_along()</code> if do want this behaviour.)</p>
-</section><section id="how-could-we-extend-this-function" class="level2" data-number="10.5"><h2 data-number="10.5" class="anchored" data-anchor-id="how-could-we-extend-this-function">
-<span class="header-section-number">10.5</span> How could we extend this function?</h2>
+</section><section id="how-could-we-extend-this-function" class="level2" data-number="12.5"><h2 data-number="12.5" class="anchored" data-anchor-id="how-could-we-extend-this-function">
+<span class="header-section-number">12.5</span> How could we extend this function?</h2>
 <p>Now that we’ve modified the function so it doesn’t violate the principles in this book, we can think about how we might extend it. Currently the function is only useful for setting names to a constant. Maybe we could extend it to also make it easier to change existing names? One way to do that would be to allow <code>names</code> to be a function:</p>
-<div class="cell" data-hash="cs-setNames_cache/html/unnamed-chunk-11_b3c58cd357ce9873c9029d4ec95c63c6">
+<div class="cell">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">set_names</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">names</span> <span class="op">=</span> <span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://vctrs.r-lib.org/reference/vec_assert.html">vec_assert</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span>  </span>
@@ -580,7 +575,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; 1 2 3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We could also support anonymous function formula shortcut used in many places in the tidyverse.</p>
-<div class="cell" data-hash="cs-setNames_cache/html/unnamed-chunk-12_ff5edb86a3be24368b0b5893ef44e62f">
+<div class="cell">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">set_names</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">names</span> <span class="op">=</span> <span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://vctrs.r-lib.org/reference/vec_assert.html">vec_assert</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span>  </span>
@@ -600,7 +595,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt;   1   2   3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now <code>set_names()</code> supports overriding and modifying names. What about removing them? It turns out that <code><a href="https://rdrr.io/r/stats/setNames.html">setNames()</a></code> supported this, but our stricter checks prohibit:</p>
-<div class="cell" data-hash="cs-setNames_cache/html/unnamed-chunk-13_85b2f2a0864ed4071391047a66993838">
+<div class="cell">
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span>, b <span class="op">=</span> <span class="fl">2</span>, c <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="va">x</span>, <span class="cn">NULL</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 1 2 3</span></span>
@@ -609,7 +604,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; ! `names` must be a vector, not `NULL`.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can fix this with another clause:</p>
-<div class="cell" data-hash="cs-setNames_cache/html/unnamed-chunk-14_e88aab47753f7f3081b5f02bbf9d2ba2">
+<div class="cell">
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">set_names</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">names</span> <span class="op">=</span> <span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://vctrs.r-lib.org/reference/vec_assert.html">vec_assert</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span>  </span>
@@ -630,7 +625,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; [1] 1 2 3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>However, I think this has muddied the logic. To resolve it, I think we should pull out the checking code into a separate function. After trying out a <a href="https://github.com/tidyverse/design/issues/79">few approaches</a>, I ended up with:</p>
-<div class="cell" data-hash="cs-setNames_cache/html/unnamed-chunk-15_c995a4b64ee6b84b670e0afbf03c335e">
+<div class="cell">
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">check_names</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">names</span>, <span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">names</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="va">names</span></span>
@@ -646,7 +641,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This then replaces <code><a href="https://vctrs.r-lib.org/reference/vec_assert.html">vec_assert()</a></code> in <code>set_names()</code>. I separate the input checking and implementation with a blank line to help visually group the parts of the function.</p>
-<div class="cell" data-hash="cs-setNames_cache/html/unnamed-chunk-16_aeaf08636520a1937301aabcf9e2bd19">
+<div class="cell">
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">set_names</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">names</span> <span class="op">=</span> <span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://vctrs.r-lib.org/reference/vec_assert.html">vec_assert</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span>  <span class="va">names</span> <span class="op">&lt;-</span> <span class="fu">check_names</span><span class="op">(</span><span class="va">names</span>, <span class="va">x</span><span class="op">)</span></span>
@@ -656,7 +651,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We <em>could</em> simplify the function even further, but I think this is a bad idea becaues it mingles input validation with implementation:</p>
-<div class="cell" data-hash="cs-setNames_cache/html/unnamed-chunk-17_3c96febdb91a4472921aa20676b2128d">
+<div class="cell">
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Don't do this</span></span>
 <span><span class="va">set_names</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">names</span> <span class="op">=</span> <span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://vctrs.r-lib.org/reference/vec_assert.html">vec_assert</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
@@ -669,8 +664,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="fu">`names&lt;-`</span><span class="op">(</span><span class="fu"><a href="https://vctrs.r-lib.org/reference/vec_assert.html">vec_assert</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu">check_names</span><span class="op">(</span><span class="va">names</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section><section id="compared-to-rlangset_names" class="level2" data-number="10.6"><h2 data-number="10.6" class="anchored" data-anchor-id="compared-to-rlangset_names">
-<span class="header-section-number">10.6</span> Compared to <code>rlang::set_names()</code>
+</section><section id="compared-to-rlangset_names" class="level2" data-number="12.6"><h2 data-number="12.6" class="anchored" data-anchor-id="compared-to-rlangset_names">
+<span class="header-section-number">12.6</span> Compared to <code>rlang::set_names()</code>
 </h2>
 <p>If you’re familiar with rlang, you might notice that we’ve ended up with something rather similar to <code><a href="https://rlang.r-lib.org/reference/set_names.html">rlang::set_names()</a></code>. However, these careful analysis in this chapter has lead to a few differences. <code><a href="https://rlang.r-lib.org/reference/set_names.html">rlang::set_names()</a></code>:</p>
 <ul>
@@ -913,13 +908,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./args-independence.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Avoid dependencies between arguments</span></span>
+      <a href="./defaults-short-and-sweet.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Keep defaults short and sweet</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./def-required.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Required args shouldn’t have defaults</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./cs-stringr.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Case study: stringr</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
