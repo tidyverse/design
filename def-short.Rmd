@@ -23,6 +23,8 @@ funs[args_max > 50] %>% discard(~ grepl("as.data.frame", .x$name, fixed = TRUE))
 Default values should be short and sweet.
 This makes the function specification easier to scan.
 
+This pattern is important because it ensures that when scanning the function definition you can understand quickly how the defaults will be computed.
+
 ## What are some examples?
 
 The following examples, drawn from base R, illustrate some functions that don't follow this pattern:
@@ -44,8 +46,6 @@ The following examples, drawn from base R, illustrate some functions that don't 
       })
     )
     ```
-
-## Why is it important?
 
 ## How do I use it?
 
@@ -88,7 +88,7 @@ title.hjust <- guide$title.hjust %||%
 
 As you can see, `%||%` is particularly well suited to arguments where the default value is found through a cascading system of fallbacks.
 
-Don't use `%||%` for more complex examples.
+Don't use `%||%` for more complex examples where the individual clauses can't fit on their own line.
 For example in `reshape()` I would set `split = NULL` and then write:
 
 ```{r}
@@ -101,8 +101,6 @@ if (is.null(split)) {
   }
 }
 ```
-
-(I would probably also switch on `is.null(sep)` too, to make it more clear that there is special behaviour.)
 
 ### Helper function
 
@@ -125,9 +123,6 @@ str(purrr::done())
 str(rlang::zap())
 ```
 
-Or is this the wrong way around?
-Should the default always be `NULL` and we have a special value to use when you actually want a `NULL`?
-
 Take `purrr::reduce()`: it has an optional details argument called `init`.
 When supplied, it serves as the initial value for the computation.
 But any value (including `NULL`) can a valid value.
@@ -147,25 +142,14 @@ sample.int <- function(n,
                        prob = NULL, 
                        useHash = (!replace && is.null(prob) && size <= n/2 && n > 1e+07)
                        ) {
-    if (useHash) {
-      .Internal(sample2(n, size))
-    } else {
-      .Internal(sample(n, size, replace, prob))
-    }
+  
+  ...
 }
 
 # AFTER
-sample.int <- function(n, 
-                       size = n, 
-                       replace = FALSE, 
-                       prob = NULL, 
-                       useHash = NULL) {
-  useHash <- useHash %||% !replace && is.null(prob) && size <= n/2 && n > 1e+07
+sample.int <- function(n, size = n, replace = FALSE, prob = NULL, useHash = NULL) {
+  useHash <- useHash %||% (!replace && is.null(prob) && size <= n/2 && n > 1e+07)
 
-  if (useHash) {
-    .Internal(sample2(n, size))
-  } else {
-    .Internal(sample(n, size, replace, prob))
-  }
+  ...
 }
 ```

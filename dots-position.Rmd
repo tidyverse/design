@@ -8,10 +8,7 @@ source("common.R")
 ## What's the pattern?
 
 If you use `…` in a function, put it after the required arguments and before the optional arguments.
-
 (See @sec-dots-data if `…` requires at least one argument because it's used to combine an arbitrary number of objects.)
-
-## Why is it important?
 
 There are three primary advantages:
 

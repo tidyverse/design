@@ -1,4 +1,4 @@
-# Avoid dependencies between arguments {#sec-args-independence}
+# Keep arguments indepedent {#sec-args-independence}
 
 ```{r}
 #| include = FALSE
@@ -8,7 +8,20 @@ source("common.R")
 ## What's the problem?
 
 Avoid creating dependencies between details arguments so that only certain combinations are permitted.
-Dependencies between arguments makes functions harder to use because you have to remember how arguments interact, and you when reading a call, you need to read multiple arguments before interpreting one.
+
+Dependencies between arguments makes functions harder:
+
+-   It suggests that there are many more viable code paths than there really are and all those (unnecessary) possibilities still occupy head space.
+    You have to learn and the remember the set of allowed combinations, rather than them being implied by the structure of the function.
+
+-   If one argument affects the operation of another argument, you have to read the entire function call before you can successfully understand it.
+
+-   It increases implementation complexity.
+    Interdependence of arguments suggests complex implementation paths which are harder to analyse and test.
+
+-   It makes documentation harder to write.
+    You have to use extra words to explain exactly how combinations of arguments work together, and it's not obvious where those words should go.
+    If there's an interaction between `arg_a` and `arg_b` do you document with `arg_a`, with `arg_b`, or with both?
 
 ## What are some examples?
 
@@ -50,20 +63,6 @@ Dependencies between arguments makes functions harder to use because you have to
 See @sec-args-mutually-exclusive) and @sec-args-compound for a two exceptions where the dependency is via specific patterns of missing arguments.
 
 (Other examples for you to explore: `rate` and `scale` in `rgamma()`, `na.rm` and `use` in `var()`)
-
-## Why is this important?
-
-Having complicated interdependencies between arguments has major downsides:
-
--   It suggests that there are many more viable code paths than there really are and all those (unnecessary) possibilities still occupy head space.
-    You have to learn and the remember the set of allowed combinations, rather than them being implied by the structure of the function.
-
--   It increases implementation complexity.
-    Interdependence of arguments suggests complex implementation paths which are harder to analyse and test.
-
--   It makes documentation harder to write.
-    You have to use extra words to explain exactly how combinations of arguments work together, and it's not obvious where those words should go.
-    If there's an interaction between `arg_a` and `arg_b` do you document with `arg_a`, with `arg_b`, or with both?
 
 ## How do I remediate?
 
@@ -113,63 +112,3 @@ That has three advantages:
 -   There's no way to supply both `n` and `prop`.
 
 -   The `ties.method` argument would only appear in `fct_lump_n()` and `_prop()`, not `_smallest()`.
-
-### Case study: `grepl()` vs `stringr::str_detect()`
-
-```{=html}
-<!-- 
-https://github.com/wch/r-source/blob/trunk/src/main/grep.c#L891-L1151 -->
-```
-`grepl()`, has three arguments that take either `FALSE` or `TRUE`: `ignore.case`, `perl`, `fixed`, which might suggest that there are 2 \^ 3 = 16 possible invocations.
-However, a number of combinations are not allowed:
-
-```{r}
-x <- grepl("a", letters, fixed = TRUE, ignore.case = TRUE)
-x <- grepl("a", letters, fixed = TRUE, perl = TRUE)
-```
-
-Part of this problem could be resolved by making it more clear that this function provides three engines for matching text:
-
--   POSIX 1003.2 extended regular expressions (the default),
--   Perl-style regular expressions (`perl = TRUE`)
--   Fixed matching (`fixed = TRUE`).
-
-One way to make this more clear would be to use @sec-def-enum and create a new argument called something like `engine = c("POSIX", "perl", "fixed")`.
-
-The other problem is that `ignore.case` only works with two of the three engines: POSIX and perl.
-This is hard to remedy without creating a completely new matching engine for fixed case, which is particularly hard because different languages have different rules for case.
-
-stringr takes a different approach, encoding the engine as an attribute of the pattern:
-
-```{r}
-library(stringr)
-
-x <- str_detect(letters, "a")
-# short for:
-x <- str_detect(letters, regex("a"))
-
-# Which is where you supply additional arguments
-x <- str_detect(letters, regex("a", ignore_case = TRUE))
-```
-
-This has the advantage that each engine can take different arguments, but has the disadvantage that it's harder to know that these options exist because you have to travel at least another level in the documentation.
-
-An alternative approach would be to have a separate engine argument:
-
-```{r}
-#| eval = FALSE
-x <- str_detect(letters, "a", engine = regex())
-x <- str_detect(letters, "a", engine = fixed())
-x <- str_detect(letters, "a", engine = coll())
-```
-
-This approach is a bit more discoverable (because there's clearly another argument that affects the pattern), but it's slightly less general, because of the `boundary()` engine, which doesn't match patterns but boundaries:
-
-```{r}
-#| eval = FALSE
-x <- str_detect(letters, boundary("word"))
-# Seems confusing: now you can omit the pattern argument?
-x <- str_detect(letters, engine = boundary("word"))
-```
-
-It would also mean that you had an argument `engine`, that affected how another argument, `pattern`, was interpreted, so it would repeat the problem in a slightly different form.

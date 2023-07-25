@@ -1,4 +1,4 @@
-# Avoid hidden arguments {#sec-args-hidden}
+# Make inputs explicit {#sec-args-hidden}
 
 ```{r}
 #| include = FALSE
@@ -7,34 +7,38 @@ source("common.R")
 
 ## What's the problem?
 
-Functions are easier to understand if the outputs depends only on the values of the input.
-If a function unexpectedly returns different results with the same inputs, then we say it has **hidden arguments**.
-Hidden arguments make code harder to reason about, because to correctly predict the output you also need to know some other state.
+A function is easier to understand if it's output depends only on its arguments.
+If a function returns different results with the same inputs, then it some inputs must be implicit.
+Typically this is because the function relies on an option or environment variable.
 
-It's hard to precisely characterise surprise, but it's an important part of this pattern as their are functions whose primary purpose is to return different values even with the same inputs:
+Implicit inputs are not always bad, as there are some functions that rely on them in order to their job, like `Sys.time()`, `read.csv()`, and the random number generators.
+But these difference are not the key part of the function's job then it's going to be surprising.
 
--   `Sys.time()` depends on the system time, but it's not a surprise: getting the current time is to the whole point of the function!
-
--   `read.csv(path)` depends not on the value of `path` but the contents of the file at that location.
-    Reading from the file system necessarily implies that the results depend on the contents of the file, not its path, so this is not a surprise.
-
--   Random number generators like `runif()` peek at the value of the special global variable `.Random.seed`.
-    This is a little surprising, but if they didn't have some global state every call to `runif()` would return the same value.
-
-Related to hidden arguments (where a function depends on global state in a surprising way) is spooky action (@sec-spooky-action), where a function changes global state in a surprising way.
+Explicit arguments make code easier to understand because all the inputs are explicit in the code; you don't need to run it in order to predict what it will do.
+Functions with implicit inputs can also return different results on different computers, and the differences will be hard to track down because you have to look in many different places.
 
 ## What are some examples?
 
 One common source of hidden arguments is the use of global options.
 These can be useful to control display but, as discussed in @sec-def-user, should not affect computation:
 
--   The result of `data.frame(x = "a")$x` depends on the value of the global `stringsAsFactors` option: if it's `FALSE` (the default) you get a character vector; if it's `TRUE`, you get a factor.
+-   Historically, the worst offender was the `stringsAsFactors` option which changed how a number of functions[^args-hidden-1] treated character vectors.
+    This option was part of a multiyear procedure to move R away toward charcter vectors and away from vectors.
+    You can learn more in [*stringsAsFactors: An unauthorized biography*](https://simplystatistics.org/posts/2015-07-24-stringsasfactors-an-unauthorized-biography/) by Roger Peng and [*stringsAsFactors = \<sigh\>*](http://notstatschat.tumblr.com/post/124987394001/stringsasfactors-sigh) by Thomas Lumley.
 
 -   `lm()`'s handling of missing values depends on the global option of `na.action`.
     The default is `na.omit` which drops the missing values prior to fitting the model (which is inconvenient because then the results of `predict()` don't line up with the input data.
     `modelr::na.warn()` provides an approach more in line with other base behaviours: it drops missing values with a warning.)
 
-Another common source of hidden inputs is the system locale:
+[^args-hidden-1]: Such as `data.frame()`, `as.data.frame()`, and `read.csv()`
+
+Allowing the system locale to affect the result of a function is a subtle source of bugs when sharing code between people who work in different countries.
+These defaults on rarely cause problems because most languages that share the same writing system share (most of) the same collation rules.
+The main exceptions tend to be European languages which have varying rules for modified letters, e.g. in Norwegian, å comes at the end of the alphabet.
+However, when they do cause problems they will take a long time to track down: you're unlikely to expect that the coefficients of a linear model are different[^args-hidden-2] because your code is run in a different country!
+
+[^args-hidden-2]: You'll get different coefficients for a categorical predictor if the ordering means that a different levels comes first in the alphabet.
+    The predictions and other diagnostics won't be affected, but you're likely to be surprised that your coefficients are different.
 
 -   `strptime()` relies on the names of weekdays and months in the current locale.
     That means `strptime("1 Jan 2020", "%d %b %Y")` will work on computers with an English locale, and fail elsewhere.
@@ -56,23 +60,6 @@ Another common source of hidden inputs is the system locale:
 -   For similar reasons, `sort()` and `order()` rely on the lexicographic order defined by the current locale.
     `factor()` uses `order()`, so the results from factor depend implicitly on the current locale.
     (This is not an imaginary problem as this [SO question](https://stackoverflow.com/questions/39339489) attests).
-
-## Why is it important?
-
-Hidden arguments are bad because they make it much harder to predict the output of a function.
-Historically, the worst offender was the `stringsAsFactors` option which changed how a number of functions[^args-hidden-1] treated character vectors.
-This option was part of a multiyear procedure to move R away toward charcter vectors and away from vectors.
-You can learn more in [*stringsAsFactors: An unauthorized biography*](https://simplystatistics.org/posts/2015-07-24-stringsasfactors-an-unauthorized-biography/) by Roger Peng and [*stringsAsFactors = \<sigh\>*](http://notstatschat.tumblr.com/post/124987394001/stringsasfactors-sigh) by Thomas Lumley.
-
-[^args-hidden-1]: Such as `data.frame()`, `as.data.frame()`, and `read.csv()`
-
-Allowing the system locale to affect the result of a function is a subtle source of bugs when sharing code between people who work in different countries.
-These defaults on rarely cause problems because most languages that share the same writing system share (most of) the same collation rules.
-The main exceptions tend to be European languages which have varying rules for modified letters, e.g. in Norwegian, å comes at the end of the alphabet.
-However, when they do cause problems they will take a long time to track down: you're unlikely to expect that the coefficients of a linear model are different[^args-hidden-2] because your code is run in a different country!
-
-[^args-hidden-2]: You'll get different coefficients for a categorical predictor if the ordering means that a different levels comes first in the alphabet.
-    The predictions and other diagnostics won't be affected, but you're likely to be surprised that your coefficients are different.
 
 ## How can I remediate the problem?
 
@@ -112,3 +99,7 @@ as.POSIXct <- function(x, tz = Sys.timezone()) {
 }
 as.POSIXct("2020-01-01 09:00")
 ```
+
+### See also
+
+-   In hidden arguments, a function depends on global state in a surprising way; in spooky action (@sec-spooky-action), a function changes global state in a surprising way.

@@ -17,10 +17,7 @@ However, there are a few general principles:
 -   Optional arguments (i.e. arguments with a default) are the least important, and should come last.
 -   If the function uses `…`, the optional arguments should come after `…`; see @sec-dots-position for more details.
 
-## Why is it important?
-
 This convention makes it easy to understand the structure of a function at a glance: the more important an argument is, the earlier you see it.
-
 When the output is very strongly tied to an input, putting first also ensures that you function works well with the pipe, leading to code that focuses on the transformations rather than the object being transformed.
 I believe that ensuring the first argument is always the object being transformed is helps make stringr and purrr functions easier to learn than their base equivalents.
 

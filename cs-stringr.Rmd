@@ -1,0 +1,64 @@
+# Case study: stringr
+
+```{r}
+#| include = FALSE
+source("common.R")
+```
+
+```{=html}
+<!-- 
+https://github.com/wch/r-source/blob/trunk/src/main/grep.c#L891-L1151 -->
+```
+`grepl()`, has three arguments that take either `FALSE` or `TRUE`: `ignore.case`, `perl`, `fixed`, which might suggest that there are 2 \^ 3 = 16 possible invocations.
+However, a number of combinations are not allowed:
+
+```{r}
+x <- grepl("a", letters, fixed = TRUE, ignore.case = TRUE)
+x <- grepl("a", letters, fixed = TRUE, perl = TRUE)
+```
+
+Part of this problem could be resolved by making it more clear that this function provides three engines for matching text:
+
+-   POSIX 1003.2 extended regular expressions (the default),
+-   Perl-style regular expressions (`perl = TRUE`)
+-   Fixed matching (`fixed = TRUE`).
+
+One way to make this more clear would be to use @sec-def-enum and create a new argument called something like `engine = c("POSIX", "perl", "fixed")`.
+
+The other problem is that `ignore.case` only works with two of the three engines: POSIX and perl.
+This is hard to remedy without creating a completely new matching engine for fixed case, which is particularly hard because different languages have different rules for case.
+
+stringr takes a different approach, encoding the engine as an attribute of the pattern:
+
+```{r}
+library(stringr)
+
+x <- str_detect(letters, "a")
+# short for:
+x <- str_detect(letters, regex("a"))
+
+# Which is where you supply additional arguments
+x <- str_detect(letters, regex("a", ignore_case = TRUE))
+```
+
+This has the advantage that each engine can take different arguments, but has the disadvantage that it's harder to know that these options exist because you have to travel at least another level in the documentation.
+
+An alternative approach would be to have a separate engine argument:
+
+```{r}
+#| eval = FALSE
+x <- str_detect(letters, "a", engine = regex())
+x <- str_detect(letters, "a", engine = fixed())
+x <- str_detect(letters, "a", engine = coll())
+```
+
+This approach is a bit more discoverable (because there's clearly another argument that affects the pattern), but it's slightly less general, because of the `boundary()` engine, which doesn't match patterns but boundaries:
+
+```{r}
+#| eval = FALSE
+x <- str_detect(letters, boundary("word"))
+# Seems confusing: now you can omit the pattern argument?
+x <- str_detect(letters, engine = boundary("word"))
+```
+
+It would also mean that you had an argument `engine`, that affected how another argument, `pattern`, was interpreted, so it would repeat the problem in a slightly different form.

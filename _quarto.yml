@@ -33,6 +33,7 @@ book:
       - dots-position.Rmd
       - args-independence.Rmd
       - cs-setNames.Rmd
+      - cs-stringr.Rmd
     
     - part: Default values
       chapters: 

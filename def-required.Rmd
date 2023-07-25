@@ -9,12 +9,7 @@ source("common.R")
 
 An argument should have a default if and only if it's optional.
 In other words: the absence of a default implies than an argument is required; the presence of a default implies that an argument is optional.
-
-See @sec-def-short if an argument has a default, but it requires a complex calculation.
-
 There are two exceptions: when a pair of arguments are mutually exclusive (i.e. you must supply one or the other but not both), or when you can supply one complex object instead of two or more simple objects.
-
-## Why is it important?
 
 This simple convention ensures that you can tell which arguments are optional and which arguments are required from a glance at the function signature.
 Otherwise you need to rely on the user carefully reading the documentation.
