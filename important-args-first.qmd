@@ -8,50 +8,47 @@ source("common.R")
 ## What's the pattern?
 
 In a function call, the most important arguments should come first.
-How can you tell what arguments are most important?
-That's largely a judgement call that you'll need to make based on your beliefs about which arguments will be used most commonly.
-However, there are a few general principles:
+As a general rule, the most important arguments will be the ones that are used most often, but that's often hard to tell until your function has existed in the wild for a while.
+Fortunately, there are a few rules of thumb that can help:
 
--   If the output is a transformation of an input (e.g. `log()`, `stringr::str_replace()`, `dplyr::left_join()`) that's the most important argument.
+-   If the output is a transformation of an input (e.g. `log()`, `stringr::str_replace()`, `dplyr::left_join()`) then that argument the most important.
 -   Other arguments that determine the type or shape of the output are typically very important.
 -   Optional arguments (i.e. arguments with a default) are the least important, and should come last.
--   If the function uses `…`, the optional arguments should come after `…`; see @sec-dots-after-required for more details.
 
-This convention makes it easy to understand the structure of a function at a glance: the more important an argument is, the earlier you see it.
-When the output is very strongly tied to an input, putting first also ensures that you function works well with the pipe, leading to code that focuses on the transformations rather than the object being transformed.
-I believe that ensuring the first argument is always the object being transformed is helps make stringr and purrr functions easier to learn than their base equivalents.
+This convention makes it easy to understand the structure of a function at a glance: the more important an argument is, the earlier you'll see it.
+When the output is very strongly tied to an input, putting that argument first also ensures that your function works well with the pipe, leading to code that focuses on the transformations rather than the object being transformed.
 
 ## What are some examples?
 
 The vast majority of functions get this right, so we'll pick on a few examples which I think get it wrong:
 
--   I think the arguments to base R string functions (`grepl()`, `gsub()`, etc) are in the wrong order because they consistently make the regular expression (`pattern`) the first argument, rather than the character vector being manipulated.
-    I think the character vector is more important because it's the argument the fundamentally determines the size of the output.
+-   I think the arguments to base R string functions (`grepl()`, `gsub()`, etc) are in the wrong order because they consistently make the regular expression (`pattern`) the first argument, rather than the character vector being manipulated (`x)`.
 
 -   The first two arguments to `lm()` are `formula` and `data`.
-    I'd argue that `data` should be the first argument; even though it doesn't affect the shape of the output (which is always an lm S3 object), it affects the shape of many important functions like `predict()`.
+    I'd argue that `data` should be the first argument; while it doesn't affect the shape of the output which is always an lm S3 object, it does affect the shape of many important functions like `predict()`.
     However, the designers of `lm()` wanted `data` to be optional, so you could still fit models even if you hadn't collected the individual variables into a data frame.
-    Because `formula` is required and `data` is not, `formula` must come first.
+    Because `formula` is required and `data` is not, this means that `formula` had to come first.
 
 -   The first two arguments to `ggplot()` are `data` and `mapping`.
     Both data and mapping are required for every plot, so why make `data` first?
     I picked this ordering because in most plots there's one dataset shared across all layers and only the mapping changes.
 
-    It's worth noting the layer functions, like `geom_point()`, flip the order of these arguments, because in an individual layer you're more likely to specify `mapping` than `data`, and in many cases if you do specify `data` you'll want `mapping` as well.
-    This makes these the argument order inconsistent with `ggplot()`, but I think time has shown it to be a reasonable design decision.
+    On the other hand, the layer functions, like `geom_point()`, flip the order of these arguments because in an individual layer you're more likely to specify `mapping` than `data`, and in many cases if you do specify `data` you'll want `mapping` as well.
+    This makes these the argument order inconsistent with `ggplot()`, but overall supports the most common use cases.
 
--   ggplot2 functions work by creating some object that's then added on to a plot object, so the plot, which is arguably the most important argument, is not used at all.
-    ggplot2 works this way in part because it was invented before the pipe was discovered, and the best way I came up to write plots from left to right was to rely on `+` (so-called operator overloading).
+-   ggplot2 functions work by creating an object that is then added on to a plot, so the plot, which is really the most important argument, is not obvious at all.
+    ggplot2 works this way in part because it was written before the pipe was discovered, and the best way I came up to define plots from left to right was to rely on `+` (so-called operator overloading).
     As an interesting historical fact, ggplot (the precursor to ggplot2) actually works great with the pipe, and a couple of years ago I bought it back to life as [ggplot1](https://github.com/hadley/ggplot1).
 
 ## How do I remediate past mistakes?
 
-Generally, it is not possible to remediate an existing exported function with this problem.
-Typically, you will need to perform major surgery on the function arguments, and this will convey different conventions about which arguments should be named.
-This implies that you should deprecate the entire existing function and replace it with a new alternative.
+Generally, it is not possible to change the order of the first few arguments because it will break existing code (since these are the arguments that are mostly likely to be used unnamed).
+This means that the only real solution is to dperecate the entire function and replace it with a new one.
 Because this is invasive to the user, it's best to do sparingly: if the mistake is minor, you're better off waiting until you've collected other problems before fixing it.
-
 For example, take `tidyr::gather()`.
-It has a number of problems with its design that made them hard to use.
-Relevant to this chapter is that the argument order is wrong, because you almost always want to specify which variables to gather, which is the fourth argument, not the second (after the `data`).
+It has a number of problems with its design, including the argument order, that makes it harder to use.
 Because it wasn't possible to easily fix this mistake, we accumulated other `gather()` problems for several years before fixing them all at once in `pivot_longer()`.
+
+## See also
+
+-   @sec-dots-after-required: If the function uses `…`, it should come in between the required and optional arguments.

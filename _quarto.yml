@@ -49,6 +49,8 @@ book:
       - dots-prefix.qmd
       - dots-inspect.qmd
       - cs-mapply-pmap.qmd
+      - mutually-exclusive-arguments.qmd
+      - compound-arguments.qmd
     
     - part: Outputs
       chapters: 

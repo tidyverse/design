@@ -105,7 +105,7 @@ This problem is generally easy to avoid for new functions:
     When `x` takes the value `y` from its default, it's evaluated inside the function, yielding `1`.
     When `y` is supplied explicitly, it is evaluated in the caller environment, yielding `2`.
 
--   Don't use `missing()`[^def-magical-1].
+-   Don't use `missing()`\[\^def-magical-1\].
 
     ```{r}
     f2 <- function(x = 1) {
@@ -123,8 +123,6 @@ This problem is generally easy to avoid for new functions:
 -   Don't use unexported functions.
     In packages, it's easy to use a non-exported function without thinking about it.
     This function is available to you, the package author, but not the user of the package, which makes it harder for them to understand how a package works.
-
-[^def-magical-1]: The only exceptions are described in @sec-args-mutually-exclusive and @sec-args-compound.
 
 ## How do I remediate the problem?
 

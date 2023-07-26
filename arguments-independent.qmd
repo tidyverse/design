@@ -60,7 +60,7 @@ Dependencies between arguments makes functions harder:
 
 -   In `readr::locale()` there's a complex dependency between `decimal_mark` and `grouping_mark` because they can't be the same value, and Europe and the US Europe use different standards.
 
-See @sec-args-mutually-exclusive) and @sec-args-compound for a two exceptions where the dependency is via specific patterns of missing arguments.
+See @sec-mutually-exclusive and @sec-compound-arguments for a two exceptions where the dependency is via specific patterns of missing arguments.
 
 (Other examples for you to explore: `rate` and `scale` in `rgamma()`, `na.rm` and `use` in `var()`)
 

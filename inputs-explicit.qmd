@@ -7,42 +7,33 @@ source("common.R")
 
 ## What's the problem?
 
-A function is easier to understand if it's output depends only on its arguments.
-If a function returns different results with the same inputs, then it some inputs must be implicit.
-Typically this is because the function relies on an option or environment variable.
+A function is easier to understand if its output depends only on its inputs (i.e. its arguments).
+If a function returns different results with the same inputs, then some inputs must be implicit, typically because the function relies on an option or some locale setting.
+Implicit inputs are not always bad, as some functions like `Sys.time()`, `read.csv()`, and the random number generators, fundamentally depend on them.
+But they should be used as sparingly as possible, and never when not related to the core purpose of the function.
 
-Implicit inputs are not always bad, as there are some functions that rely on them in order to their job, like `Sys.time()`, `read.csv()`, and the random number generators.
-But these difference are not the key part of the function's job then it's going to be surprising.
-
-Explicit arguments make code easier to understand because all the inputs are explicit in the code; you don't need to run it in order to predict what it will do.
-Functions with implicit inputs can also return different results on different computers, and the differences will be hard to track down because you have to look in many different places.
+Explicit arguments make code easier to understand because you can see what will affect the outputs just by reading the code; you don't need to run it.
+Implicit arguments can lead to code that returns different results on different computers, and the differences are usually hard to track down.
 
 ## What are some examples?
 
-One common source of hidden arguments is the use of global options.
-These can be useful to control display but, as discussed in @sec-def-user, should not affect computation:
+One common source of hidden arguments is the use of global options:
 
--   Historically, the worst offender was the `stringsAsFactors` option which changed how a number of functions[^args-hidden-1] treated character vectors.
-    This option was part of a multiyear procedure to move R away toward charcter vectors and away from vectors.
+-   Historically, the worst offender was the `stringsAsFactors` option which changed how a number of functions[^inputs-explicit-1] treated character vectors.
+    This option was part of a multi-year procedure to move R away toward character vectors and away from vectors.
     You can learn more in [*stringsAsFactors: An unauthorized biography*](https://simplystatistics.org/posts/2015-07-24-stringsasfactors-an-unauthorized-biography/) by Roger Peng and [*stringsAsFactors = \<sigh\>*](http://notstatschat.tumblr.com/post/124987394001/stringsasfactors-sigh) by Thomas Lumley.
 
 -   `lm()`'s handling of missing values depends on the global option of `na.action`.
     The default is `na.omit` which drops the missing values prior to fitting the model (which is inconvenient because then the results of `predict()` don't line up with the input data.
-    `modelr::na.warn()` provides an approach more in line with other base behaviours: it drops missing values with a warning.)
 
-[^args-hidden-1]: Such as `data.frame()`, `as.data.frame()`, and `read.csv()`
+[^inputs-explicit-1]: Such as `data.frame()`, `as.data.frame()`, and `read.csv()`
 
-Allowing the system locale to affect the result of a function is a subtle source of bugs when sharing code between people who work in different countries.
-These defaults on rarely cause problems because most languages that share the same writing system share (most of) the same collation rules.
-The main exceptions tend to be European languages which have varying rules for modified letters, e.g. in Norwegian, å comes at the end of the alphabet.
-However, when they do cause problems they will take a long time to track down: you're unlikely to expect that the coefficients of a linear model are different[^args-hidden-2] because your code is run in a different country!
-
-[^args-hidden-2]: You'll get different coefficients for a categorical predictor if the ordering means that a different levels comes first in the alphabet.
-    The predictions and other diagnostics won't be affected, but you're likely to be surprised that your coefficients are different.
+Another common source of subtle bugs is relying on the system **locale**, i.e. the country and language specific settings controlled by your operating system.
+Relying on the system locale is always done with the best of intentions (you want your code to respect the user's preferences) but can lead to subtle differences when the same code is run by different people.
+Here are a few examples:
 
 -   `strptime()` relies on the names of weekdays and months in the current locale.
     That means `strptime("1 Jan 2020", "%d %b %Y")` will work on computers with an English locale, and fail elsewhere.
-    This is particularly troublesome for Europeans who frequently have colleagues who speak a different language.
 
 -   `as.POSIXct()` depends on the current timezone.
     The following code returns different underlying times when run on different computers:
@@ -57,18 +48,22 @@ However, when they do cause problems they will take a long time to track down: y
     In Turkish, however, the upper case version of i is İ, and `Geomİdentity` does not exist.
     This meant that for some time ggplot2 did not work on Turkish computers.
 
--   For similar reasons, `sort()` and `order()` rely on the lexicographic order defined by the current locale.
-    `factor()` uses `order()`, so the results from factor depend implicitly on the current locale.
-    (This is not an imaginary problem as this [SO question](https://stackoverflow.com/questions/39339489) attests).
+-   `sort()` and `order()` rely on the lexicographic order (i.e. how different alphabets sort their letters) defined by the current locale.
+    `lm()` automatically converts character vectors to factors with `factor()`, which uses `order()`, which means that it's possible for the coefficients to vary[^inputs-explicit-2] if your code is run in a different country!
+
+[^inputs-explicit-2]: Predictions and other diagnostics won't be affected, but you're likely to be surprised that your coefficients are different.
 
 ## How can I remediate the problem?
 
-Generally, hidden arguments are easy to avoid when creating new functions: simply refrain from using environment variables (like the locale) or global options (like `stringsAsFactors`).
-The easiest way for problems to creep in is indirectly, when you call a function not knowing that it has hidden inputs.
+At some level, implicit inputs are easy to avoid when creating new functions: just don't use the locale or global options!
+But it's easy for such problems to creep in indirectly, when you call a function not knowing that it has hidden inputs.
 The best way to prevent that is to consult the list of common offenders provided above.
 
-If you want depend on an environment variable or option, make sure it's an explicit argument.
-Such arguments generally should not affect computation (only side-effects like printed output or status messages); if they do affect results, follow @sec-def-inform to make sure the user knows what's happening.
+### Make an option explicit
+
+If you want depend on an option or locale, make sure it's an explicit argument.
+Such arguments generally should not affect computation (@sec-def-user), just side-effects like printed output or status messages.
+If they do affect results, follow @sec-def-inform to make sure the user knows what's happening.
 For example, lets take `as.POSIXct()` which basically looks something like this:
 
 ```{r}
@@ -78,7 +73,7 @@ as.POSIXct <- function(x, tz = "") {
 as.POSIXct("2020-01-01 09:00")
 ```
 
-The `tz` argument is present, but it's not obvious that `""` means the currrent time zone.
+The `tz` argument is present, but it's not obvious that `""` means the current time zone.
 Let's first make that explicit:
 
 ```{r}
@@ -93,13 +88,25 @@ Since this is an important default whose value can change, we also print it out 
 ```{r}
 as.POSIXct <- function(x, tz = Sys.timezone()) {
   if (missing(tz)) {
-    message("Using `tz = '", tz, "'`")
+    message("Using `tz = \"", tz, "\"`")
   }
   base::as.POSIXct(x, tz = tz)
 }
 as.POSIXct("2020-01-01 09:00")
 ```
 
-### See also
+Since most people don't like lots of random output this provides a subtle incentive to supply the timezone:
 
--   In hidden arguments, a function depends on global state in a surprising way; in spooky action (@sec-spooky-action), a function changes global state in a surprising way.
+```{r}
+as.POSIXct("2020-01-01 09:00", tz = "America/Chicago")
+```
+
+### Temporarily adjust global state
+
+If you're calling a function with implicit arguments and those implicit arguments are causing problems with your code, you can always work around them by temporarily changing the global state which it uses.
+The easiest way to do so is to use the [withr](https://withr.r-lib.org) package, which provides a variety of tools to change temporarily change global state.
+
+## See also
+
+-   @sec-def-user and @sec-def-inform: how to make an option as explicit as possible.
+-   @sec-spooky-action: where a function changes global state in a surprising way.

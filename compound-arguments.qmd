@@ -1,0 +1,69 @@
+# Compound arguments {#sec-compound-arguments}
+
+```{r}
+#| include = FALSE
+source("common.R")
+```
+
+## What's the pattern?
+
+A related, if less generally useful, form is to allow the user to supply either a single complex argument or several smaller arguments.
+
+## What are some examples?
+
+-   `rgb(cbind(r, g, b))` is equivalent to `rgb(r, g, b)` (See @sec-cs-rgb for more details).
+
+-   `options(list(a = 1, b = 2))` is equivalent to `options(a = 1, b = 2)`.
+
+-   `stringr::str_sub(x, cbind(start, end))` is equivalent to `str_sub(x, start, end)`.
+
+The most compelling reason to provide this sort of interface is when another function might return a complex output that you want to use as an input.
+For example, it seems reasonable that you should be able to feed the output of `str_locate()` directly into `str_sub()`:
+
+```{r}
+library(stringr)
+
+x <- c("aaaaab", "aaab", "ccccb")
+loc <- str_locate(x, "a+b")
+
+str_sub(x, loc)
+```
+
+But equally, it would be a bit weird to have to provide a matrix when subsetting with known positions:
+
+```{r}
+str_sub("Hadley", cbind(2, 4))
+```
+
+So `str_sub()` allows either individual vectors supplied to `start` and `end`, or a two-column matrix supplied to `start`.
+
+## How do I use the pattern?
+
+To implement in your own functions, you should branch on the type of the first argument:
+
+```{r}
+str_sub <- function(string, start, end) {
+  if (is.matrix(start)) {
+    if (!missing(end)) {
+      stop("`end` must be missing when `start` is a matrix", call. = FALSE)
+    }
+    if (ncol(start) != 2) {
+      stop("Matrix `start` must have exactly two columns", call. = FALSE)
+    }
+    stri_sub(string, from = start[, 1], to = start[, 2])
+  } else {
+    stri_sub(string, from = start, to = end)
+  }
+}
+```
+
+And make it clear in the documentation:
+
+```{r}
+#' @param start,end Integer vectors giving the `start` (default: first)
+#'   and `end` (default: last) positions, inclusively. Alternatively, you
+#'   pass a two-column matrix to `start`, i.e. `str_sub(x, start, end)`
+#'   is equivalent to `str_sub(x, cbind(start, end))`
+```
+
+(If you look at `string::str_sub()` you'll notice that `start` and `end` do have defaults; I think this is a mistake because `start` and `end` are important enough that the user should always be forced to supply them.)

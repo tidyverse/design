@@ -1,0 +1,62 @@
+# Mutually exclusive arguments {#sec-mutually-exclusive}
+
+```{r}
+#| include = FALSE
+source("common.R")
+```
+
+## What's the pattern?
+
+## What are some examples?
+
+A number of functions that allow you to supply exactly one of two possible arguments:
+
+-   `read.table()` allows you to supply data either with a path to a `file`, or inline as `text`.
+
+-   `rvest::html_element()` allows you to select HTML elements either with a `css` selector or an `xpath` expression.
+
+-   `forcats::fct_other()` allows you to either `keep` or `drop` specified factor values.
+
+## How do you use this pattern?
+
+If you use this technique, use `xor()` and `missing()` to check that exactly one argument is supplied:
+
+```{r}
+#| error: true
+
+fct_drop <- function(f, drop, keep) {
+  if (!xor(missing(keep), missing(drop))) {
+    stop("Must supply exactly one of `keep` and `drop`")
+  }  
+}
+fct_drop(factor())
+
+fct_drop(factor(), keep = "a", drop = "b")
+```
+
+Or the helper `rlang::check_exclusive()`:
+
+```{r}
+#| error: true
+
+fct_drop <- function(f, drop, keep) {
+  rlang::check_exclusive(drop, keep)
+}
+fct_drop(factor())
+
+fct_drop(factor(), keep = "a", drop = "b")
+```
+
+And in the documentation, make it clear that only one of the pair can be supplied:
+
+```{r}
+#' @param keep,drop Pick one of `keep` and `drop`:
+#'   * `keep` will preserve listed levels, replacing all others with 
+#'     `other_level`.
+#'   * `drop` will replace listed levels with `other_level`, keeping all
+#'     as is.
+```
+
+This technique should only be used for are exactly two possible arguments.
+If there are more than two, that is generally a sign you should create more functions.
+See case studies in @sec-cs-rep and @sec-cs-fct-lump for examples.
