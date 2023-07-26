@@ -166,7 +166,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./required-no-defaults.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Required args don’t have defaults</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Required args shouldn’t have defaults</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -264,6 +264,18 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/mapply.html">mapply()</a></code> vs <code>pmap()</code>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./mutually-exclusive-arguments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Mutually exclusive arguments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./compound-arguments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Compound arguments</span></span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -278,25 +290,25 @@ ul.task-list li input[type="checkbox"] {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-multi.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Returning multiple values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Returning multiple values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-type-stability.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Type-stability</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Type-stability</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-vectorisation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Vectorisation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Vectorisation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-invisible.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Side-effect functions should return invisibly</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Side-effect functions should return invisibly</span></span></a>
   </div>
 </li>
       </ul>
@@ -313,7 +325,7 @@ ul.task-list li input[type="checkbox"] {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./changes-multivers.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Work with multiple dependency versions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Work with multiple dependency versions</span></span></a>
   </div>
 </li>
       </ul>
@@ -330,13 +342,13 @@ ul.task-list li input[type="checkbox"] {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./side-effects.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Side-effect soup</span></span></a>
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Side-effect soup</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./spooky-action.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Spooky action</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Spooky action</span></span></a>
   </div>
 </li>
       </ul>
@@ -353,13 +365,13 @@ ul.task-list li input[type="checkbox"] {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./err-call.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Error call</span></span></a>
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Error call</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./err-constructor.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Error constructors</span></span></a>
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Error constructors</span></span></a>
   </div>
 </li>
       </ul>
@@ -392,6 +404,7 @@ ul.task-list li input[type="checkbox"] {
 <li><a href="#whats-the-pattern" id="toc-whats-the-pattern" class="nav-link active" data-scroll-target="#whats-the-pattern"><span class="header-section-number">5.1</span> What’s the pattern?</a></li>
   <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">5.2</span> What are some examples?</a></li>
   <li><a href="#how-do-i-remediate-past-mistakes" id="toc-how-do-i-remediate-past-mistakes" class="nav-link" data-scroll-target="#how-do-i-remediate-past-mistakes"><span class="header-section-number">5.3</span> How do I remediate past mistakes?</a></li>
+  <li><a href="#see-also" id="toc-see-also" class="nav-link" data-scroll-target="#see-also"><span class="header-section-number">5.4</span> See also</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/important-args-first.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
@@ -411,29 +424,33 @@ ul.task-list li input[type="checkbox"] {
 
 </header><section id="whats-the-pattern" class="level2" data-number="5.1"><h2 data-number="5.1" class="anchored" data-anchor-id="whats-the-pattern">
 <span class="header-section-number">5.1</span> What’s the pattern?</h2>
-<p>In a function call, the most important arguments should come first. How can you tell what arguments are most important? That’s largely a judgement call that you’ll need to make based on your beliefs about which arguments will be used most commonly. However, there are a few general principles:</p>
+<p>In a function call, the most important arguments should come first. As a general rule, the most important arguments will be the ones that are used most often, but that’s often hard to tell until your function has existed in the wild for a while. Fortunately, there are a few rules of thumb that can help:</p>
 <ul>
-<li>If the output is a transformation of an input (e.g.&nbsp;<code><a href="https://rdrr.io/r/base/Log.html">log()</a></code>, <code><a href="https://stringr.tidyverse.org/reference/str_replace.html">stringr::str_replace()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">dplyr::left_join()</a></code>) that’s the most important argument.</li>
+<li>If the output is a transformation of an input (e.g.&nbsp;<code><a href="https://rdrr.io/r/base/Log.html">log()</a></code>, <code><a href="https://stringr.tidyverse.org/reference/str_replace.html">stringr::str_replace()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">dplyr::left_join()</a></code>) then that argument the most important.</li>
 <li>Other arguments that determine the type or shape of the output are typically very important.</li>
 <li>Optional arguments (i.e.&nbsp;arguments with a default) are the least important, and should come last.</li>
-<li>If the function uses <code>…</code>, the optional arguments should come after <code>…</code>; see <a href="dots-after-required.html"><span>Chapter&nbsp;7</span></a> for more details.</li>
 </ul>
-<p>This convention makes it easy to understand the structure of a function at a glance: the more important an argument is, the earlier you see it. When the output is very strongly tied to an input, putting first also ensures that you function works well with the pipe, leading to code that focuses on the transformations rather than the object being transformed. I believe that ensuring the first argument is always the object being transformed is helps make stringr and purrr functions easier to learn than their base equivalents.</p>
+<p>This convention makes it easy to understand the structure of a function at a glance: the more important an argument is, the earlier you’ll see it. When the output is very strongly tied to an input, putting that argument first also ensures that your function works well with the pipe, leading to code that focuses on the transformations rather than the object being transformed.</p>
 </section><section id="what-are-some-examples" class="level2" data-number="5.2"><h2 data-number="5.2" class="anchored" data-anchor-id="what-are-some-examples">
 <span class="header-section-number">5.2</span> What are some examples?</h2>
 <p>The vast majority of functions get this right, so we’ll pick on a few examples which I think get it wrong:</p>
 <ul>
-<li><p>I think the arguments to base R string functions (<code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code>, <code><a href="https://rdrr.io/r/base/grep.html">gsub()</a></code>, etc) are in the wrong order because they consistently make the regular expression (<code>pattern</code>) the first argument, rather than the character vector being manipulated. I think the character vector is more important because it’s the argument the fundamentally determines the size of the output.</p></li>
-<li><p>The first two arguments to <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> are <code>formula</code> and <code>data</code>. I’d argue that <code>data</code> should be the first argument; even though it doesn’t affect the shape of the output (which is always an lm S3 object), it affects the shape of many important functions like <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code>. However, the designers of <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> wanted <code>data</code> to be optional, so you could still fit models even if you hadn’t collected the individual variables into a data frame. Because <code>formula</code> is required and <code>data</code> is not, <code>formula</code> must come first.</p></li>
+<li><p>I think the arguments to base R string functions (<code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code>, <code><a href="https://rdrr.io/r/base/grep.html">gsub()</a></code>, etc) are in the wrong order because they consistently make the regular expression (<code>pattern</code>) the first argument, rather than the character vector being manipulated (<code>x)</code>.</p></li>
+<li><p>The first two arguments to <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> are <code>formula</code> and <code>data</code>. I’d argue that <code>data</code> should be the first argument; while it doesn’t affect the shape of the output which is always an lm S3 object, it does affect the shape of many important functions like <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code>. However, the designers of <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> wanted <code>data</code> to be optional, so you could still fit models even if you hadn’t collected the individual variables into a data frame. Because <code>formula</code> is required and <code>data</code> is not, this means that <code>formula</code> had to come first.</p></li>
 <li>
 <p>The first two arguments to <code>ggplot()</code> are <code>data</code> and <code>mapping</code>. Both data and mapping are required for every plot, so why make <code>data</code> first? I picked this ordering because in most plots there’s one dataset shared across all layers and only the mapping changes.</p>
-<p>It’s worth noting the layer functions, like <code>geom_point()</code>, flip the order of these arguments, because in an individual layer you’re more likely to specify <code>mapping</code> than <code>data</code>, and in many cases if you do specify <code>data</code> you’ll want <code>mapping</code> as well. This makes these the argument order inconsistent with <code>ggplot()</code>, but I think time has shown it to be a reasonable design decision.</p>
+<p>On the other hand, the layer functions, like <code>geom_point()</code>, flip the order of these arguments because in an individual layer you’re more likely to specify <code>mapping</code> than <code>data</code>, and in many cases if you do specify <code>data</code> you’ll want <code>mapping</code> as well. This makes these the argument order inconsistent with <code>ggplot()</code>, but overall supports the most common use cases.</p>
 </li>
-<li><p>ggplot2 functions work by creating some object that’s then added on to a plot object, so the plot, which is arguably the most important argument, is not used at all. ggplot2 works this way in part because it was invented before the pipe was discovered, and the best way I came up to write plots from left to right was to rely on <code>+</code> (so-called operator overloading). As an interesting historical fact, ggplot (the precursor to ggplot2) actually works great with the pipe, and a couple of years ago I bought it back to life as <a href="https://github.com/hadley/ggplot1">ggplot1</a>.</p></li>
+<li><p>ggplot2 functions work by creating an object that is then added on to a plot, so the plot, which is really the most important argument, is not obvious at all. ggplot2 works this way in part because it was written before the pipe was discovered, and the best way I came up to define plots from left to right was to rely on <code>+</code> (so-called operator overloading). As an interesting historical fact, ggplot (the precursor to ggplot2) actually works great with the pipe, and a couple of years ago I bought it back to life as <a href="https://github.com/hadley/ggplot1">ggplot1</a>.</p></li>
 </ul></section><section id="how-do-i-remediate-past-mistakes" class="level2" data-number="5.3"><h2 data-number="5.3" class="anchored" data-anchor-id="how-do-i-remediate-past-mistakes">
 <span class="header-section-number">5.3</span> How do I remediate past mistakes?</h2>
-<p>Generally, it is not possible to remediate an existing exported function with this problem. Typically, you will need to perform major surgery on the function arguments, and this will convey different conventions about which arguments should be named. This implies that you should deprecate the entire existing function and replace it with a new alternative. Because this is invasive to the user, it’s best to do sparingly: if the mistake is minor, you’re better off waiting until you’ve collected other problems before fixing it.</p>
-<p>For example, take <code><a href="https://tidyr.tidyverse.org/reference/gather.html">tidyr::gather()</a></code>. It has a number of problems with its design that made them hard to use. Relevant to this chapter is that the argument order is wrong, because you almost always want to specify which variables to gather, which is the fourth argument, not the second (after the <code>data</code>). Because it wasn’t possible to easily fix this mistake, we accumulated other <code>gather()</code> problems for several years before fixing them all at once in <code>pivot_longer()</code>.</p>
+<p>Generally, it is not possible to change the order of the first few arguments because it will break existing code (since these are the arguments that are mostly likely to be used unnamed). This means that the only real solution is to dperecate the entire function and replace it with a new one. Because this is invasive to the user, it’s best to do sparingly: if the mistake is minor, you’re better off waiting until you’ve collected other problems before fixing it. For example, take <code><a href="https://tidyr.tidyverse.org/reference/gather.html">tidyr::gather()</a></code>. It has a number of problems with its design, including the argument order, that makes it harder to use. Because it wasn’t possible to easily fix this mistake, we accumulated other <code>gather()</code> problems for several years before fixing them all at once in <code>pivot_longer()</code>.</p>
+</section><section id="see-also" class="level2" data-number="5.4"><h2 data-number="5.4" class="anchored" data-anchor-id="see-also">
+<span class="header-section-number">5.4</span> See also</h2>
+<ul>
+<li>
+<a href="dots-after-required.html"><span>Chapter&nbsp;7</span></a>: If the function uses <code>…</code>, it should come in between the required and optional arguments.</li>
+</ul>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">

@@ -200,7 +200,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./required-no-defaults.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Required args don’t have defaults</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Required args shouldn’t have defaults</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -298,6 +298,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/mapply.html">mapply()</a></code> vs <code>pmap()</code>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./mutually-exclusive-arguments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Mutually exclusive arguments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./compound-arguments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Compound arguments</span></span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -312,25 +324,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-multi.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Returning multiple values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Returning multiple values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-type-stability.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Type-stability</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Type-stability</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-vectorisation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Vectorisation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Vectorisation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-invisible.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Side-effect functions should return invisibly</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Side-effect functions should return invisibly</span></span></a>
   </div>
 </li>
       </ul>
@@ -347,7 +359,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./changes-multivers.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Work with multiple dependency versions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Work with multiple dependency versions</span></span></a>
   </div>
 </li>
       </ul>
@@ -364,13 +376,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./side-effects.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Side-effect soup</span></span></a>
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Side-effect soup</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./spooky-action.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Spooky action</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Spooky action</span></span></a>
   </div>
 </li>
       </ul>
@@ -387,13 +399,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./err-call.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Error call</span></span></a>
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Error call</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./err-constructor.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Error constructors</span></span></a>
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Error constructors</span></span></a>
   </div>
 </li>
       </ul>
@@ -428,9 +440,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li>
 <a href="#how-can-i-remediate-the-problem" id="toc-how-can-i-remediate-the-problem" class="nav-link" data-scroll-target="#how-can-i-remediate-the-problem"><span class="header-section-number">6.3</span> How can I remediate the problem?</a>
   <ul class="collapse">
-<li><a href="#see-also" id="toc-see-also" class="nav-link" data-scroll-target="#see-also"><span class="header-section-number">6.3.1</span> See also</a></li>
+<li><a href="#make-an-option-explicit" id="toc-make-an-option-explicit" class="nav-link" data-scroll-target="#make-an-option-explicit"><span class="header-section-number">6.3.1</span> Make an option explicit</a></li>
+  <li><a href="#temporarily-adjust-global-state" id="toc-temporarily-adjust-global-state" class="nav-link" data-scroll-target="#temporarily-adjust-global-state"><span class="header-section-number">6.3.2</span> Temporarily adjust global state</a></li>
   </ul>
 </li>
+  <li><a href="#see-also" id="toc-see-also" class="nav-link" data-scroll-target="#see-also"><span class="header-section-number">6.4</span> See also</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/inputs-explicit.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
@@ -450,19 +464,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header><section id="whats-the-problem" class="level2" data-number="6.1"><h2 data-number="6.1" class="anchored" data-anchor-id="whats-the-problem">
 <span class="header-section-number">6.1</span> What’s the problem?</h2>
-<p>A function is easier to understand if it’s output depends only on its arguments. If a function returns different results with the same inputs, then it some inputs must be implicit. Typically this is because the function relies on an option or environment variable.</p>
-<p>Implicit inputs are not always bad, as there are some functions that rely on them in order to their job, like <code><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time()</a></code>, <code><a href="https://rdrr.io/r/utils/read.table.html">read.csv()</a></code>, and the random number generators. But these difference are not the key part of the function’s job then it’s going to be surprising.</p>
-<p>Explicit arguments make code easier to understand because all the inputs are explicit in the code; you don’t need to run it in order to predict what it will do. Functions with implicit inputs can also return different results on different computers, and the differences will be hard to track down because you have to look in many different places.</p>
+<p>A function is easier to understand if its output depends only on its inputs (i.e.&nbsp;its arguments). If a function returns different results with the same inputs, then some inputs must be implicit, typically because the function relies on an option or some locale setting. Implicit inputs are not always bad, as some functions like <code><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time()</a></code>, <code><a href="https://rdrr.io/r/utils/read.table.html">read.csv()</a></code>, and the random number generators, fundamentally depend on them. But they should be used as sparingly as possible, and never when not related to the core purpose of the function.</p>
+<p>Explicit arguments make code easier to understand because you can see what will affect the outputs just by reading the code; you don’t need to run it. Implicit arguments can lead to code that returns different results on different computers, and the differences are usually hard to track down.</p>
 </section><section id="what-are-some-examples" class="level2" data-number="6.2"><h2 data-number="6.2" class="anchored" data-anchor-id="what-are-some-examples">
 <span class="header-section-number">6.2</span> What are some examples?</h2>
-<p>One common source of hidden arguments is the use of global options. These can be useful to control display but, as discussed in <a href="def-user.html"><span>Chapter&nbsp;17</span></a>, should not affect computation:</p>
+<p>One common source of hidden arguments is the use of global options:</p>
 <ul>
-<li><p>Historically, the worst offender was the <code>stringsAsFactors</code> option which changed how a number of functions<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> treated character vectors. This option was part of a multiyear procedure to move R away toward charcter vectors and away from vectors. You can learn more in <a href="https://simplystatistics.org/posts/2015-07-24-stringsasfactors-an-unauthorized-biography/"><em>stringsAsFactors: An unauthorized biography</em></a> by Roger Peng and <a href="http://notstatschat.tumblr.com/post/124987394001/stringsasfactors-sigh"><em>stringsAsFactors = &lt;sigh&gt;</em></a> by Thomas Lumley.</p></li>
-<li><p><code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>’s handling of missing values depends on the global option of <code>na.action</code>. The default is <code>na.omit</code> which drops the missing values prior to fitting the model (which is inconvenient because then the results of <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> don’t line up with the input data. <code><a href="https://modelr.tidyverse.org/reference/na.warn.html">modelr::na.warn()</a></code> provides an approach more in line with other base behaviours: it drops missing values with a warning.)</p></li>
+<li><p>Historically, the worst offender was the <code>stringsAsFactors</code> option which changed how a number of functions<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> treated character vectors. This option was part of a multi-year procedure to move R away toward character vectors and away from vectors. You can learn more in <a href="https://simplystatistics.org/posts/2015-07-24-stringsasfactors-an-unauthorized-biography/"><em>stringsAsFactors: An unauthorized biography</em></a> by Roger Peng and <a href="http://notstatschat.tumblr.com/post/124987394001/stringsasfactors-sigh"><em>stringsAsFactors = &lt;sigh&gt;</em></a> by Thomas Lumley.</p></li>
+<li><p><code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>’s handling of missing values depends on the global option of <code>na.action</code>. The default is <code>na.omit</code> which drops the missing values prior to fitting the model (which is inconvenient because then the results of <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> don’t line up with the input data.</p></li>
 </ul>
-<p>Allowing the system locale to affect the result of a function is a subtle source of bugs when sharing code between people who work in different countries. These defaults on rarely cause problems because most languages that share the same writing system share (most of) the same collation rules. The main exceptions tend to be European languages which have varying rules for modified letters, e.g.&nbsp;in Norwegian, å comes at the end of the alphabet. However, when they do cause problems they will take a long time to track down: you’re unlikely to expect that the coefficients of a linear model are different<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> because your code is run in a different country!</p>
+<p>Another common source of subtle bugs is relying on the system <strong>locale</strong>, i.e.&nbsp;the country and language specific settings controlled by your operating system. Relying on the system locale is always done with the best of intentions (you want your code to respect the user’s preferences) but can lead to subtle differences when the same code is run by different people. Here are a few examples:</p>
 <ul>
-<li><p><code><a href="https://rdrr.io/r/base/strptime.html">strptime()</a></code> relies on the names of weekdays and months in the current locale. That means <code>strptime("1 Jan 2020", "%d %b %Y")</code> will work on computers with an English locale, and fail elsewhere. This is particularly troublesome for Europeans who frequently have colleagues who speak a different language.</p></li>
+<li><p><code><a href="https://rdrr.io/r/base/strptime.html">strptime()</a></code> relies on the names of weekdays and months in the current locale. That means <code>strptime("1 Jan 2020", "%d %b %Y")</code> will work on computers with an English locale, and fail elsewhere.</p></li>
 <li>
 <p><code><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct()</a></code> depends on the current timezone. The following code returns different underlying times when run on different computers:</p>
 <div class="cell">
@@ -471,11 +484,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </li>
 <li><p><code><a href="https://rdrr.io/r/base/chartr.html">toupper()</a></code> and <code><a href="https://rdrr.io/r/base/chartr.html">tolower()</a></code> depend on the current locale. It is fairly uncommon for this to cause problems because most languages either use their own character set, or use the same rules for capitalisation as English. However, this behaviour did cause a bug in ggplot2 because internally it takes <code>geom = "identity"</code> and turns it into <code>GeomIdentity</code> to find the object that actually does computation. In Turkish, however, the upper case version of i is İ, and <code>Geomİdentity</code> does not exist. This meant that for some time ggplot2 did not work on Turkish computers.</p></li>
-<li><p>For similar reasons, <code><a href="https://rdrr.io/r/base/sort.html">sort()</a></code> and <code><a href="https://rdrr.io/r/base/order.html">order()</a></code> rely on the lexicographic order defined by the current locale. <code><a href="https://rdrr.io/r/base/factor.html">factor()</a></code> uses <code><a href="https://rdrr.io/r/base/order.html">order()</a></code>, so the results from factor depend implicitly on the current locale. (This is not an imaginary problem as this <a href="https://stackoverflow.com/questions/39339489">SO question</a> attests).</p></li>
+<li><p><code><a href="https://rdrr.io/r/base/sort.html">sort()</a></code> and <code><a href="https://rdrr.io/r/base/order.html">order()</a></code> rely on the lexicographic order (i.e.&nbsp;how different alphabets sort their letters) defined by the current locale. <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> automatically converts character vectors to factors with <code><a href="https://rdrr.io/r/base/factor.html">factor()</a></code>, which uses <code><a href="https://rdrr.io/r/base/order.html">order()</a></code>, which means that it’s possible for the coefficients to vary<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> if your code is run in a different country!</p></li>
 </ul></section><section id="how-can-i-remediate-the-problem" class="level2" data-number="6.3"><h2 data-number="6.3" class="anchored" data-anchor-id="how-can-i-remediate-the-problem">
 <span class="header-section-number">6.3</span> How can I remediate the problem?</h2>
-<p>Generally, hidden arguments are easy to avoid when creating new functions: simply refrain from using environment variables (like the locale) or global options (like <code>stringsAsFactors</code>). The easiest way for problems to creep in is indirectly, when you call a function not knowing that it has hidden inputs. The best way to prevent that is to consult the list of common offenders provided above.</p>
-<p>If you want depend on an environment variable or option, make sure it’s an explicit argument. Such arguments generally should not affect computation (only side-effects like printed output or status messages); if they do affect results, follow <a href="def-inform.html"><span>Chapter&nbsp;16</span></a> to make sure the user knows what’s happening. For example, lets take <code><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct()</a></code> which basically looks something like this:</p>
+<p>At some level, implicit inputs are easy to avoid when creating new functions: just don’t use the locale or global options! But it’s easy for such problems to creep in indirectly, when you call a function not knowing that it has hidden inputs. The best way to prevent that is to consult the list of common offenders provided above.</p>
+<section id="make-an-option-explicit" class="level3" data-number="6.3.1"><h3 data-number="6.3.1" class="anchored" data-anchor-id="make-an-option-explicit">
+<span class="header-section-number">6.3.1</span> Make an option explicit</h3>
+<p>If you want depend on an option or locale, make sure it’s an explicit argument. Such arguments generally should not affect computation (<a href="def-user.html"><span>Chapter&nbsp;17</span></a>), just side-effects like printed output or status messages. If they do affect results, follow <a href="def-inform.html"><span>Chapter&nbsp;16</span></a> to make sure the user knows what’s happening. For example, lets take <code><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct()</a></code> which basically looks something like this:</p>
 <div class="cell">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">as.POSIXct</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">tz</span> <span class="op">=</span> <span class="st">""</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="va">x</span>, tz <span class="op">=</span> <span class="va">tz</span><span class="op">)</span></span>
@@ -483,7 +498,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="st">"2020-01-01 09:00"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "2020-01-01 09:00:00 UTC"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The <code>tz</code> argument is present, but it’s not obvious that <code>""</code> means the currrent time zone. Let’s first make that explicit:</p>
+<p>The <code>tz</code> argument is present, but it’s not obvious that <code>""</code> means the current time zone. Let’s first make that explicit:</p>
 <div class="cell">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">as.POSIXct</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">tz</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/timezones.html">Sys.timezone</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="va">x</span>, tz <span class="op">=</span> <span class="va">tz</span><span class="op">)</span></span>
@@ -495,25 +510,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">as.POSIXct</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">tz</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/timezones.html">Sys.timezone</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">tz</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span><span class="op">(</span><span class="st">"Using `tz = '"</span>, <span class="va">tz</span>, <span class="st">"'`"</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span><span class="op">(</span><span class="st">"Using `tz = \""</span>, <span class="va">tz</span>, <span class="st">"\"`"</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
 <span>  <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="va">x</span>, tz <span class="op">=</span> <span class="va">tz</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="st">"2020-01-01 09:00"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Using `tz = 'UTC'`</span></span>
+<span><span class="co">#&gt; Using `tz = "UTC"`</span></span>
 <span><span class="co">#&gt; [1] "2020-01-01 09:00:00 UTC"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="see-also" class="level3" data-number="6.3.1"><h3 data-number="6.3.1" class="anchored" data-anchor-id="see-also">
-<span class="header-section-number">6.3.1</span> See also</h3>
+<p>Since most people don’t like lots of random output this provides a subtle incentive to supply the timezone:</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="st">"2020-01-01 09:00"</span>, tz <span class="op">=</span> <span class="st">"America/Chicago"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "2020-01-01 09:00:00 CST"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="temporarily-adjust-global-state" class="level3" data-number="6.3.2"><h3 data-number="6.3.2" class="anchored" data-anchor-id="temporarily-adjust-global-state">
+<span class="header-section-number">6.3.2</span> Temporarily adjust global state</h3>
+<p>If you’re calling a function with implicit arguments and those implicit arguments are causing problems with your code, you can always work around them by temporarily changing the global state which it uses. The easiest way to do so is to use the <a href="https://withr.r-lib.org">withr</a> package, which provides a variety of tools to change temporarily change global state.</p>
+</section></section><section id="see-also" class="level2" data-number="6.4"><h2 data-number="6.4" class="anchored" data-anchor-id="see-also">
+<span class="header-section-number">6.4</span> See also</h2>
 <ul>
-<li>In hidden arguments, a function depends on global state in a surprising way; in spooky action (<a href="spooky-action.html"><span>Chapter&nbsp;29</span></a>), a function changes global state in a surprising way.</li>
+<li>
+<a href="def-user.html"><span>Chapter&nbsp;17</span></a> and <a href="def-inform.html"><span>Chapter&nbsp;16</span></a>: how to make an option as explicit as possible.</li>
+<li>
+<a href="spooky-action.html"><span>Chapter&nbsp;31</span></a>: where a function changes global state in a surprising way.</li>
 </ul>
 
 
-</section></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+</section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
 <ol>
 <li id="fn1"><p>Such as <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code>, <code><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame()</a></code>, and <code><a href="https://rdrr.io/r/utils/read.table.html">read.csv()</a></code><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>You’ll get different coefficients for a categorical predictor if the ordering means that a different levels comes first in the alphabet. The predictions and other diagnostics won’t be affected, but you’re likely to be surprised that your coefficients are different.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Predictions and other diagnostics won’t be affected, but you’re likely to be surprised that your coefficients are different.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
