@@ -21,9 +21,9 @@ funs[args_max > 50] %>% discard(~ grepl("as.data.frame", .x$name, fixed = TRUE))
 ## What's the pattern?
 
 Default values should be short and sweet.
-This makes the function specification easier to scan.
+Avoid large or complex calculations in the default values, instead using `NULL` or helper function to where more calculation is needed.
 
-This pattern is important because it ensures that when scanning the function definition you can understand quickly how the defaults will be computed.
+This keeps the function specification focussed on the big picture (i.e. what are the arguments and are they required or not) rather than the details of the defaults.
 
 ## What are some examples?
 
@@ -33,18 +33,18 @@ The following examples, drawn from base R, illustrate some functions that don't 
 
 -   `exists()`, which figures out if a variable exists in a given environment, uses a complex default to determine which environment to look in if not specifically provided: `envir = (if (missing(frame)) as.environment(where) else sys.frame(frame))` (NB: `?exists` cheats and hides the long default in the documentation.)
 
--   `reshape()` has the longest default argument in the base and stats packages.
-    The `split` argument is one of two possible lists depending on the value of the `sep` argument:
+-   `reshape()` has a very long default argument: the `split` argument is one of two possible lists depending on the value of the `sep` argument:
 
     ```{r}
     #| eval = FALSE
-    reshape(
-      split = if (sep == "") {
-        list(regexp = "[A-Za-z][0-9]", include = TRUE)
-      } else {
-        list(regexp = sep, include = FALSE, fixed = TRUE)
-      })
-    )
+    reshape <- function(
+        ...,
+        split = if (sep == "") {
+          list(regexp = "[A-Za-z][0-9]", include = TRUE)
+        } else {
+          list(regexp = sep, include = FALSE, fixed = TRUE)
+        }
+    ) {}
     ```
 
 ## How do I use it?
