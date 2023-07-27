@@ -9,21 +9,15 @@ source("common.R")
 <!-- 
 https://github.com/wch/r-source/blob/trunk/src/main/grep.c#L891-L1151 -->
 ```
-`grepl()`, has three arguments that take either `FALSE` or `TRUE`: `ignore.case`, `perl`, `fixed`, which might suggest that there are 2 \^ 3 = 16 possible invocations.
+## Pattern engines
+
+`grepl()`, has three arguments that take either `FALSE` or `TRUE`: `ignore.case`, `perl`, `fixed`, which might suggest that there are 2 \^ 8 = 16 possible options.
 However, a number of combinations are not allowed:
 
 ```{r}
 x <- grepl("a", letters, fixed = TRUE, ignore.case = TRUE)
 x <- grepl("a", letters, fixed = TRUE, perl = TRUE)
 ```
-
-Part of this problem could be resolved by making it more clear that this function provides three engines for matching text:
-
--   POSIX 1003.2 extended regular expressions (the default),
--   Perl-style regular expressions (`perl = TRUE`)
--   Fixed matching (`fixed = TRUE`).
-
-One way to make this more clear would be to use @sec-enumerate-options and create a new argument called something like `engine = c("POSIX", "perl", "fixed")`.
 
 The other problem is that `ignore.case` only works with two of the three engines: POSIX and perl.
 This is hard to remedy without creating a completely new matching engine for fixed case, which is particularly hard because different languages have different rules for case.

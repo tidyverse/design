@@ -29,14 +29,11 @@ book:
     - part: Scannable definitions
       chapters:
       - important-args-first.qmd
+      - required-no-defaults.qmd
       - inputs-explicit.qmd
       - dots-after-required.qmd
-      - required-no-defaults.qmd
-      - arguments-independent.qmd
-      - enumerate-options.qmd
       - defaults-short-and-sweet.qmd
-      - cs-setNames.qmd
-      - cs-stringr.qmd
+      - enumerate-options.qmd
     
     - part: Function arguments
       chapters: 
@@ -49,8 +46,11 @@ book:
       - dots-prefix.qmd
       - dots-inspect.qmd
       - cs-mapply-pmap.qmd
+      - arguments-independent.qmd
       - mutually-exclusive-arguments.qmd
       - compound-arguments.qmd
+      - cs-setNames.qmd
+      - cs-stringr.qmd
     
     - part: Outputs
       chapters: 
