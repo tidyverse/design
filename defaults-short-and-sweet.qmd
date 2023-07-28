@@ -125,7 +125,7 @@ str(rlang::zap())
 
 Take `purrr::reduce()`: it has an optional details argument called `init`.
 When supplied, it serves as the initial value for the computation.
-But any value (including `NULL`) can a valid value.
+But any value (including `NULL`) can be a valid value.
 And using a sentinel value for this one case seemed like overkill.
 
 ## How do I remediate existing problems?
