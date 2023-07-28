@@ -16,3 +16,4 @@ Think tidy in the sense of tidy data (broadly useful regardless of what tool you
 
 This book will be under heavy development for quite some time; currently we are loosely aiming for completion in 2025.
 You'll find many chapters contain disjointed text that mostly serve as placeholders for the authors, and I do not recommend attempting to systematically read the book at this time.
+If you'd like to follow along with my journey writing this book, and learn which chapters are ready to read, please sign up for my [tid design substack mailing list](http://tidydesign.substack.com/).
