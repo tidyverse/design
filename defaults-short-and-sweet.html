@@ -100,7 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./important-args-first.html">Scannable definitions</a></li><li class="breadcrumb-item"><a href="./defaults-short-and-sweet.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Keep defaults short and sweet</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./inputs-explicit.html">Scannable definitions</a></li><li class="breadcrumb-item"><a href="./defaults-short-and-sweet.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Keep defaults short and sweet</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -181,20 +181,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./inputs-explicit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Make inputs explicit</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./important-args-first.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./required-no-defaults.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Required args shouldn’t have defaults</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./inputs-explicit.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Make inputs explicit</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Required args shouldn’t have defaults</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -490,7 +490,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="header-section-number">9.3</span> How do I use it?</h2>
 <p>There are three approaches:</p>
 <ul>
-<li><p>Set the default value to <code>NULL</code> and calculate the default only when the argument is <code>NULL</code>. Providing a default of <code>NULL</code> signals that the argument is optional (<a href="required-no-defaults.html"><span>Chapter&nbsp;6</span></a>) but that the default requires some calculation.</p></li>
+<li><p>Set the default value to <code>NULL</code> and calculate the default only when the argument is <code>NULL</code>. Providing a default of <code>NULL</code> signals that the argument is optional (<a href="required-no-defaults.html"><span>Chapter&nbsp;7</span></a>) but that the default requires some calculation.</p></li>
 <li><p>If the calculation is complex, and the user might find it useful in other scenarios, compute it with an exported function that documents exactly what happens.</p></li>
 <li><p>If <code>NULL</code> is meaningful, so you can’t use the first approach, use a “sentinel” object instead.</p></li>
 </ul>

@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.433">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Hadley Wickham">
-<title>Tidy design principles - 5&nbsp; Put the most important arguments first</title>
+<title>Tidy design principles - 6&nbsp; Put the most important arguments first</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -28,7 +28,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./required-no-defaults.html" rel="next">
-<link href="./function-names.html" rel="prev">
+<link href="./inputs-explicit.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -66,7 +66,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./important-args-first.html">Scannable definitions</a></li><li class="breadcrumb-item"><a href="./important-args-first.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./inputs-explicit.html">Scannable definitions</a></li><li class="breadcrumb-item"><a href="./important-args-first.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -147,20 +147,20 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./inputs-explicit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Make inputs explicit</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./important-args-first.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./required-no-defaults.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Required args shouldn’t have defaults</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./inputs-explicit.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Make inputs explicit</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Required args shouldn’t have defaults</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -401,15 +401,15 @@ ul.task-list li input[type="checkbox"] {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#whats-the-pattern" id="toc-whats-the-pattern" class="nav-link active" data-scroll-target="#whats-the-pattern"><span class="header-section-number">5.1</span> What’s the pattern?</a></li>
-  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">5.2</span> What are some examples?</a></li>
-  <li><a href="#how-do-i-remediate-past-mistakes" id="toc-how-do-i-remediate-past-mistakes" class="nav-link" data-scroll-target="#how-do-i-remediate-past-mistakes"><span class="header-section-number">5.3</span> How do I remediate past mistakes?</a></li>
-  <li><a href="#see-also" id="toc-see-also" class="nav-link" data-scroll-target="#see-also"><span class="header-section-number">5.4</span> See also</a></li>
+<li><a href="#whats-the-pattern" id="toc-whats-the-pattern" class="nav-link active" data-scroll-target="#whats-the-pattern"><span class="header-section-number">6.1</span> What’s the pattern?</a></li>
+  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">6.2</span> What are some examples?</a></li>
+  <li><a href="#how-do-i-remediate-past-mistakes" id="toc-how-do-i-remediate-past-mistakes" class="nav-link" data-scroll-target="#how-do-i-remediate-past-mistakes"><span class="header-section-number">6.3</span> How do I remediate past mistakes?</a></li>
+  <li><a href="#see-also" id="toc-see-also" class="nav-link" data-scroll-target="#see-also"><span class="header-section-number">6.4</span> See also</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/important-args-first.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-important-args-first" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></h1>
+<h1 class="title"><span id="sec-important-args-first" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></h1>
 </div>
 
 
@@ -422,8 +422,8 @@ ul.task-list li input[type="checkbox"] {
   </div>
   
 
-</header><section id="whats-the-pattern" class="level2" data-number="5.1"><h2 data-number="5.1" class="anchored" data-anchor-id="whats-the-pattern">
-<span class="header-section-number">5.1</span> What’s the pattern?</h2>
+</header><section id="whats-the-pattern" class="level2" data-number="6.1"><h2 data-number="6.1" class="anchored" data-anchor-id="whats-the-pattern">
+<span class="header-section-number">6.1</span> What’s the pattern?</h2>
 <p>In a function call, the most important arguments should come first. As a general rule, the most important arguments will be the ones that are used most often, but that’s often hard to tell until your function has existed in the wild for a while. Fortunately, there are a few rules of thumb that can help:</p>
 <ul>
 <li>If the output is a transformation of an input (e.g.&nbsp;<code><a href="https://rdrr.io/r/base/Log.html">log()</a></code>, <code><a href="https://stringr.tidyverse.org/reference/str_replace.html">stringr::str_replace()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">dplyr::left_join()</a></code>) then that argument the most important.</li>
@@ -431,8 +431,8 @@ ul.task-list li input[type="checkbox"] {
 <li>Optional arguments (i.e.&nbsp;arguments with a default) are the least important, and should come last.</li>
 </ul>
 <p>This convention makes it easy to understand the structure of a function at a glance: the more important an argument is, the earlier you’ll see it. When the output is very strongly tied to an input, putting that argument first also ensures that your function works well with the pipe, leading to code that focuses on the transformations rather than the object being transformed.</p>
-</section><section id="what-are-some-examples" class="level2" data-number="5.2"><h2 data-number="5.2" class="anchored" data-anchor-id="what-are-some-examples">
-<span class="header-section-number">5.2</span> What are some examples?</h2>
+</section><section id="what-are-some-examples" class="level2" data-number="6.2"><h2 data-number="6.2" class="anchored" data-anchor-id="what-are-some-examples">
+<span class="header-section-number">6.2</span> What are some examples?</h2>
 <p>The vast majority of functions get this right, so we’ll pick on a few examples which I think get it wrong:</p>
 <ul>
 <li><p>I think the arguments to base R string functions (<code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code>, <code><a href="https://rdrr.io/r/base/grep.html">gsub()</a></code>, etc) are in the wrong order because they consistently make the regular expression (<code>pattern</code>) the first argument, rather than the character vector being manipulated (<code>x)</code>.</p></li>
@@ -442,11 +442,11 @@ ul.task-list li input[type="checkbox"] {
 <p>On the other hand, the layer functions, like <code>geom_point()</code>, flip the order of these arguments because in an individual layer you’re more likely to specify <code>mapping</code> than <code>data</code>, and in many cases if you do specify <code>data</code> you’ll want <code>mapping</code> as well. This makes these the argument order inconsistent with <code>ggplot()</code>, but overall supports the most common use cases.</p>
 </li>
 <li><p>ggplot2 functions work by creating an object that is then added on to a plot, so the plot, which is really the most important argument, is not obvious at all. ggplot2 works this way in part because it was written before the pipe was discovered, and the best way I came up to define plots from left to right was to rely on <code>+</code> (so-called operator overloading). As an interesting historical fact, ggplot (the precursor to ggplot2) actually works great with the pipe, and a couple of years ago I bought it back to life as <a href="https://github.com/hadley/ggplot1">ggplot1</a>.</p></li>
-</ul></section><section id="how-do-i-remediate-past-mistakes" class="level2" data-number="5.3"><h2 data-number="5.3" class="anchored" data-anchor-id="how-do-i-remediate-past-mistakes">
-<span class="header-section-number">5.3</span> How do I remediate past mistakes?</h2>
+</ul></section><section id="how-do-i-remediate-past-mistakes" class="level2" data-number="6.3"><h2 data-number="6.3" class="anchored" data-anchor-id="how-do-i-remediate-past-mistakes">
+<span class="header-section-number">6.3</span> How do I remediate past mistakes?</h2>
 <p>Generally, it is not possible to change the order of the first few arguments because it will break existing code (since these are the arguments that are mostly likely to be used unnamed). This means that the only real solution is to dperecate the entire function and replace it with a new one. Because this is invasive to the user, it’s best to do sparingly: if the mistake is minor, you’re better off waiting until you’ve collected other problems before fixing it. For example, take <code><a href="https://tidyr.tidyverse.org/reference/gather.html">tidyr::gather()</a></code>. It has a number of problems with its design, including the argument order, that makes it harder to use. Because it wasn’t possible to easily fix this mistake, we accumulated other <code>gather()</code> problems for several years before fixing them all at once in <code>pivot_longer()</code>.</p>
-</section><section id="see-also" class="level2" data-number="5.4"><h2 data-number="5.4" class="anchored" data-anchor-id="see-also">
-<span class="header-section-number">5.4</span> See also</h2>
+</section><section id="see-also" class="level2" data-number="6.4"><h2 data-number="6.4" class="anchored" data-anchor-id="see-also">
+<span class="header-section-number">6.4</span> See also</h2>
 <ul>
 <li>
 <a href="dots-after-required.html"><span>Chapter&nbsp;8</span></a>: If the function uses <code>…</code>, it should come in between the required and optional arguments.</li>
@@ -686,13 +686,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./function-names.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Function names</span></span>
+      <a href="./inputs-explicit.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Make inputs explicit</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./required-no-defaults.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Required args shouldn’t have defaults</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Required args shouldn’t have defaults</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

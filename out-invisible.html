@@ -181,20 +181,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./inputs-explicit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Make inputs explicit</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./important-args-first.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./required-no-defaults.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Required args shouldn’t have defaults</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./inputs-explicit.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Make inputs explicit</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Required args shouldn’t have defaults</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -513,20 +513,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="fu"><a href="https://fs.r-lib.org/reference/path.html">path</a></span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://fs.r-lib.org/reference/create.html">file_create</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">paths</span></span>
-<span><span class="co">#&gt; /tmp/Rtmpp1l5xM/file1cbf7d24aedf/a /tmp/Rtmpp1l5xM/file1cbf7d24aedf/b </span></span>
-<span><span class="co">#&gt; /tmp/Rtmpp1l5xM/file1cbf7d24aedf/c /tmp/Rtmpp1l5xM/file1cbf7d24aedf/d </span></span>
-<span><span class="co">#&gt; /tmp/Rtmpp1l5xM/file1cbf7d24aedf/e</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; /tmp/RtmpRG3LkL/file1c204eb25b46/a /tmp/RtmpRG3LkL/file1c204eb25b46/b </span></span>
+<span><span class="co">#&gt; /tmp/RtmpRG3LkL/file1c204eb25b46/c /tmp/RtmpRG3LkL/file1c204eb25b46/d </span></span>
+<span><span class="co">#&gt; /tmp/RtmpRG3LkL/file1c204eb25b46/e</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Functions that modify some global state, like <code><a href="https://rdrr.io/r/base/options.html">options()</a></code> or <code><a href="https://rdrr.io/r/graphics/par.html">par()</a></code>, should return the <em>previous</em> value of the variables. This, in combination with <a href="compound-arguments.html"><span>Chapter&nbsp;22</span></a>, makes it possible to easily reset the effect of the change:</p>
 <div class="cell">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">old</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="va">x</span></span>
-<span><span class="co">#&gt; [1] 0.861</span></span>
+<span><span class="co">#&gt; [1] 0.589</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span><span class="va">old</span><span class="op">)</span></span>
 <span><span class="va">x</span></span>
-<span><span class="co">#&gt; [1] 0.8605533</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; [1] 0.5886905</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 

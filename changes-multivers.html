@@ -181,20 +181,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./inputs-explicit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Make inputs explicit</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./important-args-first.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./required-no-defaults.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Required args shouldn’t have defaults</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./inputs-explicit.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Make inputs explicit</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Required args shouldn’t have defaults</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -542,9 +542,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; # A tibble: 3 × 5</span></span>
 <span><span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc</span></span>
 <span><span class="co">#&gt;   &lt;bch:expr&gt; &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;</span></span>
-<span><span class="co">#&gt; 1 version     373.5µs  387.5µs     2540.    4.01KB</span></span>
-<span><span class="co">#&gt; 2 exists        3.3µs    3.6µs   254271.    3.29MB</span></span>
-<span><span class="co">#&gt; 3 formals       1.4µs    1.6µs   521267.        0B</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; 1 version     376.3µs  387.4µs     2541.    4.01KB</span></span>
+<span><span class="co">#&gt; 2 exists        3.2µs    3.6µs   255353.    3.29MB</span></span>
+<span><span class="co">#&gt; 3 formals       1.4µs    1.6µs   512304.        0B</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>If you do need to use <code><a href="https://rdrr.io/r/utils/packageDescription.html">packageVersion()</a></code> inside a performance sensitive function, I recommend caching the result in <code>.onLoad()</code> (which, by convention, lives in <code>zzz.R</code>). There a few ways to do this; but the following block shows one approach that matches the function interface I used above:</p>
 <div class="cell">

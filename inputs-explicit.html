@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.433">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Hadley Wickham">
-<title>Tidy design principles - 7&nbsp; Make inputs explicit</title>
+<title>Tidy design principles - 5&nbsp; Make inputs explicit</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -61,8 +61,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./dots-after-required.html" rel="next">
-<link href="./required-no-defaults.html" rel="prev">
+<link href="./important-args-first.html" rel="next">
+<link href="./function-names.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -100,7 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./important-args-first.html">Scannable definitions</a></li><li class="breadcrumb-item"><a href="./inputs-explicit.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Make inputs explicit</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./inputs-explicit.html">Scannable definitions</a></li><li class="breadcrumb-item"><a href="./inputs-explicit.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Make inputs explicit</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -181,20 +181,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./inputs-explicit.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Make inputs explicit</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./important-args-first.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./required-no-defaults.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Required args shouldn’t have defaults</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./inputs-explicit.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Make inputs explicit</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Required args shouldn’t have defaults</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -435,21 +435,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#whats-the-problem" id="toc-whats-the-problem" class="nav-link active" data-scroll-target="#whats-the-problem"><span class="header-section-number">7.1</span> What’s the problem?</a></li>
-  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">7.2</span> What are some examples?</a></li>
+<li><a href="#whats-the-problem" id="toc-whats-the-problem" class="nav-link active" data-scroll-target="#whats-the-problem"><span class="header-section-number">5.1</span> What’s the problem?</a></li>
+  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">5.2</span> What are some examples?</a></li>
   <li>
-<a href="#how-can-i-remediate-the-problem" id="toc-how-can-i-remediate-the-problem" class="nav-link" data-scroll-target="#how-can-i-remediate-the-problem"><span class="header-section-number">7.3</span> How can I remediate the problem?</a>
+<a href="#how-can-i-remediate-the-problem" id="toc-how-can-i-remediate-the-problem" class="nav-link" data-scroll-target="#how-can-i-remediate-the-problem"><span class="header-section-number">5.3</span> How can I remediate the problem?</a>
   <ul class="collapse">
-<li><a href="#make-an-option-explicit" id="toc-make-an-option-explicit" class="nav-link" data-scroll-target="#make-an-option-explicit"><span class="header-section-number">7.3.1</span> Make an option explicit</a></li>
-  <li><a href="#temporarily-adjust-global-state" id="toc-temporarily-adjust-global-state" class="nav-link" data-scroll-target="#temporarily-adjust-global-state"><span class="header-section-number">7.3.2</span> Temporarily adjust global state</a></li>
+<li><a href="#make-an-option-explicit" id="toc-make-an-option-explicit" class="nav-link" data-scroll-target="#make-an-option-explicit"><span class="header-section-number">5.3.1</span> Make an option explicit</a></li>
+  <li><a href="#temporarily-adjust-global-state" id="toc-temporarily-adjust-global-state" class="nav-link" data-scroll-target="#temporarily-adjust-global-state"><span class="header-section-number">5.3.2</span> Temporarily adjust global state</a></li>
   </ul>
 </li>
-  <li><a href="#see-also" id="toc-see-also" class="nav-link" data-scroll-target="#see-also"><span class="header-section-number">7.4</span> See also</a></li>
+  <li><a href="#see-also" id="toc-see-also" class="nav-link" data-scroll-target="#see-also"><span class="header-section-number">5.4</span> See also</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/inputs-explicit.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-inputs-explicit" class="quarto-section-identifier"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Make inputs explicit</span></span></h1>
+<h1 class="title"><span id="sec-inputs-explicit" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Make inputs explicit</span></span></h1>
 </div>
 
 
@@ -462,12 +462,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header><section id="whats-the-problem" class="level2" data-number="7.1"><h2 data-number="7.1" class="anchored" data-anchor-id="whats-the-problem">
-<span class="header-section-number">7.1</span> What’s the problem?</h2>
+</header><section id="whats-the-problem" class="level2" data-number="5.1"><h2 data-number="5.1" class="anchored" data-anchor-id="whats-the-problem">
+<span class="header-section-number">5.1</span> What’s the problem?</h2>
 <p>A function is easier to understand if its output depends only on its inputs (i.e.&nbsp;its arguments). If a function returns different results with the same inputs, then some inputs must be implicit, typically because the function relies on an option or some locale setting. Implicit inputs are not always bad, as some functions like <code><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time()</a></code>, <code><a href="https://rdrr.io/r/utils/read.table.html">read.csv()</a></code>, and the random number generators, fundamentally depend on them. But they should be used as sparingly as possible, and never when not related to the core purpose of the function.</p>
 <p>Explicit arguments make code easier to understand because you can see what will affect the outputs just by reading the code; you don’t need to run it. Implicit arguments can lead to code that returns different results on different computers, and the differences are usually hard to track down.</p>
-</section><section id="what-are-some-examples" class="level2" data-number="7.2"><h2 data-number="7.2" class="anchored" data-anchor-id="what-are-some-examples">
-<span class="header-section-number">7.2</span> What are some examples?</h2>
+</section><section id="what-are-some-examples" class="level2" data-number="5.2"><h2 data-number="5.2" class="anchored" data-anchor-id="what-are-some-examples">
+<span class="header-section-number">5.2</span> What are some examples?</h2>
 <p>One common source of hidden arguments is the use of global options:</p>
 <ul>
 <li><p>Historically, the worst offender was the <code>stringsAsFactors</code> option which changed how a number of functions<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> treated character vectors. This option was part of a multi-year procedure to move R away toward character vectors and away from vectors. You can learn more in <a href="https://simplystatistics.org/posts/2015-07-24-stringsasfactors-an-unauthorized-biography/"><em>stringsAsFactors: An unauthorized biography</em></a> by Roger Peng and <a href="http://notstatschat.tumblr.com/post/124987394001/stringsasfactors-sigh"><em>stringsAsFactors = &lt;sigh&gt;</em></a> by Thomas Lumley.</p></li>
@@ -485,11 +485,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
 <li><p><code><a href="https://rdrr.io/r/base/chartr.html">toupper()</a></code> and <code><a href="https://rdrr.io/r/base/chartr.html">tolower()</a></code> depend on the current locale. It is fairly uncommon for this to cause problems because most languages either use their own character set, or use the same rules for capitalisation as English. However, this behaviour did cause a bug in ggplot2 because internally it takes <code>geom = "identity"</code> and turns it into <code>GeomIdentity</code> to find the object that actually does computation. In Turkish, however, the upper case version of i is İ, and <code>Geomİdentity</code> does not exist. This meant that for some time ggplot2 did not work on Turkish computers.</p></li>
 <li><p><code><a href="https://rdrr.io/r/base/sort.html">sort()</a></code> and <code><a href="https://rdrr.io/r/base/order.html">order()</a></code> rely on the lexicographic order (i.e.&nbsp;how different alphabets sort their letters) defined by the current locale. <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> automatically converts character vectors to factors with <code><a href="https://rdrr.io/r/base/factor.html">factor()</a></code>, which uses <code><a href="https://rdrr.io/r/base/order.html">order()</a></code>, which means that it’s possible for the coefficients to vary<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> if your code is run in a different country!</p></li>
-</ul></section><section id="how-can-i-remediate-the-problem" class="level2" data-number="7.3"><h2 data-number="7.3" class="anchored" data-anchor-id="how-can-i-remediate-the-problem">
-<span class="header-section-number">7.3</span> How can I remediate the problem?</h2>
+</ul></section><section id="how-can-i-remediate-the-problem" class="level2" data-number="5.3"><h2 data-number="5.3" class="anchored" data-anchor-id="how-can-i-remediate-the-problem">
+<span class="header-section-number">5.3</span> How can I remediate the problem?</h2>
 <p>At some level, implicit inputs are easy to avoid when creating new functions: just don’t use the locale or global options! But it’s easy for such problems to creep in indirectly, when you call a function not knowing that it has hidden inputs. The best way to prevent that is to consult the list of common offenders provided above.</p>
-<section id="make-an-option-explicit" class="level3" data-number="7.3.1"><h3 data-number="7.3.1" class="anchored" data-anchor-id="make-an-option-explicit">
-<span class="header-section-number">7.3.1</span> Make an option explicit</h3>
+<section id="make-an-option-explicit" class="level3" data-number="5.3.1"><h3 data-number="5.3.1" class="anchored" data-anchor-id="make-an-option-explicit">
+<span class="header-section-number">5.3.1</span> Make an option explicit</h3>
 <p>If you want depend on an option or locale, make sure it’s an explicit argument. Such arguments generally should not affect computation (<a href="def-user.html"><span>Chapter&nbsp;14</span></a>), just side-effects like printed output or status messages. If they do affect results, follow <a href="def-inform.html"><span>Chapter&nbsp;13</span></a> to make sure the user knows what’s happening. For example, lets take <code><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct()</a></code> which basically looks something like this:</p>
 <div class="cell">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">as.POSIXct</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">tz</span> <span class="op">=</span> <span class="st">""</span><span class="op">)</span> <span class="op">{</span></span>
@@ -523,11 +523,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="st">"2020-01-01 09:00"</span>, tz <span class="op">=</span> <span class="st">"America/Chicago"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "2020-01-01 09:00:00 CST"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section><section id="temporarily-adjust-global-state" class="level3" data-number="7.3.2"><h3 data-number="7.3.2" class="anchored" data-anchor-id="temporarily-adjust-global-state">
-<span class="header-section-number">7.3.2</span> Temporarily adjust global state</h3>
+</section><section id="temporarily-adjust-global-state" class="level3" data-number="5.3.2"><h3 data-number="5.3.2" class="anchored" data-anchor-id="temporarily-adjust-global-state">
+<span class="header-section-number">5.3.2</span> Temporarily adjust global state</h3>
 <p>If you’re calling a function with implicit arguments and those implicit arguments are causing problems with your code, you can always work around them by temporarily changing the global state which it uses. The easiest way to do so is to use the <a href="https://withr.r-lib.org">withr</a> package, which provides a variety of tools to change temporarily change global state.</p>
-</section></section><section id="see-also" class="level2" data-number="7.4"><h2 data-number="7.4" class="anchored" data-anchor-id="see-also">
-<span class="header-section-number">7.4</span> See also</h2>
+</section></section><section id="see-also" class="level2" data-number="5.4"><h2 data-number="5.4" class="anchored" data-anchor-id="see-also">
+<span class="header-section-number">5.4</span> See also</h2>
 <ul>
 <li>
 <a href="def-user.html"><span>Chapter&nbsp;14</span></a> and <a href="def-inform.html"><span>Chapter&nbsp;13</span></a>: how to make an option as explicit as possible.</li>
@@ -773,13 +773,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./required-no-defaults.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Required args shouldn’t have defaults</span></span>
+      <a href="./function-names.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Function names</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./dots-after-required.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Put <code>…</code> after required arguments</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./important-args-first.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

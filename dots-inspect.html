@@ -181,20 +181,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./inputs-explicit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Make inputs explicit</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./important-args-first.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./required-no-defaults.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Required args shouldn’t have defaults</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./inputs-explicit.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Make inputs explicit</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Required args shouldn’t have defaults</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -528,7 +528,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; [1] "x1"   "x2"   "x100"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This is wrapper is useful because it decouples <code>str_sort()</code> from the <code>stri_opts_collator()</code> meaning that if <code>stri_opts_collator()</code> gains new arguments users of <code>str_sort()</code> can take advantage of them immediately. But most of the arguments in <code>stri_opts_collator()</code> are sufficiently arcane that they don’t need to be exposed directly in stringr, which is designed to minimise the cognitive load of the user, by hiding some of the full complexity of string handling.</p>
-<p>(The importance of the <code>locale</code> argument comes up in “hidden inputs”, <a href="inputs-explicit.html"><span>Chapter&nbsp;7</span></a>.)</p>
+<p>(The importance of the <code>locale</code> argument comes up in “hidden inputs”, <a href="inputs-explicit.html"><span>Chapter&nbsp;5</span></a>.)</p>
 <p>However, <code>stri_opts_collator()</code> deliberately ignores any arguments in <code>...</code>. This means that misspellings are silently ignored:</p>
 <div class="cell">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">str_sort</span><span class="op">(</span><span class="va">x</span>, numric <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
