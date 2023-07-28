@@ -8,5 +8,5 @@ _bookdown_files
 /.quarto/
 site_libs
 /*_cache
-/*_files
+*_files
 *.html

@@ -28,9 +28,9 @@ book:
         
     - part: Scannable definitions
       chapters:
+      - inputs-explicit.qmd
       - important-args-first.qmd
       - required-no-defaults.qmd
-      - inputs-explicit.qmd
       - dots-after-required.qmd
       - defaults-short-and-sweet.qmd
       - enumerate-options.qmd

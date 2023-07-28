@@ -1,0 +1,62 @@
+The goal of this newsletter is to get feedback as I work on a new book called "Tidy design principles".
+But what's the point of that book?
+R has a very rich literature on statistics and data science, there are relatively few books that focus on programming.
+I've written a couple ([Advanced R](https://adv-r.hadley.nz/) and [R Packages](https://r-pkgs.org/)) but neither really talks about how to write good code R code (or even discusses what good code means).
+
+That's what I want to focus on in "[Tidy design principles](https://design.tidyverse.org/)": how do you write high-quality R code that's easy to understand, unlikely to fail in unexpected ways, and flexible enough to grow with your needs.
+This book will be organised around the idea of "design patterns".
+This was an idea that I encountered early in my programming journey and I found it very impactful.
+
+The idea of a design pattern is to come up with a catchy name that maps a common programming challenge to an effective solution.
+The catchy name is important because it serves as a handle for your memory and a convenient shorthand when discussing code with others.
+I first heard about design patterns when I was a CS undergrad learning Java (a much less flexible language than R) and I read the popular read [Design Patterns: Elements of Reusable Object-Oriented Software](https://en.wikipedia.org/wiki/Design_Patterns) book.
+
+I later learned that the idea of design patterns originated not from computer science, but from architecture, particularly [A Pattern Language: Towns, Buildings, Construction](https://en.wikipedia.org/wiki/A_Pattern_Language) by Christopher Alexander.
+This book resonated with me even more strongly than the CS patterns, and if you have any interest in architecture, I highly recommend reading it.
+I particularly liked that the patterns spanned many levels of detail, all the way from organising entire communities to how you might select chairs for a single room.
+
+That's the spirit in which I write "Tidy design principles".
+I want to name common problem solving patterns in R, and write them up so that others can easily use them.
+That means that this book will have rather a different structure to my previous books.
+It will have a large number of relatively short chapters, each of which describes a pattern: what it is, why it's important, where you can see it in the wild, and how you can apply it to your code.
+You might skim the whole book once, but you'll generally use it by referring to the patterns that apply specifically to your current problem.
+
+I also want to include some bigger principles that help you weigh conflicting patterns as well as case studies that illuminate some of our thinking when we've designed various parts of tidyverse (particularly parts that we now regret).
+
+------------------------------------------------------------------------
+
+This week I've identified one bigger principle: the definition of a function should be scannable, giving you useful information at a glance.
+This principle is important because you see the function definition in lots of places, like in autocomplete and at the top of the documentation.
+It's super useful if that glance can give you useful insight into the function.
+
+So far, I've gathered six patterns related to this principle:
+
+-   You should be able to tell what affects the output of the function because [all inputs are explicit arguments](https://design.tidyverse.org/inputs-explicit.html).
+
+-   You know which arguments are most important because [they come first](https://design.tidyverse.org/important-args-first.html).
+
+-   You can tell if an argument is required or optional based on the [the presence or absence of a default](https://design.tidyverse.org/required-no-defaults.html) and whether it [comes before or after ](https://design.tidyverse.org/dots-after-required.html)`…`.
+
+-   You can easily figure out the defaults because [they are short and sweet](https://design.tidyverse.org/defaults-short-and-sweet.html).
+
+-   And if an argument has a small set of valid inputs, they are [explicitly enumerated in the default](https://design.tidyverse.org/enumerate-options.html).
+
+What do you think of this principle and the various patterns that make it up?
+Does it resonate with you?
+Do you think I've missed something important?
+
+One other pattern I've been noodling on is the idea that one argument shouldn't affect the meaning of another argument.
+This seems like an important principle, but so far I've only been able to come up with one example: `library()`, where the `character.only` argument affects the meaning of the `package` argument:
+
+```         
+ggplot2 <- "dplyr"
+
+# Loads ggplot2
+library(ggplot2)
+
+# Loads dplyr
+library(ggplot2, character.only = TRUE)
+```
+
+Given that I only have one example, it doesn't seem worthwhile to write it up as a pattern, but maybe you've encountered other examples of this problem.
+If so, please let me know in the comments!
