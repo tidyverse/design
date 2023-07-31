@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.433">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Hadley Wickham">
-<title>Tidy design principles - 30&nbsp; Side-effect soup</title>
+<title>Tidy design principles - 32&nbsp; Side-effect soup</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -100,7 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./side-effects.html">Side effects</a></li><li class="breadcrumb-item"><a href="./side-effects.html"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Side-effect soup</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./side-effects.html">Side effects</a></li><li class="breadcrumb-item"><a href="./side-effects.html"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Side-effect soup</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -215,6 +215,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Enumerate possible options</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./argument-clutter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Avoid argument clutter with an options object</span></span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -229,85 +235,61 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-rep.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./def-magical.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Avoid magical defaults</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Avoid magical defaults</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./def-inform.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Explain important defaults</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Explain important defaults</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./def-user.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">User settable defaults</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">User settable defaults</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-rgb.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/grDevices/rgb.html">rgb()</a></code>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/grDevices/rgb.html">rgb()</a></code>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dots-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Making data with …</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Making data with …</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dots-prefix.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Dot prefix</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Dot prefix</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dots-inspect.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Inspect the dots</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Inspect the dots</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-mapply-pmap.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/mapply.html">mapply()</a></code> vs <code>pmap()</code>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./arguments-independent.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Keep arguments independent</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./mutually-exclusive-arguments.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Mutually exclusive arguments</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./compound-arguments.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Compound arguments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/mapply.html">mapply()</a></code> vs <code>pmap()</code>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-setNames.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/stats/setNames.html">setNames()</a></code>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./cs-stringr.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Case study: stringr</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/stats/setNames.html">setNames()</a></code>
   </div>
 </li>
       </ul>
@@ -315,7 +297,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
- <span class="menu-text">Outputs</span></a>
+ <span class="menu-text">Independent arguments</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -323,26 +305,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./out-multi.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Returning multiple values</span></span></a>
+  <a href="./independent-usage.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Argument usage should be independent</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./out-type-stability.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Type-stability</span></span></a>
+  <a href="./independent-meaning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Argument meaning should be independent</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./out-vectorisation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Vectorisation</span></span></a>
+  <a href="./mutually-exclusive-arguments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Mutually exclusive arguments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./out-invisible.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Side-effect functions should return invisibly</span></span></a>
+  <a href="./compound-arguments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Compound arguments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cs-stringr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Case study: stringr</span></span></a>
   </div>
 </li>
       </ul>
@@ -350,7 +338,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
- <span class="menu-text">Evolution</span></a>
+ <span class="menu-text">Outputs</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -358,8 +346,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./changes-multivers.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Work with multiple dependency versions</span></span></a>
+  <a href="./out-multi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Returning multiple values</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./out-type-stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Type-stability</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./out-vectorisation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Vectorisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./out-invisible.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Side-effect functions should return invisibly</span></span></a>
   </div>
 </li>
       </ul>
@@ -367,7 +373,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
- <span class="menu-text">Side effects</span></a>
+ <span class="menu-text">Evolution</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -375,14 +381,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./side-effects.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Side-effect soup</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./spooky-action.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Spooky action</span></span></a>
+  <a href="./changes-multivers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Work with multiple dependency versions</span></span></a>
   </div>
 </li>
       </ul>
@@ -390,7 +390,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
- <span class="menu-text">Errors</span></a>
+ <span class="menu-text">Side effects</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -398,14 +398,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./err-call.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Error call</span></span></a>
+  <a href="./side-effects.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Side-effect soup</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./err-constructor.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Error constructors</span></span></a>
+  <a href="./spooky-action.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Spooky action</span></span></a>
   </div>
 </li>
       </ul>
@@ -413,12 +413,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
- <span class="menu-text">Appendices</span></a>
+ <span class="menu-text">Errors</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./err-call.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Error call</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./err-constructor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Error constructors</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./glossary.html" class="sidebar-item-text sidebar-link">
@@ -436,31 +459,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
 <li>
-<a href="#what-is-a-side-effect" id="toc-what-is-a-side-effect" class="nav-link active" data-scroll-target="#what-is-a-side-effect"><span class="header-section-number">30.1</span> What is a side-effect?</a>
+<a href="#what-is-a-side-effect" id="toc-what-is-a-side-effect" class="nav-link active" data-scroll-target="#what-is-a-side-effect"><span class="header-section-number">32.1</span> What is a side-effect?</a>
   <ul class="collapse">
-<li><a href="#user-feedback" id="toc-user-feedback" class="nav-link" data-scroll-target="#user-feedback"><span class="header-section-number">30.1.1</span> User feedback</a></li>
-  <li><a href="#global-state" id="toc-global-state" class="nav-link" data-scroll-target="#global-state"><span class="header-section-number">30.1.2</span> Global state</a></li>
+<li><a href="#user-feedback" id="toc-user-feedback" class="nav-link" data-scroll-target="#user-feedback"><span class="header-section-number">32.1.1</span> User feedback</a></li>
+  <li><a href="#global-state" id="toc-global-state" class="nav-link" data-scroll-target="#global-state"><span class="header-section-number">32.1.2</span> Global state</a></li>
   </ul>
 </li>
-  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">30.2</span> What are some examples?</a></li>
-  <li><a href="#why-is-it-bad" id="toc-why-is-it-bad" class="nav-link" data-scroll-target="#why-is-it-bad"><span class="header-section-number">30.3</span> Why is it bad?</a></li>
+  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">32.2</span> What are some examples?</a></li>
+  <li><a href="#why-is-it-bad" id="toc-why-is-it-bad" class="nav-link" data-scroll-target="#why-is-it-bad"><span class="header-section-number">32.3</span> Why is it bad?</a></li>
   <li>
-<a href="#how-avoid-it" id="toc-how-avoid-it" class="nav-link" data-scroll-target="#how-avoid-it"><span class="header-section-number">30.4</span> How avoid it?</a>
+<a href="#how-avoid-it" id="toc-how-avoid-it" class="nav-link" data-scroll-target="#how-avoid-it"><span class="header-section-number">32.4</span> How avoid it?</a>
   <ul class="collapse">
-<li><a href="#localise-side-effects" id="toc-localise-side-effects" class="nav-link" data-scroll-target="#localise-side-effects"><span class="header-section-number">30.4.1</span> Localise side-effects</a></li>
-  <li><a href="#extract-side-effects" id="toc-extract-side-effects" class="nav-link" data-scroll-target="#extract-side-effects"><span class="header-section-number">30.4.2</span> Extract side-effects</a></li>
-  <li><a href="#make-side-effects-noisy" id="toc-make-side-effects-noisy" class="nav-link" data-scroll-target="#make-side-effects-noisy"><span class="header-section-number">30.4.3</span> Make side-effects noisy</a></li>
-  <li><a href="#provide-an-argument-to-suppress" id="toc-provide-an-argument-to-suppress" class="nav-link" data-scroll-target="#provide-an-argument-to-suppress"><span class="header-section-number">30.4.4</span> Provide an argument to suppress</a></li>
-  <li><a href="#use-the-print-method" id="toc-use-the-print-method" class="nav-link" data-scroll-target="#use-the-print-method"><span class="header-section-number">30.4.5</span> Use the <code>print()</code> method</a></li>
-  <li><a href="#make-easy-to-undo" id="toc-make-easy-to-undo" class="nav-link" data-scroll-target="#make-easy-to-undo"><span class="header-section-number">30.4.6</span> Make easy to undo</a></li>
+<li><a href="#localise-side-effects" id="toc-localise-side-effects" class="nav-link" data-scroll-target="#localise-side-effects"><span class="header-section-number">32.4.1</span> Localise side-effects</a></li>
+  <li><a href="#extract-side-effects" id="toc-extract-side-effects" class="nav-link" data-scroll-target="#extract-side-effects"><span class="header-section-number">32.4.2</span> Extract side-effects</a></li>
+  <li><a href="#make-side-effects-noisy" id="toc-make-side-effects-noisy" class="nav-link" data-scroll-target="#make-side-effects-noisy"><span class="header-section-number">32.4.3</span> Make side-effects noisy</a></li>
+  <li><a href="#provide-an-argument-to-suppress" id="toc-provide-an-argument-to-suppress" class="nav-link" data-scroll-target="#provide-an-argument-to-suppress"><span class="header-section-number">32.4.4</span> Provide an argument to suppress</a></li>
+  <li><a href="#use-the-print-method" id="toc-use-the-print-method" class="nav-link" data-scroll-target="#use-the-print-method"><span class="header-section-number">32.4.5</span> Use the <code>print()</code> method</a></li>
+  <li><a href="#make-easy-to-undo" id="toc-make-easy-to-undo" class="nav-link" data-scroll-target="#make-easy-to-undo"><span class="header-section-number">32.4.6</span> Make easy to undo</a></li>
   </ul>
 </li>
-  <li><a href="#package-considerations" id="toc-package-considerations" class="nav-link" data-scroll-target="#package-considerations"><span class="header-section-number">30.5</span> Package considerations</a></li>
+  <li><a href="#package-considerations" id="toc-package-considerations" class="nav-link" data-scroll-target="#package-considerations"><span class="header-section-number">32.5</span> Package considerations</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/side-effects.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-side-effect-soup" class="quarto-section-identifier"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Side-effect soup</span></span></h1>
+<h1 class="title"><span id="sec-side-effect-soup" class="quarto-section-identifier"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Side-effect soup</span></span></h1>
 </div>
 
 
@@ -474,21 +497,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 </header><p>Side-effect soup occurs when you mix side-effects and regular computation within the same function.</p>
-<section id="what-is-a-side-effect" class="level2" data-number="30.1"><h2 data-number="30.1" class="anchored" data-anchor-id="what-is-a-side-effect">
-<span class="header-section-number">30.1</span> What is a side-effect?</h2>
+<section id="what-is-a-side-effect" class="level2" data-number="32.1"><h2 data-number="32.1" class="anchored" data-anchor-id="what-is-a-side-effect">
+<span class="header-section-number">32.1</span> What is a side-effect?</h2>
 <p>There are two main types of side-effect:</p>
 <ul>
 <li>those that give feedback to the user.</li>
 <li>those that change some global state.</li>
 </ul>
-<section id="user-feedback" class="level3" data-number="30.1.1"><h3 data-number="30.1.1" class="anchored" data-anchor-id="user-feedback">
-<span class="header-section-number">30.1.1</span> User feedback</h3>
+<section id="user-feedback" class="level3" data-number="32.1.1"><h3 data-number="32.1.1" class="anchored" data-anchor-id="user-feedback">
+<span class="header-section-number">32.1.1</span> User feedback</h3>
 <ul>
 <li><p>Signalling a condition, with <code><a href="https://rdrr.io/r/base/message.html">message()</a></code>, <code><a href="https://rdrr.io/r/base/warning.html">warning()</a></code>, or <code><a href="https://rdrr.io/r/base/stop.html">stop()</a></code>.</p></li>
 <li><p>Printing to the console with <code><a href="https://rdrr.io/r/base/cat.html">cat()</a></code>.</p></li>
 <li><p>Drawing to the current graphics device with base graphics or grid.</p></li>
-</ul></section><section id="global-state" class="level3" data-number="30.1.2"><h3 data-number="30.1.2" class="anchored" data-anchor-id="global-state">
-<span class="header-section-number">30.1.2</span> Global state</h3>
+</ul></section><section id="global-state" class="level3" data-number="32.1.2"><h3 data-number="32.1.2" class="anchored" data-anchor-id="global-state">
+<span class="header-section-number">32.1.2</span> Global state</h3>
 <ul>
 <li><p>Creating (or modifying) an existing binding with <code>&lt;-</code>.</p></li>
 <li><p>Modifying the search path by attaching a package with <code><a href="https://rdrr.io/r/base/library.html">library()</a></code>.</p></li>
@@ -508,8 +531,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Changing the active graphics device with (e.g.) <code><a href="https://rdrr.io/r/grDevices/png.html">png()</a></code> or <code><a href="https://rdrr.io/r/grDevices/dev.html">dev.off()</a></code>.</p></li>
 <li><p>Registering an S4 class, method, or generic with <code><a href="https://rdrr.io/r/methods/setGeneric.html">methods::setGeneric()</a></code>.</p></li>
 <li><p>Modifying the internal <code>.Random.seed</code></p></li>
-</ul></section></section><section id="what-are-some-examples" class="level2" data-number="30.2"><h2 data-number="30.2" class="anchored" data-anchor-id="what-are-some-examples">
-<span class="header-section-number">30.2</span> What are some examples?</h2>
+</ul></section></section><section id="what-are-some-examples" class="level2" data-number="32.2"><h2 data-number="32.2" class="anchored" data-anchor-id="what-are-some-examples">
+<span class="header-section-number">32.2</span> What are some examples?</h2>
 <ul>
 <li>
 <p>The summary of a linear model includes a p-value for the overall<br>
@@ -537,8 +560,8 @@ regression. This value is only computed when the summary is printed: you can see
 <span><span class="co">#&gt; F-statistic: 91.38 on 1 and 30 DF,  p-value: 1.294e-10</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </li>
-</ul></section><section id="why-is-it-bad" class="level2" data-number="30.3"><h2 data-number="30.3" class="anchored" data-anchor-id="why-is-it-bad">
-<span class="header-section-number">30.3</span> Why is it bad?</h2>
+</ul></section><section id="why-is-it-bad" class="level2" data-number="32.3"><h2 data-number="32.3" class="anchored" data-anchor-id="why-is-it-bad">
+<span class="header-section-number">32.3</span> Why is it bad?</h2>
 <p>Side-effect soup is bad because:</p>
 <ul>
 <li><p>If a function does some computation and has side-effects, it can be challenging to extract the results of computation.</p></li>
@@ -555,22 +578,22 @@ regression. This value is only computed when the summary is printed: you can see
 </li>
 </ul>
 <p>Side-effect soup increases the cognitive load of a function so should be used deliberately, and you should be especially cautious when combining them with other techniques that increase cognitive load like tidy-evaluation and type-instability.</p>
-</section><section id="how-avoid-it" class="level2" data-number="30.4"><h2 data-number="30.4" class="anchored" data-anchor-id="how-avoid-it">
-<span class="header-section-number">30.4</span> How avoid it?</h2>
-<section id="localise-side-effects" class="level3" data-number="30.4.1"><h3 data-number="30.4.1" class="anchored" data-anchor-id="localise-side-effects">
-<span class="header-section-number">30.4.1</span> Localise side-effects</h3>
+</section><section id="how-avoid-it" class="level2" data-number="32.4"><h2 data-number="32.4" class="anchored" data-anchor-id="how-avoid-it">
+<span class="header-section-number">32.4</span> How avoid it?</h2>
+<section id="localise-side-effects" class="level3" data-number="32.4.1"><h3 data-number="32.4.1" class="anchored" data-anchor-id="localise-side-effects">
+<span class="header-section-number">32.4.1</span> Localise side-effects</h3>
 <p>Constrain the side-effects to as small a scope as possible, and clean up automatically to avoid side-effects. <a href="http://withr.r-lib.org">withr</a></p>
-</section><section id="extract-side-effects" class="level3" data-number="30.4.2"><h3 data-number="30.4.2" class="anchored" data-anchor-id="extract-side-effects">
-<span class="header-section-number">30.4.2</span> Extract side-effects</h3>
+</section><section id="extract-side-effects" class="level3" data-number="32.4.2"><h3 data-number="32.4.2" class="anchored" data-anchor-id="extract-side-effects">
+<span class="header-section-number">32.4.2</span> Extract side-effects</h3>
 <p>It’s not side-effects that are bad, so much as mixing them with non-side-effect code.</p>
 <p>Put them in a function that is specifically focussed on the side-effect.</p>
 <p>If your function is called primarily for its side-effects, it should return the primary data structure (which should be first argument), invisibly. This allows you to call it mid-pipe for its side-effects while allow the primary data to continue flowing through the pipe.</p>
-</section><section id="make-side-effects-noisy" class="level3" data-number="30.4.3"><h3 data-number="30.4.3" class="anchored" data-anchor-id="make-side-effects-noisy">
-<span class="header-section-number">30.4.3</span> Make side-effects noisy</h3>
+</section><section id="make-side-effects-noisy" class="level3" data-number="32.4.3"><h3 data-number="32.4.3" class="anchored" data-anchor-id="make-side-effects-noisy">
+<span class="header-section-number">32.4.3</span> Make side-effects noisy</h3>
 <p>Primary purpose of the entire package is side-effects: modifying files on disk to support package and project development. usethis functions are also designed to be noisy: as well as doing it’s job, each usethis function tells you what it’s doing.</p>
 <p>But some usethis functions are building blocks for other more complex tasks.</p>
-</section><section id="provide-an-argument-to-suppress" class="level3" data-number="30.4.4"><h3 data-number="30.4.4" class="anchored" data-anchor-id="provide-an-argument-to-suppress">
-<span class="header-section-number">30.4.4</span> Provide an argument to suppress</h3>
+</section><section id="provide-an-argument-to-suppress" class="level3" data-number="32.4.4"><h3 data-number="32.4.4" class="anchored" data-anchor-id="provide-an-argument-to-suppress">
+<span class="header-section-number">32.4.4</span> Provide an argument to suppress</h3>
 <p>You’ve probably used <code>base::hist()</code> for it’s side-effect of drawing a histogram:</p>
 <div class="cell">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">1e5</span><span class="op">)</span></span>
@@ -584,21 +607,21 @@ regression. This value is only computed when the summary is printed: you can see
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">xhist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">x</span>, plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">xhist</span><span class="op">)</span></span>
 <span><span class="co">#&gt; List of 6</span></span>
-<span><span class="co">#&gt;  $ breaks  : num [1:19] -4.5 -4 -3.5 -3 -2.5 -2 -1.5 -1 -0.5 0 ...</span></span>
-<span><span class="co">#&gt;  $ counts  : int [1:18] 5 15 117 534 1723 4388 9279 14835 19155 19247 ...</span></span>
-<span><span class="co">#&gt;  $ density : num [1:18] 0.0001 0.0003 0.00234 0.01068 0.03446 ...</span></span>
-<span><span class="co">#&gt;  $ mids    : num [1:18] -4.25 -3.75 -3.25 -2.75 -2.25 -1.75 -1.25 -0.75 -0.25 0.25 ...</span></span>
+<span><span class="co">#&gt;  $ breaks  : num [1:20] -5 -4.5 -4 -3.5 -3 -2.5 -2 -1.5 -1 -0.5 ...</span></span>
+<span><span class="co">#&gt;  $ counts  : int [1:19] 1 2 17 92 444 1776 4357 9022 14925 18970 ...</span></span>
+<span><span class="co">#&gt;  $ density : num [1:19] 0.00002 0.00004 0.00034 0.00184 0.00888 ...</span></span>
+<span><span class="co">#&gt;  $ mids    : num [1:19] -4.75 -4.25 -3.75 -3.25 -2.75 -2.25 -1.75 -1.25 -0.75 -0.25 ...</span></span>
 <span><span class="co">#&gt;  $ xname   : chr "x"</span></span>
 <span><span class="co">#&gt;  $ equidist: logi TRUE</span></span>
 <span><span class="co">#&gt;  - attr(*, "class")= chr "histogram"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This is a good approach for retro-fitting older functions while making minimal API changes. However, I think it dilutes a function to be both used for plotting and for computing so should be best avoided in newer code.</p>
-</section><section id="use-the-print-method" class="level3" data-number="30.4.5"><h3 data-number="30.4.5" class="anchored" data-anchor-id="use-the-print-method">
-<span class="header-section-number">30.4.5</span> Use the <code>print()</code> method</h3>
+</section><section id="use-the-print-method" class="level3" data-number="32.4.5"><h3 data-number="32.4.5" class="anchored" data-anchor-id="use-the-print-method">
+<span class="header-section-number">32.4.5</span> Use the <code>print()</code> method</h3>
 <p>An alternative approach would be to always return the computation, and instead perform the output in the <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> method.</p>
 <p>Of course ggplot2 isn’t perfect: it creates an object that specifies the plot, but there’s no easy way to extract the underlying computation so if you’ve used <code>geom_smooth()</code> to add lines of best fit, there’s no way to extract the values. Again, you can see the results, but you can’t touch them, which is very frustrating!</p>
-</section><section id="make-easy-to-undo" class="level3" data-number="30.4.6"><h3 data-number="30.4.6" class="anchored" data-anchor-id="make-easy-to-undo">
-<span class="header-section-number">30.4.6</span> Make easy to undo</h3>
+</section><section id="make-easy-to-undo" class="level3" data-number="32.4.6"><h3 data-number="32.4.6" class="anchored" data-anchor-id="make-easy-to-undo">
+<span class="header-section-number">32.4.6</span> Make easy to undo</h3>
 <p>If all of the above techniques fail, you should at least make the side-effect easy to undo. A use technique to do this is to make sure that the function returns the <em>previous</em> values, and that it can take it’s own input.</p>
 <p>This is how <code><a href="https://rdrr.io/r/base/options.html">options()</a></code> and <code><a href="https://rdrr.io/r/graphics/par.html">par()</a></code> work. You obviously can’t eliminate those functions because their complete purpose is have global changes! But they are designed in such away that you can easily undo their operation, making it possible to apply on a local basis.</p>
 <p>There are two key ideas that make these functions easy to undo:</p>
@@ -618,7 +641,7 @@ regression. This value is only computed when the summary is printed: you can see
 <div class="cell">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">old</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>my_option1 <span class="op">=</span> <span class="fl">1</span>, my_option2 <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>(I wouldn’t recommend copying this technique, but I’d instead recommend always taking a single named list. This makes the function because it has a single way to call it and makes it easy to extend the API in the future, as discussed in <a href="dots-data.html"><span>Chapter&nbsp;16</span></a>)</p>
+<p>(I wouldn’t recommend copying this technique, but I’d instead recommend always taking a single named list. This makes the function because it has a single way to call it and makes it easy to extend the API in the future, as discussed in <a href="dots-data.html"><span>Chapter&nbsp;17</span></a>)</p>
 </li>
 </ol>
 <p>Together, this means that you easily can set options temporarily.:</p>
@@ -635,8 +658,8 @@ regression. This value is only computed when the summary is printed: you can see
 <span><span class="co">#&gt; [1] 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>If temporarily setting options in a function, you should always restore the previous values using <code><a href="https://rdrr.io/r/base/on.exit.html">on.exit()</a></code>: this ensures that the code is run regardless of how the function exits.</p>
-</section></section><section id="package-considerations" class="level2" data-number="30.5"><h2 data-number="30.5" class="anchored" data-anchor-id="package-considerations">
-<span class="header-section-number">30.5</span> Package considerations</h2>
+</section></section><section id="package-considerations" class="level2" data-number="32.5"><h2 data-number="32.5" class="anchored" data-anchor-id="package-considerations">
+<span class="header-section-number">32.5</span> Package considerations</h2>
 <p>Code in package is executed at build-time.i.e. if you have:</p>
 <div class="cell">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -885,12 +908,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./changes-multivers.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Work with multiple dependency versions</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Work with multiple dependency versions</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./spooky-action.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Spooky action</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Spooky action</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

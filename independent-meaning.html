@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.433">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Hadley Wickham">
-<title>Tidy design principles - 15&nbsp; User settable defaults</title>
+<title>Tidy design principles - 23&nbsp; Argument meaning should be independent</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -18,6 +18,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -27,8 +61,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./cs-rgb.html" rel="next">
-<link href="./def-inform.html" rel="prev">
+<link href="./mutually-exclusive-arguments.html" rel="next">
+<link href="./independent-usage.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -66,7 +100,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./cs-rep.html">Function arguments</a></li><li class="breadcrumb-item"><a href="./def-user.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">User settable defaults</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./independent-usage.html">Independent arguments</a></li><li class="breadcrumb-item"><a href="./independent-meaning.html"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Argument meaning should be independent</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -218,7 +252,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./def-user.html" class="sidebar-item-text sidebar-link active">
+  <a href="./def-user.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">User settable defaults</span></span></a>
   </div>
 </li>
@@ -277,7 +311,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./independent-meaning.html" class="sidebar-item-text sidebar-link">
+  <a href="./independent-meaning.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Argument meaning should be independent</span></span></a>
   </div>
 </li>
@@ -424,16 +458,15 @@ ul.task-list li input[type="checkbox"] {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#whats-the-pattern" id="toc-whats-the-pattern" class="nav-link active" data-scroll-target="#whats-the-pattern"><span class="header-section-number">15.1</span> What’s the pattern?</a></li>
-  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">15.2</span> What are some examples?</a></li>
-  <li><a href="#why-is-it-important" id="toc-why-is-it-important" class="nav-link" data-scroll-target="#why-is-it-important"><span class="header-section-number">15.3</span> Why is it important?</a></li>
-  <li><a href="#what-are-the-exceptions" id="toc-what-are-the-exceptions" class="nav-link" data-scroll-target="#what-are-the-exceptions"><span class="header-section-number">15.4</span> What are the exceptions?</a></li>
-  <li><a href="#how-do-i-use-it" id="toc-how-do-i-use-it" class="nav-link" data-scroll-target="#how-do-i-use-it"><span class="header-section-number">15.5</span> How do I use it?</a></li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/def-user.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<li><a href="#whats-the-problem" id="toc-whats-the-problem" class="nav-link active" data-scroll-target="#whats-the-problem"><span class="header-section-number">23.1</span> What’s the problem?</a></li>
+  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">23.2</span> What are some examples?</a></li>
+  <li><a href="#how-do-i-remediate-past-mistakes" id="toc-how-do-i-remediate-past-mistakes" class="nav-link" data-scroll-target="#how-do-i-remediate-past-mistakes"><span class="header-section-number">23.3</span> How do I remediate past mistakes?</a></li>
+  <li><a href="#see-also" id="toc-see-also" class="nav-link" data-scroll-target="#see-also"><span class="header-section-number">23.4</span> See also</a></li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/independent-meaning.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-def-user" class="quarto-section-identifier"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">User settable defaults</span></span></h1>
+<h1 class="title"><span id="sec-independent-meaning" class="quarto-section-identifier"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Argument meaning should be independent</span></span></h1>
 </div>
 
 
@@ -446,21 +479,33 @@ ul.task-list li input[type="checkbox"] {
   </div>
   
 
-</header><section id="whats-the-pattern" class="level2" data-number="15.1"><h2 data-number="15.1" class="anchored" data-anchor-id="whats-the-pattern">
-<span class="header-section-number">15.1</span> What’s the pattern?</h2>
-<p>It’s sometimes useful to give the user control over default values, so that they can set once per session or once for every session in their <code>.Rprofile</code>. To do so, use <code><a href="https://rdrr.io/r/base/options.html">getOption()</a></code> in the default value.</p>
-<p>Note that this pattern should general only be used to control the side-effects of a function, not its compute value. The two primary uses are for controlling the appearance of output, particularly in <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> methods, and for setting default values in generated templates.</p>
-<p>Related patterns:</p>
+</header><section id="whats-the-problem" class="level2" data-number="23.1"><h2 data-number="23.1" class="anchored" data-anchor-id="whats-the-problem">
+<span class="header-section-number">23.1</span> What’s the problem?</h2>
+<p>Avoid having one argument change the interpretation of another argument.</p>
+<p>This makes reading function calls harder because if the argument that changes meaning comes after the argument who’s meaning is changed you need to reinterpret the rest of the call.</p>
+</section><section id="what-are-some-examples" class="level2" data-number="23.2"><h2 data-number="23.2" class="anchored" data-anchor-id="what-are-some-examples">
+<span class="header-section-number">23.2</span> What are some examples?</h2>
 <ul>
-<li>If a global option affects the results of the computation (not just its side-effects), you have an example of <a href="inputs-explicit.html"><span>Chapter&nbsp;5</span></a>.</li>
-</ul></section><section id="what-are-some-examples" class="level2" data-number="15.2"><h2 data-number="15.2" class="anchored" data-anchor-id="what-are-some-examples">
-<span class="header-section-number">15.2</span> What are some examples?</h2>
-</section><section id="why-is-it-important" class="level2" data-number="15.3"><h2 data-number="15.3" class="anchored" data-anchor-id="why-is-it-important">
-<span class="header-section-number">15.3</span> Why is it important?</h2>
-</section><section id="what-are-the-exceptions" class="level2" data-number="15.4"><h2 data-number="15.4" class="anchored" data-anchor-id="what-are-the-exceptions">
-<span class="header-section-number">15.4</span> What are the exceptions?</h2>
-</section><section id="how-do-i-use-it" class="level2" data-number="15.5"><h2 data-number="15.5" class="anchored" data-anchor-id="how-do-i-use-it">
-<span class="header-section-number">15.5</span> How do I use it?</h2>
+<li>
+<p>In <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> the <code>character.only</code> argument changes how the <code>package</code> argument is interpreted:</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ggplot2</span> <span class="op">&lt;-</span> <span class="st">"dplyr"</span></span>
+<span></span>
+<span><span class="co"># Loads ggplot2</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Loads dplyr</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span>, character.only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</li>
+<li><p>In <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> setting <code>repos = NULL</code> changes the interpretation of <code>pkgs</code> from being a vector of package names to a vector of file paths.</p></li>
+<li><p>In the base R string functions, <code>perl</code> and <code>fixed</code> change the interpretation of the <code>pattern</code> argument. See <a href="cs-stringr.html#sec-pattern-engine"><span>Section&nbsp;26.3</span></a> for more details.</p></li>
+<li><p>In <code><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">ggplot2::geom_label()</a></code>, setting <code>parse = TRUE</code> changes the meaning of the label argument/aesthetic from being any string to be a string on unparsed R code.</p></li>
+</ul></section><section id="how-do-i-remediate-past-mistakes" class="level2" data-number="23.3"><h2 data-number="23.3" class="anchored" data-anchor-id="how-do-i-remediate-past-mistakes">
+<span class="header-section-number">23.3</span> How do I remediate past mistakes?</h2>
+</section><section id="see-also" class="level2" data-number="23.4"><h2 data-number="23.4" class="anchored" data-anchor-id="see-also">
+<span class="header-section-number">23.4</span> See also</h2>
+<p><a href="independent-usage.html"><span>Chapter&nbsp;22</span></a> discusses the related problem of when using one argument affects which other arguments can be used.</p>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
@@ -696,14 +741,14 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./def-inform.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Explain important defaults</span></span>
+      <a href="./independent-usage.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Argument usage should be independent</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./cs-rgb.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/grDevices/rgb.html">rgb()</a></code> <i class="bi bi-arrow-right-short"></i>
-      
+      <a href="./mutually-exclusive-arguments.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Mutually exclusive arguments</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->

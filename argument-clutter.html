@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.433">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Hadley Wickham">
-<title>Tidy design principles - 20&nbsp; Keep arguments independent</title>
+<title>Tidy design principles - 11&nbsp; Avoid argument clutter with an options object</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -61,8 +61,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./mutually-exclusive-arguments.html" rel="next">
-<link href="./cs-mapply-pmap.html" rel="prev">
+<link href="./cs-rep.html" rel="next">
+<link href="./enumerate-options.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -100,7 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./cs-rep.html">Function arguments</a></li><li class="breadcrumb-item"><a href="./arguments-independent.html"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Keep arguments independent</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./inputs-explicit.html">Scannable definitions</a></li><li class="breadcrumb-item"><a href="./argument-clutter.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Avoid argument clutter with an options object</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -215,6 +215,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Enumerate possible options</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./argument-clutter.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Avoid argument clutter with an options object</span></span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -229,85 +235,61 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-rep.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./def-magical.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Avoid magical defaults</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Avoid magical defaults</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./def-inform.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Explain important defaults</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Explain important defaults</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./def-user.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">User settable defaults</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">User settable defaults</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-rgb.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/grDevices/rgb.html">rgb()</a></code>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/grDevices/rgb.html">rgb()</a></code>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dots-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Making data with …</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Making data with …</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dots-prefix.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Dot prefix</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Dot prefix</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dots-inspect.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Inspect the dots</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Inspect the dots</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-mapply-pmap.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/mapply.html">mapply()</a></code> vs <code>pmap()</code>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./arguments-independent.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Keep arguments independent</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./mutually-exclusive-arguments.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Mutually exclusive arguments</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./compound-arguments.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Compound arguments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/mapply.html">mapply()</a></code> vs <code>pmap()</code>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-setNames.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/stats/setNames.html">setNames()</a></code>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./cs-stringr.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Case study: stringr</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/stats/setNames.html">setNames()</a></code>
   </div>
 </li>
       </ul>
@@ -315,7 +297,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
- <span class="menu-text">Outputs</span></a>
+ <span class="menu-text">Independent arguments</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -323,26 +305,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./out-multi.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Returning multiple values</span></span></a>
+  <a href="./independent-usage.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Argument usage should be independent</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./out-type-stability.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Type-stability</span></span></a>
+  <a href="./independent-meaning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Argument meaning should be independent</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./out-vectorisation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Vectorisation</span></span></a>
+  <a href="./mutually-exclusive-arguments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Mutually exclusive arguments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./out-invisible.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Side-effect functions should return invisibly</span></span></a>
+  <a href="./compound-arguments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Compound arguments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cs-stringr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Case study: stringr</span></span></a>
   </div>
 </li>
       </ul>
@@ -350,7 +338,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
- <span class="menu-text">Evolution</span></a>
+ <span class="menu-text">Outputs</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -358,8 +346,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./changes-multivers.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Work with multiple dependency versions</span></span></a>
+  <a href="./out-multi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Returning multiple values</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./out-type-stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Type-stability</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./out-vectorisation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Vectorisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./out-invisible.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Side-effect functions should return invisibly</span></span></a>
   </div>
 </li>
       </ul>
@@ -367,7 +373,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
- <span class="menu-text">Side effects</span></a>
+ <span class="menu-text">Evolution</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -375,14 +381,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./side-effects.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Side-effect soup</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./spooky-action.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Spooky action</span></span></a>
+  <a href="./changes-multivers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Work with multiple dependency versions</span></span></a>
   </div>
 </li>
       </ul>
@@ -390,7 +390,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
- <span class="menu-text">Errors</span></a>
+ <span class="menu-text">Side effects</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -398,14 +398,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./err-call.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Error call</span></span></a>
+  <a href="./side-effects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Side-effect soup</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./err-constructor.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Error constructors</span></span></a>
+  <a href="./spooky-action.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Spooky action</span></span></a>
   </div>
 </li>
       </ul>
@@ -413,12 +413,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
- <span class="menu-text">Appendices</span></a>
+ <span class="menu-text">Errors</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./err-call.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Error call</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./err-constructor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Error constructors</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./glossary.html" class="sidebar-item-text sidebar-link">
@@ -435,22 +458,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#whats-the-problem" id="toc-whats-the-problem" class="nav-link active" data-scroll-target="#whats-the-problem"><span class="header-section-number">20.1</span> What’s the problem?</a></li>
-  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">20.2</span> What are some examples?</a></li>
-  <li>
-<a href="#how-do-i-remediate-past-mistakes" id="toc-how-do-i-remediate-past-mistakes" class="nav-link" data-scroll-target="#how-do-i-remediate-past-mistakes"><span class="header-section-number">20.3</span> How do I remediate past mistakes?</a>
-  <ul class="collapse">
-<li><a href="#sec-cs-fct-lump" id="toc-sec-cs-fct-lump" class="nav-link" data-scroll-target="#sec-cs-fct-lump"><span class="header-section-number">20.3.1</span> Splitting into multiple functions</a></li>
-  </ul>
-</li>
-  <li><a href="#using-an-enumeration" id="toc-using-an-enumeration" class="nav-link" data-scroll-target="#using-an-enumeration"><span class="header-section-number">20.4</span> Using an enumeration</a></li>
-  <li><a href="#creating-a-details-object" id="toc-creating-a-details-object" class="nav-link" data-scroll-target="#creating-a-details-object"><span class="header-section-number">20.5</span> Creating a details object</a></li>
-  <li><a href="#see-also" id="toc-see-also" class="nav-link" data-scroll-target="#see-also"><span class="header-section-number">20.6</span> See also</a></li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/arguments-independent.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<li><a href="#whats-the-problem" id="toc-whats-the-problem" class="nav-link active" data-scroll-target="#whats-the-problem"><span class="header-section-number">11.1</span> What’s the problem?</a></li>
+  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">11.2</span> What are some examples?</a></li>
+  <li><a href="#how-do-i-use-this-pattern" id="toc-how-do-i-use-this-pattern" class="nav-link" data-scroll-target="#how-do-i-use-this-pattern"><span class="header-section-number">11.3</span> How do I use this pattern?</a></li>
+  <li><a href="#how-do-i-remediate-past-mistakes" id="toc-how-do-i-remediate-past-mistakes" class="nav-link" data-scroll-target="#how-do-i-remediate-past-mistakes"><span class="header-section-number">11.4</span> How do I remediate past mistakes?</a></li>
+  <li><a href="#see-also" id="toc-see-also" class="nav-link" data-scroll-target="#see-also"><span class="header-section-number">11.5</span> See also</a></li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/argument-clutter.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-arguments-independent" class="quarto-section-identifier"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Keep arguments independent</span></span></h1>
+<h1 class="title"><span id="sec-argument-clutter" class="quarto-section-identifier"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Avoid argument clutter with an options object</span></span></h1>
 </div>
 
 
@@ -463,84 +480,82 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header><section id="whats-the-problem" class="level2" data-number="20.1"><h2 data-number="20.1" class="anchored" data-anchor-id="whats-the-problem">
-<span class="header-section-number">20.1</span> What’s the problem?</h2>
-<p>Avoid complex patterns of dependencies between arguments so that only certain combinations are permitted.</p>
-<p>Dependencies between arguments makes functions harder:</p>
+</header><section id="whats-the-problem" class="level2" data-number="11.1"><h2 data-number="11.1" class="anchored" data-anchor-id="whats-the-problem">
+<span class="header-section-number">11.1</span> What’s the problem?</h2>
+<p>If you have a large number of optional arguments that control the fine details of the operation of a function, it might be worth moving them into a separate “options” argument.</p>
+<p>Having a large number of less important options makes it harder to see the the most important options.</p>
+</section><section id="what-are-some-examples" class="level2" data-number="11.2"><h2 data-number="11.2" class="anchored" data-anchor-id="what-are-some-examples">
+<span class="header-section-number">11.2</span> What are some examples?</h2>
 <ul>
-<li><p>It can suggest that there are many more viable combination of inputs than actually exist and those unnecessary possibilities still occupy head space. You have to learn and the remember the set of allowed combinations, rather than them being implied by the structure of the function.</p></li>
-<li><p>Interdependence of arguments suggests complex implementation paths which are harder to analyse and test.</p></li>
-<li><p>It makes documentation harder to write. You have to use extra words to explain exactly how combinations of arguments work together, and it’s not obvious where those words should go. If there’s an interaction between <code>arg_a</code> and <code>arg_b</code> do you document with <code>arg_a</code>, with <code>arg_b</code>, or with both?</p></li>
-</ul></section><section id="what-are-some-examples" class="level2" data-number="20.2"><h2 data-number="20.2" class="anchored" data-anchor-id="what-are-some-examples">
-<span class="header-section-number">20.2</span> What are some examples?</h2>
-<ul>
-<li><p><code><a href="https://forcats.tidyverse.org/reference/fct_lump.html">forcats::fct_lump()</a></code> decides which algorithm to use based on a combination of the <code>n</code> and <code>prop</code> arguments.</p></li>
-<li><p>In <code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">ggplot2::geom_histogram()</a></code>, you can specify the histogram breaks in three ways: as a number of <code>bins</code>, as the width of each bin (<code>binwidth</code>, plus <code>center</code> or <code>boundary</code>), or the exact <code>breaks</code>. You can only pick one of the three options, which is hard to convey in the documentation. There’s also an implied precedence so that if more than one option is supplied, one will silently win.</p></li>
-<li><p>In <code><a href="https://readr.tidyverse.org/reference/locale.html">readr::locale()</a></code> there’s a complex dependency between <code>decimal_mark</code> and <code>grouping_mark</code> because they can’t be the same value, and Europe and the US Europe use different standards.</p></li>
-<li><p><code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code> has <code>perl</code>, <code>fixed</code>, and <code>ignore.case</code> arguments which can either be <code>TRUE</code> or <code>FALSE</code>. If these arguments were independent that would imply 2^3 = 8 possible combinations. But <code>fixed = TRUE</code> overrides <code>perl = TRUE</code>, and <code>ignore.case = TRUE</code> only works if <code>fixed = FALSE</code> so there are only 5 valid combinations.</p></li>
 <li>
-<p>In <code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code> you can supply both <code>times</code> and <code>each</code> <em>unless</em> <code>times</code> is a vector :</p>
-<div class="cell">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, times <span class="op">=</span> <span class="fl">2</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  [1] 1 1 1 2 2 2 3 3 3 1 1 1 2 2 2 3 3 3</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, times <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, each <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in rep(1:3, times = 1:3, each = 2): invalid 'times' argument</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Learn more in <a href="cs-rep.html"><span>Chapter&nbsp;11</span></a>.</p>
+<p>A number of base R modelling functions like <code><a href="https://rdrr.io/r/stats/loess.html">loess()</a></code>, <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code>, and <code><a href="https://rdrr.io/r/stats/nls.html">nls()</a></code> have <code>control</code> arguments that are paired with a function like <code><a href="https://rdrr.io/r/stats/loess.control.html">loess.control()</a></code>, <code><a href="https://rdrr.io/r/stats/glm.control.html">glm.control()</a></code>, and <code><a href="https://rdrr.io/r/stats/nls.control.html">nls.control()</a></code>. These allow you to modify some rarely defaults, including the number of iterations, and the stopping criteria, and some debugging options.</p>
+<p><code><a href="https://rdrr.io/r/stats/optim.html">optim()</a></code> uses a less formal version of this structure — while it has a <code>control</code> argument, it doesn’t have a matching <code>optim.control()</code> helper. Instead, you supply a named list with components described in <code><a href="https://rdrr.io/r/stats/optim.html">?optim</a></code>.</p>
 </li>
-</ul>
-<p>(Other examples for you to explore: <code>na.rm</code> and <code>use</code> in <code><a href="https://rdrr.io/r/stats/cor.html">var()</a></code>. Why does this arise?)</p>
-</section><section id="how-do-i-remediate-past-mistakes" class="level2" data-number="20.3"><h2 data-number="20.3" class="anchored" data-anchor-id="how-do-i-remediate-past-mistakes">
-<span class="header-section-number">20.3</span> How do I remediate past mistakes?</h2>
-<p>Often these problems arise because the scope of a function grows over time. The scope of a function was small when it was initially designed but it has grown incrementally over time. At no point did it seem worth the additional effort to refactor to a new design, but now you have a large complex function. This makes the problem hard to avoid.</p>
-<p>To remediate the problem, you’ll need to think holistically and reconsider the complete interface. There are two common outcomes which are illustrated in the case studies below:</p>
-<ul>
-<li><p>Splitting the function into multiple functions that each do one thing.</p></li>
-<li><p>Encapsulating related details arguments into a single object.</p></li>
-</ul>
-<p>If these changes to the interface occur to exported functions in a package, you’ll need to consider how to preserve the interface with deprecation warnings. For important functions, it is worth generating an message that includes new code to copy and paste.</p>
-<section id="sec-cs-fct-lump" class="level3" data-number="20.3.1"><h3 data-number="20.3.1" class="anchored" data-anchor-id="sec-cs-fct-lump">
-<span class="header-section-number">20.3.1</span> Splitting into multiple functions</h3>
-<p>The goal of <code>fct_lump()</code> is to combine infrequent factor levels into a common “other” level, which is useful for displays where you want to concentrate on the most common values but still account for every observation. When I first wrote <code>fct_lump()</code>, it implemented a single strategy. But over time people asked for more and more variations, which I kept adding to <code>fct_lump()</code>. This lead to a function that picks from one of three different strategies depending which of the <code>n</code> and <code>prop</code> arguments you supply:</p>
-<ul>
-<li><p>If <code>n</code> and <code>prop</code> are missing, it will merge together the least frequent levels, ensuring that <code>other</code> is still the smallest level. This case ignores the <code>ties.method</code> argument, adding another dependency between arguments.</p></li>
-<li><p>If a positive <code>n</code> is supplied, it preserves the <code>n</code> most common values; if a negative <code>n</code> is supplied it preserves the <code>n</code> least common values.</p></li>
-<li><p>If a positive <code>prop</code> is supplied, lumps values which do not appear at least <code>prop</code> of the time. Negative <code>prop</code> lumps values that do not appear at most <code>-prop</code> of the time.</p></li>
-</ul>
-<p>Overall, this become very hard to explain in the documentation, so in forcats 0.5.0 we split <code>fct_lump()</code> into three separate functions: <code>fct_lump_prop()</code>, <code>fct_lump_n()</code>, and <code>fct_lump_lowfreq()</code>. This allows the function name to hint at the purpose, prevents you from supplying both <code>n</code> and <code>prop</code> through the design of the functions, and only has the <code>ties.method</code> argument where it makes sense.</p>
-</section></section><section id="using-an-enumeration" class="level2" data-number="20.4"><h2 data-number="20.4" class="anchored" data-anchor-id="using-an-enumeration">
-<span class="header-section-number">20.4</span> Using an enumeration</h2>
-<p>One problem with the <code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code> interface is that the <code>fixed</code> and <code>perl</code> arguments are actually used to pick from one of three engines for matching text:</p>
-<ul>
-<li>The default is POSIX 1003.2 extended regular expressions.</li>
-<li>
-<code>perl = TRUE</code> uses Perl-style regular expressions.</li>
-<li>
-<code>fixed = TRUE</code> uses fixed matching.</li>
-</ul>
-<p>This makes it more clear why using <code>perl = TRUE</code> and <code>fixed = TRUE</code> doesn’t make sense: you’re trying to pick two conflicting engines.</p>
-<p>An alternative interface that makes this choice more clear would be to use <a href="enumerate-options.html"><span>Chapter&nbsp;10</span></a> and create a new argument called something like <code>engine = c("POSIX", "perl", "fixed")</code>. This also has the nice feature of making it easier to extend in the future.</p>
-<p>This is more appealing than creating a separate function for each engine because there are many other functions in the same family as <code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code>. If we created <code>grepl_fixed()</code>, we’d also need <code>gsub_fixed()</code>, <code>regexp_fixed()</code> etc.</p>
-</section><section id="creating-a-details-object" class="level2" data-number="20.5"><h2 data-number="20.5" class="anchored" data-anchor-id="creating-a-details-object">
-<span class="header-section-number">20.5</span> Creating a details object</h2>
-<p>Generating the bins for a histogram is a surprisingly complex topic. <code>stat_bin()</code>, which powers <code>geom_histogram()</code>, has a total of 5 arguments that control where the bins are placed: <code>binwidth</code>, <code>bins</code><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, <code>boundary</code>, <code>breaks,</code> and <code>closed</code>. They have a complex set of interdependencies, which have a choose your own adventure feel. Firstly you can select been <code>breaks</code>, <code>bins</code>, and <code>binwidths</code>. Then if you pick <code>bins</code> or <code>binwidths</code>, you can also optionally selected <code>center</code> or <code>boundary</code>. <code>binwidth</code> can also be a function, in which case it’s called individually on each layer. If we’re going to clean up these arguments, it would also be nice to consider how you might supply a custom breaks for each layer (this would make it easier to implement an equal area histogram, which currently requires an custom stat, as in <a href="https://github.com/eliocamp/ggpercentogram/" class="uri">https://github.com/eliocamp/ggpercentogram/</a>).</p>
-<p>One way to resolve this tension would be to use a single argument that takes objects created by a helper functions, e.g.:</p>
-<ul>
-<li><code>bins = bin_width(width, center, boundary)</code></li>
-<li><code>bins = bin_number(n, center, boundary)</code></li>
-<li><code>bins = bin_breaks(breaks)</code></li>
-</ul>
-<p>(where <code>center</code> and <code>boundary</code> would be mutually exclusive, <a href="mutually-exclusive-arguments.html"><span>Chapter&nbsp;21</span></a>)</p>
-<p>This is a bit verbose for the most common case where you just want to set the width of the bins. You could automatically wrap a bare number in <code>bin_width()</code>, but <code>bins = 10</code> seems more likely to imply</p>
-</section><section id="see-also" class="level2" data-number="20.6"><h2 data-number="20.6" class="anchored" data-anchor-id="see-also">
-<span class="header-section-number">20.6</span> See also</h2>
-<p>See <a href="mutually-exclusive-arguments.html"><span>Chapter&nbsp;21</span></a> and <a href="compound-arguments.html"><span>Chapter&nbsp;22</span></a> for a two exceptions where the dependency is via specific patterns of missing arguments.</p>
+<li><p><code><a href="https://readr.tidyverse.org/reference/read_delim.html">readr::read_csv()</a></code> and friends take a <code>locale</code> argument with value created by <code><a href="https://readr.tidyverse.org/reference/locale.html">readr::locale()</a></code>. This object bundles together a bunch of options related to parsing numbers, dates, and times that vary from country to country.</p></li>
+<li><p><code><a href="https://readr.tidyverse.org/reference/locale.html">readr::locale()</a></code> itself has a <code>date_names</code> argument that’s paired with <code><a href="https://readr.tidyverse.org/reference/date_names.html">readr::date_names()</a></code> and <code><a href="https://readr.tidyverse.org/reference/date_names.html">readr::date_names_lang()</a></code> helpers. You typically use it by supplying a two letter locale name (which <code>date_names_lang()</code> uses to look up common languages), but if your language isn’t supported you can use <code><a href="https://readr.tidyverse.org/reference/date_names.html">readr::date_names()</a></code> to individually supply full and abbreviate month and day of week names.</p></li>
+<li><p>Somewhat related is the engine specification used by readr, e.g.&nbsp;<code>regex(".", multline = TRUE)</code>, as discussed in <a href="cs-stringr.html#sec-pattern-engine"><span>Section&nbsp;26.3</span></a>.</p></li>
+</ul></section><section id="how-do-i-use-this-pattern" class="level2" data-number="11.3"><h2 data-number="11.3" class="anchored" data-anchor-id="how-do-i-use-this-pattern">
+<span class="header-section-number">11.3</span> How do I use this pattern?</h2>
+<p>The simple implement is just to create an object that returns a list:</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_fun_opts</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">opt1</span> <span class="op">=</span> <span class="fl">1</span>, <span class="va">opt2</span> <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>    opt1 <span class="op">=</span> <span class="va">opt1</span>,</span>
+<span>    opt2 <span class="op">=</span> <span class="va">opt2</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Just this alone is nice because you can document the individual arguments, and auto-complete will remind the user what these less important options include.</p>
+<p>It’s good practice to add a class to this list so you can give more informative errors if the user supplies the wrong value:</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_fun_opts</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">opt1</span> <span class="op">=</span> <span class="fl">1</span>, <span class="va">opt2</span> <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/structure.html">structure</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>      opt1 <span class="op">=</span> <span class="va">opt1</span>,</span>
+<span>      opt2 <span class="op">=</span> <span class="va">opt2</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    class <span class="op">=</span> <span class="st">"mypackage_my_fun_opts"</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">is_my_fun_opts</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/class.html">inherits</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"mypackage_my_fun_opts"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">my_fun_opts</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span>, <span class="va">opts</span> <span class="op">=</span> <span class="fu">my_fun_opts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu">is_my_fun_opts</span><span class="op">(</span><span class="va">opts</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_abort.html">cli_abort</a></span><span class="op">(</span><span class="st">"{.arg opts} must be created by {.fun my_fun_opts}."</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="how-do-i-remediate-past-mistakes" class="level2" data-number="11.4"><h2 data-number="11.4" class="anchored" data-anchor-id="how-do-i-remediate-past-mistakes">
+<span class="header-section-number">11.4</span> How do I remediate past mistakes?</h2>
+<p>Typically you notice this problem after you have created too many options so you’ll need to carefully remediate by introducing a new options function and paired argument, and then deprecating the old arguments. For example, if your existing function looks like this:</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_fun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">opt1</span> <span class="op">=</span> <span class="fl">1</span>, <span class="va">opt2</span> <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  </span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Then you’ll need to create a <code>my_fun_opts()</code> as above, add an <code>opts</code> argument that uses that as the default. This is a breaking change, so if you want to provide a gradual on-ramp to the new API, for a while you can accept both the individual options and the options object, deprecating the individual options:</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_fun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">opts</span> <span class="op">=</span> <span class="fu">my_fun_opts</span><span class="op">(</span><span class="op">)</span>, <span class="va">opt1</span> <span class="op">=</span> <span class="fu">deprecated</span><span class="op">(</span><span class="op">)</span>, <span class="va">opt2</span> <span class="op">=</span> <span class="fu">deprecated</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  </span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html">is_present</a></span><span class="op">(</span><span class="va">opt1</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecate_soft.html">deprecate_warn</a></span><span class="op">(</span><span class="st">"1.0.0"</span>, <span class="st">"my_fun(opt1)"</span>, <span class="st">"my_fun_opts(opt1)"</span><span class="op">)</span></span>
+<span>    <span class="va">opts</span><span class="op">$</span><span class="va">opt1</span> <span class="op">&lt;-</span> <span class="va">opt1</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html">is_present</a></span><span class="op">(</span><span class="va">opt2</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecate_soft.html">deprecate_warn</a></span><span class="op">(</span><span class="st">"1.0.0"</span>, <span class="st">"my_fun(opt2)"</span>, <span class="st">"my_fun_opts(opt2)"</span><span class="op">)</span></span>
+<span>    <span class="va">opts</span><span class="op">$</span><span class="va">opt2</span> <span class="op">&lt;-</span> <span class="va">opt2</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Then in a future release you can remove the old arguments.</p>
+</section><section id="see-also" class="level2" data-number="11.5"><h2 data-number="11.5" class="anchored" data-anchor-id="see-also">
+<span class="header-section-number">11.5</span> See also</h2>
 
 
-</section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
-<ol>
-<li id="fn1"><p><code>center</code> is also a little problematic as an argument name, because UK English would prefer <code>centre</code>. It’s probably ok here since this it’s a very rarely used argument, but <code>middle</code> would be a reasonable alternative that doesn’t have the same problem<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -773,14 +788,14 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./cs-mapply-pmap.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/mapply.html">mapply()</a></code> vs <code>pmap()</code>
-                
+      <a href="./enumerate-options.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Enumerate possible options</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./mutually-exclusive-arguments.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Mutually exclusive arguments</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
+      <a href="./cs-rep.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code> <i class="bi bi-arrow-right-short"></i>
+      
   </div>
 </nav>
 </div> <!-- /content -->
