@@ -33,6 +33,8 @@ There are two exceptions to this pattern that we'll come back to in future chapt
 
 -   In `readr::locale()` there's a complex dependency between `decimal_mark` and `grouping_mark` because they can't be the same value, and Europe and the US Europe use different standards.
 
+-   In `ggplot2::scale_x_date()` and friends you can specify the breaks and labels either with `breaks` and `labels` (like all other scale functions) or with `date_breaks` and `date_labels`.
+
 -   `grepl()` has `perl`, `fixed`, and `ignore.case` arguments which can either be `TRUE` or `FALSE`.
     If these arguments were independent that would imply 2\^3 = 8 possible combinations.
     But `fixed = TRUE` overrides `perl = TRUE`, and `ignore.case = TRUE` only works if `fixed = FALSE` so there are only 5 valid combinations.

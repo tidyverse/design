@@ -1,0 +1,100 @@
+# Avoid argument clutter with an options object {#sec-argument-clutter}
+
+```{r}
+#| include = FALSE
+source("common.R")
+```
+
+## What's the problem?
+
+If you have a large number of optional arguments that control the fine details of the operation of a function, it might be worth moving them into a separate "options" argument.
+
+Having a large number of less important options makes it harder to see the the most important options.
+
+## What are some examples?
+
+-   A number of base R modelling functions like `loess()`, `glm()`, and `nls()` have `control` arguments that are paired with a function like `loess.control()`, `glm.control()`, and `nls.control()`.
+    These allow you to modify some rarely defaults, including the number of iterations, and the stopping criteria, and some debugging options.
+
+    `optim()` uses a less formal version of this structure --- while it has a `control` argument, it doesn't have a matching `optim.control()` helper.
+    Instead, you supply a named list with components described in `?optim`.
+
+-   `readr::read_csv()` and friends take a `locale` argument with value created by `readr::locale()`.
+    This object bundles together a bunch of options related to parsing numbers, dates, and times that vary from country to country.
+
+-   `readr::locale()` itself has a `date_names` argument that's paired with `readr::date_names()` and `readr::date_names_lang()` helpers.
+    You typically use it by supplying a two letter locale name (which `date_names_lang()` uses to look up common languages), but if your language isn't supported you can use `readr::date_names()` to individually supply full and abbreviate month and day of week names.
+
+-   Somewhat related is the engine specification used by readr, e.g. `regex(".", multline = TRUE)`, as discussed in @sec-pattern-engine.
+
+## How do I use this pattern?
+
+The simple implement is just to create an object that returns a list:
+
+```{r}
+my_fun_opts <- function(opt1 = 1, opt2 = 2) {
+  list(
+    opt1 = opt1,
+    opt2 = opt2
+  )
+}
+```
+
+Just this alone is nice because you can document the individual arguments, and auto-complete will remind the user what these less important options include.
+
+It's good practice to add a class to this list so you can give more informative errors if the user supplies the wrong value:
+
+```{r}
+my_fun_opts <- function(opt1 = 1, opt2 = 2) {
+  structure(
+    list(
+      opt1 = opt1,
+      opt2 = opt2
+    ),
+    class = "mypackage_my_fun_opts"
+  )
+}
+
+is_my_fun_opts <- function(x) {
+  inherits(x, "mypackage_my_fun_opts")
+}
+
+my_fun_opts <- function(..., opts = my_fun_opts()) {
+  if (!is_my_fun_opts(opts)) {
+    cli::cli_abort("{.arg opts} must be created by {.fun my_fun_opts}.")
+  }
+}
+```
+
+## How do I remediate past mistakes?
+
+Typically you notice this problem after you have created too many options so you'll need to carefully remediate by introducing a new options function and paired argument, and then deprecating the old arguments.
+For example, if your existing function looks like this:
+
+```{r}
+my_fun <- function(x, y, opt1 = 1, opt2 = 2) {
+  
+}
+
+```
+
+Then you'll need to create a `my_fun_opts()` as above, add an `opts` argument that uses that as the default.
+This is a breaking change, so if you want to provide a gradual on-ramp to the new API, for a while you can accept both the individual options and the options object, deprecating the individual options:
+
+```{r}
+my_fun <- function(x, y, opts = my_fun_opts(), opt1 = deprecated(), opt2 = deprecated()) {
+  
+  if (lifecycle::is_present(opt1)) {
+    lifecycle::deprecate_warn("1.0.0", "my_fun(opt1)", "my_fun_opts(opt1)")
+    opts$opt1 <- opt1
+  }
+  if (lifecycle::is_present(opt2)) {
+    lifecycle::deprecate_warn("1.0.0", "my_fun(opt2)", "my_fun_opts(opt2)")
+    opts$opt2 <- opt2
+  }
+}
+```
+
+Then in a future release you can remove the old arguments.
+
+## See also
