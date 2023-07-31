@@ -11,7 +11,7 @@ In a function call, the most important arguments should come first.
 As a general rule, the most important arguments will be the ones that are used most often, but that's often hard to tell until your function has existed in the wild for a while.
 Fortunately, there are a few rules of thumb that can help:
 
--   If the output is a transformation of an input (e.g. `log()`, `stringr::str_replace()`, `dplyr::left_join()`) then that argument the most important.
+-   If the output is a transformation of an input (e.g. `log()`, `stringr::str_replace()`, `dplyr::left_join()`) then that argument is the most important.
 -   Other arguments that determine the type or shape of the output are typically very important.
 -   Optional arguments (i.e. arguments with a default) are the least important, and should come last.
 
@@ -38,12 +38,12 @@ The vast majority of functions get this right, so we'll pick on a few examples w
 
 -   ggplot2 functions work by creating an object that is then added on to a plot, so the plot, which is really the most important argument, is not obvious at all.
     ggplot2 works this way in part because it was written before the pipe was discovered, and the best way I came up to define plots from left to right was to rely on `+` (so-called operator overloading).
-    As an interesting historical fact, ggplot (the precursor to ggplot2) actually works great with the pipe, and a couple of years ago I bought it back to life as [ggplot1](https://github.com/hadley/ggplot1).
+    As an interesting historical fact, ggplot (the precursor to ggplot2) actually works great with the pipe, and a couple of years ago I brought it back to life as [ggplot1](https://github.com/hadley/ggplot1).
 
 ## How do I remediate past mistakes?
 
 Generally, it is not possible to change the order of the first few arguments because it will break existing code (since these are the arguments that are mostly likely to be used unnamed).
-This means that the only real solution is to dperecate the entire function and replace it with a new one.
+This means that the only real solution is to deprecate the entire function and replace it with a new one.
 Because this is invasive to the user, it's best to do sparingly: if the mistake is minor, you're better off waiting until you've collected other problems before fixing it.
 For example, take `tidyr::gather()`.
 It has a number of problems with its design, including the argument order, that makes it harder to use.

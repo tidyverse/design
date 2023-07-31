@@ -27,7 +27,7 @@ pkg_funs("utils") %>% funs_body_keep(has_several_ok)
 ## What's the pattern?
 
 If the possible values of an argument are a small set of strings, set the default argument to the set of possible values, and then use `match.arg()` or `rlang::arg_match()` in the function body.
-This convention advertises to the user what the possible values, and makes it easy to generate an informative error message for inappropriate inputs.
+This convention advertises to the user what the possible values are, and makes it easy to generate an informative error message for inappropriate inputs.
 
 ## What are some examples?
 
@@ -111,9 +111,9 @@ rank2 <- function(x,
 rank2(x, ties.method = "r")
 ```
 
-### How keep defaults short?
+### How to keep defaults short?
 
-This technique is a best used when the set of possible values is short.
+This technique is best used when the set of possible values is short.
 You can see that it's already getting unwieldy in `rank()`.
 If you have a long list of possibilities, there are two options that you could use from @sec-defaults-short-and-sweet.
 Unfortunately both approaches have major downsides:
