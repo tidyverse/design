@@ -1,0 +1,40 @@
+# Use consistent argument names {#sec-consistent-argument-names}
+
+```{r}
+#| include = FALSE
+source("common.R")
+```
+
+## What's the problem?
+
+Strive to keep your argument names consistent.
+This is particularly important to do so within your package, but where possible you should use argument names that the user is likely to have encountered elsewhere.
+
+If you see the name of a familiar argument you've encountered an argument name before it's
+
+## What are some examples?
+
+-   Many base R functions use `x` to indicate the primary vector input and `data` to indicate a primary data frame input.
+    Most tidyverse functions also adopt this convention.
+
+-   I think `install.packages()` wins the prize for most varying argument styles.
+    It includes arguments `Ncpus`, `configure.vars`, `keep_outputs`, `INSTALL_opts`, `contriburl`, and (via ... to `download.file)` `cacheOK`.
+    You can avoid this problem yourself by adopting a style guide (e.g. <https://style.tidyverse.org>).
+
+-   Base R and stringr functions all use `pattern` to refer to the regular expression pattern to work this.
+
+## How do I apply this pattern?
+
+The biggest challenge when applying this pattern is picking what family of functions you want to be consistent with.
+Base R is not 100% consistent and the package ecosystem introduces even more variability.
+Since you can't be consistent with everything you'll need to pick the most important or closely related packages and functions to be consistent with.
+
+There's an additional challenge if you want to be consistent with an argument name that doesn't match your style guide.
+A big challenge for the tidyverse is `na.rm`: is it more important to be consistent with base R and use `na.rm` or is it more important to be consistent with our snake case naming conventions and call it `na_rm`?
+Different tidyverse packages have adopted different conventions (e.g. ggplot2 uses `na.rm` and dplyr mostly uses `na_rm`).
+This is meta-inconsistency!
+
+A similar challenge arises for words that vary between UK and US English.
+Should you be consistent with the dialect language that you use in the documentation, or consistent with base R which mostly uses US English.
+ggplot2 has the particularly egregious `scale_color_grey()` which manages to combine US spelling of color with UK spelling on grey.
+This is one of my greatest regrets with ggplot2 and I'd highly recommend avoiding this problem by not using argument names that vary between UK and US English!
