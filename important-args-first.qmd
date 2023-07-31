@@ -11,7 +11,7 @@ In a function call, the most important arguments should come first.
 As a general rule, the most important arguments will be the ones that are used most often, but that's often hard to tell until your function has existed in the wild for a while.
 Fortunately, there are a few rules of thumb that can help:
 
--   If the output is a transformation of an input (e.g. `log()`, `stringr::str_replace()`, `dplyr::left_join()`) then that argument the most important.
+-   If the output is a transformation of an input (e.g. `log()`, `stringr::str_replace()`, `dplyr::left_join()`) then that argument is the most important.
 -   Other arguments that determine the type or shape of the output are typically very important.
 -   Optional arguments (i.e. arguments with a default) are the least important, and should come last.
 
