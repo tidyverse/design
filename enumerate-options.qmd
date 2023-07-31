@@ -111,7 +111,7 @@ rank2 <- function(x,
 rank2(x, ties.method = "r")
 ```
 
-### How keep defaults short?
+### How to keep defaults short?
 
 This technique is a best used when the set of possible values is short.
 You can see that it's already getting unwieldy in `rank()`.
