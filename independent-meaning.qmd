@@ -1,0 +1,40 @@
+# Argument meaning should be independent {#sec-independent-meaning}
+
+```{r}
+#| include = FALSE
+source("common.R")
+```
+
+## What's the problem?
+
+Avoid having one argument change the interpretation of another argument.
+
+This makes reading function calls harder because if the argument that changes meaning comes after the argument who's meaning is changed you need to reinterpret the rest of the call.
+
+## What are some examples?
+
+-   In `library()` the `character.only` argument changes how the `package` argument is interpreted:
+
+    ```{r}
+    #| eval = FALSE
+    ggplot2 <- "dplyr"
+
+    # Loads ggplot2
+    library(ggplot2)
+
+    # Loads dplyr
+    library(ggplot2, character.only = TRUE)
+    ```
+
+-   In `install.packages()` setting `repos = NULL` changes the interpretation of `pkgs` from being a vector of package names to a vector of file paths.
+
+-   In the base R string functions, `perl` and `fixed` change the interpretation of the `pattern` argument.
+    See @sec-pattern-engine for more details.
+
+-   In `ggplot2::geom_label()`, setting `parse = TRUE` changes the meaning of the label argument/aesthetic from being any string to be a string on unparsed R code.
+
+## How do I remediate past mistakes?
+
+## See also
+
+@sec-independent-usage discusses the related problem of when using one argument affects which other arguments can be used.

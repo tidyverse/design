@@ -1,4 +1,4 @@
-# Keep arguments independent {#sec-arguments-independent}
+# Argument usage should be independent {#sec-independent-usage}
 
 ```{r}
 #| include = FALSE
@@ -7,18 +7,21 @@ source("common.R")
 
 ## What's the problem?
 
-Avoid complex patterns of dependencies between arguments so that only certain combinations are permitted.
+Avoid complex patterns of dependencies between arguments so that only certain combinations can be used at the same time.
 
 Dependencies between arguments makes functions harder:
 
 -   It can suggest that there are many more viable combination of inputs than actually exist and those unnecessary possibilities still occupy head space.
     You have to learn and the remember the set of allowed combinations, rather than them being implied by the structure of the function.
 
--   Interdependence of arguments suggests complex implementation paths which are harder to analyse and test.
-
 -   It makes documentation harder to write.
     You have to use extra words to explain exactly how combinations of arguments work together, and it's not obvious where those words should go.
     If there's an interaction between `arg_a` and `arg_b` do you document with `arg_a`, with `arg_b`, or with both?
+
+There are two exceptions to this pattern that we'll come back to in future chapters:
+
+-   @sec-mutually-exclusive: sometimes you need a pair of mutual exclusive arguments.
+-   @sec-compound-arguments: sometimes you want to provide all the data in a single argument, and other times it's useful to spread the same data across multiple arguments.
 
 ## What are some examples?
 
@@ -82,30 +85,16 @@ This lead to a function that picks from one of three different strategies depend
 Overall, this become very hard to explain in the documentation, so in forcats 0.5.0 we split `fct_lump()` into three separate functions: `fct_lump_prop()`, `fct_lump_n()`, and `fct_lump_lowfreq()`.
 This allows the function name to hint at the purpose, prevents you from supplying both `n` and `prop` through the design of the functions, and only has the `ties.method` argument where it makes sense.
 
-## Using an enumeration
+### Using an enumeration
 
-One problem with the `grepl()` interface is that the `fixed` and `perl` arguments are actually used to pick from one of three engines for matching text:
-
--   The default is POSIX 1003.2 extended regular expressions.
--   `perl = TRUE` uses Perl-style regular expressions.
--   `fixed = TRUE` uses fixed matching.
-
-This makes it more clear why using `perl = TRUE` and `fixed = TRUE` doesn't make sense: you're trying to pick two conflicting engines.
-
-An alternative interface that makes this choice more clear would be to use @sec-enumerate-options and create a new argument called something like `engine = c("POSIX", "perl", "fixed")`.
-This also has the nice feature of making it easier to extend in the future.
-
-This is more appealing than creating a separate function for each engine because there are many other functions in the same family as `grepl()`.
-If we created `grepl_fixed()`, we'd also need `gsub_fixed()`, `regexp_fixed()` etc.
-
-## Creating a details object
+### Creating a details object
 
 Generating the bins for a histogram is a surprisingly complex topic.
-`stat_bin()`, which powers `geom_histogram()`, has a total of 5 arguments that control where the bins are placed: `binwidth`, `bins`[^arguments-independent-1], `boundary`, `breaks,` and `closed`. They have a complex set of interdependencies, which have a choose your own adventure feel.
+`stat_bin()`, which powers `geom_histogram()`, has a total of 5 arguments that control where the bins are placed: `binwidth`, `bins`[^independent-usage-1], `boundary`, `breaks,` and `closed`. They have a complex set of interdependencies, which have a choose your own adventure feel.
 Firstly you can select been `breaks`, `bins`, and `binwidths`. Then if you pick `bins` or `binwidths`, you can also optionally selected `center` or `boundary`. `binwidth` can also be a function, in which case it's called individually on each layer.
 If we're going to clean up these arguments, it would also be nice to consider how you might supply a custom breaks for each layer (this would make it easier to implement an equal area histogram, which currently requires an custom stat, as in <https://github.com/eliocamp/ggpercentogram/>).
 
-[^arguments-independent-1]: `center` is also a little problematic as an argument name, because UK English would prefer `centre`.
+[^independent-usage-1]: `center` is also a little problematic as an argument name, because UK English would prefer `centre`.
     It's probably ok here since this it's a very rarely used argument, but `middle` would be a reasonable alternative that doesn't have the same problem
 
 One way to resolve this tension would be to use a single argument that takes objects created by a helper functions, e.g.:
@@ -121,4 +110,4 @@ You could automatically wrap a bare number in `bin_width()`, but `bins = 10` see
 
 ## See also
 
-See @sec-mutually-exclusive and @sec-compound-arguments for a two exceptions where the dependency is via specific patterns of missing arguments.
+See @sec-independent-meaning the related problem of one argument affecting the interpretation of another argument.

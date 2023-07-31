@@ -9,24 +9,65 @@ source("common.R")
 <!-- 
 https://github.com/wch/r-source/blob/trunk/src/main/grep.c#L891-L1151 -->
 ```
-## Pattern engines
+This chapter explores some of the considerations designing the stringr package.
 
-`grepl()`, has three arguments that take either `FALSE` or `TRUE`: `ignore.case`, `perl`, `fixed`, which might suggest that there are 2 \^ 8 = 16 possible options.
-However, a number of combinations are not allowed:
+```{r}
+library(stringr)
+```
+
+## Function names
+
+When the base regular expression functions were written, most R users were familiar with the command line and tools like grepl.
+This made naming R's string manipulation functions after these tools seem natural.
+When I started work on stringr, the majority of R users were not familiar with linux or the command line, so it made more sense to start afresh.
+
+I think there were successes and failures here.
+On the whole, I think `str_replace_all()`, `str_locate()`, and `str_detect()` are easier to remember than `gsub()`, `regexpr()`, and `grepl()`.
+However, it's harder to remember what makes `str_subset()` and `str_which()` different.
+If I was to do stringr again, I would make more of an effort to distinguish between functions that operated on individual matches and individual strings as `str_locate()` and `str_which()` seem like their names should be more closely related as `str_locate()` returns the location of a match within each string in the vector, and `str_subset()` returns the matching locations within a vector.
+
+## Argument order and names
+
+Base R string functions mostly have `pattern` as the first argument, with the chief exception being `strsplit()`.
+stringr functions always have `string` as the first argument.
+
+I regret using `string`; I now think `x` would be a more appropriate name.
+
+## Selecting a pattern engine {#sec-pattern-engine}
+
+`grepl()`, has three arguments that take either `FALSE` or `TRUE`: `ignore.case`, `perl`, `fixed`, which might suggest that there are 2 \^ 3 = 8 possible options.
+But `fixed = TRUE` overrides `perl = TRUE`, and `ignore.case = TRUE` only works if `fixed = FALSE` so there are only 5 valid combinations.
 
 ```{r}
 x <- grepl("a", letters, fixed = TRUE, ignore.case = TRUE)
 x <- grepl("a", letters, fixed = TRUE, perl = TRUE)
 ```
 
-The other problem is that `ignore.case` only works with two of the three engines: POSIX and perl.
-This is hard to remedy without creating a completely new matching engine for fixed case, which is particularly hard because different languages have different rules for case.
+It's easier to understand `fixed` and `perl` once you realise their combination is used to pick from one of three engines for matching text:
+
+-   The default is POSIX 1003.2 extended regular expressions.
+-   `perl = TRUE` uses Perl-style regular expressions.
+-   `fixed = TRUE` uses fixed matching.
+
+This makes it clear why `perl = TRUE` and `fixed = TRUE` isn't permitted: you're trying to pick two conflicting engines.
+
+An alternative interface that makes this choice more clear would be to use @sec-enumerate-options and create a new argument called something like `engine = c("POSIX", "perl", "fixed")`.
+This also has the nice feature of making it easier to extend in the future.
+That might look something like this:
+
+```{r}
+#| eval = FALSE
+grepl(pattern, string, engine = "regex")
+grepl(pattern, string, engine = "fixed")
+grepl(pattern, string, engine = "perl")
+```
+
+But stringr takes a different approach, because of a problem hinted at in `grepl()` and friends: `ignore.case` only works with two of the three engines: POSIX and perl.
+Additionally, having an `engine` argument that affects the meaning of the `pattern` argument is a little unfortunate --- that means you have to read the call until you see the `engine` argument before you can understand precisely what the `pattern` means.
 
 stringr takes a different approach, encoding the engine as an attribute of the pattern:
 
 ```{r}
-library(stringr)
-
 x <- str_detect(letters, "a")
 # short for:
 x <- str_detect(letters, regex("a"))
@@ -35,24 +76,44 @@ x <- str_detect(letters, regex("a"))
 x <- str_detect(letters, regex("a", ignore_case = TRUE))
 ```
 
-This has the advantage that each engine can take different arguments, but has the disadvantage that it's harder to know that these options exist because you have to travel at least another level in the documentation.
+This has the advantage that each engine can take different arguments.
+In base R, the only argument of this nature of `ignore.case`, but stringr's `regex()` has arguments like `multiline`, `comments`, and `dotall` which change how some components of the pattern are matched.
 
-An alternative approach would be to have a separate engine argument:
-
-```{r}
-#| eval = FALSE
-x <- str_detect(letters, "a", engine = regex())
-x <- str_detect(letters, "a", engine = fixed())
-x <- str_detect(letters, "a", engine = coll())
-```
-
-This approach is a bit more discoverable (because there's clearly another argument that affects the pattern), but it's slightly less general, because of the `boundary()` engine, which doesn't match patterns but boundaries:
+Using an `engine` argument also wouldn't work in stringr because of the `boundary()` engine which rather than matching specific patterns uses matches based on boundaries between things like letters or words or sentences.
 
 ```{r}
 #| eval = FALSE
-x <- str_detect(letters, boundary("word"))
-# Seems confusing: now you can omit the pattern argument?
-x <- str_detect(letters, engine = boundary("word"))
+str_view("This is a sentence.", boundary("word"))
+str_view("This is a sentence.", boundary("sentence"))
 ```
 
-It would also mean that you had an argument `engine`, that affected how another argument, `pattern`, was interpreted, so it would repeat the problem in a slightly different form.
+This is more appealing than creating a separate function for each engine because there are many other functions in the same family as `grepl()`.
+If we created `grepl_fixed()`, we'd also need `gsub_fixed()`, `regexp_fixed()` etc.
+
+## `str_flatten()`
+
+`str_flatten()` was a relatively recent addition to stringr.
+It took me a long time to realise that one of the challenges of understanding `paste()` was that depending on the presence or absence of the `collapse` argument it could either transform a string (i.e. return something the same length) or summarise a string (i.e. always return a single string).
+
+Once `str_flatten()` existed it become more clear that it would be useful to have `str_flatten_comma()` which made it easier to use the Oxford comma (which seems to be something that's only needed for English, and ironically the Oxford comma is more common in US English than UK English).
+
+## Recycling rules
+
+stringr implements recycling rules so that you can either supply a vector of strings or a vector of patterns:
+
+```{r}
+alphabet <- str_flatten(letters, collapse = "")
+vowels <- c("a", "e", "i", "o", "u")
+grepl(vowels, alphabet)
+str_detect(alphabet, vowels)
+```
+
+On the whole I regret this.
+It's generally not that useful (since you typically have more than one string, not more than one pattern), most people don't use it, and now it feels overly clever.
+
+## Redundant functions
+
+There are a couple of stringr functions that were very useful at the time, but are now less important.
+
+-   `nchar(NA)` used to return 2, and `nchar(factor("abc"))` used to return 1. `str_length()` fixed both of these problems, but those fixes also migrated to base R, leaving `str_length()` as less useful.
+-   `paste0()` did not exist so `str_c()` was very useful. But now `str_c()` primarily only useful for its recycling logic.

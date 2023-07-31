@@ -13,7 +13,7 @@ A function's interface describes how, independent of its internal implementation
 
 -   @sec-important-args-first: Required arguments should come before optional arguments.
 
--   @sec-arguments-independent: Make arguments as orthogonal as possible.
+-   @sec-independent-usage: Make arguments as orthogonal as possible.
     Avoid complex interdependencies.
 
 #### Default values

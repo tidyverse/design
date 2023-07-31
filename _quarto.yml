@@ -46,12 +46,16 @@ book:
       - dots-prefix.qmd
       - dots-inspect.qmd
       - cs-mapply-pmap.qmd
-      - arguments-independent.qmd
+      - cs-setNames.qmd
+    
+    - part: Independent arguments
+      chapters:
+      - independent-usage.qmd
+      - independent-meaning.qmd
       - mutually-exclusive-arguments.qmd
       - compound-arguments.qmd
-      - cs-setNames.qmd
       - cs-stringr.qmd
-    
+      
     - part: Outputs
       chapters: 
       - out-multi.qmd
@@ -72,7 +76,6 @@ book:
       chapters: 
       - err-call.qmd
       - err-constructor.qmd
-    
     
   appendices:
     - glossary.qmd
