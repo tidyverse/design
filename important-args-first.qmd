@@ -38,7 +38,7 @@ The vast majority of functions get this right, so we'll pick on a few examples w
 
 -   ggplot2 functions work by creating an object that is then added on to a plot, so the plot, which is really the most important argument, is not obvious at all.
     ggplot2 works this way in part because it was written before the pipe was discovered, and the best way I came up to define plots from left to right was to rely on `+` (so-called operator overloading).
-    As an interesting historical fact, ggplot (the precursor to ggplot2) actually works great with the pipe, and a couple of years ago I bought it back to life as [ggplot1](https://github.com/hadley/ggplot1).
+    As an interesting historical fact, ggplot (the precursor to ggplot2) actually works great with the pipe, and a couple of years ago I brought it back to life as [ggplot1](https://github.com/hadley/ggplot1).
 
 ## How do I remediate past mistakes?
 
