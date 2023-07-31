@@ -43,7 +43,7 @@ The vast majority of functions get this right, so we'll pick on a few examples w
 ## How do I remediate past mistakes?
 
 Generally, it is not possible to change the order of the first few arguments because it will break existing code (since these are the arguments that are mostly likely to be used unnamed).
-This means that the only real solution is to dperecate the entire function and replace it with a new one.
+This means that the only real solution is to deprecate the entire function and replace it with a new one.
 Because this is invasive to the user, it's best to do sparingly: if the mistake is minor, you're better off waiting until you've collected other problems before fixing it.
 For example, take `tidyr::gather()`.
 It has a number of problems with its design, including the argument order, that makes it harder to use.
