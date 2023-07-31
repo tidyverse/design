@@ -98,3 +98,5 @@ my_fun <- function(x, y, opts = my_fun_opts(), opt1 = deprecated(), opt2 = depre
 Then in a future release you can remove the old arguments.
 
 ## See also
+
+-   If the optional arguments have complex dependencies, you might need more than one helper function. See @sec-geom-histogram for an example.

@@ -89,7 +89,7 @@ This allows the function name to hint at the purpose, prevents you from supplyin
 
 ### Using an enumeration
 
-### Creating a details object
+### Creating a details object {#sec-geom-histogram}
 
 Generating the bins for a histogram is a surprisingly complex topic.
 `stat_bin()`, which powers `geom_histogram()`, has a total of 5 arguments that control where the bins are placed: `binwidth`, `bins`[^independent-usage-1], `boundary`, `breaks,` and `closed`. They have a complex set of interdependencies, which have a choose your own adventure feel.
@@ -112,4 +112,5 @@ You could automatically wrap a bare number in `bin_width()`, but `bins = 10` see
 
 ## See also
 
-See @sec-independent-meaning the related problem of one argument affecting the interpretation of another argument.
+-   @sec-independent-meaning the related problem of one argument affecting the interpretation of another argument.
+-   @sec-argument-clutter is about the general problem of moving unimportant arguments to another function.
