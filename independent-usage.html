@@ -465,7 +465,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
 <li><a href="#sec-cs-fct-lump" id="toc-sec-cs-fct-lump" class="nav-link" data-scroll-target="#sec-cs-fct-lump"><span class="header-section-number">22.3.1</span> Splitting into multiple functions</a></li>
   <li><a href="#using-an-enumeration" id="toc-using-an-enumeration" class="nav-link" data-scroll-target="#using-an-enumeration"><span class="header-section-number">22.3.2</span> Using an enumeration</a></li>
-  <li><a href="#creating-a-details-object" id="toc-creating-a-details-object" class="nav-link" data-scroll-target="#creating-a-details-object"><span class="header-section-number">22.3.3</span> Creating a details object</a></li>
+  <li><a href="#sec-geom-histogram" id="toc-sec-geom-histogram" class="nav-link" data-scroll-target="#sec-geom-histogram"><span class="header-section-number">22.3.3</span> Creating a details object</a></li>
   </ul>
 </li>
   <li><a href="#see-also" id="toc-see-also" class="nav-link" data-scroll-target="#see-also"><span class="header-section-number">22.4</span> See also</a></li>
@@ -540,7 +540,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Overall, this become very hard to explain in the documentation, so in forcats 0.5.0 we split <code>fct_lump()</code> into three separate functions: <code>fct_lump_prop()</code>, <code>fct_lump_n()</code>, and <code>fct_lump_lowfreq()</code>. This allows the function name to hint at the purpose, prevents you from supplying both <code>n</code> and <code>prop</code> through the design of the functions, and only has the <code>ties.method</code> argument where it makes sense.</p>
 </section><section id="using-an-enumeration" class="level3" data-number="22.3.2"><h3 data-number="22.3.2" class="anchored" data-anchor-id="using-an-enumeration">
 <span class="header-section-number">22.3.2</span> Using an enumeration</h3>
-</section><section id="creating-a-details-object" class="level3" data-number="22.3.3"><h3 data-number="22.3.3" class="anchored" data-anchor-id="creating-a-details-object">
+</section><section id="sec-geom-histogram" class="level3" data-number="22.3.3"><h3 data-number="22.3.3" class="anchored" data-anchor-id="sec-geom-histogram">
 <span class="header-section-number">22.3.3</span> Creating a details object</h3>
 <p>Generating the bins for a histogram is a surprisingly complex topic. <code>stat_bin()</code>, which powers <code>geom_histogram()</code>, has a total of 5 arguments that control where the bins are placed: <code>binwidth</code>, <code>bins</code><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, <code>boundary</code>, <code>breaks,</code> and <code>closed</code>. They have a complex set of interdependencies, which have a choose your own adventure feel. Firstly you can select been <code>breaks</code>, <code>bins</code>, and <code>binwidths</code>. Then if you pick <code>bins</code> or <code>binwidths</code>, you can also optionally selected <code>center</code> or <code>boundary</code>. <code>binwidth</code> can also be a function, in which case it’s called individually on each layer. If we’re going to clean up these arguments, it would also be nice to consider how you might supply a custom breaks for each layer (this would make it easier to implement an equal area histogram, which currently requires an custom stat, as in <a href="https://github.com/eliocamp/ggpercentogram/" class="uri">https://github.com/eliocamp/ggpercentogram/</a>).</p>
 <p>One way to resolve this tension would be to use a single argument that takes objects created by a helper functions, e.g.:</p>
@@ -553,7 +553,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This is a bit verbose for the most common case where you just want to set the width of the bins. You could automatically wrap a bare number in <code>bin_width()</code>, but <code>bins = 10</code> seems more likely to imply</p>
 </section></section><section id="see-also" class="level2" data-number="22.4"><h2 data-number="22.4" class="anchored" data-anchor-id="see-also">
 <span class="header-section-number">22.4</span> See also</h2>
-<p>See <a href="independent-meaning.html"><span>Chapter&nbsp;23</span></a> the related problem of one argument affecting the interpretation of another argument.</p>
+<ul>
+<li>
+<a href="independent-meaning.html"><span>Chapter&nbsp;23</span></a> the related problem of one argument affecting the interpretation of another argument.</li>
+<li>
+<a href="argument-clutter.html"><span>Chapter&nbsp;11</span></a> is about the general problem of moving unimportant arguments to another function.</li>
+</ul>
 
 
 </section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
