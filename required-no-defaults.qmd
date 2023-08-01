@@ -14,6 +14,29 @@ This simple convention ensures that you can tell which arguments are optional an
 Otherwise you need to rely on a careful reading of documentation.
 Additionally, if you don't follow this convention and want to provide helpful error messages, you'll need to implement them yourself rather than relying on R's defaults.
 
+::: {.callout-note collapse="true"}
+## When should an argument be required?
+
+This pattern raises the question of when an argument should be required, and when you should provide a default.
+I think this usually seems "obvious" but I wanted to discuss a few functions that might get it wrong:
+
+-   `rnorm()` and `runif()` are interesting cases as they set default values for `mean`/`sd` and `min`/`max`.
+    Giving them defaults makes them feels like less important, and inconsistent with the other RNGs which generally require that you specify the parameters of the distribution.
+    But both the normal and uniform distributions have very high-profile "standard" versions that make sense as defaults.
+
+-   You can use `predict()` directly on a model and it gives predictions for the data used to fit the model:
+
+    ```{r}
+    mod <- lm(Employed ~ ., data = longley)
+    head(predict(mod))
+    ```
+
+    In my opinion, `predict()` should always require a dataset because prediction is primary about applying the model to new situations.
+
+-   `stringr::str_sub()` has default values for `start` and `end`.
+    This allows you to do clever things like `str_sub(x, end = 3)` or `str_sub(x, -3)` to select the first or last three characters, but I now believe that leads to code that is harder to read, and it would have been better to make `start` and `end` required arguments.
+:::
+
 ## What are some examples?
 
 This is a straightforward convention that the vast majority of functions follow.
