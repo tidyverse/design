@@ -25,6 +25,9 @@ Having a large number of less important options makes it harder to see the the m
 -   `readr::locale()` itself has a `date_names` argument that's paired with `readr::date_names()` and `readr::date_names_lang()` helpers.
     You typically use it by supplying a two letter locale name (which `date_names_lang()` uses to look up common languages), but if your language isn't supported you can use `readr::date_names()` to individually supply full and abbreviate month and day of week names.
 
+-   On the other hand, `readr::read_delim()` also has a lot of options that control the specifics of parsing that you don't usually need (e.g. `escape_backslash`, `escape_double`, `quoted_na`, `comment`, `trim_ws)`.
+    These make the function specifications very long.
+
 -   Somewhat related is the engine specification used by readr, e.g. `regex(".", multline = TRUE)`, as discussed in @sec-pattern-engine.
 
 ## How do I use this pattern?

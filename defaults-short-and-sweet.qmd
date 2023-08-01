@@ -29,10 +29,6 @@ This keeps the function specification focussed on the big picture (i.e. what are
 
 The following examples, drawn from base R, illustrate some functions that don't follow this pattern:
 
--   `sample.int()` uses a complicated rule to determine whether or not to use a faster hash based method that's only applicable in some circumstances: `useHash = (!replace && is.null(prob) && size <= n/2 && n > 1e+07))`
-
--   `exists()`, which figures out if a variable exists in a given environment, uses a complex default to determine which environment to look in if not specifically provided: `envir = (if (missing(frame)) as.environment(where) else sys.frame(frame))` (NB: `?exists` cheats and hides the long default in the documentation.)
-
 -   `reshape()` has a very long default argument: the `split` argument is one of two possible lists depending on the value of the `sep` argument:
 
     ```{r}
@@ -47,109 +43,192 @@ The following examples, drawn from base R, illustrate some functions that don't 
     ) {}
     ```
 
+-   `sample.int()` uses a complicated rule to determine whether or not to use a faster hash based method that's only applicable in some circumstances: `useHash = (!replace && is.null(prob) && size <= n/2 && n > 1e+07))`
+
+-   `exists()`, which figures out if a variable exists in a given environment, uses a complex default to determine which environment to look in if not specifically provided: `envir = (if (missing(frame)) as.environment(where) else sys.frame(frame))`.
+    (NB: `?exists` cheats and hides the long default in the documentation.)
+
 ## How do I use it?
 
-There are three approaches:
+So what should you do if a default requires some complex calculation?
+Our recommended approach is to use a default of `NULL` and then the actual default inside the function.
+This is the most common pattern and should be instantly recognisable to users.
+If this approach doesn't work for your case, there are three alternatives which each come with drawbacks:
 
--   Set the default value to `NULL` and calculate the default only when the argument is `NULL`.
-    Providing a default of `NULL` signals that the argument is optional (@sec-required-no-defaults) but that the default requires some calculation.
+-   If the default is used in multiple places, compute it with an exported function that becomes the default.
 
--   If the calculation is complex, and the user might find it useful in other scenarios, compute it with an exported function that documents exactly what happens.
+-   If `NULL` is a meaningful input to your function use a "sentinel" object instead.
 
--   If `NULL` is meaningful, so you can't use the first approach, use a "sentinel" object instead.
+-   Finally, it's possible to not set a default value (making it look required) and use `missing()`.
+
+These techniques are discussed in the following sections.
 
 ### `NULL` default {#sec-arg-short-null}
 
-The most common approach is to use `NULL` as a sentinel value that indicates that the argument is optional, but non-trivial.
-This pattern is made substantially more elegant with the infix `%||%` operator.
-You can either get it by importing it from rlang, or copying and pasting it in to your `utils.R`:
+-    Using `NULL` signals that the argument is optional (@sec-required-no-defaults) but the default requires some calculation.
+
+The most common approach to handling complex defaults to use `NULL`.
+For example, if we were to use this approach in`sample.int()`, it might look something like this:
+
+```{r}
+sample.int <- function (n, size = n, replace = FALSE, prob = NULL, useHash = NULL)  {
+  if (is.null(useHash)) {
+    useHash <- n > 1e+07 && !replace && is.null(prob) && size <= n/2
+  }
+}
+```
+
+This pattern is made more elegant with the infix `%||%` operator which you use either by importing it from rlang or copying and pasting it in to your `utils.R`:
 
 ```{r}
 `%||%` <- function(x, y) if (is.null(x)) y else x
+
+sample.int <- function (n, size = n, replace = FALSE, prob = NULL, useHash = NULL)  {
+  useHash <- useHash %||% n > 1e+07 && !replace && is.null(prob) && size <= n/2
+}
 ```
 
-This allows you to write code like this (extracted from `ggplot2::geom_bar()`).
-It computes the width by first looking at the data, then in the parameters, finally falling back to computing it from the resolution of the `x` variable:
+`%||%` is particularly well suited to arguments where the default value is found through a cascading system of fallbacks.
+For example, this code from `ggplot2::geom_bar()` finds the width by first looking at the data, then in the parameters, finally falling back to computing it from the resolution of the `x` variable:
 
 ```{r}
 #| eval = FALSE
 width <- data$width %||% params$width %||% (resolution(data$x, FALSE) * 0.9)
 ```
 
-Or this code from the colourbar legend: it finds the horizontal justification by first looking in the guide settings, then in the specific theme setting, then then title element, finally using `0` if nothing else is set:
-
-```{r}
-#| eval = FALSE
-title.hjust <- guide$title.hjust %||% 
-  theme$legend.title.align %||% 
-  title.theme$hjust %||% 
-  0
-```
-
-As you can see, `%||%` is particularly well suited to arguments where the default value is found through a cascading system of fallbacks.
-
 Don't use `%||%` for more complex examples where the individual clauses can't fit on their own line.
-For example in `reshape()` I would set `split = NULL` and then write:
+For example in `reshape()`, I wouldn't write:
 
 ```{r}
-#| eval = FALSE
-if (is.null(split)) {
-  if (sep == "") {
-    split <- list(regexp = "[A-Za-z][0-9]", include = TRUE)
+#| eval: false
+reshape <- function(..., sep = ".", split = NULL) {
+  split <- split %||% if (sep == "") {
+    list(regexp = "[A-Za-z][0-9]", include = TRUE)
   } else {
-    split <- list(regexp = sep, include = FALSE, fixed = TRUE)
-  }
+    list(regexp = sep, include = FALSE, fixed = TRUE)
+  }  
+  ...
 }
 ```
 
-### Helper function
+I would instead use `is.null()` and assign `split` inside each branch:
 
-For more complicated cases, you'll probably want to pull the code that computes the default out into a separate function, and in many cases you'll want to export (and document) the function.
+```{r}
+#| eval: false
+reshape <- function(..., sep = ".", split = NULL) {
+  if (is.null(split)) {
+    if (sep == "") {
+      split <- list(regexp = "[A-Za-z][0-9]", include = TRUE)
+    } else {
+      split <- list(regexp = sep, include = FALSE, fixed = TRUE)
+    }
+  }
+  ...
+}
+```
 
-A good example of this pattern is `readr::show_progress()`: it's used in every `read_` function in readr and it's sufficiently complicated that you don't want to copy and paste it between functions.
-It's also nice to document it in its own file, rather than cluttering up file reading functions with incidental details.
+Or alternatively you might pull the code out into a helper function:
+
+```{r}
+split_default <- function(sep = ".") {
+ if (sep == "") {
+    list(regexp = "[A-Za-z][0-9]", include = TRUE)
+  } else {
+    list(regexp = sep, include = FALSE, fixed = TRUE)
+  }
+}
+
+reshape <- function(..., sep = ".", split = NULL) {
+  split <- split %||% split_default(sep)
+  ...
+}
+```
+
+That makes it very clear exactly which other arguments the default for `split` depends on.
+
+### Exported helper function
+
+If you have created a helper function for your own use, might consider use it as the default:
+
+```{r}
+reshape <- function(..., sep = ".", split = split_default(sep)) {
+  ...
+}
+```
+
+The problem with using an internal function as the default is that the user can't easily run this function to see what it does, making the default a bit magical (@sec-def-magical).
+So we recommend that if you want to do this you export and document that function.
+This is the main downside of this approach: you have to think carefully about the name of the function because it's user facing.
+
+A good example of this pattern is `readr::show_progress()`: it's used in every `read_` function in readr to determine whether or not a progress bar should be shown.
+Because it has a relatively complex explanation, it's nice to be able to document it in its own file, rather than cluttering up file reading functions with incidental details.
 
 ### Sentinel value {#sec-args-default-sentinel}
 
-Sometimes a default argument has a complex calculation that you don't want to include in arguments list.
-You'd normally use `NULL` to indicate that it's calculated by default, but `NULL` is a meaningful option.
-In that case, you can use a **sentinel** object.
+Sometimes you'd like to use the `NULL` approach defined above, but `NULL` already has a specific meaning that you want to preserve.
+For example, this comes up in ggplot2 scales functions which allow you to set the `name` of the scale which is displayed on the axis or legend.
+The default value should just preserve whatever existing label is present so that if you're providing a scale to customise (e.g.) the breaks or labels, you don't need to re-type the scale name.
+However, `NULL` is also a meaningful value because it means eliminate the scale label altogether[^defaults-short-and-sweet-1].
+For that reason the default value for `name` is `ggplot2::waiver()` a ggplot2-specific convention that means "inherit from the existing value".
+
+[^defaults-short-and-sweet-1]: Unlike `name = ""` which doesn't show the label, but preserves the space where it would appear (sometimes useful for aligning multiple plots), `name = NULL` also eliminates the space normally allocated for the label.
+
+If you look at `ggplot2::waiver()` you'll see it's just a very lightweight S3 class[^defaults-short-and-sweet-2]:
+
+[^defaults-short-and-sweet-2]: If I was to write this code today I'd use `ggplot2_waiver` as the class name.
 
 ```{r}
-str(ggplot2::waiver())
-
-str(purrr::done())
-
-str(rlang::zap())
+ggplot2::waiver
 ```
 
-Take `purrr::reduce()`: it has an optional details argument called `init`.
-When supplied, it serves as the initial value for the computation.
-But any value (including `NULL`) can a valid value.
-And using a sentinel value for this one case seemed like overkill.
+And then ggplot2 also provides the internal `is.waive()`[^defaults-short-and-sweet-3] function which allows to work with it in the same way we might work with a `NULL`:
+
+[^defaults-short-and-sweet-3]: If I wrote this code today, I'd call it `is_waiver()`.
+
+```{r}
+is.waive <- function(x) {
+  inherits(x, "waiver")
+}
+```
+
+### No default
+
+There's one final technique that comes with substantial caveats: the use of `missing()`.
+The major drawback to this technique is that it makes it look like an argument is required (in direct conflict with @sec-required-no-defaults).
+It works something like this:
+
+```{r}
+reshape <- function(..., sep = ".", split) {
+  if (missing(split)) {
+    split <- split_default(sep)
+  }
+  ...
+}
+```
+
+I mention this technique because we used it in `purrr::reduce()` for the `.init` argument.
+This argument is mostly optional:
+
+```{r}
+library(purrr)
+reduce(letters[1:3], paste)
+reduce(letters[1:2], paste)
+reduce(letters[1], paste)
+```
+
+But it is required when `.x` (the first argument) is empty, and it's good practice to supply it when wrapping `reduce()` inside another function because it ensures that you get the right type of output for all inputs:
+
+```{r}
+#| error: true
+reduce(letters[0], paste)
+reduce(letters[0], paste, .init = "")
+```
+
+`NULL` is a potentially valid option for `.init`, so we can't use the most common approach.
+And this is for a relatively rarely used function, so it didn't seem to be worth the effort to create a sentinel for this specific value.
+And `.init` is "semi" required so this seemed to be the least worst solution to the problem.
 
 ## How do I remediate existing problems?
 
-If you have a function with a long default, you can use any of the three approaches above to remediate it.
-As long as you don't accidentally change the default value, this does not affect the function interface.
-Make sure you have a test for the default operation of the function before embarking on this change.
-
-```{r}
-# BEFORE
-sample.int <- function(n, 
-                       size = n, 
-                       replace = FALSE, 
-                       prob = NULL, 
-                       useHash = (!replace && is.null(prob) && size <= n/2 && n > 1e+07)
-                       ) {
-  
-  ...
-}
-
-# AFTER
-sample.int <- function(n, size = n, replace = FALSE, prob = NULL, useHash = NULL) {
-  useHash <- useHash %||% (!replace && is.null(prob) && size <= n/2 && n > 1e+07)
-
-  ...
-}
-```
+If you have a function with a long default, you can remediate it with any of the approaches above to.
+It is not a breaking change as long as it change the default value, so make sure you have a test for the default operation of the function before embarking on this change.
