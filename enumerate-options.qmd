@@ -28,6 +28,7 @@ pkg_funs("utils") %>% funs_body_keep(has_several_ok)
 
 If the possible values of an argument are a small set of strings, set the default argument to the set of possible values, and then use `match.arg()` or `rlang::arg_match()` in the function body.
 This convention advertises to the knowledgeable user[^enumerate-options-1] what the possible values, and makes it easy to generate an informative error message for inappropriate inputs.
+This interface is often coupled with an implementation that uses `switch()`.
 
 [^enumerate-options-1]: The main downside of this technique is that many users aren't aware of this convention and that the first value of the vector will be used as a default.
 
@@ -44,13 +45,10 @@ The advertisement happens in the function specification, so you see in tool tips
 
 -   In `rank()`, you can select the `ties.method` from one of "average", "first", "last", "random", "max", or "min".
 
--   In `RSiteSearch()`, you can `restrict` results to be "functions", "vignettes", "views", or any combination of the three.
-
 ## How do I use it?
 
 To use this technique, set the default value to a character vector, where the first value is the default.
-Inside the function, use `match.arg()` or `rlang::arg_match()` which checks that the value comes from the known good set.
-This interface pattern is often coupled with an implementation that uses `switch()`.
+Inside the function, use `match.arg()` or `rlang::arg_match()` to check that the value comes from the known good set, and pick the default if none is suppled.
 
 Take `rank()`, for example.
 The heart of its implementation looks like this:
@@ -93,9 +91,9 @@ It also supports partial matching so that the following code is shorthand for `t
 rank(x, ties.method = "r")
 ```
 
-We generally believe that partial matching is a bad idea, because it saves times writing code at the expense of reading code.
-`rlang::arg_match()` is an alternative to `match.args()` that doesn't support partial matching.
-Instead it provides a helpful error message:
+We prefer to avoid partial matching because while it saves a little time writing the code, it makes reading the code less clear.
+`rlang::arg_match()` is an alternative to `match.arg()` that doesn't support partial matching.
+It instead provides a helpful error message:
 
 ```{r}
 #| error = TRUE
@@ -112,11 +110,10 @@ rank2(x, ties.method = "avarage")
 
 ### How keep defaults short?
 
-This technique is a best used when the set of possible values is short since otherwise you run the risk of dominating the function spec (violating @sec-defaults-short-and-sweet).
-If you have a long list of possibilities, there are three possible options.
-They have different strengths and weaknesses, but all lose the ability to show the set of possible values in the function spec.
+This technique is a best used when the set of possible values is short as otherwise you run the risk of dominating the function spec with this one argument (@sec-defaults-short-and-sweet).
+If you have a long list of possibilities, there are three possible solutions:
 
--   Set a single default and supply the possible values to `match.arg()`:
+-   Set a single default and supply the possible values to `match.arg()`/`arg_match()`:
 
     ```{r}
     rank2 <- function(x, ties.method = "average") {
@@ -139,17 +136,16 @@ They have different strengths and weaknesses, but all lose the ability to show t
 
     For example `stats::p.adjust()`, `stats::pairwise.prop.test()`, `stats::pairwise.t.test()`, `stats::pairwise.wilcox.test()` all use `p.adjust.method = p.adjust.methods`.
 
--   Another option[^enumerate-options-2] is to store the options in a exported named list.
+-   You can store the options in a exported named list[^enumerate-options-2].
     That has the advantage that you can advertise both the source of the values, and the defaults, and the user gets a nice auto-complete of the possible values.
 
     ```{r}
-    ties <- set_names(as.list(c("average", "first", "last", "random", "max", "min")))
+    library(rlang)
+    ties <- as.list(set_names(c("average", "first", "last", "random", "max", "min")))
 
     rank2 <- function(x, ties.method = ties$average) {
       ties.method <- arg_match(ties.method, names(ties))
     }
     ```
-
-    The primary downside is that you have to name and export this object.
 
 [^enumerate-options-2]: Thanks to Brandon Loudermilk

@@ -35,7 +35,7 @@ fun_def <- function(name, fun, pkg = NULL, highlight = NULL) {
   
   new_fun_def(
     name = name,
-    formals = formals(fun),
+    formals = as.list(formals(fun)),
     body = body(fun),
     pkg = pkg,
     highlight = highlight

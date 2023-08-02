@@ -7,32 +7,34 @@ source("common.R")
 
 ## What's the problem?
 
-If you have a large number of optional arguments that control the fine details of the operation of a function, it might be worth moving them into a separate "options" argument.
+If you have a large number of optional arguments that control the fine details of the operation of a function, it might be worth lumping them all together into a separate "options" argument created by a helper function.
 
-Having a large number of less important options makes it harder to see the the most important options.
+Having a large number of less important arguments makes it harder to see the most important.
+By moving rarely used and less important arguments to a secondary function, you can more easily draw attention to what is most important.
 
 ## What are some examples?
 
 -   A number of base R modelling functions like `loess()`, `glm()`, and `nls()` have `control` arguments that are paired with a function like `loess.control()`, `glm.control()`, and `nls.control()`.
-    These allow you to modify some rarely defaults, including the number of iterations, and the stopping criteria, and some debugging options.
+    These allow you to modify rarely used defaults, including the number of iterations, the stopping criteria, and some debugging options.
 
     `optim()` uses a less formal version of this structure --- while it has a `control` argument, it doesn't have a matching `optim.control()` helper.
     Instead, you supply a named list with components described in `?optim`.
+    A helper function is more convenient than a named list because it checks the argument names for free and gives nicer autocomplete to the user.
 
--   `readr::read_csv()` and friends take a `locale` argument with value created by `readr::locale()`.
+-   `readr::read_delim()` and friends take a `locale` argument which is paired with the `readr::locale()` helper.
     This object bundles together a bunch of options related to parsing numbers, dates, and times that vary from country to country.
 
 -   `readr::locale()` itself has a `date_names` argument that's paired with `readr::date_names()` and `readr::date_names_lang()` helpers.
-    You typically use it by supplying a two letter locale name (which `date_names_lang()` uses to look up common languages), but if your language isn't supported you can use `readr::date_names()` to individually supply full and abbreviate month and day of week names.
+    You typically use the argument by supplying a two letter locale (which `date_names_lang()` uses to look up common languages), but if your language isn't supported you can use `readr::date_names()` to individually supply full and abbreviated month and day of week names.
 
--   On the other hand, `readr::read_delim()` also has a lot of options that control the specifics of parsing that you don't usually need (e.g. `escape_backslash`, `escape_double`, `quoted_na`, `comment`, `trim_ws)`.
-    These make the function specifications very long.
+-   On the other hand, ``` readr::``read_delim``() ``` also has a lot of options that control the specifics of file parsing that you typically only need in special situations (e.g. `escape_backslash`, `escape_double`, `quoted_na`, `comment`, `trim_ws)`.
+    These make the function specifications very long .
 
 -   Somewhat related is the engine specification used by readr, e.g. `regex(".", multline = TRUE)`, as discussed in @sec-pattern-engine.
 
 ## How do I use this pattern?
 
-The simple implement is just to create an object that returns a list:
+The simplest implementation is just to write a helper function that returns a list:
 
 ```{r}
 my_fun_opts <- function(opt1 = 1, opt2 = 2) {
@@ -43,9 +45,9 @@ my_fun_opts <- function(opt1 = 1, opt2 = 2) {
 }
 ```
 
-Just this alone is nice because you can document the individual arguments, and auto-complete will remind the user what these less important options include.
+This alone is nice because you can document the individual arguments, you get name checking for free, and auto-complete will remind the user what these less important options include.
 
-It's good practice to add a class to this list so you can give more informative errors if the user supplies the wrong value:
+An optional extra is to add a unique class to the list:
 
 ```{r}
 my_fun_opts <- function(opt1 = 1, opt2 = 2) {
@@ -58,31 +60,37 @@ my_fun_opts <- function(opt1 = 1, opt2 = 2) {
   )
 }
 
-is_my_fun_opts <- function(x) {
-  inherits(x, "mypackage_my_fun_opts")
-}
+```
+
+This then allows you to create more informative error messages:
+
+```{r}
+#| error: true
 
 my_fun_opts <- function(..., opts = my_fun_opts()) {
-  if (!is_my_fun_opts(opts)) {
+  if (!inherits(opts, "mypackage_my_fun_opts")) {
     cli::cli_abort("{.arg opts} must be created by {.fun my_fun_opts}.")
   }
 }
+
+my_fun_opts(opts = 1)
 ```
+
+If you use this option in many places, you should consider pulling out the repeated code into a `check_my_fun_opts()` function.
 
 ## How do I remediate past mistakes?
 
-Typically you notice this problem after you have created too many options so you'll need to carefully remediate by introducing a new options function and paired argument, and then deprecating the old arguments.
+Typically you notice this problem only after you have created too many options so you'll need to carefully remediate by introducing a new options function and paired helper function, then deprecating the old arguments.
 For example, if your existing function looks like this:
 
 ```{r}
 my_fun <- function(x, y, opt1 = 1, opt2 = 2) {
   
 }
-
 ```
 
-Then you'll need to create a `my_fun_opts()` as above, add an `opts` argument that uses that as the default.
-This is a breaking change, so if you want to provide a gradual on-ramp to the new API, for a while you can accept both the individual options and the options object, deprecating the individual options:
+Then you'll need to create a `my_fun_opts()` as above and add an `opts` argument that uses that as the default.
+This is a breaking change, so if you want to provide a gradual on-ramp to the new API you should keep the existing arguments but deprecating them:
 
 ```{r}
 my_fun <- function(x, y, opts = my_fun_opts(), opt1 = deprecated(), opt2 = deprecated()) {
@@ -98,7 +106,7 @@ my_fun <- function(x, y, opts = my_fun_opts(), opt1 = deprecated(), opt2 = depre
 }
 ```
 
-Then in a future release you can remove the old arguments.
+Then you can remove the old arguments in a future release.
 
 ## See also
 

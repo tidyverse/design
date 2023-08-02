@@ -26,7 +26,7 @@ book:
       - call-data-details.qmd
       - function-names.qmd
         
-    - part: Scannable definitions
+    - part: Scannable specs
       chapters:
       - inputs-explicit.qmd
       - important-args-first.qmd

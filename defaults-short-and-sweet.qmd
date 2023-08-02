@@ -9,8 +9,11 @@ source("common.R")
 #| eval = FALSE,
 #| include = FALSE
 source("fun_def.R")
-funs <- c(pkg_funs("base"), pkg_funs("stats"))
+pkg_funs("base") |> keep(\(f) some(f$formals, is.null))
+pkg_funs("base") |> keep(\(f) some(f$formals, \(arg) is_call(arg) && !is_call(arg, c("c", "getOption", "c", "if", "topenv", "parent.frame"))))
 
+
+funs <- c(pkg_funs("base"), pkg_funs("stats"))
 arg_length <- function(x) map_int(x$formals, ~ nchar(expr_text(.x)))
 args <- map(funs, arg_length)
 args_max <- map_dbl(args, ~ if (length(.x) == 0) 0 else max(.x))
@@ -21,13 +24,25 @@ funs[args_max > 50] %>% discard(~ grepl("as.data.frame", .x$name, fixed = TRUE))
 ## What's the pattern?
 
 Default values should be short and sweet.
-Avoid large or complex calculations in the default values, instead using `NULL` or helper function to where more calculation is needed.
-
+Avoid large or complex calculations in the default values, instead using `NULL` or a helper function when the default requires complex calculation.
 This keeps the function specification focussed on the big picture (i.e. what are the arguments and are they required or not) rather than the details of the defaults.
 
 ## What are some examples?
 
-The following examples, drawn from base R, illustrate some functions that don't follow this pattern:
+It's common for functions to use `NULL` to mean that the argument is optional, but the computation of the default is non-trivial:
+
+-   The default `label` in `cut()` yields labels in the form `[a, b)`.
+-   The default `pattern` in `dir()` means match all files.
+-   The default `by` in `dplyr::left_join()` means join using the common variables between the two data frames (the so-called natural join).
+-   The default `mapping` in `ggplot2::geom_point()` (and friends) means use the mapping from in the overall plot.
+
+In other cases, we encapsulate default values into a function:
+
+-   readr functions use a family of functions including `readr::show_progress()`, `readr::should_show_col_types()` and `readr::should_show_lazy()` that make it easier for users to override various defaults.
+
+It's also worth looking at a couple of counter examples that come from base R:
+
+-   The default value for `by` in `seq` is `((to - from)/(length.out - 1))`.
 
 -   `reshape()` has a very long default argument: the `split` argument is one of two possible lists depending on the value of the `sep` argument:
 
@@ -43,32 +58,19 @@ The following examples, drawn from base R, illustrate some functions that don't 
     ) {}
     ```
 
--   `sample.int()` uses a complicated rule to determine whether or not to use a faster hash based method that's only applicable in some circumstances: `useHash = (!replace && is.null(prob) && size <= n/2 && n > 1e+07))`
-
--   `exists()`, which figures out if a variable exists in a given environment, uses a complex default to determine which environment to look in if not specifically provided: `envir = (if (missing(frame)) as.environment(where) else sys.frame(frame))`.
-    (NB: `?exists` cheats and hides the long default in the documentation.)
+-   `sample.int()` uses a complicated rule to determine whether or not to use a faster hash based method that's only applicable in some circumstances: `useHash = (!replace && is.null(prob) && size <= n/2 && n > 1e+07))`.
 
 ## How do I use it?
 
 So what should you do if a default requires some complex calculation?
-Our recommended approach is to use a default of `NULL` and then the actual default inside the function.
-This is the most common pattern and should be instantly recognisable to users.
-If this approach doesn't work for your case, there are three alternatives which each come with drawbacks:
+We have two recommended approaches: using `NULL` or creating a helper function.
+I'll also show you two other alternatives which we don't generally recommend but you'll see in a handful of places in the tidyverse, and can be useful in limited circumstances.
 
--   If the default is used in multiple places, compute it with an exported function that becomes the default.
+### `NULL` default
 
--   If `NULL` is a meaningful input to your function use a "sentinel" object instead.
-
--   Finally, it's possible to not set a default value (making it look required) and use `missing()`.
-
-These techniques are discussed in the following sections.
-
-### `NULL` default {#sec-arg-short-null}
-
--    Using `NULL` signals that the argument is optional (@sec-required-no-defaults) but the default requires some calculation.
-
-The most common approach to handling complex defaults to use `NULL`.
-For example, if we were to use this approach in`sample.int()`, it might look something like this:
+The simplest, and most common, way to indicate that an argument is optional, but has a complex default is to use `NULL` as the default.
+Then in the body of the function you perform the actual calculation only if the is `NULL`.
+For example, if we were to use this approach in `sample.int()`, it might look something like this:
 
 ```{r}
 sample.int <- function (n, size = n, replace = FALSE, prob = NULL, useHash = NULL)  {
@@ -78,7 +80,7 @@ sample.int <- function (n, size = n, replace = FALSE, prob = NULL, useHash = NUL
 }
 ```
 
-This pattern is made more elegant with the infix `%||%` operator which you use either by importing it from rlang or copying and pasting it in to your `utils.R`:
+This pattern is made more elegant with the infix `%||%` operator which you can use by importing it from rlang or copying and pasting it in to your `utils.R`:
 
 ```{r}
 `%||%` <- function(x, y) if (is.null(x)) y else x
@@ -163,7 +165,12 @@ This is the main downside of this approach: you have to think carefully about th
 A good example of this pattern is `readr::show_progress()`: it's used in every `read_` function in readr to determine whether or not a progress bar should be shown.
 Because it has a relatively complex explanation, it's nice to be able to document it in its own file, rather than cluttering up file reading functions with incidental details.
 
-### Sentinel value {#sec-args-default-sentinel}
+### Alternatives
+
+If the above techniques don't work for your case there are two other alternatives that we don't generally recommend but can be useful in limited situations.
+
+::: {.callout-note collapse="true"}
+#### Sentinel value {#sec-args-default-sentinel}
 
 Sometimes you'd like to use the `NULL` approach defined above, but `NULL` already has a specific meaning that you want to preserve.
 For example, this comes up in ggplot2 scales functions which allow you to set the `name` of the scale which is displayed on the axis or legend.
@@ -171,11 +178,7 @@ The default value should just preserve whatever existing label is present so tha
 However, `NULL` is also a meaningful value because it means eliminate the scale label altogether[^defaults-short-and-sweet-1].
 For that reason the default value for `name` is `ggplot2::waiver()` a ggplot2-specific convention that means "inherit from the existing value".
 
-[^defaults-short-and-sweet-1]: Unlike `name = ""` which doesn't show the label, but preserves the space where it would appear (sometimes useful for aligning multiple plots), `name = NULL` also eliminates the space normally allocated for the label.
-
 If you look at `ggplot2::waiver()` you'll see it's just a very lightweight S3 class[^defaults-short-and-sweet-2]:
-
-[^defaults-short-and-sweet-2]: If I was to write this code today I'd use `ggplot2_waiver` as the class name.
 
 ```{r}
 ggplot2::waiver
@@ -183,19 +186,25 @@ ggplot2::waiver
 
 And then ggplot2 also provides the internal `is.waive()`[^defaults-short-and-sweet-3] function which allows to work with it in the same way we might work with a `NULL`:
 
-[^defaults-short-and-sweet-3]: If I wrote this code today, I'd call it `is_waiver()`.
-
 ```{r}
 is.waive <- function(x) {
   inherits(x, "waiver")
 }
 ```
 
-### No default
+The primary downside of this technique is that it requires substantial infrastructure to set up, so it's only really worth it for very important functions or if you're going to use it in multiple places.
+:::
 
-There's one final technique that comes with substantial caveats: the use of `missing()`.
-The major drawback to this technique is that it makes it look like an argument is required (in direct conflict with @sec-required-no-defaults).
-It works something like this:
+[^defaults-short-and-sweet-1]: Unlike `name = ""` which doesn't show the label, but preserves the space where it would appear (sometimes useful for aligning multiple plots), `name = NULL` also eliminates the space normally allocated for the label.
+
+[^defaults-short-and-sweet-2]: If I was to write this code today I'd use `ggplot2_waiver` as the class name.
+
+[^defaults-short-and-sweet-3]: If I wrote this code today, I'd call it `is_waiver()`.
+
+::: {.callout-note collapse="true"}
+#### No default
+
+The final alternative is to condition on the absence of an argument using `missing().` It works something like this:
 
 ```{r}
 reshape <- function(..., sep = ".", split) {
@@ -224,11 +233,19 @@ reduce(letters[0], paste)
 reduce(letters[0], paste, .init = "")
 ```
 
-`NULL` is a potentially valid option for `.init`, so we can't use the most common approach.
-And this is for a relatively rarely used function, so it didn't seem to be worth the effort to create a sentinel for this specific value.
-And `.init` is "semi" required so this seemed to be the least worst solution to the problem.
+Why use this approach?
+`NULL` is a potentially valid option for `.init`, so we can't use that approach.
+And we only need it for a single function, that's not terribly important, so creating a sentinel didn't seem to worth it.
+`.init` is "semi" required so this seemed to be the least worst solution to the problem.
+
+The major drawback to this technique is that it makes it look like an argument is required (in direct conflict with @sec-required-no-defaults).
+:::
 
 ## How do I remediate existing problems?
 
-If you have a function with a long default, you can remediate it with any of the approaches above to.
-It is not a breaking change as long as it change the default value, so make sure you have a test for the default operation of the function before embarking on this change.
+If you have a function with a long default, you can remediate it with any of the approaches.
+It won't be a breaking change unless you accidentally change the computation of the default, so make sure you have a test for that before you begin.
+
+## See also
+
+-   See @sec-argument-clutter for a tecnhnique to simplify your function spec if its long because it has many less important optional arguments.

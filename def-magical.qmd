@@ -129,16 +129,3 @@ This problem is generally easy to avoid for new functions:
 If you have a made a mistake in an older function you can remediate it by using a `NULL` default, as described in @sec-defaults-short-and-sweet).
 If the problem is caused by an unexported function, you can also choose to document and export it.
 Remediating this problem shouldn't break existing code, because it expands the function interface: all previous code will continue to work, and the function will also work if the argument is passed `NULL` input (which probably didn't previously).
-
-For functions like `data.frame()` where `NULL` is already a permissible value, you'll need to use a sentinel object, as described in @sec-args-default-sentinel.
-
-```{r}
-sentinel <- function() structure(list(), class = "sentinel")
-is_sentinel <- function(x) inherits(x, "sentinel")
-
-data.frame_better <- function(..., row.names = sentinel()) {
-  if (is_sentinel(row.names)) {
-    # old default behaviour
-  }
-}
-```
