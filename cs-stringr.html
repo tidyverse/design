@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.433">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Hadley Wickham">
-<title>Tidy design principles - 26&nbsp; Case study: stringr</title>
+<title>Tidy design principles - 16&nbsp; Case study: stringr</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -61,7 +61,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./out-multi.html" rel="next">
+<link href="./cs-rep.html" rel="next">
 <link href="./compound-arguments.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -100,7 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./independent-usage.html">Independent arguments</a></li><li class="breadcrumb-item"><a href="./cs-stringr.html"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Case study: stringr</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./explicit-strategies.html">Argument dependencies</a></li><li class="breadcrumb-item"><a href="./cs-stringr.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Case study: stringr</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -226,7 +226,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
- <span class="menu-text">Function arguments</span></a>
+ <span class="menu-text">Argument dependencies</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -234,62 +234,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./cs-rep.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code>
+  <a href="./explicit-strategies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Make strategies explicit</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./def-magical.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Avoid magical defaults</span></span></a>
+  <a href="./independent-meaning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Argument meaning should be independent</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./def-inform.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Explain important defaults</span></span></a>
+  <a href="./mutually-exclusive-arguments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Mutually exclusive arguments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./def-user.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">User settable defaults</span></span></a>
+  <a href="./compound-arguments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Compound arguments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./cs-rgb.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/grDevices/rgb.html">rgb()</a></code>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./dots-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Making data with …</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./dots-prefix.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Dot prefix</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./dots-inspect.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Inspect the dots</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./cs-mapply-pmap.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/mapply.html">mapply()</a></code> vs <code>pmap()</code>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./cs-setNames.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/stats/setNames.html">setNames()</a></code>
+  <a href="./cs-stringr.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Case study: stringr</span></span></a>
   </div>
 </li>
       </ul>
@@ -297,7 +267,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
- <span class="menu-text">Independent arguments</span></a>
+ <span class="menu-text">Function arguments</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -305,32 +275,62 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./independent-usage.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Argument usage should be independent</span></span></a>
+  <a href="./cs-rep.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./independent-meaning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Argument meaning should be independent</span></span></a>
+  <a href="./def-magical.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Avoid magical defaults</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./mutually-exclusive-arguments.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Mutually exclusive arguments</span></span></a>
+  <a href="./def-inform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Explain important defaults</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./compound-arguments.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Compound arguments</span></span></a>
+  <a href="./def-user.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">User settable defaults</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./cs-stringr.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Case study: stringr</span></span></a>
+  <a href="./cs-rgb.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/grDevices/rgb.html">rgb()</a></code>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dots-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Making data with …</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dots-prefix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Dot prefix</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dots-inspect.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Inspect the dots</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cs-mapply-pmap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/mapply.html">mapply()</a></code> vs <code>pmap()</code>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cs-setNames.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/stats/setNames.html">setNames()</a></code>
   </div>
 </li>
       </ul>
@@ -458,19 +458,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#function-names" id="toc-function-names" class="nav-link active" data-scroll-target="#function-names"><span class="header-section-number">26.1</span> Function names</a></li>
-  <li><a href="#argument-order-and-names" id="toc-argument-order-and-names" class="nav-link" data-scroll-target="#argument-order-and-names"><span class="header-section-number">26.2</span> Argument order and names</a></li>
-  <li><a href="#sec-pattern-engine" id="toc-sec-pattern-engine" class="nav-link" data-scroll-target="#sec-pattern-engine"><span class="header-section-number">26.3</span> Selecting a pattern engine</a></li>
-  <li><a href="#str_flatten" id="toc-str_flatten" class="nav-link" data-scroll-target="#str_flatten"><span class="header-section-number">26.4</span> <code>str_flatten()</code></a></li>
-  <li><a href="#recycling-rules" id="toc-recycling-rules" class="nav-link" data-scroll-target="#recycling-rules"><span class="header-section-number">26.5</span> Recycling rules</a></li>
-  <li><a href="#redundant-functions" id="toc-redundant-functions" class="nav-link" data-scroll-target="#redundant-functions"><span class="header-section-number">26.6</span> Redundant functions</a></li>
+<li><a href="#function-names" id="toc-function-names" class="nav-link active" data-scroll-target="#function-names"><span class="header-section-number">16.1</span> Function names</a></li>
+  <li><a href="#argument-order-and-names" id="toc-argument-order-and-names" class="nav-link" data-scroll-target="#argument-order-and-names"><span class="header-section-number">16.2</span> Argument order and names</a></li>
+  <li><a href="#sec-pattern-engine" id="toc-sec-pattern-engine" class="nav-link" data-scroll-target="#sec-pattern-engine"><span class="header-section-number">16.3</span> Selecting a pattern engine</a></li>
+  <li><a href="#str_flatten" id="toc-str_flatten" class="nav-link" data-scroll-target="#str_flatten"><span class="header-section-number">16.4</span> <code>str_flatten()</code></a></li>
+  <li><a href="#recycling-rules" id="toc-recycling-rules" class="nav-link" data-scroll-target="#recycling-rules"><span class="header-section-number">16.5</span> Recycling rules</a></li>
+  <li><a href="#redundant-functions" id="toc-redundant-functions" class="nav-link" data-scroll-target="#redundant-functions"><span class="header-section-number">16.6</span> Redundant functions</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/cs-stringr.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title">
-<span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Case study: stringr</span>
-</h1>
+<h1 class="title"><span id="cs-stringr" class="quarto-section-identifier"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Case study: stringr</span></span></h1>
 </div>
 
 
@@ -488,16 +486,16 @@ https://github.com/wch/r-source/blob/trunk/src/main/grep.c#L891-L1151 --><p>This
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://stringr.tidyverse.org">stringr</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="function-names" class="level2" data-number="26.1"><h2 data-number="26.1" class="anchored" data-anchor-id="function-names">
-<span class="header-section-number">26.1</span> Function names</h2>
+<section id="function-names" class="level2" data-number="16.1"><h2 data-number="16.1" class="anchored" data-anchor-id="function-names">
+<span class="header-section-number">16.1</span> Function names</h2>
 <p>When the base regular expression functions were written, most R users were familiar with the command line and tools like grepl. This made naming R’s string manipulation functions after these tools seem natural. When I started work on stringr, the majority of R users were not familiar with linux or the command line, so it made more sense to start afresh.</p>
 <p>I think there were successes and failures here. On the whole, I think <code><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace_all()</a></code>, <code><a href="https://stringr.tidyverse.org/reference/str_locate.html">str_locate()</a></code>, and <code><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect()</a></code> are easier to remember than <code><a href="https://rdrr.io/r/base/grep.html">gsub()</a></code>, <code><a href="https://rdrr.io/r/base/grep.html">regexpr()</a></code>, and <code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code>. However, it’s harder to remember what makes <code><a href="https://stringr.tidyverse.org/reference/str_subset.html">str_subset()</a></code> and <code><a href="https://stringr.tidyverse.org/reference/str_which.html">str_which()</a></code> different. If I was to do stringr again, I would make more of an effort to distinguish between functions that operated on individual matches and individual strings as <code><a href="https://stringr.tidyverse.org/reference/str_locate.html">str_locate()</a></code> and <code><a href="https://stringr.tidyverse.org/reference/str_which.html">str_which()</a></code> seem like their names should be more closely related as <code><a href="https://stringr.tidyverse.org/reference/str_locate.html">str_locate()</a></code> returns the location of a match within each string in the vector, and <code><a href="https://stringr.tidyverse.org/reference/str_subset.html">str_subset()</a></code> returns the matching locations within a vector.</p>
-</section><section id="argument-order-and-names" class="level2" data-number="26.2"><h2 data-number="26.2" class="anchored" data-anchor-id="argument-order-and-names">
-<span class="header-section-number">26.2</span> Argument order and names</h2>
+</section><section id="argument-order-and-names" class="level2" data-number="16.2"><h2 data-number="16.2" class="anchored" data-anchor-id="argument-order-and-names">
+<span class="header-section-number">16.2</span> Argument order and names</h2>
 <p>Base R string functions mostly have <code>pattern</code> as the first argument, with the chief exception being <code><a href="https://rdrr.io/r/base/strsplit.html">strsplit()</a></code>. stringr functions always have <code>string</code> as the first argument.</p>
 <p>I regret using <code>string</code>; I now think <code>x</code> would be a more appropriate name.</p>
-</section><section id="sec-pattern-engine" class="level2" data-number="26.3"><h2 data-number="26.3" class="anchored" data-anchor-id="sec-pattern-engine">
-<span class="header-section-number">26.3</span> Selecting a pattern engine</h2>
+</section><section id="sec-pattern-engine" class="level2" data-number="16.3"><h2 data-number="16.3" class="anchored" data-anchor-id="sec-pattern-engine">
+<span class="header-section-number">16.3</span> Selecting a pattern engine</h2>
 <p><code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code>, has three arguments that take either <code>FALSE</code> or <code>TRUE</code>: <code>ignore.case</code>, <code>perl</code>, <code>fixed</code>, which might suggest that there are 2 ^ 3 = 8 possible options. But <code>fixed = TRUE</code> overrides <code>perl = TRUE</code>, and <code>ignore.case = TRUE</code> only works if <code>fixed = FALSE</code> so there are only 5 valid combinations.</p>
 <div class="cell">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="va">letters</span>, fixed <span class="op">=</span> <span class="cn">TRUE</span>, ignore.case <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
@@ -539,13 +537,13 @@ https://github.com/wch/r-source/blob/trunk/src/main/grep.c#L891-L1151 --><p>This
 <span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="st">"This is a sentence."</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">boundary</a></span><span class="op">(</span><span class="st">"sentence"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This is more appealing than creating a separate function for each engine because there are many other functions in the same family as <code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code>. If we created <code>grepl_fixed()</code>, we’d also need <code>gsub_fixed()</code>, <code>regexp_fixed()</code> etc.</p>
-</section><section id="str_flatten" class="level2" data-number="26.4"><h2 data-number="26.4" class="anchored" data-anchor-id="str_flatten">
-<span class="header-section-number">26.4</span> <code>str_flatten()</code>
+</section><section id="str_flatten" class="level2" data-number="16.4"><h2 data-number="16.4" class="anchored" data-anchor-id="str_flatten">
+<span class="header-section-number">16.4</span> <code>str_flatten()</code>
 </h2>
 <p><code><a href="https://stringr.tidyverse.org/reference/str_flatten.html">str_flatten()</a></code> was a relatively recent addition to stringr. It took me a long time to realise that one of the challenges of understanding <code><a href="https://rdrr.io/r/base/paste.html">paste()</a></code> was that depending on the presence or absence of the <code>collapse</code> argument it could either transform a string (i.e.&nbsp;return something the same length) or summarise a string (i.e.&nbsp;always return a single string).</p>
 <p>Once <code><a href="https://stringr.tidyverse.org/reference/str_flatten.html">str_flatten()</a></code> existed it become more clear that it would be useful to have <code><a href="https://stringr.tidyverse.org/reference/str_flatten.html">str_flatten_comma()</a></code> which made it easier to use the Oxford comma (which seems to be something that’s only needed for English, and ironically the Oxford comma is more common in US English than UK English).</p>
-</section><section id="recycling-rules" class="level2" data-number="26.5"><h2 data-number="26.5" class="anchored" data-anchor-id="recycling-rules">
-<span class="header-section-number">26.5</span> Recycling rules</h2>
+</section><section id="recycling-rules" class="level2" data-number="16.5"><h2 data-number="16.5" class="anchored" data-anchor-id="recycling-rules">
+<span class="header-section-number">16.5</span> Recycling rules</h2>
 <p>stringr implements recycling rules so that you can either supply a vector of strings or a vector of patterns:</p>
 <div class="cell">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">alphabet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_flatten.html">str_flatten</a></span><span class="op">(</span><span class="va">letters</span>, collapse <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
@@ -558,8 +556,8 @@ https://github.com/wch/r-source/blob/trunk/src/main/grep.c#L891-L1151 --><p>This
 <span><span class="co">#&gt; [1] TRUE TRUE TRUE TRUE TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>On the whole I regret this. It’s generally not that useful (since you typically have more than one string, not more than one pattern), most people don’t use it, and now it feels overly clever.</p>
-</section><section id="redundant-functions" class="level2" data-number="26.6"><h2 data-number="26.6" class="anchored" data-anchor-id="redundant-functions">
-<span class="header-section-number">26.6</span> Redundant functions</h2>
+</section><section id="redundant-functions" class="level2" data-number="16.6"><h2 data-number="16.6" class="anchored" data-anchor-id="redundant-functions">
+<span class="header-section-number">16.6</span> Redundant functions</h2>
 <p>There are a couple of stringr functions that were very useful at the time, but are now less important.</p>
 <ul>
 <li>
@@ -803,13 +801,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./compound-arguments.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Compound arguments</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Compound arguments</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./out-multi.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Returning multiple values</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
+      <a href="./cs-rep.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code> <i class="bi bi-arrow-right-short"></i>
+      
   </div>
 </nav>
 </div> <!-- /content -->
