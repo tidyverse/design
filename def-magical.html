@@ -173,7 +173,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text">Scannable definitions</span></a>
+ <span class="menu-text">Scannable specs</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -602,17 +602,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul></section><section id="how-do-i-remediate-the-problem" class="level2" data-number="13.5"><h2 data-number="13.5" class="anchored" data-anchor-id="how-do-i-remediate-the-problem">
 <span class="header-section-number">13.5</span> How do I remediate the problem?</h2>
 <p>If you have a made a mistake in an older function you can remediate it by using a <code>NULL</code> default, as described in <a href="defaults-short-and-sweet.html"><span>Chapter&nbsp;9</span></a>). If the problem is caused by an unexported function, you can also choose to document and export it. Remediating this problem shouldn’t break existing code, because it expands the function interface: all previous code will continue to work, and the function will also work if the argument is passed <code>NULL</code> input (which probably didn’t previously).</p>
-<p>For functions like <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code> where <code>NULL</code> is already a permissible value, you’ll need to use a sentinel object, as described in <a href="defaults-short-and-sweet.html#sec-args-default-sentinel"><span>Section&nbsp;9.3.3</span></a>.</p>
-<div class="cell">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sentinel</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/structure.html">structure</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>, class <span class="op">=</span> <span class="st">"sentinel"</span><span class="op">)</span></span>
-<span><span class="va">is_sentinel</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/class.html">inherits</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"sentinel"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">data.frame_better</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span>, <span class="va">row.names</span> <span class="op">=</span> <span class="fu">sentinel</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu">is_sentinel</span><span class="op">(</span><span class="va">row.names</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="co"># old default behaviour</span></span>
-<span>  <span class="op">}</span></span>
-<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">

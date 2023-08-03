@@ -173,7 +173,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text">Scannable definitions</span></a>
+ <span class="menu-text">Scannable specs</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -536,20 +536,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="fu"><a href="https://fs.r-lib.org/reference/path.html">path</a></span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://fs.r-lib.org/reference/create.html">file_create</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">paths</span></span>
-<span><span class="co">#&gt; /tmp/Rtmpdm6I9X/file1c64815016c/a /tmp/Rtmpdm6I9X/file1c64815016c/b </span></span>
-<span><span class="co">#&gt; /tmp/Rtmpdm6I9X/file1c64815016c/c /tmp/Rtmpdm6I9X/file1c64815016c/d </span></span>
-<span><span class="co">#&gt; /tmp/Rtmpdm6I9X/file1c64815016c/e</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; /tmp/RtmpDgxDo7/file1cd928880bc/a /tmp/RtmpDgxDo7/file1cd928880bc/b </span></span>
+<span><span class="co">#&gt; /tmp/RtmpDgxDo7/file1cd928880bc/c /tmp/RtmpDgxDo7/file1cd928880bc/d </span></span>
+<span><span class="co">#&gt; /tmp/RtmpDgxDo7/file1cd928880bc/e</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Functions that modify some global state, like <code><a href="https://rdrr.io/r/base/options.html">options()</a></code> or <code><a href="https://rdrr.io/r/graphics/par.html">par()</a></code>, should return the <em>previous</em> value of the variables. This, in combination with <a href="compound-arguments.html"><span>Chapter&nbsp;25</span></a>, makes it possible to easily reset the effect of the change:</p>
 <div class="cell">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">old</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="va">x</span></span>
-<span><span class="co">#&gt; [1] 0.954</span></span>
+<span><span class="co">#&gt; [1] 0.706</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span><span class="va">old</span><span class="op">)</span></span>
 <span><span class="va">x</span></span>
-<span><span class="co">#&gt; [1] 0.9535825</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; [1] 0.7061959</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 

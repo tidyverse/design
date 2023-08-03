@@ -100,7 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./inputs-explicit.html">Scannable definitions</a></li><li class="breadcrumb-item"><a href="./required-no-defaults.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Required args shouldn't have defaults</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./inputs-explicit.html">Scannable specs</a></li><li class="breadcrumb-item"><a href="./required-no-defaults.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Required args shouldn't have defaults</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -173,7 +173,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text">Scannable definitions</span></a>
+ <span class="menu-text">Scannable specs</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -484,6 +484,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="header-section-number">7.1</span> What’s the pattern?</h2>
 <p>Required arguments shouldn’t have defaults; optional arguments should have defaults. In other words, an argument should have a default if and only if it’s optional.</p>
 <p>This simple convention ensures that you can tell which arguments are optional and which arguments are required from a glance at the function signature. Otherwise you need to rely on a careful reading of documentation. Additionally, if you don’t follow this convention and want to provide helpful error messages, you’ll need to implement them yourself rather than relying on R’s defaults.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+When should an argument be required?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>This pattern raises the question of when an argument should be required, and when you should provide a default. I think this usually seems “obvious” but I wanted to discuss a few functions that might get it wrong:</p>
+<ul>
+<li><p><code><a href="https://rdrr.io/r/stats/Normal.html">rnorm()</a></code> and <code><a href="https://rdrr.io/r/stats/Uniform.html">runif()</a></code> are interesting cases as they set default values for <code>mean</code>/<code>sd</code> and <code>min</code>/<code>max</code>. Giving them defaults makes them feels like less important, and inconsistent with the other RNGs which generally require that you specify the parameters of the distribution. But both the normal and uniform distributions have very high-profile “standard” versions that make sense as defaults.</p></li>
+<li>
+<p>You can use <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> directly on a model and it gives predictions for the data used to fit the model:</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">Employed</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">longley</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;     1947     1948     1949     1950     1951     1952 </span></span>
+<span><span class="co">#&gt; 60.05566 61.21601 60.12471 61.59711 62.91129 63.88831</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In my opinion, <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> should always require a dataset because prediction is primary about applying the model to new situations.</p>
+</li>
+<li><p><code><a href="https://stringr.tidyverse.org/reference/str_sub.html">stringr::str_sub()</a></code> has default values for <code>start</code> and <code>end</code>. This allows you to do clever things like <code>str_sub(x, end = 3)</code> or <code>str_sub(x, -3)</code> to select the first or last three characters, but I now believe that leads to code that is harder to read, and it would have been better to make <code>start</code> and <code>end</code> required arguments.</p></li>
+</ul>
+</div>
+</div>
+</div>
 </section><section id="what-are-some-examples" class="level2" data-number="7.2"><h2 data-number="7.2" class="anchored" data-anchor-id="what-are-some-examples">
 <span class="header-section-number">7.2</span> What are some examples?</h2>
 <p>This is a straightforward convention that the vast majority of functions follow. There are a few exceptions that exist in base R, mostly for historical reasons. Here are a couple of examples:</p>
@@ -491,22 +521,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>
 <p>In <code><a href="https://rdrr.io/r/base/sample.html">sample()</a></code> neither <code>x</code> not <code>size</code> has a default value:</p>
 <div class="cell">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/args.html">args</a></span><span class="op">(</span><span class="va">sample</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/args.html">args</a></span><span class="op">(</span><span class="va">sample</span><span class="op">)</span></span>
 <span><span class="co">#&gt; function (x, size, replace = FALSE, prob = NULL) </span></span>
 <span><span class="co">#&gt; NULL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This suggests that <code>size</code> is required, but it’s actually optional:</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 3 2 1 4</span></span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 4 1 2 3</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 2 4 1 3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; [1] 2 1 3 4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </li>
 <li>
 <p><code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> does not have defaults for <code>formula</code>, <code>data</code>, <code>subset</code>, <code>weights</code>, <code>na.action</code>, or <code>offset</code>.</p>
 <div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/args.html">args</a></span><span class="op">(</span><span class="va">lm</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/args.html">args</a></span><span class="op">(</span><span class="va">lm</span><span class="op">)</span></span>
 <span><span class="co">#&gt; function (formula, data, subset, weights, na.action, method = "qr", </span></span>
 <span><span class="co">#&gt;     model = TRUE, x = FALSE, y = FALSE, qr = TRUE, singular.ok = TRUE, </span></span>
 <span><span class="co">#&gt;     contrasts = NULL, offset, ...) </span></span>
@@ -514,7 +544,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>But only <code>formula</code> is actually required:</p>
 <div class="cell">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span></span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">2</span> <span class="op">*</span> <span class="va">x</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -523,7 +553,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients:</span></span>
 <span><span class="co">#&gt; (Intercept)            x  </span></span>
-<span><span class="co">#&gt;       2.257        1.739</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt;      0.3083       2.2217</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </li>
 </ul>

@@ -173,7 +173,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text">Scannable definitions</span></a>
+ <span class="menu-text">Scannable specs</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -579,7 +579,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; [1] "year"    "tailnum"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The technique you use to generate the code will vary from function to function. <code><a href="https://rlang.r-lib.org/reference/expr_label.html">rlang::expr_text()</a></code> is useful here because it automatically creates the code you’d use to build the character vector.</p>
-<p>To avoid creating a magical default (<a href="def-magical.html"><span>Chapter&nbsp;13</span></a>), either export and document the function, or use the technique of <a href="defaults-short-and-sweet.html#sec-arg-short-null"><span>Section&nbsp;9.3.1</span></a>:</p>
+<p>To avoid creating a magical default (<a href="def-magical.html"><span>Chapter&nbsp;13</span></a>), either export and document the function, or use one of the techniques in <a href="defaults-short-and-sweet.html"><span>Chapter&nbsp;9</span></a>:</p>
 <div class="cell">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">left_join</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">by</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">by</span> <span class="op">&lt;-</span> <span class="va">by</span> <span class="op">%||%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/common_by.html">common_by</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span>
