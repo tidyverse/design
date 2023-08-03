@@ -33,6 +33,11 @@ This makes reading function calls harder because if the argument that changes me
 
 -   In `ggplot2::geom_label()`, setting `parse = TRUE` changes the meaning of the label argument/aesthetic from being any string to be a string on unparsed R code.
 
+-   In `readr::locale()` there's a complex dependency between `decimal_mark` and `grouping_mark` because they can't be the same value, and Europe and the US Europe use different standards.
+    That suggests it might have been better to specify them in a single argument like `marks = c(",", ".")`.
+
+-   In `findInterval()` if you set `left.open = TRUE` the `rightmost.closed` means `leftmost.closed`.
+
 ## How do I remediate past mistakes?
 
 ## See also

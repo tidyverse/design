@@ -201,7 +201,7 @@ The primary downside of this technique is that it requires substantial infrastru
 
 [^defaults-short-and-sweet-3]: If I wrote this code today, I'd call it `is_waiver()`.
 
-::: {.callout-note collapse="true"}
+::: {.callout-warning collapse="true"}
 #### No default
 
 The final alternative is to condition on the absence of an argument using `missing().` It works something like this:

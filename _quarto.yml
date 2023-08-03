@@ -36,6 +36,14 @@ book:
       - enumerate-options.qmd
       - argument-clutter.qmd
     
+    - part: Argument dependencies
+      chapters:
+      - explicit-strategies.qmd
+      - independent-meaning.qmd
+      - mutually-exclusive-arguments.qmd
+      - compound-arguments.qmd
+      - cs-stringr.qmd
+    
     - part: Function arguments
       chapters: 
       - cs-rep.qmd
@@ -48,14 +56,6 @@ book:
       - dots-inspect.qmd
       - cs-mapply-pmap.qmd
       - cs-setNames.qmd
-    
-    - part: Independent arguments
-      chapters:
-      - independent-usage.qmd
-      - independent-meaning.qmd
-      - mutually-exclusive-arguments.qmd
-      - compound-arguments.qmd
-      - cs-stringr.qmd
       
     - part: Outputs
       chapters: 

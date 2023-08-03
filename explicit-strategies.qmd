@@ -1,0 +1,184 @@
+# Make strategies explicit {#sec-independent-usage}
+
+```{r}
+#| include = FALSE
+source("common.R")
+```
+
+## What's the problem?
+
+Avoid complex patterns of dependencies between arguments so that only certain combinations can be used at the same time.
+
+This often occurs because you are selecting between different strategies.
+
+Dependencies between arguments makes functions harder to use because it suggests more viable input combination that actually exist.
+You have to learn and the remember the set of allowed combinations, rather than them being implied by the structure of the function.
+It also makes documentation harder to write, because you have to use extra words to explain exactly how combinations of arguments work together, and it's not obvious where those words should go.
+If there's an interaction between `arg_a` and `arg_b` do you document with `arg_a`, with `arg_b`, or with both?
+
+## What are some examples?
+
+-   `stringr::str_detect()` and friends can use different matching engines by wrapping the pattern in functions like `stringr::fixed()` and `stringr::coll()`.
+-   `dplyr::left_join()` can use a variety of strategies for joining two data frames together expressed in a mini-DSL via the `join_by()` function.
+
+What are some counter examples?
+
+-   `forcats::fct_lump()` exposes three lumping strategies through the presence of absence of the `n` and `prop` arguments.
+
+-   `ggplot2::geom_histogram()` has three main strategies for generating the bins: you can supply the number of `bins`, as the width of each bin (`binwidth`, or the exact `breaks`.
+
+-   `grepl()` has `perl` and `fixed` which can be either `TRUE` or `FALSE`, but you're not really toggling two independent values, you're picking from one of three regular expression engines (the default, the engine used by Perl, and fixed matches).
+    Additionally, the `ignore.case` argument only applies to two of the strategies.
+    Learn more in @cs-stringr.
+
+-   `rep()` exposes two basic strategies: repeat each element of the vector (by setting `each` to a scalar or `times` to a vector) or repeat the entire vector (by setting `times` to a scalar).
+    Learn more in @sec-cs-rep.
+
+## How do I use this pattern?
+
+Typically the reason that you violate this pattern is because your function begins by implementing a single strategy (e.g. `geom_histogram()` let you ).
+Later on, you discover a new strategy
+
+If you realise that your function needs another strategy, accept that if you have two strategies, it probably means that you'll discover a third strategy in the future.
+Design your function API for this so rather than adding a Boolean argument, add an enumeration of options.
+
+For example, when `grepl()` realised that it needed to implement the Perl engine it should have done something like `engine = c("default", "Perl")` so then when later the `fixed` strategy appeared it could have been easily extended to `engine = c("default", "Perl", "fixed")`.
+
+If the strategies need different arguments you'll need to use some more advanced technique as described below.
+
+## How do I remediate past mistakes?
+
+These mistakes are usually easy to avoid when you first write a function; just don't it 😃.
+Typically the problems creep in later as a function grows in capability.
+It starts by implementing a single strategy, and then you discover an alternative.
+So you need to add an argument to pick the strategy.
+And then later on you discover another strategy.
+Do you add another argument to pick this strategy?
+Now what happens if
+
+As it's grown incremently in many small steps, it never seemed worth the effort to fundamentally refactor it or break it up into multiple functions, but but now you have a large complex function.
+To remediate the problem, you'll need to think holistically and reconsider the complete interface.
+There are two common outcomes which are illustrated in the case studies below:
+
+-   Splitting the function into multiple functions that each do one thing.
+
+-   Encapsulating related details arguments into a single object.
+
+If these changes to the interface occur to exported functions in a package, you'll need to consider how to preserve the interface with deprecation warnings.
+For important functions, it is worth generating an message that includes new code to copy and paste.
+
+### Using multiple top level functions {#sec-cs-fct-lump}
+
+The goal of `fct_lump()` is to combine infrequent factor levels into a common "other" level, which is useful for displays where you want to concentrate on the most common values but still account for every observation.
+When I first wrote `fct_lump()`, it implemented a single strategy.
+But over time people asked for more and more variations, which I kept adding to `fct_lump()`.
+This lead to a function that picks from one of three different strategies depending which of the `n` and `prop` arguments you supply:
+
+-   If `n` and `prop` are missing, it will merge together the least frequent levels, ensuring that `other` is still the smallest level.
+    This case ignores the `ties.method` argument, adding another dependency between arguments.
+
+-   If a positive `n` is supplied, it preserves the `n` most common values; if a negative `n` is supplied it preserves the `n` least common values.
+
+-   If a positive `prop` is supplied, lumps values which do not appear at least `prop` of the time.
+    Negative `prop` lumps values that do not appear at most `-prop` of the time.
+
+Overall, this become very hard to explain in the documentation, and people continued to ask for even more strategies, suggesting that even more arguments would be needed.
+
+In forcats 0.5.0 we split `fct_lump()` into three separate functions: `fct_lump_prop()`, `fct_lump_n()`, and `fct_lump_lowfreq()`.
+This allows the function name to hint at the purpose, prevents you from supplying both `n` and `prop` through the design of the functions, and only has the `ties.method` argument where it makes sense.
+
+### Using a strategy function {#sec-geom-histogram}
+
+Sometimes the strategy will be tangled in with many other arguments, or they might be multiple strategies used simultaenously.
+In these situations you want to avoid creating a combinatorial explosion of functions, and instead might want to use a strategy object.
+
+For example, generating the bins for a histogram is a surprisingly complex topic.
+`ggplot2::stat_bin()`, which powers `ggplot2::geom_histogram()`, has a total of 5 arguments that control where the bins are placed:
+
+-   You can supply either `binwidth` or `bins` to specify either the width or the number of evenly spaced bins. Alternatively, you supply `breaks` to specify the exact bin locations yourself (which allows you to create unevenly sized bins[^explicit-strategies-1]).
+-   If you use `binwidth` or `bins`, you're specifying the width of each bin, but not where the bins start. So additionally you can use either `boundary` or `center`[^explicit-strategies-2] to specify the location of a side (`boundary`) or the middle (`center`) of a bin[^explicit-strategies-3]. `boundary` and `center` are mutually exclusive; you can only specify one (see @sec-mutually-exclusive for more).
+-   Regardless of the way that you specify the locations of the bins, you need to choose where a bin from `a` to `b`, is `[a, b)` or `(a, b]`, which is the job of the `closed` argument.
+
+[^explicit-strategies-1]: One nice application of this principle is to create a histogram where each bin contains (approximately) the same number of points, as implemented in <https://github.com/eliocamp/ggpercentogram/>.
+
+[^explicit-strategies-2]: `center` is also a little problematic as an argument name, because UK English would prefer `centre`.
+    It's probably ok here since this it's a very rarely used argument, but `middle` would be good alternatives that don't have the same US/UK problem.
+    Alternatively the pair could be `endpoint` and `midpoint` which perhaps suggest a tighter pairing than `center` and `boundary`.
+
+[^explicit-strategies-3]: It can be any bin; `stat_bin()` will automatically adjust all the other bins.
+
+One way to resolve this problem would encapsulate the three basic strategies into three functions:
+
+-   `bin_width(width, center, boundary, closed)`
+-   `bin_number(bins, center, boundary, closed)`
+-   `bin_breaks(breaks, closed)`
+
+That immediately makes the relationship between the arguments and the strategies more clear.
+
+Note that these functions create "strategies"; i.e. they don't take the data needed to actual perform the operation --- none of these functions take range of the data.
+This makes these functions [function factories](https://adv-r.hadley.nz/function-factories.html), which is a relatively complex technique.
+
+```{r}
+bin_width <- function(width, center, boundary, closed = c("left", "right")) {
+  # https://adv-r.hadley.nz/function-factories.html#forcing-evaluation
+  list(width, center, boundary, closed)
+  
+  function(range) {
+    
+  }
+}
+```
+
+::: callout-note
+### Argument checking
+
+As in @sec-argument-clutter, you may want to give these functions custom classes so that the function that uses them can provide better error messages if the user supplies the wrong type of object.
+
+Alternatively, you might want to just check that the input is a function with the correct formals; that allows the user to supply their own strategy function.
+It's probably something that few people will take advantage of, but it's a nice escape hatch.
+:::
+
+### Enumeration to strategy
+
+If your function used an enumeration, but now you realise that some strategies use different argument you can remediate like this:
+
+```{r}
+# OLD 
+my_fun <- function(strategy = c("a", "b")) {
+  strategy <- arg_match(strategy)
+}
+
+check_strategy <- function(f) {
+  if (!is.function(f) || !identical(names(formals), c("range"))) {
+    cli::abort("{.fun f} must be a function with `range` argument")
+  }
+}
+
+
+# NEW
+my_fun <- function(strategy = my_stragegy_a()) {
+  if (is.characer(strategy)) {
+    strategy <- switch(
+      arg_match(strategy),
+      a = my_strategy_a(),
+      b = my_strategy_b()
+    )
+  } else {
+    check_strategy(strategy)
+  }
+}
+```
+
+## See also
+
+GOF strategy pattern
+
+-   @sec-independent-meaning the related problem of one argument affecting the interpretation of another argument.
+-   @sec-argument-clutter is about the general problem of moving unimportant arguments to another function.
+
+There are also two exceptions to this pattern that we'll come back to in future chapters:
+
+-   @sec-mutually-exclusive: sometimes you need a pair of mutual exclusive arguments.
+-   @sec-compound-arguments: sometimes you want to provide all the data in a single argument, and other times it's useful to spread the same data across multiple arguments.
+
+## 

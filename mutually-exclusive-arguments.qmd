@@ -15,7 +15,13 @@ A number of functions that allow you to supply exactly one of two possible argum
 
 -   `rvest::html_element()` allows you to select HTML elements either with a `css` selector or an `xpath` expression.
 
+-   In `ggplot2::scale_x_date()` and friends you can specify the breaks and labels either with `breaks` and `labels` (like all other scale functions) or with `date_breaks` and `date_labels`.
+    If you set both values in a pair, the `date_` version wins.
+
 -   `forcats::fct_other()` allows you to either `keep` or `drop` specified factor values.
+
+-   In `var()` you can remove missing values by either setting `na.rm = TRUE` or `use = "complete.obs"`.
+    If you set them both, `use` wins.
 
 ## How do you use this pattern?
 
