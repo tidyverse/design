@@ -1,0 +1,72 @@
+```{r}
+#| include: FALSE
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+# Reducing clutter with an options object
+
+New this week is a new chapter on [reducing argument clutter by adding an options object](tidyr::pivot_wide).
+Sometimes you have a set of "second class" arguments that you don't expect people to use very commonly, so you don't want them cluttering up the function specification.
+If you want to give the user the ability to control them when needed, you can lump them all together into an "options" object.
+
+These are used in base R modelling functions (e.g. `glm()`, `loess()`) to control the details of the underlying numerical algorithm.
+For example, take this model from the glm docs:
+
+```{r}
+data(anorexia, package = "MASS")
+
+mod <- glm(
+  Postwt ~ Prewt + Treat + offset(Prewt),
+  family = gaussian,
+  data = anorexia
+)
+```
+
+If you want to understand how model convergence is going you can set the `trace = TRUE` in `glm.control()`:
+
+```{r}
+mod <- glm(
+  Postwt ~ Prewt + Treat + offset(Prewt),
+  family = gaussian,
+  data = anorexia,
+  control = glm.control(trace = TRUE)
+)
+```
+
+99% of the time you don't need to know these arguments exist, but they are available if you ever need to debug a convergence failure.
+
+------------------------------------------------------------------------
+
+You can see the same pattern in `readr::locale()` and `readr::date_names()`.
+When parsing dates, you often need to know the names of the month, and that obviously varies by location.
+`locale()` allows you to set `date_names` to a two-letter country code to use common locations that baked in readr, but what happens if you want to parse dates from an unsupported language?
+
+For example, take Austrian which came up in a [recent readr issue](https://github.com/tidyverse/readr/issues/1467).
+Austrian month names are mostly the same as German but use Jänner instead of Januar and Feber instead of Februar.
+We can parse Austrian date times by first taking the German date names structure and modifying it:
+
+```{r}
+library(readr)
+
+au <- readr::date_names_lang("de")
+au$mon[1:2] <- c("Jänner", "Feber")
+au
+```
+
+Now we can pass this to object to `locale()`, and the locale object to a parsing function:
+
+```{r}
+parse_date("15. Jänner 2015", "%d. %B %Y", locale = locale(date_names = au))
+```
+
+I like how this hierarchy of option arguments buries something that you rarely need but still makes it accessible.
+
+Where else have you seen this pattern?
+Have you written functions where it would be useful?
+Are there places in the tidyverse that you think should use this pattern but don\'t?
+Please let me know in the comments!
+
+------------------------------------------------------------------------
+
+Thanks to everyone who contributed in the comments last week!
+The results aren't ready to read yet, but have really helped my thinking for two new chapters "make strategies explicit" and "argument meaning should be independent".
