@@ -91,6 +91,8 @@ vctrs::vec_sort(x, direction = "asc")
 
 It's unlikely that you'll ever need to implement another sorting direction, but I think it's easier to understand `direction = "asc"` than `decreasing = FALSE` at a glance.
 
+Another example is `cols_vary` in `pivot_wider()`.
+
 ### Varying arguments
 
 In more complicated cases, different strategies will require different arguments, so you'll need a bit more infrastructure.
