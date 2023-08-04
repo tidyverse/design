@@ -562,6 +562,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu">vctrs</span><span class="fu">::</span><span class="fu"><a href="https://vctrs.r-lib.org/reference/vec_order.html">vec_sort</a></span><span class="op">(</span><span class="va">x</span>, direction <span class="op">=</span> <span class="st">"asc"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>It’s unlikely that you’ll ever need to implement another sorting direction, but I think it’s easier to understand <code>direction = "asc"</code> than <code>decreasing = FALSE</code> at a glance.</p>
+<p>Another example is <code>cols_vary</code> in <code>pivot_wider()</code>.</p>
 </section><section id="varying-arguments" class="level3" data-number="12.3.3"><h3 data-number="12.3.3" class="anchored" data-anchor-id="varying-arguments">
 <span class="header-section-number">12.3.3</span> Varying arguments</h3>
 <p>In more complicated cases, different strategies will require different arguments, so you’ll need a bit more infrastructure. I think stringr provides the best model for this technique.</p>
