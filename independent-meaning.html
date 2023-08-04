@@ -218,7 +218,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./argument-clutter.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Avoid argument clutter with an options object</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Reduce argument clutter with an options object</span></span></a>
   </div>
 </li>
       </ul>
@@ -461,7 +461,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><a href="#whats-the-problem" id="toc-whats-the-problem" class="nav-link active" data-scroll-target="#whats-the-problem"><span class="header-section-number">13.1</span> What’s the problem?</a></li>
   <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">13.2</span> What are some examples?</a></li>
   <li><a href="#how-do-i-remediate-past-mistakes" id="toc-how-do-i-remediate-past-mistakes" class="nav-link" data-scroll-target="#how-do-i-remediate-past-mistakes"><span class="header-section-number">13.3</span> How do I remediate past mistakes?</a></li>
-  <li><a href="#see-also" id="toc-see-also" class="nav-link" data-scroll-target="#see-also"><span class="header-section-number">13.4</span> See also</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/independent-meaning.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
@@ -481,8 +480,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header><section id="whats-the-problem" class="level2" data-number="13.1"><h2 data-number="13.1" class="anchored" data-anchor-id="whats-the-problem">
 <span class="header-section-number">13.1</span> What’s the problem?</h2>
-<p>Avoid having one argument change the interpretation of another argument.</p>
-<p>This makes reading function calls harder because if the argument that changes meaning comes after the argument who’s meaning is changed you need to reinterpret the rest of the call.</p>
+<p>Avoid having one argument change the interpretation of another argument. This makes reading function calls harder because if the argument that changes meaning comes after the argument who’s meaning is changed you need to reinterpret the rest of the call.</p>
 </section><section id="what-are-some-examples" class="level2" data-number="13.2"><h2 data-number="13.2" class="anchored" data-anchor-id="what-are-some-examples">
 <span class="header-section-number">13.2</span> What are some examples?</h2>
 <ul>
@@ -505,9 +503,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>In <code><a href="https://rdrr.io/r/base/findInterval.html">findInterval()</a></code> if you set <code>left.open = TRUE</code> the <code>rightmost.closed</code> means <code>leftmost.closed</code>.</p></li>
 </ul></section><section id="how-do-i-remediate-past-mistakes" class="level2" data-number="13.3"><h2 data-number="13.3" class="anchored" data-anchor-id="how-do-i-remediate-past-mistakes">
 <span class="header-section-number">13.3</span> How do I remediate past mistakes?</h2>
-</section><section id="see-also" class="level2" data-number="13.4"><h2 data-number="13.4" class="anchored" data-anchor-id="see-also">
-<span class="header-section-number">13.4</span> See also</h2>
-<p><a href="explicit-strategies.html"><span>Chapter&nbsp;12</span></a> discusses the related problem of when using one argument affects which other arguments can be used.</p>
+<p>Not clear that there’s a single solution. For the examples above:</p>
+<ul>
+<li>
+<p>In <code><a href="https://rdrr.io/r/base/library.html">library()</a></code>, I think this is an example of why base R needs a consistent mechanism for quoting and unquoting. If <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> were a tidyverse function it would use tidy-eval, and so you’d write <code><a href="https://ggplot2.tidyverse.org">library(ggplot2)</a></code> or <code><a href="https://rdrr.io/r/base/library.html">library(!!ggplot2)</a></code>.</p>
+<p>Alternatively, you could maybe argue that it should be <code><a href="https://ggplot2.tidyverse.org">library("ggplot2")</a></code> and <code><a href="https://ggplot2.tidyverse.org">library(ggplot2)</a></code>.</p>
+</li>
+<li><p>In <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> maybe it would be better to have mutually exclusive <code>packages</code> and <code>paths</code> arguments? Then <code>repos</code> only applies to <code>paths</code> which might suggest this is an example of the strategy pattern?</p></li>
+<li><p><code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code> and friends are another example of the strategy pattern.</p></li>
+<li><p>For <code><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">ggplot2::geom_label()</a></code> my gut feeling would be to make it another function, but <code>parse = TRUE</code> applies to <code><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text()</a></code> as well. So maybe the current setup is the least worst?</p></li>
+<li><p>In <code><a href="https://rdrr.io/r/base/findInterval.html">findInterval()</a></code> I think I’d fix it by renaming the argument to something that wasn’t direction specific. Maybe <code>extemum.closed</code>?</p></li>
+</ul>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">

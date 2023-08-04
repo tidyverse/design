@@ -218,7 +218,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./argument-clutter.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Avoid argument clutter with an options object</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Reduce argument clutter with an options object</span></span></a>
   </div>
 </li>
       </ul>
@@ -607,10 +607,10 @@ regression. This value is only computed when the summary is printed: you can see
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">xhist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">x</span>, plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">xhist</span><span class="op">)</span></span>
 <span><span class="co">#&gt; List of 6</span></span>
-<span><span class="co">#&gt;  $ breaks  : num [1:21] -5.5 -5 -4.5 -4 -3.5 -3 -2.5 -2 -1.5 -1 ...</span></span>
-<span><span class="co">#&gt;  $ counts  : int [1:20] 1 0 1 23 133 487 1702 4483 9238 14809 ...</span></span>
-<span><span class="co">#&gt;  $ density : num [1:20] 0.00002 0 0.00002 0.00046 0.00266 ...</span></span>
-<span><span class="co">#&gt;  $ mids    : num [1:20] -5.25 -4.75 -4.25 -3.75 -3.25 -2.75 -2.25 -1.75 -1.25 -0.75 ...</span></span>
+<span><span class="co">#&gt;  $ breaks  : num [1:21] -5 -4.5 -4 -3.5 -3 -2.5 -2 -1.5 -1 -0.5 ...</span></span>
+<span><span class="co">#&gt;  $ counts  : int [1:20] 1 2 20 102 489 1686 4466 9177 15105 18836 ...</span></span>
+<span><span class="co">#&gt;  $ density : num [1:20] 0.00002 0.00004 0.0004 0.00204 0.00978 ...</span></span>
+<span><span class="co">#&gt;  $ mids    : num [1:20] -4.75 -4.25 -3.75 -3.25 -2.75 -2.25 -1.75 -1.25 -0.75 -0.25 ...</span></span>
 <span><span class="co">#&gt;  $ xname   : chr "x"</span></span>
 <span><span class="co">#&gt;  $ equidist: logi TRUE</span></span>
 <span><span class="co">#&gt;  - attr(*, "class")= chr "histogram"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

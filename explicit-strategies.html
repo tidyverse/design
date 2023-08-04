@@ -218,7 +218,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./argument-clutter.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Avoid argument clutter with an options object</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Reduce argument clutter with an options object</span></span></a>
   </div>
 </li>
       </ul>
@@ -460,13 +460,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
 <li><a href="#whats-the-problem" id="toc-whats-the-problem" class="nav-link active" data-scroll-target="#whats-the-problem"><span class="header-section-number">12.1</span> What’s the problem?</a></li>
   <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">12.2</span> What are some examples?</a></li>
-  <li><a href="#how-do-i-use-this-pattern" id="toc-how-do-i-use-this-pattern" class="nav-link" data-scroll-target="#how-do-i-use-this-pattern"><span class="header-section-number">12.3</span> How do I use this pattern?</a></li>
+  <li>
+<a href="#how-do-i-use-this-pattern" id="toc-how-do-i-use-this-pattern" class="nav-link" data-scroll-target="#how-do-i-use-this-pattern"><span class="header-section-number">12.3</span> How do I use this pattern?</a>
+  <ul class="collapse">
+<li><a href="#name-and-enumerate" id="toc-name-and-enumerate" class="nav-link" data-scroll-target="#name-and-enumerate"><span class="header-section-number">12.3.1</span> Name and enumerate</a></li>
+  <li><a href="#only-two-strategies" id="toc-only-two-strategies" class="nav-link" data-scroll-target="#only-two-strategies"><span class="header-section-number">12.3.2</span> Only two strategies</a></li>
+  <li><a href="#varying-arguments" id="toc-varying-arguments" class="nav-link" data-scroll-target="#varying-arguments"><span class="header-section-number">12.3.3</span> Varying arguments</a></li>
+  </ul>
+</li>
   <li>
 <a href="#how-do-i-remediate-past-mistakes" id="toc-how-do-i-remediate-past-mistakes" class="nav-link" data-scroll-target="#how-do-i-remediate-past-mistakes"><span class="header-section-number">12.4</span> How do I remediate past mistakes?</a>
   <ul class="collapse">
-<li><a href="#sec-cs-fct-lump" id="toc-sec-cs-fct-lump" class="nav-link" data-scroll-target="#sec-cs-fct-lump"><span class="header-section-number">12.4.1</span> Using multiple top level functions</a></li>
-  <li><a href="#sec-geom-histogram" id="toc-sec-geom-histogram" class="nav-link" data-scroll-target="#sec-geom-histogram"><span class="header-section-number">12.4.2</span> Using a strategy function</a></li>
-  <li><a href="#enumeration-to-strategy" id="toc-enumeration-to-strategy" class="nav-link" data-scroll-target="#enumeration-to-strategy"><span class="header-section-number">12.4.3</span> Enumeration to strategy</a></li>
+<li><a href="#enumerate" id="toc-enumerate" class="nav-link" data-scroll-target="#enumerate"><span class="header-section-number">12.4.1</span> Enumerate</a></li>
+  <li><a href="#sec-cs-fct-lump" id="toc-sec-cs-fct-lump" class="nav-link" data-scroll-target="#sec-cs-fct-lump"><span class="header-section-number">12.4.2</span> Using multiple top level functions</a></li>
+  <li><a href="#sec-geom-histogram" id="toc-sec-geom-histogram" class="nav-link" data-scroll-target="#sec-geom-histogram"><span class="header-section-number">12.4.3</span> Using a strategy function</a></li>
+  <li><a href="#enumeration-to-strategy" id="toc-enumeration-to-strategy" class="nav-link" data-scroll-target="#enumeration-to-strategy"><span class="header-section-number">12.4.4</span> Enumeration to strategy</a></li>
   </ul>
 </li>
   <li><a href="#see-also" id="toc-see-also" class="nav-link" data-scroll-target="#see-also"><span class="header-section-number">12.5</span> See also</a></li>
@@ -475,7 +483,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-independent-usage" class="quarto-section-identifier"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Make strategies explicit</span></span></h1>
+<h1 class="title"><span id="sec-strategies-explicit" class="quarto-section-identifier"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Make strategies explicit</span></span></h1>
 </div>
 
 
@@ -490,16 +498,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header><section id="whats-the-problem" class="level2" data-number="12.1"><h2 data-number="12.1" class="anchored" data-anchor-id="whats-the-problem">
 <span class="header-section-number">12.1</span> What’s the problem?</h2>
-<p>Avoid complex patterns of dependencies between arguments so that only certain combinations can be used at the same time.</p>
-<p>This often occurs because you are selecting between different strategies.</p>
-<p>Dependencies between arguments makes functions harder to use because it suggests more viable input combination that actually exist. You have to learn and the remember the set of allowed combinations, rather than them being implied by the structure of the function. It also makes documentation harder to write, because you have to use extra words to explain exactly how combinations of arguments work together, and it’s not obvious where those words should go. If there’s an interaction between <code>arg_a</code> and <code>arg_b</code> do you document with <code>arg_a</code>, with <code>arg_b</code>, or with both?</p>
+<p>If your function exposes multiple implementation strategies, make those explicit through an argument. This makes it clear how to control the operation of your function and extends gracefully if different strategies expose different options.</p>
+<p>One sign that this pattern is needed is a complex dependency pattern between arguments: maybe you can set <code>a</code> and <code>b</code> and <code>a</code> and <code>c</code> but not <code>b</code> and <code>c</code>. This tends to make the function harder to use because it suggests more viable input combination that actually exist. You have to learn and the remember the set of allowed combinations, rather that seeing the underlying strategies.</p>
 </section><section id="what-are-some-examples" class="level2" data-number="12.2"><h2 data-number="12.2" class="anchored" data-anchor-id="what-are-some-examples">
 <span class="header-section-number">12.2</span> What are some examples?</h2>
 <ul>
 <li>
-<code><a href="https://stringr.tidyverse.org/reference/str_detect.html">stringr::str_detect()</a></code> and friends can use different matching engines by wrapping the pattern in functions like <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">stringr::fixed()</a></code> and <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">stringr::coll()</a></code>.</li>
+<code><a href="https://rdrr.io/r/base/rank.html">rank()</a></code> exposes six different methods for handling ties with the <code>ties.method</code> argument.</li>
 <li>
-<code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">dplyr::left_join()</a></code> can use a variety of strategies for joining two data frames together expressed in a mini-DSL via the <code>join_by()</code> function.</li>
+<code><a href="https://rdrr.io/r/stats/p.adjust.html">p.adjust()</a></code> exposes eight strategies for adjusting P values to account for multiple comparisons using the <code>p.adjust.methods</code> argument.</li>
+<li>
+<code><a href="https://rdrr.io/r/stats/quantile.html">quantile()</a></code> exposes nine different approaches to computing a quantile through the <code>type</code> argument.</li>
+<li>
+<code><a href="https://stringr.tidyverse.org/reference/str_detect.html">stringr::str_detect()</a></code> and friends can use different matching engines by wrapping the pattern in functions like <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">stringr::fixed()</a></code> and <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">stringr::coll()</a></code>. Learn more in <span class="citation" data-cites="cs-stringr">@cs-stringr</span>.</li>
+<li>
+<code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">dplyr::left_join()</a></code> uses a very advanced form of this pattern where the different strategies for joining two data frames together are expressed in a mini-DSL provided by <code><a href="https://dplyr.tidyverse.org/reference/join_by.html">dplyr::join_by()</a></code>.</li>
 </ul>
 <p>What are some counter examples?</p>
 <ul>
@@ -509,12 +522,53 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code> exposes two basic strategies: repeat each element of the vector (by setting <code>each</code> to a scalar or <code>times</code> to a vector) or repeat the entire vector (by setting <code>times</code> to a scalar). Learn more in <a href="cs-rep.html"><span>Chapter&nbsp;17</span></a>.</p></li>
 </ul></section><section id="how-do-i-use-this-pattern" class="level2" data-number="12.3"><h2 data-number="12.3" class="anchored" data-anchor-id="how-do-i-use-this-pattern">
 <span class="header-section-number">12.3</span> How do I use this pattern?</h2>
-<p>Typically the reason that you violate this pattern is because your function begins by implementing a single strategy (e.g.&nbsp;<code>geom_histogram()</code> let you ). Later on, you discover a new strategy</p>
-<p>If you realise that your function needs another strategy, accept that if you have two strategies, it probably means that you’ll discover a third strategy in the future. Design your function API for this so rather than adding a Boolean argument, add an enumeration of options.</p>
-<p>For example, when <code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code> realised that it needed to implement the Perl engine it should have done something like <code>engine = c("default", "Perl")</code> so then when later the <code>fixed</code> strategy appeared it could have been easily extended to <code>engine = c("default", "Perl", "fixed")</code>.</p>
-<p>If the strategies need different arguments you’ll need to use some more advanced technique as described below.</p>
-</section><section id="how-do-i-remediate-past-mistakes" class="level2" data-number="12.4"><h2 data-number="12.4" class="anchored" data-anchor-id="how-do-i-remediate-past-mistakes">
+<section id="name-and-enumerate" class="level3" data-number="12.3.1"><h3 data-number="12.3.1" class="anchored" data-anchor-id="name-and-enumerate">
+<span class="header-section-number">12.3.1</span> Name and enumerate</h3>
+<p>The simplest approach to exposing different strategies is to name each option and then this to use character vector of the possible options, as described in <a href="enumerate-options.html"><span>Chapter&nbsp;10</span></a>. This approach typically pairs well with <code><a href="https://rdrr.io/r/base/switch.html">switch()</a></code>. For example, take <code><a href="https://stringr.tidyverse.org/reference/str_trim.html">stringr::str_trim()</a></code> which looks something like this:</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">str_trim</span> <span class="op">&lt;-</span> <span class="kw">function</span> <span class="op">(</span><span class="va">string</span>, <span class="va">side</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"both"</span>, <span class="st">"left"</span>, <span class="st">"right"</span><span class="op">)</span><span class="op">)</span> </span>
+<span><span class="op">{</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/switch.html">switch</a></span><span class="op">(</span></span>
+<span>    <span class="fu">arg_match</span><span class="op">(</span><span class="va">side</span><span class="op">)</span>,</span>
+<span>    left <span class="op">=</span> <span class="fu">stri_trim_left</span><span class="op">(</span><span class="va">string</span><span class="op">)</span>,</span>
+<span>    right <span class="op">=</span> <span class="fu">stri_trim_right</span><span class="op">(</span><span class="va">string</span><span class="op">)</span>,</span>
+<span>    both <span class="op">=</span> <span class="fu">stri_trim_both</span><span class="op">(</span><span class="va">string</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This is particularly simple because stringr relies on the stringi package for implementation. But I think it’s still straightforward even if we implement more ourselves:</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">str_trim</span> <span class="op">&lt;-</span> <span class="kw">function</span> <span class="op">(</span><span class="va">string</span>, <span class="va">side</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"both"</span>, <span class="st">"left"</span>, <span class="st">"right"</span><span class="op">)</span><span class="op">)</span> </span>
+<span><span class="op">{</span></span>
+<span>  <span class="va">pattern</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/switch.html">switch</a></span><span class="op">(</span></span>
+<span>    <span class="fu">arg_match</span><span class="op">(</span><span class="va">side</span><span class="op">)</span>,</span>
+<span>    left <span class="op">=</span> <span class="st">"^\\s+"</span>,</span>
+<span>    right <span class="op">=</span> <span class="st">"\\s$"</span>,</span>
+<span>    both <span class="op">=</span> <span class="st">"^\\s+|\\s$"</span></span>
+<span>  <span class="op">)</span></span>
+<span>  <span class="fu">str_replace_all</span><span class="op">(</span><span class="va">string</span>, <span class="va">pattern</span>, <span class="st">""</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="only-two-strategies" class="level3" data-number="12.3.2"><h3 data-number="12.3.2" class="anchored" data-anchor-id="only-two-strategies">
+<span class="header-section-number">12.3.2</span> Only two strategies</h3>
+<p>If your function provides only two strategies it’s tempting to use a logical to switch between them. I recommend against this unless you’re REALLY SURE there won’t ever be another strategy.</p>
+<p>I think there’s often also an argument that it’s easier to remember an enumeration than a Boolean argument. For example compare these equivalent calls to <code><a href="https://rdrr.io/r/base/sort.html">sort()</a></code> and <code><a href="https://vctrs.r-lib.org/reference/vec_order.html">vctrs::vec_sort()</a></code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="va">x</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">vctrs</span><span class="fu">::</span><span class="fu"><a href="https://vctrs.r-lib.org/reference/vec_order.html">vec_sort</a></span><span class="op">(</span><span class="va">x</span>, direction <span class="op">=</span> <span class="st">"desc"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="va">x</span>, decreasing <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu">vctrs</span><span class="fu">::</span><span class="fu"><a href="https://vctrs.r-lib.org/reference/vec_order.html">vec_sort</a></span><span class="op">(</span><span class="va">x</span>, direction <span class="op">=</span> <span class="st">"asc"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>It’s unlikely that you’ll ever need to implement another sorting direction, but I think it’s easier to understand <code>direction = "asc"</code> than <code>decreasing = FALSE</code> at a glance.</p>
+</section><section id="varying-arguments" class="level3" data-number="12.3.3"><h3 data-number="12.3.3" class="anchored" data-anchor-id="varying-arguments">
+<span class="header-section-number">12.3.3</span> Varying arguments</h3>
+<p>In more complicated cases, different strategies will require different arguments, so you’ll need a bit more infrastructure. I think stringr provides the best model for this technique.</p>
+</section></section><section id="how-do-i-remediate-past-mistakes" class="level2" data-number="12.4"><h2 data-number="12.4" class="anchored" data-anchor-id="how-do-i-remediate-past-mistakes">
 <span class="header-section-number">12.4</span> How do I remediate past mistakes?</h2>
+<p>Typically the reason that you violate this pattern is because your function begins by implementing a single strategy (e.g.&nbsp;<code>geom_histogram()</code> let you ). Later on, you discover a new strategy</p>
+<p>If you realise that your function needs another strategy, accept that if you have two strategies, it probably means that you’ll discover a third strategy in the future. Design your function API for this so rather than adding a Boolean argument, add an enumeration of options. For example, when <code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code> realised that it needed to implement the Perl engine it should have done something like <code>engine = c("default", "Perl")</code> so then when later the <code>fixed</code> strategy appeared it could have been easily extended to <code>engine = c("default", "Perl", "fixed")</code>.</p>
 <p>These mistakes are usually easy to avoid when you first write a function; just don’t it 😃. Typically the problems creep in later as a function grows in capability. It starts by implementing a single strategy, and then you discover an alternative. So you need to add an argument to pick the strategy. And then later on you discover another strategy. Do you add another argument to pick this strategy? Now what happens if</p>
 <p>As it’s grown incremently in many small steps, it never seemed worth the effort to fundamentally refactor it or break it up into multiple functions, but but now you have a large complex function. To remediate the problem, you’ll need to think holistically and reconsider the complete interface. There are two common outcomes which are illustrated in the case studies below:</p>
 <ul>
@@ -522,8 +576,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Encapsulating related details arguments into a single object.</p></li>
 </ul>
 <p>If these changes to the interface occur to exported functions in a package, you’ll need to consider how to preserve the interface with deprecation warnings. For important functions, it is worth generating an message that includes new code to copy and paste.</p>
-<section id="sec-cs-fct-lump" class="level3" data-number="12.4.1"><h3 data-number="12.4.1" class="anchored" data-anchor-id="sec-cs-fct-lump">
-<span class="header-section-number">12.4.1</span> Using multiple top level functions</h3>
+<section id="enumerate" class="level3" data-number="12.4.1"><h3 data-number="12.4.1" class="anchored" data-anchor-id="enumerate">
+<span class="header-section-number">12.4.1</span> Enumerate</h3>
+<p><code><a href="https://rdrr.io/r/base/sort.html">sort()</a></code> uses the <code>na.last</code> argument to expose three strategies for handling missing values:</p>
+<ul>
+<li>
+<code>na.last = TRUE</code> means put them last.</li>
+<li>
+<code>na.last = FALSE</code> means put them first.</li>
+<li>
+<code>na.list = NA</code> means to drop them.</li>
+</ul>
+<p>I think we could make this more clear by instead using an <code>na</code> argument that takes one of three values: last, first, or drop. In this case, we can change both the argument name and its interface making remediation relatively simple:</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sort</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">na.last</span> <span class="op">=</span> <span class="fu">deprecated</span><span class="op">(</span><span class="op">)</span>, <span class="va">na</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"drop"</span>, <span class="st">"first"</span>, <span class="st">"last"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  </span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html">is_present</a></span><span class="op">(</span><span class="va">na.last</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecate_soft.html">deprecate_warn</a></span><span class="op">(</span><span class="st">"1.0.0"</span>, <span class="st">"sort(na.last)"</span>, <span class="st">"sort(na)"</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/logical.html">is.logical</a></span><span class="op">(</span><span class="va">na.last</span><span class="op">)</span> <span class="op">||</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">na.last</span><span class="op">)</span> <span class="op">!=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_abort.html">cli_abort</a></span><span class="op">(</span><span class="st">"{.arg na.last} must be a single TRUE, FALSE, or NA."</span><span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>    </span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Logic.html">isTRUE</a></span><span class="op">(</span><span class="va">na.last</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="va">na</span> <span class="op">&lt;-</span> <span class="st">"last"</span></span>
+<span>    <span class="op">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Logic.html">isFALSE</a></span><span class="op">(</span><span class="va">na.last</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="va">na</span> <span class="op">&lt;-</span> <span class="st">"first"</span></span>
+<span>    <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>      <span class="va">na</span> <span class="op">&lt;-</span> <span class="st">"drop"</span></span>
+<span>    <span class="op">}</span></span>
+<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>    <span class="va">na</span> <span class="op">&lt;-</span> <span class="fu">arg_match</span><span class="op">(</span><span class="va">na</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  </span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>It would also be nice to make the default value last (since generally R functions don’t remove missing values unless explicitly requested) but that change is much harder to do without affecting existing code.</p>
+</section><section id="sec-cs-fct-lump" class="level3" data-number="12.4.2"><h3 data-number="12.4.2" class="anchored" data-anchor-id="sec-cs-fct-lump">
+<span class="header-section-number">12.4.2</span> Using multiple top level functions</h3>
 <p>The goal of <code>fct_lump()</code> is to combine infrequent factor levels into a common “other” level, which is useful for displays where you want to concentrate on the most common values but still account for every observation. When I first wrote <code>fct_lump()</code>, it implemented a single strategy. But over time people asked for more and more variations, which I kept adding to <code>fct_lump()</code>. This lead to a function that picks from one of three different strategies depending which of the <code>n</code> and <code>prop</code> arguments you supply:</p>
 <ul>
 <li><p>If <code>n</code> and <code>prop</code> are missing, it will merge together the least frequent levels, ensuring that <code>other</code> is still the smallest level. This case ignores the <code>ties.method</code> argument, adding another dependency between arguments.</p></li>
@@ -532,8 +622,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>Overall, this become very hard to explain in the documentation, and people continued to ask for even more strategies, suggesting that even more arguments would be needed.</p>
 <p>In forcats 0.5.0 we split <code>fct_lump()</code> into three separate functions: <code>fct_lump_prop()</code>, <code>fct_lump_n()</code>, and <code>fct_lump_lowfreq()</code>. This allows the function name to hint at the purpose, prevents you from supplying both <code>n</code> and <code>prop</code> through the design of the functions, and only has the <code>ties.method</code> argument where it makes sense.</p>
-</section><section id="sec-geom-histogram" class="level3" data-number="12.4.2"><h3 data-number="12.4.2" class="anchored" data-anchor-id="sec-geom-histogram">
-<span class="header-section-number">12.4.2</span> Using a strategy function</h3>
+</section><section id="sec-geom-histogram" class="level3" data-number="12.4.3"><h3 data-number="12.4.3" class="anchored" data-anchor-id="sec-geom-histogram">
+<span class="header-section-number">12.4.3</span> Using a strategy function</h3>
 <p>Sometimes the strategy will be tangled in with many other arguments, or they might be multiple strategies used simultaenously. In these situations you want to avoid creating a combinatorial explosion of functions, and instead might want to use a strategy object.</p>
 <p>For example, generating the bins for a histogram is a surprisingly complex topic. <code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">ggplot2::stat_bin()</a></code>, which powers <code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">ggplot2::geom_histogram()</a></code>, has a total of 5 arguments that control where the bins are placed:</p>
 <ul>
@@ -550,7 +640,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>That immediately makes the relationship between the arguments and the strategies more clear.</p>
 <p>Note that these functions create “strategies”; i.e.&nbsp;they don’t take the data needed to actual perform the operation — none of these functions take range of the data. This makes these functions <a href="https://adv-r.hadley.nz/function-factories.html">function factories</a>, which is a relatively complex technique.</p>
 <div class="cell">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bin_width</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">width</span>, <span class="va">center</span>, <span class="va">boundary</span>, <span class="va">closed</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"left"</span>, <span class="st">"right"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bin_width</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">width</span>, <span class="va">center</span>, <span class="va">boundary</span>, <span class="va">closed</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"left"</span>, <span class="st">"right"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="co"># https://adv-r.hadley.nz/function-factories.html#forcing-evaluation</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">width</span>, <span class="va">center</span>, <span class="va">boundary</span>, <span class="va">closed</span><span class="op">)</span></span>
 <span>  </span>
@@ -573,11 +663,11 @@ Argument checking
 <p>Alternatively, you might want to just check that the input is a function with the correct formals; that allows the user to supply their own strategy function. It’s probably something that few people will take advantage of, but it’s a nice escape hatch.</p>
 </div>
 </div>
-</section><section id="enumeration-to-strategy" class="level3" data-number="12.4.3"><h3 data-number="12.4.3" class="anchored" data-anchor-id="enumeration-to-strategy">
-<span class="header-section-number">12.4.3</span> Enumeration to strategy</h3>
+</section><section id="enumeration-to-strategy" class="level3" data-number="12.4.4"><h3 data-number="12.4.4" class="anchored" data-anchor-id="enumeration-to-strategy">
+<span class="header-section-number">12.4.4</span> Enumeration to strategy</h3>
 <p>If your function used an enumeration, but now you realise that some strategies use different argument you can remediate like this:</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># OLD </span></span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># OLD </span></span>
 <span><span class="va">my_fun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">strategy</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">strategy</span> <span class="op">&lt;-</span> <span class="fu">arg_match</span><span class="op">(</span><span class="va">strategy</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
@@ -860,7 +950,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./argument-clutter.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Avoid argument clutter with an options object</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Reduce argument clutter with an options object</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

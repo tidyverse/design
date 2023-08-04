@@ -218,7 +218,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./argument-clutter.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Avoid argument clutter with an options object</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Reduce argument clutter with an options object</span></span></a>
   </div>
 </li>
       </ul>
@@ -565,9 +565,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; # A tibble: 3 × 5</span></span>
 <span><span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc</span></span>
 <span><span class="co">#&gt;   &lt;bch:expr&gt; &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;</span></span>
-<span><span class="co">#&gt; 1 version     644.5µs  724.8µs     1293.    4.01KB</span></span>
-<span><span class="co">#&gt; 2 exists        3.9µs    4.5µs   169603.    3.29MB</span></span>
-<span><span class="co">#&gt; 3 formals       1.6µs      2µs   370869.        0B</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; 1 version     500.9µs  519.1µs     1900.    4.01KB</span></span>
+<span><span class="co">#&gt; 2 exists        3.2µs    3.6µs   252113.    3.29MB</span></span>
+<span><span class="co">#&gt; 3 formals       1.5µs    1.7µs   490863.        0B</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>If you do need to use <code><a href="https://rdrr.io/r/utils/packageDescription.html">packageVersion()</a></code> inside a performance sensitive function, I recommend caching the result in <code>.onLoad()</code> (which, by convention, lives in <code>zzz.R</code>). There a few ways to do this; but the following block shows one approach that matches the function interface I used above:</p>
 <div class="cell">
