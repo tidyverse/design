@@ -8,7 +8,6 @@ source("common.R")
 ## What's the problem?
 
 Avoid having one argument change the interpretation of another argument.
-
 This makes reading function calls harder because if the argument that changes meaning comes after the argument who's meaning is changed you need to reinterpret the rest of the call.
 
 ## What are some examples?
@@ -40,6 +39,21 @@ This makes reading function calls harder because if the argument that changes me
 
 ## How do I remediate past mistakes?
 
-## See also
+Not clear that there's a single solution.
+For the examples above:
 
-@sec-independent-usage discusses the related problem of when using one argument affects which other arguments can be used.
+-   In `library()`, I think this is an example of why base R needs a consistent mechanism for quoting and unquoting.
+    If `library()` were a tidyverse function it would use tidy-eval, and so you'd write `library(ggplot2)` or `library(!!ggplot2)`.
+
+    Alternatively, you could maybe argue that it should be `library("ggplot2")` and `library(ggplot2)`.
+
+-   In `install.packages()` maybe it would be better to have mutually exclusive `packages` and `paths` arguments?
+    Then `repos` only applies to `paths` which might suggest this is an example of the strategy pattern?
+
+-   `grepl()` and friends are another example of the strategy pattern.
+
+-   For `ggplot2::geom_label()` my gut feeling would be to make it another function, but `parse = TRUE` applies to `geom_text()` as well.
+    So maybe the current setup is the least worst?
+
+-   In `findInterval()` I think I'd fix it by renaming the argument to something that wasn't direction specific.
+    Maybe `extemum.closed`?
