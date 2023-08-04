@@ -19,9 +19,9 @@ If you see the name of a familiar argument you've encountered an argument name b
 
 -   I think `install.packages()` wins the prize for most varying argument styles.
     It includes arguments `Ncpus`, `configure.vars`, `keep_outputs`, `INSTALL_opts`, `contriburl`, and (via ... to `download.file)` `cacheOK`.
-    You can avoid this problem yourself by adopting a style guide (e.g. <https://style.tidyverse.org>).
+    You can avoid this problem with your team by developing a style guide (e.g. <https://style.tidyverse.org>) that everyone agrees to stick to.
 
--   Base R and stringr functions all use `pattern` to refer to the regular expression pattern to work this.
+-   Base R and stringr functions all use `pattern` to refer to the regular expression pattern.
 
 ## How do I apply this pattern?
 

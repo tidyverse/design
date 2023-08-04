@@ -1,4 +1,4 @@
-# Make strategies explicit {#sec-independent-usage}
+# Make strategies explicit {#sec-strategies-explicit}
 
 ```{r}
 #| include = FALSE
@@ -7,19 +7,20 @@ source("common.R")
 
 ## What's the problem?
 
-Avoid complex patterns of dependencies between arguments so that only certain combinations can be used at the same time.
+If your function exposes multiple implementation strategies, make those explicit through an argument.
+This makes it clear how to control the operation of your function and extends gracefully if different strategies expose different options.
 
-This often occurs because you are selecting between different strategies.
-
-Dependencies between arguments makes functions harder to use because it suggests more viable input combination that actually exist.
-You have to learn and the remember the set of allowed combinations, rather than them being implied by the structure of the function.
-It also makes documentation harder to write, because you have to use extra words to explain exactly how combinations of arguments work together, and it's not obvious where those words should go.
-If there's an interaction between `arg_a` and `arg_b` do you document with `arg_a`, with `arg_b`, or with both?
+One sign that this pattern is needed is a complex dependency pattern between arguments: maybe you can set `a` and `b` and `a` and `c` but not `b` and `c`.
+This tends to make the function harder to use because it suggests more viable input combination that actually exist.
+You have to learn and the remember the set of allowed combinations, rather that seeing the underlying strategies.
 
 ## What are some examples?
 
--   `stringr::str_detect()` and friends can use different matching engines by wrapping the pattern in functions like `stringr::fixed()` and `stringr::coll()`.
--   `dplyr::left_join()` can use a variety of strategies for joining two data frames together expressed in a mini-DSL via the `join_by()` function.
+-   `rank()` exposes six different methods for handling ties with the `ties.method` argument.
+-   `p.adjust()` exposes eight strategies for adjusting P values to account for multiple comparisons using the `p.adjust.methods` argument.
+-   `quantile()` exposes nine different approaches to computing a quantile through the `type` argument.
+-   `stringr::str_detect()` and friends can use different matching engines by wrapping the pattern in functions like `stringr::fixed()` and `stringr::coll()`. Learn more in @cs-stringr.
+-   `dplyr::left_join()` uses a very advanced form of this pattern where the different strategies for joining two data frames together are expressed in a mini-DSL provided by `dplyr::join_by()`.
 
 What are some counter examples?
 
@@ -36,17 +37,73 @@ What are some counter examples?
 
 ## How do I use this pattern?
 
+### Name and enumerate
+
+The simplest approach to exposing different strategies is to name each option and then this to use character vector of the possible options, as described in @sec-enumerate-options. This approach typically pairs well with `switch()`.
+For example, take `stringr::str_trim()` which looks something like this:
+
+```{r}
+str_trim <- function (string, side = c("both", "left", "right")) 
+{
+  switch(
+    arg_match(side),
+    left = stri_trim_left(string),
+    right = stri_trim_right(string),
+    both = stri_trim_both(string)
+  )
+}
+```
+
+This is particularly simple because stringr relies on the stringi package for implementation.
+But I think it's still straightforward even if we implement more ourselves:
+
+```{r}
+str_trim <- function (string, side = c("both", "left", "right")) 
+{
+  pattern <- switch(
+    arg_match(side),
+    left = "^\\s+",
+    right = "\\s$",
+    both = "^\\s+|\\s$"
+  )
+  str_replace_all(string, pattern, "")
+}
+```
+
+### Only two strategies
+
+If your function provides only two strategies it's tempting to use a logical to switch between them.
+I recommend against this unless you're REALLY SURE there won't ever be another strategy.
+
+I think there's often also an argument that it's easier to remember an enumeration than a Boolean argument.
+For example compare these equivalent calls to `sort()` and `vctrs::vec_sort()`:
+
+```{r}
+#| results: false
+
+x <- sample(10)
+sort(x, decreasing = TRUE)
+vctrs::vec_sort(x, direction = "desc")
+
+sort(x, decreasing = FALSE)
+vctrs::vec_sort(x, direction = "asc")
+```
+
+It's unlikely that you'll ever need to implement another sorting direction, but I think it's easier to understand `direction = "asc"` than `decreasing = FALSE` at a glance.
+
+### Varying arguments
+
+In more complicated cases, different strategies will require different arguments, so you'll need a bit more infrastructure.
+I think stringr provides the best model for this technique.
+
+## How do I remediate past mistakes?
+
 Typically the reason that you violate this pattern is because your function begins by implementing a single strategy (e.g. `geom_histogram()` let you ).
 Later on, you discover a new strategy
 
 If you realise that your function needs another strategy, accept that if you have two strategies, it probably means that you'll discover a third strategy in the future.
 Design your function API for this so rather than adding a Boolean argument, add an enumeration of options.
-
 For example, when `grepl()` realised that it needed to implement the Perl engine it should have done something like `engine = c("default", "Perl")` so then when later the `fixed` strategy appeared it could have been easily extended to `engine = c("default", "Perl", "fixed")`.
-
-If the strategies need different arguments you'll need to use some more advanced technique as described below.
-
-## How do I remediate past mistakes?
 
 These mistakes are usually easy to avoid when you first write a function; just don't it 😃.
 Typically the problems creep in later as a function grows in capability.
@@ -66,6 +123,43 @@ There are two common outcomes which are illustrated in the case studies below:
 
 If these changes to the interface occur to exported functions in a package, you'll need to consider how to preserve the interface with deprecation warnings.
 For important functions, it is worth generating an message that includes new code to copy and paste.
+
+### Enumerate
+
+`sort()` uses the `na.last` argument to expose three strategies for handling missing values:
+
+-   `na.last = TRUE` means put them last.
+-   `na.last = FALSE` means put them first.
+-   `na.list = NA` means to drop them.
+
+I think we could make this more clear by instead using an `na` argument that takes one of three values: last, first, or drop.
+In this case, we can change both the argument name and its interface making remediation relatively simple:
+
+```{r}
+sort <- function(na.last = deprecated(), na = c("drop", "first", "last")) {
+  
+  if (lifecycle::is_present(na.last)) {
+    lifecycle::deprecate_warn("1.0.0", "sort(na.last)", "sort(na)")
+
+    if (!is.logical(na.last) || length(na.last) != 1) {
+      cli::cli_abort("{.arg na.last} must be a single TRUE, FALSE, or NA.")
+    }
+    
+    if (isTRUE(na.last)) {
+      na <- "last"
+    } else if (isFALSE(na.last)) {
+      na <- "first"
+    } else {
+      na <- "drop"
+    }
+  } else {
+    na <- arg_match(na)
+  }
+  
+}
+```
+
+It would also be nice to make the default value last (since generally R functions don't remove missing values unless explicitly requested) but that change is much harder to do without affecting existing code.
 
 ### Using multiple top level functions {#sec-cs-fct-lump}
 

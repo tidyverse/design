@@ -12,7 +12,8 @@ rename <- function(old, new) {
   old_path <- fs::path_ext_set(old, "qmd")
   new_path <- fs::path_ext_set(new, "qmd")
   
-  fs::file_move(old_path, new_path)
+  if (file.exists(old_path))
+    fs::file_move(old_path, new_path)
   quarto <- readLines("_quarto.yml")
   quarto <- gsub(old_path, new_path, quarto, fixed = TRUE)
   writeLines(quarto, "_quarto.yml")
