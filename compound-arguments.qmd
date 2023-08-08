@@ -38,7 +38,6 @@ I've included this pattern mostly as an example of a something that we have only
 -   `rgb(cbind(r, g, b))` is equivalent to `rgb(r, g, b)`.
     This is useful because what `rgb()` really operates on is colours, as specified by their red, green, and blue components.
     When working interactively it's useful to set the components individually, but when operating on colour with functions, it's nice to have a single object.
-    See @sec-cs-rgb for a bigger exploration.
 
 -   `options(list(a = 1, b = 2))` is equivalent to `options(a = 1, b = 2)`.
     This is half of very useful pattern.
