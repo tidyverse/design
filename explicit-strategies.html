@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.3.450">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
 <meta name="author" content="Hadley Wickham">
+
 <title>Tidy design principles - 12&nbsp; Make strategies explicit</title>
 <style>
 code{white-space: pre-wrap;}
@@ -54,6 +57,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
+
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
@@ -71,7 +75,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -90,13 +95,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/script.js"></script>
+}</script>
+<script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/script.js"></script>
+
+
 </head>
+
 <body class="nav-sidebar floating">
 
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
@@ -107,9 +118,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <i class="bi bi-search"></i>
       </button>
     </div>
-  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Tidy design principles</a> 
         <div class="sidebar-tools-main">
@@ -129,7 +144,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-<li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Welcome</span></a>
@@ -149,8 +164,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./names.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Names attribute</span></span></a>
@@ -169,7 +184,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
@@ -178,8 +193,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./inputs-explicit.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Make inputs explicit</span></span></a>
@@ -222,7 +237,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
@@ -231,8 +246,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./explicit-strategies.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Make strategies explicit</span></span></a>
@@ -263,7 +278,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
@@ -272,11 +287,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-rep.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Case study: <code>rep()</code></span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -300,7 +315,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-rgb.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/grDevices/rgb.html">rgb()</a></code>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Case study: <code>rgb()</code></span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -324,17 +339,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-mapply-pmap.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/mapply.html">mapply()</a></code> vs <code>pmap()</code>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Case study: <code>mapply()</code> vs <code>pmap()</code></span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-setNames.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/stats/setNames.html">setNames()</a></code>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Case study: <code>setNames()</code></span></span></a>
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
@@ -343,8 +358,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-multi.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Returning multiple values</span></span></a>
@@ -369,7 +384,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
@@ -378,15 +393,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./changes-multivers.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Work with multiple dependency versions</span></span></a>
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
@@ -395,8 +410,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./side-effects.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Side-effect soup</span></span></a>
@@ -409,7 +424,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
@@ -418,8 +433,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./err-call.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Error call</span></span></a>
@@ -432,7 +447,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true">
@@ -441,48 +456,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./glossary.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
   </div>
 </li>
       </ul>
-</li>
+  </li>
     </ul>
-</div>
-</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#whats-the-problem" id="toc-whats-the-problem" class="nav-link active" data-scroll-target="#whats-the-problem"><span class="header-section-number">12.1</span> What’s the problem?</a></li>
+  <li><a href="#whats-the-problem" id="toc-whats-the-problem" class="nav-link active" data-scroll-target="#whats-the-problem"><span class="header-section-number">12.1</span> What’s the problem?</a></li>
   <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">12.2</span> What are some examples?</a></li>
-  <li>
-<a href="#how-do-i-use-this-pattern" id="toc-how-do-i-use-this-pattern" class="nav-link" data-scroll-target="#how-do-i-use-this-pattern"><span class="header-section-number">12.3</span> How do I use this pattern?</a>
+  <li><a href="#how-do-i-use-this-pattern" id="toc-how-do-i-use-this-pattern" class="nav-link" data-scroll-target="#how-do-i-use-this-pattern"><span class="header-section-number">12.3</span> How do I use this pattern?</a>
   <ul class="collapse">
-<li><a href="#name-and-enumerate" id="toc-name-and-enumerate" class="nav-link" data-scroll-target="#name-and-enumerate"><span class="header-section-number">12.3.1</span> Name and enumerate</a></li>
+  <li><a href="#name-and-enumerate" id="toc-name-and-enumerate" class="nav-link" data-scroll-target="#name-and-enumerate"><span class="header-section-number">12.3.1</span> Name and enumerate</a></li>
   <li><a href="#only-two-strategies" id="toc-only-two-strategies" class="nav-link" data-scroll-target="#only-two-strategies"><span class="header-section-number">12.3.2</span> Only two strategies</a></li>
   <li><a href="#varying-arguments" id="toc-varying-arguments" class="nav-link" data-scroll-target="#varying-arguments"><span class="header-section-number">12.3.3</span> Varying arguments</a></li>
-  </ul>
-</li>
-  <li>
-<a href="#how-do-i-remediate-past-mistakes" id="toc-how-do-i-remediate-past-mistakes" class="nav-link" data-scroll-target="#how-do-i-remediate-past-mistakes"><span class="header-section-number">12.4</span> How do I remediate past mistakes?</a>
+  <li><a href="#escape-hatches" id="toc-escape-hatches" class="nav-link" data-scroll-target="#escape-hatches"><span class="header-section-number">12.3.4</span> Escape hatches</a></li>
+  </ul></li>
+  <li><a href="#how-do-i-remediate-past-mistakes" id="toc-how-do-i-remediate-past-mistakes" class="nav-link" data-scroll-target="#how-do-i-remediate-past-mistakes"><span class="header-section-number">12.4</span> How do I remediate past mistakes?</a>
   <ul class="collapse">
-<li><a href="#enumerate" id="toc-enumerate" class="nav-link" data-scroll-target="#enumerate"><span class="header-section-number">12.4.1</span> Enumerate</a></li>
-  <li><a href="#sec-cs-fct-lump" id="toc-sec-cs-fct-lump" class="nav-link" data-scroll-target="#sec-cs-fct-lump"><span class="header-section-number">12.4.2</span> Using multiple top level functions</a></li>
-  <li><a href="#sec-geom-histogram" id="toc-sec-geom-histogram" class="nav-link" data-scroll-target="#sec-geom-histogram"><span class="header-section-number">12.4.3</span> Using a strategy function</a></li>
-  <li><a href="#enumeration-to-strategy" id="toc-enumeration-to-strategy" class="nav-link" data-scroll-target="#enumeration-to-strategy"><span class="header-section-number">12.4.4</span> Enumeration to strategy</a></li>
-  </ul>
-</li>
+  <li><a href="#boolean-to-enumeration" id="toc-boolean-to-enumeration" class="nav-link" data-scroll-target="#boolean-to-enumeration"><span class="header-section-number">12.4.1</span> Boolean to enumeration</a></li>
+  <li><a href="#sec-geom-histogram" id="toc-sec-geom-histogram" class="nav-link" data-scroll-target="#sec-geom-histogram"><span class="header-section-number">12.4.2</span> Using a strategy function</a></li>
+  <li><a href="#enumeration-to-strategy" id="toc-enumeration-to-strategy" class="nav-link" data-scroll-target="#enumeration-to-strategy"><span class="header-section-number">12.4.3</span> Enumeration to strategy</a></li>
+  </ul></li>
   <li><a href="#see-also" id="toc-see-also" class="nav-link" data-scroll-target="#see-also"><span class="header-section-number">12.5</span> See also</a></li>
-  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"><span class="header-section-number">12.6</span> </a></li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/explicit-strategies.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/explicit-strategies.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
 <h1 class="title"><span id="sec-strategies-explicit" class="quarto-section-identifier"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Make strategies explicit</span></span></h1>
 </div>
 
@@ -496,140 +512,259 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header><section id="whats-the-problem" class="level2" data-number="12.1"><h2 data-number="12.1" class="anchored" data-anchor-id="whats-the-problem">
-<span class="header-section-number">12.1</span> What’s the problem?</h2>
+</header>
+
+<section id="whats-the-problem" class="level2" data-number="12.1">
+<h2 data-number="12.1" class="anchored" data-anchor-id="whats-the-problem"><span class="header-section-number">12.1</span> What’s the problem?</h2>
 <p>If your function exposes multiple implementation strategies, make those explicit through an argument. This makes it clear how to control the operation of your function and extends gracefully if different strategies expose different options.</p>
 <p>One sign that this pattern is needed is a complex dependency pattern between arguments: maybe you can set <code>a</code> and <code>b</code> and <code>a</code> and <code>c</code> but not <code>b</code> and <code>c</code>. This tends to make the function harder to use because it suggests more viable input combination that actually exist. You have to learn and the remember the set of allowed combinations, rather that seeing the underlying strategies.</p>
-</section><section id="what-are-some-examples" class="level2" data-number="12.2"><h2 data-number="12.2" class="anchored" data-anchor-id="what-are-some-examples">
-<span class="header-section-number">12.2</span> What are some examples?</h2>
+</section>
+<section id="what-are-some-examples" class="level2" data-number="12.2">
+<h2 data-number="12.2" class="anchored" data-anchor-id="what-are-some-examples"><span class="header-section-number">12.2</span> What are some examples?</h2>
 <ul>
-<li>
-<code><a href="https://rdrr.io/r/base/rank.html">rank()</a></code> exposes six different methods for handling ties with the <code>ties.method</code> argument.</li>
-<li>
-<code><a href="https://rdrr.io/r/stats/p.adjust.html">p.adjust()</a></code> exposes eight strategies for adjusting P values to account for multiple comparisons using the <code>p.adjust.methods</code> argument.</li>
-<li>
-<code><a href="https://rdrr.io/r/stats/quantile.html">quantile()</a></code> exposes nine different approaches to computing a quantile through the <code>type</code> argument.</li>
-<li>
-<code><a href="https://stringr.tidyverse.org/reference/str_detect.html">stringr::str_detect()</a></code> and friends can use different matching engines by wrapping the pattern in functions like <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">stringr::fixed()</a></code> and <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">stringr::coll()</a></code>. Learn more in <span class="citation" data-cites="cs-stringr">@cs-stringr</span>.</li>
-<li>
-<code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">dplyr::left_join()</a></code> uses a very advanced form of this pattern where the different strategies for joining two data frames together are expressed in a mini-DSL provided by <code><a href="https://dplyr.tidyverse.org/reference/join_by.html">dplyr::join_by()</a></code>.</li>
+<li><code>rank()</code> exposes six different methods for handling ties with the <code>ties.method</code> argument.</li>
+<li><code>p.adjust()</code> exposes eight strategies for adjusting P values to account for multiple comparisons using the <code>p.adjust.methods</code> argument.</li>
+<li><code>quantile()</code> exposes nine different approaches to computing a quantile through the <code>type</code> argument.</li>
+<li><code>stringr::str_detect()</code> and friends can use different matching engines by wrapping the pattern in functions like <code>stringr::fixed()</code> and <code>stringr::coll()</code>. Learn more in <a href="cs-stringr.html"><span>Chapter&nbsp;16</span></a>.</li>
+<li><code>dplyr::left_join()</code> uses a very advanced form of this pattern where the different strategies for joining two data frames together are expressed in a mini-DSL provided by <code>dplyr::join_by()</code>.</li>
 </ul>
 <p>What are some counter examples?</p>
 <ul>
-<li><p><code><a href="https://forcats.tidyverse.org/reference/fct_lump.html">forcats::fct_lump()</a></code> exposes three lumping strategies through the presence of absence of the <code>n</code> and <code>prop</code> arguments.</p></li>
-<li><p><code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">ggplot2::geom_histogram()</a></code> has three main strategies for generating the bins: you can supply the number of <code>bins</code>, as the width of each bin (<code>binwidth</code>, or the exact <code>breaks</code>.</p></li>
-<li><p><code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code> has <code>perl</code> and <code>fixed</code> which can be either <code>TRUE</code> or <code>FALSE</code>, but you’re not really toggling two independent values, you’re picking from one of three regular expression engines (the default, the engine used by Perl, and fixed matches). Additionally, the <code>ignore.case</code> argument only applies to two of the strategies. Learn more in <span class="citation" data-cites="cs-stringr">@cs-stringr</span>.</p></li>
-<li><p><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code> exposes two basic strategies: repeat each element of the vector (by setting <code>each</code> to a scalar or <code>times</code> to a vector) or repeat the entire vector (by setting <code>times</code> to a scalar). Learn more in <a href="cs-rep.html"><span>Chapter&nbsp;17</span></a>.</p></li>
-</ul></section><section id="how-do-i-use-this-pattern" class="level2" data-number="12.3"><h2 data-number="12.3" class="anchored" data-anchor-id="how-do-i-use-this-pattern">
-<span class="header-section-number">12.3</span> How do I use this pattern?</h2>
-<section id="name-and-enumerate" class="level3" data-number="12.3.1"><h3 data-number="12.3.1" class="anchored" data-anchor-id="name-and-enumerate">
-<span class="header-section-number">12.3.1</span> Name and enumerate</h3>
-<p>The simplest approach to exposing different strategies is to name each option and then this to use character vector of the possible options, as described in <a href="enumerate-options.html"><span>Chapter&nbsp;10</span></a>. This approach typically pairs well with <code><a href="https://rdrr.io/r/base/switch.html">switch()</a></code>. For example, take <code><a href="https://stringr.tidyverse.org/reference/str_trim.html">stringr::str_trim()</a></code> which looks something like this:</p>
+<li><p><code>forcats::fct_lump()</code> exposes three lumping strategies through the presence of absence of the <code>n</code> and <code>prop</code> arguments. We rememediated this issue in forcats 0.5.0 but splitting <code>fct_lump()</code> into three separate functions: <code>fct_lump_prop()</code>, <code>fct_lump_n()</code>, and <code>fct_lump_lowfreq()</code>. This allows the function name to hint at the purpose, prevents you from supplying both <code>n</code> and <code>prop</code> through the design of the functions, and only has the <code>ties.method</code> argument where it makes sense.</p></li>
+<li><p><code>ggplot2::geom_histogram()</code> has three main strategies for generating the bins: you can supply the number of <code>bins</code>, as the width of each bin (<code>binwidth</code>, or the exact <code>breaks</code>.</p></li>
+<li><p><code>grepl()</code> has <code>perl</code> and <code>fixed</code> which can be either <code>TRUE</code> or <code>FALSE</code>, but you’re not really toggling two independent values, you’re picking from one of three regular expression engines (the default, the engine used by Perl, and fixed matches). Additionally, the <code>ignore.case</code> argument only applies to two of the strategies. Learn more in <a href="cs-stringr.html"><span>Chapter&nbsp;16</span></a>.</p></li>
+<li><p><code>rep()</code> exposes two basic strategies: repeat each element of the vector (by setting <code>each</code> to a scalar or <code>times</code> to a vector) or repeat the entire vector (by setting <code>times</code> to a scalar). Learn more in <a href="cs-rep.html"><span>Chapter&nbsp;17</span></a>.</p></li>
+</ul>
+</section>
+<section id="how-do-i-use-this-pattern" class="level2" data-number="12.3">
+<h2 data-number="12.3" class="anchored" data-anchor-id="how-do-i-use-this-pattern"><span class="header-section-number">12.3</span> How do I use this pattern?</h2>
+<p>There are two ways to use this pattern, depending on whether or not the different strategies have different arguments.</p>
+<section id="name-and-enumerate" class="level3" data-number="12.3.1">
+<h3 data-number="12.3.1" class="anchored" data-anchor-id="name-and-enumerate"><span class="header-section-number">12.3.1</span> Name and enumerate</h3>
+<p>The simplest approach to exposing different strategies is to name each option and then this to use character vector of the possible options, as described in <a href="enumerate-options.html"><span>Chapter&nbsp;10</span></a>. This approach typically pairs well with <code>switch()</code>. For example, take <code>stringr::str_trim()</code> which looks something like this:</p>
 <div class="cell">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">str_trim</span> <span class="op">&lt;-</span> <span class="kw">function</span> <span class="op">(</span><span class="va">string</span>, <span class="va">side</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"both"</span>, <span class="st">"left"</span>, <span class="st">"right"</span><span class="op">)</span><span class="op">)</span> </span>
-<span><span class="op">{</span></span>
-<span>  <span class="kw"><a href="https://rdrr.io/r/base/switch.html">switch</a></span><span class="op">(</span></span>
-<span>    <span class="fu">arg_match</span><span class="op">(</span><span class="va">side</span><span class="op">)</span>,</span>
-<span>    left <span class="op">=</span> <span class="fu">stri_trim_left</span><span class="op">(</span><span class="va">string</span><span class="op">)</span>,</span>
-<span>    right <span class="op">=</span> <span class="fu">stri_trim_right</span><span class="op">(</span><span class="va">string</span><span class="op">)</span>,</span>
-<span>    both <span class="op">=</span> <span class="fu">stri_trim_both</span><span class="op">(</span><span class="va">string</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>str_trim <span class="ot">&lt;-</span> <span class="cf">function</span> (string, <span class="at">side =</span> <span class="fu">c</span>(<span class="st">"both"</span>, <span class="st">"left"</span>, <span class="st">"right"</span>)) </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span>(</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arg_match</span>(side),</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">left =</span> <span class="fu">stri_trim_left</span>(string),</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">right =</span> <span class="fu">stri_trim_right</span>(string),</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">both =</span> <span class="fu">stri_trim_both</span>(string)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This is particularly simple because stringr relies on the stringi package for implementation. But I think it’s still straightforward even if we implement more ourselves:</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">str_trim</span> <span class="op">&lt;-</span> <span class="kw">function</span> <span class="op">(</span><span class="va">string</span>, <span class="va">side</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"both"</span>, <span class="st">"left"</span>, <span class="st">"right"</span><span class="op">)</span><span class="op">)</span> </span>
-<span><span class="op">{</span></span>
-<span>  <span class="va">pattern</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/switch.html">switch</a></span><span class="op">(</span></span>
-<span>    <span class="fu">arg_match</span><span class="op">(</span><span class="va">side</span><span class="op">)</span>,</span>
-<span>    left <span class="op">=</span> <span class="st">"^\\s+"</span>,</span>
-<span>    right <span class="op">=</span> <span class="st">"\\s$"</span>,</span>
-<span>    both <span class="op">=</span> <span class="st">"^\\s+|\\s$"</span></span>
-<span>  <span class="op">)</span></span>
-<span>  <span class="fu">str_replace_all</span><span class="op">(</span><span class="va">string</span>, <span class="va">pattern</span>, <span class="st">""</span><span class="op">)</span></span>
-<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>str_trim <span class="ot">&lt;-</span> <span class="cf">function</span> (string, <span class="at">side =</span> <span class="fu">c</span>(<span class="st">"both"</span>, <span class="st">"left"</span>, <span class="st">"right"</span>)) </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  pattern <span class="ot">&lt;-</span> <span class="cf">switch</span>(</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arg_match</span>(side),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">left =</span> <span class="st">"^</span><span class="sc">\\</span><span class="st">s+"</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">right =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">s$"</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">both =</span> <span class="st">"^</span><span class="sc">\\</span><span class="st">s+|</span><span class="sc">\\</span><span class="st">s$"</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_replace_all</span>(string, pattern, <span class="st">""</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section><section id="only-two-strategies" class="level3" data-number="12.3.2"><h3 data-number="12.3.2" class="anchored" data-anchor-id="only-two-strategies">
-<span class="header-section-number">12.3.2</span> Only two strategies</h3>
-<p>If your function provides only two strategies it’s tempting to use a logical to switch between them. I recommend against this unless you’re REALLY SURE there won’t ever be another strategy.</p>
-<p>I think there’s often also an argument that it’s easier to remember an enumeration than a Boolean argument. For example compare these equivalent calls to <code><a href="https://rdrr.io/r/base/sort.html">sort()</a></code> and <code><a href="https://vctrs.r-lib.org/reference/vec_order.html">vctrs::vec_sort()</a></code>:</p>
+</section>
+<section id="only-two-strategies" class="level3" data-number="12.3.2">
+<h3 data-number="12.3.2" class="anchored" data-anchor-id="only-two-strategies"><span class="header-section-number">12.3.2</span> Only two strategies</h3>
+<p>If your function provides only two strategies it’s tempting to use a logical to switch between them. I recommend against this unless you’re REALLY SURE there won’t ever be another strategy. In many cases, it’s also easier to remember what an enumeration value means compared to a Boolean argument. For example compare these equivalent calls to <code>sort()</code> and <code>vctrs::vec_sort()</code>:</p>
 <div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="va">x</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu">vctrs</span><span class="fu">::</span><span class="fu"><a href="https://vctrs.r-lib.org/reference/vec_order.html">vec_sort</a></span><span class="op">(</span><span class="va">x</span>, direction <span class="op">=</span> <span class="st">"desc"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="va">x</span>, decreasing <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="fu">vctrs</span><span class="fu">::</span><span class="fu"><a href="https://vctrs.r-lib.org/reference/vec_order.html">vec_sort</a></span><span class="op">(</span><span class="va">x</span>, direction <span class="op">=</span> <span class="st">"asc"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">10</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(x, <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>vctrs<span class="sc">::</span><span class="fu">vec_sort</span>(x, <span class="at">direction =</span> <span class="st">"desc"</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(x, <span class="at">decreasing =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>vctrs<span class="sc">::</span><span class="fu">vec_sort</span>(x, <span class="at">direction =</span> <span class="st">"asc"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>It’s unlikely that you’ll ever need to implement another sorting direction, but I think it’s easier to understand <code>direction = "asc"</code> than <code>decreasing = FALSE</code> at a glance.</p>
-<p>Another example is <code>cols_vary</code> in <code>pivot_wider()</code>.</p>
-</section><section id="varying-arguments" class="level3" data-number="12.3.3"><h3 data-number="12.3.3" class="anchored" data-anchor-id="varying-arguments">
-<span class="header-section-number">12.3.3</span> Varying arguments</h3>
-<p>In more complicated cases, different strategies will require different arguments, so you’ll need a bit more infrastructure. I think stringr provides the best model for this technique.</p>
-</section></section><section id="how-do-i-remediate-past-mistakes" class="level2" data-number="12.4"><h2 data-number="12.4" class="anchored" data-anchor-id="how-do-i-remediate-past-mistakes">
-<span class="header-section-number">12.4</span> How do I remediate past mistakes?</h2>
-<p>Typically the reason that you violate this pattern is because your function begins by implementing a single strategy (e.g.&nbsp;<code>geom_histogram()</code> let you ). Later on, you discover a new strategy</p>
-<p>If you realise that your function needs another strategy, accept that if you have two strategies, it probably means that you’ll discover a third strategy in the future. Design your function API for this so rather than adding a Boolean argument, add an enumeration of options. For example, when <code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code> realised that it needed to implement the Perl engine it should have done something like <code>engine = c("default", "Perl")</code> so then when later the <code>fixed</code> strategy appeared it could have been easily extended to <code>engine = c("default", "Perl", "fixed")</code>.</p>
-<p>These mistakes are usually easy to avoid when you first write a function; just don’t it 😃. Typically the problems creep in later as a function grows in capability. It starts by implementing a single strategy, and then you discover an alternative. So you need to add an argument to pick the strategy. And then later on you discover another strategy. Do you add another argument to pick this strategy? Now what happens if</p>
-<p>As it’s grown incremently in many small steps, it never seemed worth the effort to fundamentally refactor it or break it up into multiple functions, but but now you have a large complex function. To remediate the problem, you’ll need to think holistically and reconsider the complete interface. There are two common outcomes which are illustrated in the case studies below:</p>
-<ul>
-<li><p>Splitting the function into multiple functions that each do one thing.</p></li>
-<li><p>Encapsulating related details arguments into a single object.</p></li>
-</ul>
-<p>If these changes to the interface occur to exported functions in a package, you’ll need to consider how to preserve the interface with deprecation warnings. For important functions, it is worth generating an message that includes new code to copy and paste.</p>
-<section id="enumerate" class="level3" data-number="12.4.1"><h3 data-number="12.4.1" class="anchored" data-anchor-id="enumerate">
-<span class="header-section-number">12.4.1</span> Enumerate</h3>
-<p><code><a href="https://rdrr.io/r/base/sort.html">sort()</a></code> uses the <code>na.last</code> argument to expose three strategies for handling missing values:</p>
-<ul>
-<li>
-<code>na.last = TRUE</code> means put them last.</li>
-<li>
-<code>na.last = FALSE</code> means put them first.</li>
-<li>
-<code>na.list = NA</code> means to drop them.</li>
-</ul>
-<p>I think we could make this more clear by instead using an <code>na</code> argument that takes one of three values: last, first, or drop. In this case, we can change both the argument name and its interface making remediation relatively simple:</p>
+<p>It’s unlikely that you’ll ever need to implement another sorting direction, but I think it’s easier to understand <code>direction = "asc"</code> than <code>decreasing = FALSE</code> at a glance. Another example where I think an enumeration is easier to understand is the <code>cols_vary</code> argument to <code>pivot_longer()</code>. This argument can be either fastest or slowest, and it’s hard to imagine how you might encode that into a Boolean flag.</p>
+</section>
+<section id="varying-arguments" class="level3" data-number="12.3.3">
+<h3 data-number="12.3.3" class="anchored" data-anchor-id="varying-arguments"><span class="header-section-number">12.3.3</span> Varying arguments</h3>
+<p>In more complicated cases, different strategies will require different arguments, so you’ll need a bit more infrastructure. The basic idea is build on the options object described in <a href="argument-clutter.html"><span>Chapter&nbsp;11</span></a>, but instead of providing just one helper function, you’ll provide one function per strategy. A good example of this approach is readr, which provides <code>regex()</code>, <code>boundary()</code>, <code>coll()</code>, and <code>fixed()</code> to pick between four different strategies for matching text. You can learn more about why we picked that interface in <a href="cs-stringr.html"><span>Chapter&nbsp;16</span></a>, so here I wanted to focus on the implementation.</p>
+<p>If you take a look at one of these functions, you’ll see it’s a wrapper around a stringi function that performs a similar job. But <code>fixed()</code> does two extra things compared to <code>stri_opts_fixed()</code>: it more aggressively checks the input arguments and it combines the stringi options with the pattern and adds a class.</p>
 <div class="cell">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sort</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">na.last</span> <span class="op">=</span> <span class="fu">deprecated</span><span class="op">(</span><span class="op">)</span>, <span class="va">na</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"drop"</span>, <span class="st">"first"</span>, <span class="st">"last"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  </span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html">is_present</a></span><span class="op">(</span><span class="va">na.last</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecate_soft.html">deprecate_warn</a></span><span class="op">(</span><span class="st">"1.0.0"</span>, <span class="st">"sort(na.last)"</span>, <span class="st">"sort(na)"</span><span class="op">)</span></span>
-<span></span>
-<span>    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/logical.html">is.logical</a></span><span class="op">(</span><span class="va">na.last</span><span class="op">)</span> <span class="op">||</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">na.last</span><span class="op">)</span> <span class="op">!=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span></span>
-<span>      <span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_abort.html">cli_abort</a></span><span class="op">(</span><span class="st">"{.arg na.last} must be a single TRUE, FALSE, or NA."</span><span class="op">)</span></span>
-<span>    <span class="op">}</span></span>
-<span>    </span>
-<span>    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Logic.html">isTRUE</a></span><span class="op">(</span><span class="va">na.last</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>      <span class="va">na</span> <span class="op">&lt;-</span> <span class="st">"last"</span></span>
-<span>    <span class="op">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Logic.html">isFALSE</a></span><span class="op">(</span><span class="va">na.last</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>      <span class="va">na</span> <span class="op">&lt;-</span> <span class="st">"first"</span></span>
-<span>    <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span>      <span class="va">na</span> <span class="op">&lt;-</span> <span class="st">"drop"</span></span>
-<span>    <span class="op">}</span></span>
-<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span>    <span class="va">na</span> <span class="op">&lt;-</span> <span class="fu">arg_match</span><span class="op">(</span><span class="va">na</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
-<span>  </span>
-<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fkxed <span class="ot">&lt;-</span> <span class="cf">function</span>(pattern, <span class="at">ignore_case =</span> <span class="cn">FALSE</span>) {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  pattern <span class="ot">&lt;-</span> <span class="fu">as_bare_character</span>(pattern)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_bool</span>(ignore_case)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  options <span class="ot">&lt;-</span> <span class="fu">stri_opts_fixed</span>(<span class="at">case_insensitive =</span> ignore_case)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">structure</span>(</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    pattern,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">options =</span> options,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">class =</span> <span class="fu">c</span>(<span class="st">"stringr_fixed"</span>, <span class="st">"stringr_pattern"</span>, <span class="st">"character"</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>It would also be nice to make the default value last (since generally R functions don’t remove missing values unless explicitly requested) but that change is much harder to do without affecting existing code.</p>
-</section><section id="sec-cs-fct-lump" class="level3" data-number="12.4.2"><h3 data-number="12.4.2" class="anchored" data-anchor-id="sec-cs-fct-lump">
-<span class="header-section-number">12.4.2</span> Using multiple top level functions</h3>
-<p>The goal of <code>fct_lump()</code> is to combine infrequent factor levels into a common “other” level, which is useful for displays where you want to concentrate on the most common values but still account for every observation. When I first wrote <code>fct_lump()</code>, it implemented a single strategy. But over time people asked for more and more variations, which I kept adding to <code>fct_lump()</code>. This lead to a function that picks from one of three different strategies depending which of the <code>n</code> and <code>prop</code> arguments you supply:</p>
+<p>This class is important because it allows us to check that the user has provided the expect input type and give a useful error message if not. Since pretty much every stringr function needs to do this, stringr provides a internal function called <code>type()</code> that looks something like this<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>type <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">inherits</span>(x, <span class="st">"stringr_boundary"</span>)) {</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"bound"</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">inherits</span>(x, <span class="st">"stringr_regex"</span>)) {</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"regex"</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">inherits</span>(x, <span class="st">"stringr_coll"</span>)) {</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"coll"</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">inherits</span>(x, <span class="st">"stringr_fixed"</span>)) {</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"fixed"</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">is.character</span>(x)) {</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">identical</span>(x, <span class="st">""</span>)) <span class="st">"empty"</span> <span class="cf">else</span> <span class="st">"regex"</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    cli<span class="sc">::</span><span class="fu">cli_abort</span>(<span class="st">"Must be a string or stringr pattern object"</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Then individual stringr functions can use <code>type()</code> plus a <code>switch</code> statement:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="annotated-cell-6"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-6-1"><a href="#annotated-cell-6-1" aria-hidden="true" tabindex="-1"></a>str_detect <span class="ot">&lt;-</span> <span class="cf">function</span>(string, pattern) {</span>
+<span id="annotated-cell-6-2"><a href="#annotated-cell-6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_lengths</span>(string, pattern)</span>
+<span id="annotated-cell-6-3"><a href="#annotated-cell-6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_bool</span>(negate)</span>
+<span id="annotated-cell-6-4"><a href="#annotated-cell-6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-6-5"><a href="#annotated-cell-6-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span>(<span class="fu">type</span>(pattern),</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-6-6" class="code-annotation-target"><a href="#annotated-cell-6-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">empty =</span> <span class="fu">no_empty</span>(),</span>
+<span id="annotated-cell-6-7"><a href="#annotated-cell-6-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">bound =</span> <span class="fu">no_boundary</span>(),</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-6-8" class="code-annotation-target"><a href="#annotated-cell-6-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">fixed =</span> <span class="fu">stri_detect_fixed</span>(string, pattern, <span class="at">opts_fixed =</span> <span class="fu">opts</span>(pattern)),</span>
+<span id="annotated-cell-6-9"><a href="#annotated-cell-6-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">coll  =</span> <span class="fu">stri_detect_coll</span>(string,  pattern, <span class="at">opts_collator =</span> <span class="fu">opts</span>(pattern)),</span>
+<span id="annotated-cell-6-10"><a href="#annotated-cell-6-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">regex =</span> <span class="fu">stri_detect_regex</span>(string, pattern, <span class="at">opts_regex =</span> <span class="fu">opts</span>(pattern))</span>
+<span id="annotated-cell-6-11"><a href="#annotated-cell-6-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="annotated-cell-6-12"><a href="#annotated-cell-6-12" aria-hidden="true" tabindex="-1"></a>}</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-annotation="1" data-code-cell="annotated-cell-6" data-code-lines="6,7"><code>no_empty()</code> and <code>no_boundary()</code> are helper functions that generate errors when a stringr function doesn’t support a specific engine.</span>
+</dd>
+<dt data-target-cell="annotated-cell-6" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-annotation="2" data-code-cell="annotated-cell-6" data-code-lines="8,9,10"><code>opts()</code> is a helper function for extracting the stringi options back out of the stringr wrapper object.</span>
+</dd>
+</dl>
+</div>
+</div>
+<p>You can implement this same strategy using <code>if</code> or OOP, but here I particularly like the <code>switch</code> pattern because it keeps the stringi function calls close together, which makes it easier to keep them in sync.</p>
+</section>
+<section id="escape-hatches" class="level3" data-number="12.3.4">
+<h3 data-number="12.3.4" class="anchored" data-anchor-id="escape-hatches"><span class="header-section-number">12.3.4</span> Escape hatches</h3>
+<p>It’s sometimes useful to build in an escape hatch from canned strategies. This allows users to access alternative strategies, and allows for experimentation that can later turn into a official strategies. One example of such an escape hatch is in name repair, which occurs in many places throughout the tidyverse. One place you might encounter it is in <code>tibble()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>tibble<span class="sc">::</span><span class="fu">tibble</span>(<span class="at">a =</span> <span class="dv">1</span>, <span class="at">a =</span> <span class="dv">2</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Error in `tibble::tibble()`:</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ! Column name `a` must not be duplicated.</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Use `.name_repair` to specify repair.</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Caused by error in `repaired_names()`:</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ! Names must be unique.</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ✖ These names are duplicated:</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   * "a" at locations 1 and 2.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Beneath the surface all tidyverse functions that expose some sort of name repair eventually end up calling <code>vctrs::vec_as_names()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>vctrs<span class="sc">::</span><span class="fu">vec_as_names</span>(<span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"a"</span>), <span class="at">repair =</span> <span class="st">"check_unique"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Error:</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ! Names must be unique.</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ✖ These names are duplicated:</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   * "a" at locations 1 and 2.</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>vctrs<span class="sc">::</span><span class="fu">vec_as_names</span>(<span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"a"</span>), <span class="at">repair =</span> <span class="st">"unique"</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; New names:</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • `a` -&gt; `a...1`</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • `a` -&gt; `a...2`</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "a...1" "a...2"</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>vctrs<span class="sc">::</span><span class="fu">vec_as_names</span>(<span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"a"</span>), <span class="at">repair =</span> <span class="st">"unique_quiet"</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "a...1" "a...2"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>vec_as_names()</code> exposes six strategies, but it also allows you to supply a function:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>vctrs<span class="sc">::</span><span class="fu">vec_as_names</span>(<span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"a"</span>), <span class="at">repair =</span> toupper)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "A" "A"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The implementation looks something like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>vec_as_names <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">repair =</span> <span class="fu">c</span>(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>      <span class="st">"minimal"</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>      <span class="st">"unique"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>      <span class="st">"universal"</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>      <span class="st">"check_unique"</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>      <span class="st">"unique_quiet"</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>      <span class="st">"universal_quiet"</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>) {</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.character</span>(repair)) {</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    repair <span class="ot">&lt;-</span> <span class="cf">switch</span>(</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">arg_match</span>(repair), </span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">minimal =</span> minimal_names, </span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">universal =</span> <span class="cf">function</span>(names) <span class="fu">as_universal_names</span>(names, <span class="at">quiet =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">universal_quiet =</span> <span class="cf">function</span>(names) <span class="fu">as_universal_names</span>(names, <span class="at">quiet =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>      ...</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.function</span>(repair)) {</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    cli<span class="sc">::</span><span class="fu">cli_abort</span>(<span class="st">"{.arg repair} must be a function or string."</span>)</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Notice we use <code>switch</code> to convert a string to a function from a set of known values.</p>
+</section>
+</section>
+<section id="how-do-i-remediate-past-mistakes" class="level2" data-number="12.4">
+<h2 data-number="12.4" class="anchored" data-anchor-id="how-do-i-remediate-past-mistakes"><span class="header-section-number">12.4</span> How do I remediate past mistakes?</h2>
+<p>It’s very easy to violate this pattern because your function often begins by implementing a single strategy, and then later you discover a new strategy. It’s easy to implement this as a Boolean flag or with some argument magic, which leads to problems when you later discover a third strategy. In this section, you’ll see a few ways that you can fix these problems if you discover later that you’ve made a mistake.</p>
+<section id="boolean-to-enumeration" class="level3" data-number="12.4.1">
+<h3 data-number="12.4.1" class="anchored" data-anchor-id="boolean-to-enumeration"><span class="header-section-number">12.4.1</span> Boolean to enumeration</h3>
+<p>One sign that you’re stretching the limit of a Boolean flag is that you’ve given an additional meaning to <code>NA</code> so instead of selecting between two possible options, your argument now selects between three. Take <code>sort()</code> for example: its <code>na.last</code> argument exposes three strategies for handling missing values:</p>
 <ul>
-<li><p>If <code>n</code> and <code>prop</code> are missing, it will merge together the least frequent levels, ensuring that <code>other</code> is still the smallest level. This case ignores the <code>ties.method</code> argument, adding another dependency between arguments.</p></li>
-<li><p>If a positive <code>n</code> is supplied, it preserves the <code>n</code> most common values; if a negative <code>n</code> is supplied it preserves the <code>n</code> least common values.</p></li>
-<li><p>If a positive <code>prop</code> is supplied, lumps values which do not appear at least <code>prop</code> of the time. Negative <code>prop</code> lumps values that do not appear at most <code>-prop</code> of the time.</p></li>
+<li><code>na.last = TRUE</code> means put them last.</li>
+<li><code>na.last = FALSE</code> means put them first.</li>
+<li><code>na.list = NA</code> means to drop them.</li>
 </ul>
-<p>Overall, this become very hard to explain in the documentation, and people continued to ask for even more strategies, suggesting that even more arguments would be needed.</p>
-<p>In forcats 0.5.0 we split <code>fct_lump()</code> into three separate functions: <code>fct_lump_prop()</code>, <code>fct_lump_n()</code>, and <code>fct_lump_lowfreq()</code>. This allows the function name to hint at the purpose, prevents you from supplying both <code>n</code> and <code>prop</code> through the design of the functions, and only has the <code>ties.method</code> argument where it makes sense.</p>
-</section><section id="sec-geom-histogram" class="level3" data-number="12.4.3"><h3 data-number="12.4.3" class="anchored" data-anchor-id="sec-geom-histogram">
-<span class="header-section-number">12.4.3</span> Using a strategy function</h3>
+<p>I think we could make this function more clear by using an enumeration that takes one of three values: <code>last</code>, <code>first</code>, or <code>drop</code>. In this case, we can change both the argument name and its interface making remediation relatively simple: we add a new argument called <code>na</code> and deprecate the old argument.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>sort <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">na.last =</span> <span class="fu">deprecated</span>(), <span class="at">na =</span> <span class="fu">c</span>(<span class="st">"drop"</span>, <span class="st">"first"</span>, <span class="st">"last"</span>)) {</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (lifecycle<span class="sc">::</span><span class="fu">is_present</span>(na.last)) {</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    lifecycle<span class="sc">::</span><span class="fu">deprecate_warn</span>(<span class="st">"1.0.0"</span>, <span class="st">"sort(na.last)"</span>, <span class="st">"sort(na)"</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.logical</span>(na.last) <span class="sc">||</span> <span class="fu">length</span>(na.last) <span class="sc">!=</span> <span class="dv">1</span>) {</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>      cli<span class="sc">::</span><span class="fu">cli_abort</span>(<span class="st">"{.arg na.last} must be a single TRUE, FALSE, or NA."</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">isTRUE</span>(na.last)) {</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>      na <span class="ot">&lt;-</span> <span class="st">"last"</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">isFALSE</span>(na.last)) {</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>      na <span class="ot">&lt;-</span> <span class="st">"first"</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>      na <span class="ot">&lt;-</span> <span class="st">"drop"</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    na <span class="ot">&lt;-</span> <span class="fu">arg_match</span>(na)</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note that the full signature of <code>sort()</code> is <code>sort(x, decreasing = FALSE, na.last = NA, …)</code> so when doing this it would be good practice to put the new argument after the <code>…</code> (<a href="dots-after-required.html"><span>Chapter&nbsp;8</span></a>) so that it doesn’t change the meaning of existing calls that relying on partial matching, e.g.&nbsp;<code>sort(x, na = TRUE)</code>.</p>
+<p>It would also be nice to make the default value <code>"last"</code> since it’s very unusual for an R function to silently remove missing values. However, that change is much harder to do because it’s much more likely to affect existing code.</p>
+<p>A similar case arose in <code>haven::write_sav()</code> where original the <code>compress</code> argument could be <code>TRUE</code> or <code>FALSE</code>. But then SPSS introduced a new way of compressing, expanding the set of options to three (which we have called byte, none, and zsav). Since the <code>compress</code> argument name is still good we chose to accept either a <code>TRUE</code> or <code>FALSE</code> or one of the new enumeratiion:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>write_sav <span class="ot">&lt;-</span> <span class="cf">function</span>(data, path, <span class="at">compress =</span> <span class="fu">c</span>(<span class="st">"byte"</span>, <span class="st">"none"</span>, <span class="st">"zsav"</span>), <span class="at">adjust_tz =</span> <span class="cn">TRUE</span>) {</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">isTRUE</span>(compress)) {</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    compress <span class="ot">&lt;-</span> <span class="st">"zsav"</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">isFALSE</span>(compress)) {</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    compress <span class="ot">&lt;-</span> <span class="st">"none"</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    compress <span class="ot">&lt;-</span> <span class="fu">arg_match</span>(compress)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  ...</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You could also imagine deprecating the old logical options, but here we chose to the keep them since it’s a small amount of extra code, and means that existing users never need to worry about it. See <code>?haven::read_sav</code> for how we communicated the in the docs.</p>
+</section>
+<section id="sec-geom-histogram" class="level3" data-number="12.4.2">
+<h3 data-number="12.4.2" class="anchored" data-anchor-id="sec-geom-histogram"><span class="header-section-number">12.4.2</span> Using a strategy function</h3>
 <p>Sometimes the strategy will be tangled in with many other arguments, or they might be multiple strategies used simultaenously. In these situations you want to avoid creating a combinatorial explosion of functions, and instead might want to use a strategy object.</p>
-<p>For example, generating the bins for a histogram is a surprisingly complex topic. <code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">ggplot2::stat_bin()</a></code>, which powers <code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">ggplot2::geom_histogram()</a></code>, has a total of 5 arguments that control where the bins are placed:</p>
+<p>For example, generating the bins for a histogram is a surprisingly complex topic. <code>ggplot2::stat_bin()</code>, which powers <code>ggplot2::geom_histogram()</code>, has a total of 5 arguments that control where the bins are placed:</p>
 <ul>
-<li>You can supply either <code>binwidth</code> or <code>bins</code> to specify either the width or the number of evenly spaced bins. Alternatively, you supply <code>breaks</code> to specify the exact bin locations yourself (which allows you to create unevenly sized bins<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>).</li>
-<li>If you use <code>binwidth</code> or <code>bins</code>, you’re specifying the width of each bin, but not where the bins start. So additionally you can use either <code>boundary</code> or <code>center</code><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> to specify the location of a side (<code>boundary</code>) or the middle (<code>center</code>) of a bin<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. <code>boundary</code> and <code>center</code> are mutually exclusive; you can only specify one (see <a href="mutually-exclusive-arguments.html"><span>Chapter&nbsp;14</span></a> for more).</li>
+<li>You can supply either <code>binwidth</code> or <code>bins</code> to specify either the width or the number of evenly spaced bins. Alternatively, you supply <code>breaks</code> to specify the exact bin locations yourself (which allows you to create unevenly sized bins<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>).</li>
+<li>If you use <code>binwidth</code> or <code>bins</code>, you’re specifying the width of each bin, but not where the bins start. So additionally you can use either <code>boundary</code> or <code>center</code><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> to specify the location of a side (<code>boundary</code>) or the middle (<code>center</code>) of a bin<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. <code>boundary</code> and <code>center</code> are mutually exclusive; you can only specify one (see <a href="mutually-exclusive-arguments.html"><span>Chapter&nbsp;14</span></a> for more).</li>
 <li>Regardless of the way that you specify the locations of the bins, you need to choose where a bin from <code>a</code> to <code>b</code>, is <code>[a, b)</code> or <code>(a, b]</code>, which is the job of the <code>closed</code> argument.</li>
 </ul>
 <p>One way to resolve this problem would encapsulate the three basic strategies into three functions:</p>
@@ -641,14 +776,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>That immediately makes the relationship between the arguments and the strategies more clear.</p>
 <p>Note that these functions create “strategies”; i.e.&nbsp;they don’t take the data needed to actual perform the operation — none of these functions take range of the data. This makes these functions <a href="https://adv-r.hadley.nz/function-factories.html">function factories</a>, which is a relatively complex technique.</p>
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bin_width</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">width</span>, <span class="va">center</span>, <span class="va">boundary</span>, <span class="va">closed</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"left"</span>, <span class="st">"right"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="co"># https://adv-r.hadley.nz/function-factories.html#forcing-evaluation</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">width</span>, <span class="va">center</span>, <span class="va">boundary</span>, <span class="va">closed</span><span class="op">)</span></span>
-<span>  </span>
-<span>  <span class="kw">function</span><span class="op">(</span><span class="va">range</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    </span>
-<span>  <span class="op">}</span></span>
-<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>bin_width <span class="ot">&lt;-</span> <span class="cf">function</span>(width, center, boundary, <span class="at">closed =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"right"</span>)) {</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># https://adv-r.hadley.nz/function-factories.html#forcing-evaluation</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(width, center, boundary, closed)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(range) {</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout callout-style-simple callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -664,60 +799,65 @@ Argument checking
 <p>Alternatively, you might want to just check that the input is a function with the correct formals; that allows the user to supply their own strategy function. It’s probably something that few people will take advantage of, but it’s a nice escape hatch.</p>
 </div>
 </div>
-</section><section id="enumeration-to-strategy" class="level3" data-number="12.4.4"><h3 data-number="12.4.4" class="anchored" data-anchor-id="enumeration-to-strategy">
-<span class="header-section-number">12.4.4</span> Enumeration to strategy</h3>
+</section>
+<section id="enumeration-to-strategy" class="level3" data-number="12.4.3">
+<h3 data-number="12.4.3" class="anchored" data-anchor-id="enumeration-to-strategy"><span class="header-section-number">12.4.3</span> Enumeration to strategy</h3>
 <p>If your function used an enumeration, but now you realise that some strategies use different argument you can remediate like this:</p>
 <div class="cell">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># OLD </span></span>
-<span><span class="va">my_fun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">strategy</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">strategy</span> <span class="op">&lt;-</span> <span class="fu">arg_match</span><span class="op">(</span><span class="va">strategy</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="va">check_strategy</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">f</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/is.function.html">is.function</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span> <span class="op">||</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">formals</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"range"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu">cli</span><span class="fu">::</span><span class="fu">abort</span><span class="op">(</span><span class="st">"{.fun f} must be a function with `range` argument"</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span></span>
-<span><span class="co"># NEW</span></span>
-<span><span class="va">my_fun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">strategy</span> <span class="op">=</span> <span class="fu">my_stragegy_a</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu">is.characer</span><span class="op">(</span><span class="va">strategy</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">strategy</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/switch.html">switch</a></span><span class="op">(</span></span>
-<span>      <span class="fu">arg_match</span><span class="op">(</span><span class="va">strategy</span><span class="op">)</span>,</span>
-<span>      a <span class="op">=</span> <span class="fu">my_strategy_a</span><span class="op">(</span><span class="op">)</span>,</span>
-<span>      b <span class="op">=</span> <span class="fu">my_strategy_b</span><span class="op">(</span><span class="op">)</span></span>
-<span>    <span class="op">)</span></span>
-<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span>    <span class="fu">check_strategy</span><span class="op">(</span><span class="va">strategy</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
-<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># OLD </span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>my_fun <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">strategy =</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>)) {</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  strategy <span class="ot">&lt;-</span> <span class="fu">arg_match</span>(strategy)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>check_strategy <span class="ot">&lt;-</span> <span class="cf">function</span>(f) {</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.function</span>(f) <span class="sc">||</span> <span class="sc">!</span><span class="fu">identical</span>(<span class="fu">names</span>(formals), <span class="fu">c</span>(<span class="st">"range"</span>))) {</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    cli<span class="sc">::</span><span class="fu">abort</span>(<span class="st">"{.fun f} must be a function with `range` argument"</span>)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co"># NEW</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>my_fun <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">strategy =</span> <span class="fu">my_stragegy_a</span>()) {</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.characer</span>(strategy)) {</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    strategy <span class="ot">&lt;-</span> <span class="cf">switch</span>(</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>      <span class="fu">arg_match</span>(strategy),</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">a =</span> <span class="fu">my_strategy_a</span>(),</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">b =</span> <span class="fu">my_strategy_b</span>()</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">check_strategy</span>(strategy)</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section></section><section id="see-also" class="level2" data-number="12.5"><h2 data-number="12.5" class="anchored" data-anchor-id="see-also">
-<span class="header-section-number">12.5</span> See also</h2>
-<p>GOF strategy pattern</p>
+</section>
+</section>
+<section id="see-also" class="level2" data-number="12.5">
+<h2 data-number="12.5" class="anchored" data-anchor-id="see-also"><span class="header-section-number">12.5</span> See also</h2>
 <ul>
-<li>
-<a href="independent-meaning.html"><span>Chapter&nbsp;13</span></a> the related problem of one argument affecting the interpretation of another argument.</li>
-<li>
-<a href="argument-clutter.html"><span>Chapter&nbsp;11</span></a> is about the general problem of moving unimportant arguments to another function.</li>
+<li>The original <a href="https://en.wikipedia.org/wiki/Strategy_pattern">strategy pattern</a> defined in <a href="https://en.wikipedia.org/wiki/Design_Patterns">Design Patterns</a>. This pattern has a rather different implementation in a classic OOP language.</li>
+<li><a href="independent-meaning.html"><span>Chapter&nbsp;13</span></a> the related problem of one argument affecting the interpretation of another argument.</li>
+<li><a href="argument-clutter.html"><span>Chapter&nbsp;11</span></a> is about the general problem of moving unimportant arguments to another function.</li>
 </ul>
 <p>There are also two exceptions to this pattern that we’ll come back to in future chapters:</p>
 <ul>
-<li>
-<a href="mutually-exclusive-arguments.html"><span>Chapter&nbsp;14</span></a>: sometimes you need a pair of mutual exclusive arguments.</li>
-<li>
-<a href="compound-arguments.html"><span>Chapter&nbsp;15</span></a>: sometimes you want to provide all the data in a single argument, and other times it’s useful to spread the same data across multiple arguments.</li>
-</ul></section><section id="section" class="level2" data-number="12.6"><h2 data-number="12.6" class="anchored" data-anchor-id="section">
-<span class="header-section-number">12.6</span> </h2>
+<li><a href="mutually-exclusive-arguments.html"><span>Chapter&nbsp;14</span></a>: sometimes you need a pair of mutual exclusive arguments.</li>
+<li><a href="compound-arguments.html"><span>Chapter&nbsp;15</span></a>: sometimes you want to provide all the data in a single argument, and other times it’s useful to spread the same data across multiple arguments.</li>
+</ul>
 
 
-</section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
 <ol>
-<li id="fn1"><p>One nice application of this principle is to create a histogram where each bin contains (approximately) the same number of points, as implemented in <a href="https://github.com/eliocamp/ggpercentogram/" class="uri">https://github.com/eliocamp/ggpercentogram/</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p><code>center</code> is also a little problematic as an argument name, because UK English would prefer <code>centre</code>. It’s probably ok here since this it’s a very rarely used argument, but <code>middle</code> would be good alternatives that don’t have the same US/UK problem. Alternatively the pair could be <code>endpoint</code> and <code>midpoint</code> which perhaps suggest a tighter pairing than <code>center</code> and <code>boundary</code>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>It can be any bin; <code>stat_bin()</code> will automatically adjust all the other bins.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+<li id="fn1"><p>The actual function is more complicated because it takes more care to generate an informative error message, and it uses S3 instead of nested <code>if</code> statements. But the overall strategy is the same.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>One nice application of this principle is to create a histogram where each bin contains (approximately) the same number of points, as implemented in <a href="https://github.com/eliocamp/ggpercentogram/" class="uri">https://github.com/eliocamp/ggpercentogram/</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p><code>center</code> is also a little problematic as an argument name, because UK English would prefer <code>centre</code>. It’s probably ok here since this it’s a very rarely used argument, but <code>middle</code> would be good alternatives that don’t have the same US/UK problem. Alternatively the pair could be <code>endpoint</code> and <code>midpoint</code> which perhaps suggest a tighter pairing than <code>center</code> and <code>boundary</code>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>It can be any bin; <code>stat_bin()</code> will automatically adjust all the other bins.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -949,7 +1089,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
       <a href="./argument-clutter.html" class="pagination-link">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Reduce argument clutter with an options object</span></span>
       </a>          
@@ -961,7 +1103,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer">
+<footer class="footer">
+  <div class="nav-footer">
     <div class="nav-footer-left">Tidy design principles was written by Hadley Wickham</div>   
     <div class="nav-footer-center">
       &nbsp;
@@ -969,6 +1112,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a>.</div>
   </div>
 </footer>
+
 
 
 </body></html>

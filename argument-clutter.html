@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.3.450">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Hadley Wickham">
 <title>Tidy design principles - 11&nbsp; Reduce argument clutter with an options object</title>
@@ -460,7 +460,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
 <li><a href="#whats-the-problem" id="toc-whats-the-problem" class="nav-link active" data-scroll-target="#whats-the-problem"><span class="header-section-number">11.1</span> What’s the problem?</a></li>
   <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">11.2</span> What are some examples?</a></li>
-  <li><a href="#how-do-i-use-this-pattern" id="toc-how-do-i-use-this-pattern" class="nav-link" data-scroll-target="#how-do-i-use-this-pattern"><span class="header-section-number">11.3</span> How do I use this pattern?</a></li>
+  <li>
+<a href="#how-do-i-use-this-pattern" id="toc-how-do-i-use-this-pattern" class="nav-link" data-scroll-target="#how-do-i-use-this-pattern"><span class="header-section-number">11.3</span> How do I use this pattern?</a>
+  <ul class="collapse">
+<li><a href="#better-error-messages" id="toc-better-error-messages" class="nav-link" data-scroll-target="#better-error-messages"><span class="header-section-number">11.3.1</span> Better error messages</a></li>
+  </ul>
+</li>
   <li><a href="#how-do-i-remediate-past-mistakes" id="toc-how-do-i-remediate-past-mistakes" class="nav-link" data-scroll-target="#how-do-i-remediate-past-mistakes"><span class="header-section-number">11.4</span> How do I remediate past mistakes?</a></li>
   <li><a href="#see-also" id="toc-see-also" class="nav-link" data-scroll-target="#see-also"><span class="header-section-number">11.5</span> See also</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/argument-clutter.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
@@ -491,9 +496,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Many base R modelling functions like <code><a href="https://rdrr.io/r/stats/loess.html">loess()</a></code>, <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code>, and <code><a href="https://rdrr.io/r/stats/nls.html">nls()</a></code> have a <code>control</code> argument that are paired with a function like <code><a href="https://rdrr.io/r/stats/loess.control.html">loess.control()</a></code>, <code><a href="https://rdrr.io/r/stats/glm.control.html">glm.control()</a></code>, and <code><a href="https://rdrr.io/r/stats/nls.control.html">nls.control()</a></code>. These allow you to modify rarely used defaults, including the number of iterations, the stopping criteria, and some debugging options.</p>
 <p><code><a href="https://rdrr.io/r/stats/optim.html">optim()</a></code> uses a less formal version of this structure — while it has a <code>control</code> argument, it doesn’t have a matching <code>optim.control()</code> helper. Instead, you supply a named list with components described in <code><a href="https://rdrr.io/r/stats/optim.html">?optim</a></code>. A helper function is more convenient than a named list because it checks the argument names for free and gives nicer autocomplete to the user.</p>
 </li>
+<li><p>This pattern is common in other modelling packages, e.g.&nbsp;<code>tune::fit_resamples()</code> + <code>tune::control_resamples()</code>, <code>tune::control_bayes()</code>, <code>tune::control_grid()</code>, and <code>caret::train()</code> + <code>caret::trainControl()</code></p></li>
 <li><p><code><a href="https://readr.tidyverse.org/reference/read_delim.html">readr::read_delim()</a></code> and friends take a <code>locale</code> argument which is paired with the <code><a href="https://readr.tidyverse.org/reference/locale.html">readr::locale()</a></code> helper. This object bundles together a bunch of options related to parsing numbers, dates, and times that vary from country to country.</p></li>
 <li><p><code><a href="https://readr.tidyverse.org/reference/locale.html">readr::locale()</a></code> itself has a <code>date_names</code> argument that’s paired with <code><a href="https://readr.tidyverse.org/reference/date_names.html">readr::date_names()</a></code> and <code><a href="https://readr.tidyverse.org/reference/date_names.html">readr::date_names_lang()</a></code> helpers. You typically use the argument by supplying a two letter locale (which <code>date_names_lang()</code> uses to look up common languages), but if your language isn’t supported you can use <code><a href="https://readr.tidyverse.org/reference/date_names.html">readr::date_names()</a></code> to individually supply full and abbreviated month and day of week names.</p></li>
-<li><p>On the other hand, <code><a href="https://readr.tidyverse.org/reference/read_delim.html">readr::read_delim()</a></code> has a lot of options that control rarely needed details of file parsing (e.g.&nbsp;<code>escape_backslash</code>, <code>escape_double</code>, <code>quoted_na</code>, <code>comment</code>, <code>trim_ws)</code>. These make the function specification very long and might well be better in a details object..</p></li>
+</ul>
+<p>On the other hand, some functions with many arguments that would benefit from this technique include:</p>
+<ul>
+<li><p><code><a href="https://readr.tidyverse.org/reference/read_delim.html">readr::read_delim()</a></code> has a lot of options that control rarely needed details of file parsing (e.g.&nbsp;<code>escape_backslash</code>, <code>escape_double</code>, <code>quoted_na</code>, <code>comment</code>, <code>trim_ws)</code>. These make the function specification very long and might well be better in a details object.</p></li>
+<li><p><code><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">ggplot2::geom_smooth()</a></code> fits a smooth line to your data. Most of the time you only want to pick the <code>model</code> and <code>formula</code> used, but <code>geom_smooth()</code> (via <code><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">ggplot2::stat_smooth()</a></code>) also provides <code>n</code>, <code>fullrange</code>, <code>span</code>, <code>level</code>, and <code>method.args</code> to control details of the fit. I think these would be better in their own details object.</p></li>
 </ul></section><section id="how-do-i-use-this-pattern" class="level2" data-number="11.3"><h2 data-number="11.3" class="anchored" data-anchor-id="how-do-i-use-this-pattern">
 <span class="header-section-number">11.3</span> How do I use this pattern?</h2>
 <p>The simplest implementation is just to write a helper function that returns a list:</p>
@@ -506,6 +516,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This alone is nice because you can document the individual arguments, you get name checking for free, and auto-complete will remind the user what these less important options include.</p>
+<section id="better-error-messages" class="level3" data-number="11.3.1"><h3 data-number="11.3.1" class="anchored" data-anchor-id="better-error-messages">
+<span class="header-section-number">11.3.1</span> Better error messages</h3>
 <p>An optional extra is to add a unique class to the list:</p>
 <div class="cell">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_fun_opts</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">opt1</span> <span class="op">=</span> <span class="fl">1</span>, <span class="va">opt2</span> <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">{</span></span>
@@ -531,17 +543,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; ! `opts` must be created by `my_fun_opts()`.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>If you use this option in many places, you should consider pulling out the repeated code into a <code>check_my_fun_opts()</code> function.</p>
-</section><section id="how-do-i-remediate-past-mistakes" class="level2" data-number="11.4"><h2 data-number="11.4" class="anchored" data-anchor-id="how-do-i-remediate-past-mistakes">
+</section></section><section id="how-do-i-remediate-past-mistakes" class="level2" data-number="11.4"><h2 data-number="11.4" class="anchored" data-anchor-id="how-do-i-remediate-past-mistakes">
 <span class="header-section-number">11.4</span> How do I remediate past mistakes?</h2>
-<p>Typically you notice this problem only after you have created too many options so you’ll need to carefully remediate by introducing a new options function and paired helper function, then deprecating the old arguments. For example, if your existing function looks like this:</p>
+<p>Typically you notice this problem only after you have created too many options so you’ll need to carefully remediate by introducing a new options argument and paired helper function. For example, if your existing function looks like this:</p>
 <div class="cell">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_fun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">opt1</span> <span class="op">=</span> <span class="fl">1</span>, <span class="va">opt2</span> <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  </span>
 <span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Then you’ll need to create a <code>my_fun_opts()</code> as above and add an <code>opts</code> argument that uses that as the default. This is a breaking change, so if you want to provide a gradual on-ramp to the new API you should keep the existing arguments but deprecating them:</p>
+<p>If you want to keep the existing function specification you could add a new <code>opts</code> argument that uses the values of <code>opt1</code> and <code>opt2:</code></p>
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_fun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">opts</span> <span class="op">=</span> <span class="fu">my_fun_opts</span><span class="op">(</span><span class="op">)</span>, <span class="va">opt1</span> <span class="op">=</span> <span class="fu">deprecated</span><span class="op">(</span><span class="op">)</span>, <span class="va">opt2</span> <span class="op">=</span> <span class="fu">deprecated</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_fun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">opts</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">opt1</span> <span class="op">=</span> <span class="fl">1</span>, <span class="va">opt2</span> <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  </span>
+<span>  <span class="va">opts</span> <span class="op">&lt;-</span> <span class="va">opts</span> <span class="op">%||%</span> <span class="fu">my_fun_opts</span><span class="op">(</span>opt1 <span class="op">=</span> <span class="va">opt1</span>, opt2 <span class="op">=</span> <span class="va">opt2</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>However, that introduces a dependency between the arguments: if you specify both <code>opts</code> and <code>opt1</code>/<code>opt2</code>, <code>opts</code> will win. You could certainly add extra code to pick up on this problem and warn the user, but I think it’s just cleaner to deprecate the old arguments so that you can eventually remove them:</p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_fun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">opts</span> <span class="op">=</span> <span class="fu">my_fun_opts</span><span class="op">(</span><span class="op">)</span>, <span class="va">opt1</span> <span class="op">=</span> <span class="fu">deprecated</span><span class="op">(</span><span class="op">)</span>, <span class="va">opt2</span> <span class="op">=</span> <span class="fu">deprecated</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  </span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html">is_present</a></span><span class="op">(</span><span class="va">opt1</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecate_soft.html">deprecate_warn</a></span><span class="op">(</span><span class="st">"1.0.0"</span>, <span class="st">"my_fun(opt1)"</span>, <span class="st">"my_fun_opts(opt1)"</span><span class="op">)</span></span>

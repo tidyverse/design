@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.3.450">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Hadley Wickham">
 <title>Tidy design principles - 30&nbsp; Side-effect functions should return invisibly</title>
@@ -536,20 +536,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="fu"><a href="https://fs.r-lib.org/reference/path.html">path</a></span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://fs.r-lib.org/reference/create.html">file_create</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">paths</span></span>
-<span><span class="co">#&gt; /tmp/RtmpR85OV0/file1c7b2fcc5f53/a /tmp/RtmpR85OV0/file1c7b2fcc5f53/b </span></span>
-<span><span class="co">#&gt; /tmp/RtmpR85OV0/file1c7b2fcc5f53/c /tmp/RtmpR85OV0/file1c7b2fcc5f53/d </span></span>
-<span><span class="co">#&gt; /tmp/RtmpR85OV0/file1c7b2fcc5f53/e</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; /tmp/RtmpZ4gjgD/file1d59488e3912/a /tmp/RtmpZ4gjgD/file1d59488e3912/b </span></span>
+<span><span class="co">#&gt; /tmp/RtmpZ4gjgD/file1d59488e3912/c /tmp/RtmpZ4gjgD/file1d59488e3912/d </span></span>
+<span><span class="co">#&gt; /tmp/RtmpZ4gjgD/file1d59488e3912/e</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Functions that modify some global state, like <code><a href="https://rdrr.io/r/base/options.html">options()</a></code> or <code><a href="https://rdrr.io/r/graphics/par.html">par()</a></code>, should return the <em>previous</em> value of the variables. This, in combination with <a href="compound-arguments.html"><span>Chapter&nbsp;15</span></a>, makes it possible to easily reset the effect of the change:</p>
 <div class="cell">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">old</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="va">x</span></span>
-<span><span class="co">#&gt; [1] 0.116</span></span>
+<span><span class="co">#&gt; [1] 0.071</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span><span class="va">old</span><span class="op">)</span></span>
 <span><span class="va">x</span></span>
-<span><span class="co">#&gt; [1] 0.1162439</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; [1] 0.07099763</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
