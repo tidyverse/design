@@ -72,18 +72,23 @@ rep(x, times = x)
     ```
 
 I think these two problems have the same underlying cause: `rep()` is trying to do too much in a single function.
-I think we can make things simpler by turning `rep()` into two functions: one that replicates the full vector, and one that replicates each element of the vector.
+`rep()` is really exposing two different strategies (@sec-strategies-explicit): repeating each element of the vector vs. repeating the entire vector.
+In this case, rather than exposing the two strategies via an argument, I think it makes sense to expose them each with a different function.
+
+Why two separate functions?
+It only makes sense to supply a vector of `times` when you're replicating the individual values.
 
 ## How might we improve the situation?
 
 Two create two new functions, we need to first come up with names: I like `rep_each()` and `rep_full()`.
 `rep_each()` was a fairly easy name to come up with.
 `rep_full()` was a little harder and took a few iterations: I like that `full` has the same number of letters as `each`, which makes the two functions look like they belong together.
+Another possibility would be `rep_every()` since each and every form a natural pair, but to me at least, repeating "every" element doesn't feel very different to repeating each element.
 
 Next, we need to think about their arguments.
-Both will have a single data argument: `x`, the vector to replicate.
-`rep_each()` has a single details argument which specifies the number of times to replicate each element.
-`rep_time()` has two mutually exclusive details arguments, the number of times to repeat the whole vector, or the desired length of the output.
+Both will have a single data argument: `x`, the vector to repeat.
+`rep_each()` has an additional argument that specifies the number of times to replicate each element, which can either be a single number, or a vector the same length as `x`.
+`rep_time()` has two mutually exclusive details arguments (@sec-mutually-exclusive), the number of times to repeat the whole vector, or the desired length of the output.
 
 What should we call the arguments?
 We've already captured the different replication strategies (each vs. full) in the function name, so I think the argument that specifies the number of times to replicate can be the same, and `times` seems reasonable.
@@ -92,7 +97,7 @@ I think it's obvious that the argument controls the output, so `length` is adequ
 
 ```{r}
 rep_each <- function(x, times) {
-  times <- rep(times, length.out = length(x))
+  times <- vctrs::vec_recycle(times, length(x))
   rep(x, times = times)
 }
 
@@ -107,7 +112,8 @@ rep_full <- function(x, times, length) {
 }
 ```
 
-(Note the downside of using `length` as the argument name: we have to call [`base::length()`](https://rdrr.io/r/base/length.html) to avoid evaluating the missing `length` when times is supplied.)
+(Note the downside of using `length` as the argument name: we have to call [`base::length()`](#0) to avoid evaluating the missing `length` when times is supplied.
+This is probably why `rep()` uses `length.out`.)
 
 ```{r}
 x <- c(1, 2, 4)

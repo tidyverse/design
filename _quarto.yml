@@ -39,6 +39,7 @@ book:
     - part: Argument dependencies
       chapters:
       - explicit-strategies.qmd
+      - cs-rep.qmd
       - independent-meaning.qmd
       - mutually-exclusive-arguments.qmd
       - compound-arguments.qmd
@@ -46,7 +47,6 @@ book:
     
     - part: Function arguments
       chapters: 
-      - cs-rep.qmd
       - def-magical.qmd
       - def-inform.qmd
       - def-user.qmd

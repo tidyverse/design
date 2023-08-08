@@ -17,16 +17,17 @@ You have to learn and the remember the set of allowed combinations, rather that 
 
 ## What are some examples?
 
+Some functions that express this pattern well include:
+
 -   `rank()` exposes six different methods for handling ties with the `ties.method` argument.
 -   `p.adjust()` exposes eight strategies for adjusting P values to account for multiple comparisons using the `p.adjust.methods` argument.
 -   `quantile()` exposes nine different approaches to computing a quantile through the `type` argument.
--   `stringr::str_detect()` and friends can use different matching engines by wrapping the pattern in functions like `stringr::fixed()` and `stringr::coll()`. Learn more in @sec-cs-stringr.
 -   `dplyr::left_join()` uses a very advanced form of this pattern where the different strategies for joining two data frames together are expressed in a mini-DSL provided by `dplyr::join_by()`.
 
-What are some counter examples?
+Some functions that could do better are:
 
 -   `forcats::fct_lump()` exposes three lumping strategies through the presence of absence of the `n` and `prop` arguments.
-    We rememediated this issue in forcats 0.5.0 but splitting `fct_lump()` into three separate functions: `fct_lump_prop()`, `fct_lump_n()`, and `fct_lump_lowfreq()`.
+    We remediated this issue in forcats 0.5.0 but splitting `fct_lump()` into three separate functions: `fct_lump_prop()`, `fct_lump_n()`, and `fct_lump_lowfreq()`.
     This allows the function name to hint at the purpose, prevents you from supplying both `n` and `prop` through the design of the functions, and only has the `ties.method` argument where it makes sense.
 
 -   `ggplot2::geom_histogram()` has three main strategies for generating the bins: you can supply the number of `bins`, as the width of each bin (`binwidth`, or the exact `breaks`.
