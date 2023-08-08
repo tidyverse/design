@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.450">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Hadley Wickham">
-<title>Tidy design principles - 15&nbsp; Compound arguments</title>
+<title>Tidy design principles - 16&nbsp; Compound arguments</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -100,7 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./explicit-strategies.html">Argument dependencies</a></li><li class="breadcrumb-item"><a href="./compound-arguments.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Compound arguments</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./explicit-strategies.html">Argument dependencies</a></li><li class="breadcrumb-item"><a href="./compound-arguments.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Compound arguments</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -240,26 +240,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./cs-rep.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./independent-meaning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Argument meaning should be independent</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Argument meaning should be independent</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./mutually-exclusive-arguments.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Mutually exclusive arguments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Mutually exclusive arguments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./compound-arguments.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Compound arguments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Compound arguments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-stringr.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Case study: stringr</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Case study: stringr</span></span></a>
   </div>
 </li>
       </ul>
@@ -274,12 +280,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </div>
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./cs-rep.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code>
-  </div>
-</li>
-          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./def-magical.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Avoid magical defaults</span></span></a>
@@ -299,38 +299,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./cs-rgb.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/grDevices/rgb.html">rgb()</a></code>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./dots-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Making data with …</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Making data with …</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dots-prefix.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Dot prefix</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Dot prefix</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dots-inspect.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Inspect the dots</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Inspect the dots</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-mapply-pmap.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/mapply.html">mapply()</a></code> vs <code>pmap()</code>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/mapply.html">mapply()</a></code> vs <code>pmap()</code>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-setNames.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/stats/setNames.html">setNames()</a></code>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/stats/setNames.html">setNames()</a></code>
   </div>
 </li>
       </ul>
@@ -347,25 +341,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-multi.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Returning multiple values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Returning multiple values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-type-stability.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Type-stability</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Type-stability</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-vectorisation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Vectorisation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Vectorisation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-invisible.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Side-effect functions should return invisibly</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Side-effect functions should return invisibly</span></span></a>
   </div>
 </li>
       </ul>
@@ -382,7 +376,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./changes-multivers.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Work with multiple dependency versions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Work with multiple dependency versions</span></span></a>
   </div>
 </li>
       </ul>
@@ -399,13 +393,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./side-effects.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Side-effect soup</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Side-effect soup</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./spooky-action.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Spooky action</span></span></a>
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Spooky action</span></span></a>
   </div>
 </li>
       </ul>
@@ -422,13 +416,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./err-call.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Error call</span></span></a>
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Error call</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./err-constructor.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Error constructors</span></span></a>
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Error constructors</span></span></a>
   </div>
 </li>
       </ul>
@@ -458,14 +452,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#whats-the-pattern" id="toc-whats-the-pattern" class="nav-link active" data-scroll-target="#whats-the-pattern"><span class="header-section-number">15.1</span> What’s the pattern?</a></li>
-  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">15.2</span> What are some examples?</a></li>
-  <li><a href="#how-do-i-use-the-pattern" id="toc-how-do-i-use-the-pattern" class="nav-link" data-scroll-target="#how-do-i-use-the-pattern"><span class="header-section-number">15.3</span> How do I use the pattern?</a></li>
+<li><a href="#whats-the-pattern" id="toc-whats-the-pattern" class="nav-link active" data-scroll-target="#whats-the-pattern"><span class="header-section-number">16.1</span> What’s the pattern?</a></li>
+  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">16.2</span> What are some examples?</a></li>
+  <li><a href="#open-questions" id="toc-open-questions" class="nav-link" data-scroll-target="#open-questions"><span class="header-section-number">16.3</span> Open questions</a></li>
+  <li><a href="#how-do-i-use-the-pattern" id="toc-how-do-i-use-the-pattern" class="nav-link" data-scroll-target="#how-do-i-use-the-pattern"><span class="header-section-number">16.4</span> How do I use the pattern?</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/compound-arguments.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-compound-arguments" class="quarto-section-identifier"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Compound arguments</span></span></h1>
+<h1 class="title"><span id="sec-compound-arguments" class="quarto-section-identifier"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Compound arguments</span></span></h1>
 </div>
 
 
@@ -478,17 +473,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header><section id="whats-the-pattern" class="level2" data-number="15.1"><h2 data-number="15.1" class="anchored" data-anchor-id="whats-the-pattern">
-<span class="header-section-number">15.1</span> What’s the pattern?</h2>
-<p>A related, if less generally useful, form is to allow the user to supply either a single complex argument or several smaller arguments.</p>
-</section><section id="what-are-some-examples" class="level2" data-number="15.2"><h2 data-number="15.2" class="anchored" data-anchor-id="what-are-some-examples">
-<span class="header-section-number">15.2</span> What are some examples?</h2>
-<ul>
-<li><p><code>rgb(cbind(r, g, b))</code> is equivalent to <code>rgb(r, g, b)</code> (See <a href="cs-rgb.html"><span>Chapter&nbsp;21</span></a> for more details).</p></li>
-<li><p><code>options(list(a = 1, b = 2))</code> is equivalent to <code>options(a = 1, b = 2)</code>.</p></li>
-<li><p><code>stringr::str_sub(x, cbind(start, end))</code> is equivalent to <code>str_sub(x, start, end)</code>.</p></li>
-</ul>
-<p>The most compelling reason to provide this sort of interface is when another function might return a complex output that you want to use as an input. For example, it seems reasonable that you should be able to feed the output of <code><a href="https://stringr.tidyverse.org/reference/str_locate.html">str_locate()</a></code> directly into <code><a href="https://stringr.tidyverse.org/reference/str_sub.html">str_sub()</a></code>:</p>
+</header><section id="whats-the-pattern" class="level2" data-number="16.1"><h2 data-number="16.1" class="anchored" data-anchor-id="whats-the-pattern">
+<span class="header-section-number">16.1</span> What’s the pattern?</h2>
+<p>Sometimes it’s useful to take the same data as either one complex argument (e.g.&nbsp;a matrix or data frame) or as multiple simple arguments. I think the most compelling reason to use this pattern is when another function might be called directly by a user (who will supply individual arguments) or with the output from another function (which needs to pour into a single argument). For example, it seems reasonable that you should be able to feed the output of <code><a href="https://stringr.tidyverse.org/reference/str_locate.html">str_locate()</a></code> directly into <code><a href="https://stringr.tidyverse.org/reference/str_sub.html">str_sub()</a></code>:</p>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://stringr.tidyverse.org">stringr</a></span><span class="op">)</span></span>
 <span></span>
@@ -498,15 +485,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_sub.html">str_sub</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">loc</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "aaaaab" "aaab"   NA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>But equally, it would be a bit weird to have to provide a matrix when subsetting with known positions:</p>
+<p>But equally, it’s nice to be able to supply individual start and end values if known:</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_sub.html">str_sub</a></span><span class="op">(</span><span class="st">"Hadley"</span>, <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_sub.html">str_sub</a></span><span class="op">(</span><span class="st">"Hadley"</span>, start <span class="op">=</span> <span class="fl">2</span>, end <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "adl"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>So <code><a href="https://stringr.tidyverse.org/reference/str_sub.html">str_sub()</a></code> allows either individual vectors supplied to <code>start</code> and <code>end</code>, or a two-column matrix supplied to <code>start</code>.</p>
-</section><section id="how-do-i-use-the-pattern" class="level2" data-number="15.3"><h2 data-number="15.3" class="anchored" data-anchor-id="how-do-i-use-the-pattern">
-<span class="header-section-number">15.3</span> How do I use the pattern?</h2>
-<p>To implement in your own functions, you should branch on the type of the first argument:</p>
+<p>The main challenge with using this pattern is that there’s no way to make the pattern clear from the function signature alone, so you need to carefully document and generate error messages. Because this is a very rare pattern, there are no helpers available so you’ll have to think about much of it yourself.</p>
+<p>I’ve included this pattern mostly as an example of a something that we have only partly thought through, so that you can get some sense of the questions that we ask when developing something new.</p>
+</section><section id="what-are-some-examples" class="level2" data-number="16.2"><h2 data-number="16.2" class="anchored" data-anchor-id="what-are-some-examples">
+<span class="header-section-number">16.2</span> What are some examples?</h2>
+<ul>
+<li><p><code>rgb(cbind(r, g, b))</code> is equivalent to <code>rgb(r, g, b)</code>. This is useful because what <code><a href="https://rdrr.io/r/grDevices/rgb.html">rgb()</a></code> really operates on is colours, as specified by their red, green, and blue components. When working interactively it’s useful to set the components individually, but when operating on colour with functions, it’s nice to have a single object.</p></li>
+<li><p><code>options(list(a = 1, b = 2))</code> is equivalent to <code>options(a = 1, b = 2)</code>. This is half of very useful pattern. The other half of that pattern is that <code><a href="https://rdrr.io/r/base/options.html">options()</a></code> returns the previous value of any options that you set. That means you can do <code>old &lt;- options(…); options(old)</code> to temporarily set then reset options.</p></li>
+<li><p><code><a href="https://withr.r-lib.org/reference/with_options.html">withr::local_options()</a></code> and <code><a href="https://withr.r-lib.org/reference/with_envvar.html">withr::local_envvar()</a></code> work similarly: you can either supply a single list of values, or individually named values.</p></li>
+<li><p><code>stringr::str_sub(x, cbind(start, end))</code> is equivalent to <code>str_sub(x, start, end)</code>. I’m not sure if it would be better to accept a data frame or a matrix.</p></li>
+</ul></section><section id="open-questions" class="level2" data-number="16.3"><h2 data-number="16.3" class="anchored" data-anchor-id="open-questions">
+<span class="header-section-number">16.3</span> Open questions</h2>
+<p>This pattern is only used in a couple of places, so I have a lot of questions still:</p>
+<ul>
+<li>Is it better to use a matrix (simpler) or a data frame (more common)?</li>
+<li>Should you respect the names of the matrix/data.frame? Should you require that the names match the argument names? For matrices, you could do this only if the names are present, but data frames require names.</li>
+<li>Is it better to branch on the first argument being complex (like <code><a href="https://stringr.tidyverse.org/reference/str_sub.html">str_sub()</a></code>) or the additional arguments being missing (like <code><a href="https://rdrr.io/r/grDevices/rgb.html">rgb()</a></code>)?</li>
+<li>Is this pattern even worth it? Would it be clearer to just have a pair of functions? Or always require that the user use the complex form? Is this just a trick that I think is cool but very few other people would every discover?</li>
+</ul></section><section id="how-do-i-use-the-pattern" class="level2" data-number="16.4"><h2 data-number="16.4" class="anchored" data-anchor-id="how-do-i-use-the-pattern">
+<span class="header-section-number">16.4</span> How do I use the pattern?</h2>
+<p>To implement in your own functions, you should branch on the type of the first argument and then check that the others aren’t supplied.</p>
 <div class="cell">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">str_sub</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">string</span>, <span class="va">start</span>, <span class="va">end</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">is.matrix</a></span><span class="op">(</span><span class="va">start</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
@@ -525,9 +529,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>And make it clear in the documentation:</p>
 <div class="cell">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' @param start,end Integer vectors giving the `start` (default: first)</span></span>
-<span><span class="co">#'   and `end` (default: last) positions, inclusively. Alternatively, you</span></span>
-<span><span class="co">#'   pass a two-column matrix to `start`, i.e. `str_sub(x, start, end)`</span></span>
-<span><span class="co">#'   is equivalent to `str_sub(x, cbind(start, end))`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#'   and `end` (default: last) positions, inclusively. </span></span>
+<span><span class="co">#'   </span></span>
+<span><span class="co">#'   Alternatively, you pass a two-column matrix to `start`, i.e. </span></span>
+<span><span class="co">#'   `str_sub(x, start, end)` is equivalent to </span></span>
+<span><span class="co">#'   `str_sub(x, cbind(start, end))`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>(If you look at <code>string::str_sub()</code> you’ll notice that <code>start</code> and <code>end</code> do have defaults; I think this is a mistake because <code>start</code> and <code>end</code> are important enough that the user should always be forced to supply them.)</p>
 
@@ -766,12 +772,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./mutually-exclusive-arguments.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Mutually exclusive arguments</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Mutually exclusive arguments</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./cs-stringr.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Case study: stringr</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Case study: stringr</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
