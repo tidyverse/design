@@ -65,4 +65,4 @@ And in the documentation, make it clear that only one of the pair can be supplie
 
 This technique should only be used for are exactly two possible arguments.
 If there are more than two, that is generally a sign you should create more functions.
-See case studies in @sec-cs-rep and @sec-cs-fct-lump for examples.
+See case studies in @sec-cs-rep.

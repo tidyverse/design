@@ -3,6 +3,7 @@
 ```{r}
 #| include = FALSE
 source("common.R")
+library(stringr)
 ```
 
 ## What's the problem?
@@ -19,27 +20,32 @@ You have to learn and the remember the set of allowed combinations, rather that 
 -   `rank()` exposes six different methods for handling ties with the `ties.method` argument.
 -   `p.adjust()` exposes eight strategies for adjusting P values to account for multiple comparisons using the `p.adjust.methods` argument.
 -   `quantile()` exposes nine different approaches to computing a quantile through the `type` argument.
--   `stringr::str_detect()` and friends can use different matching engines by wrapping the pattern in functions like `stringr::fixed()` and `stringr::coll()`. Learn more in @cs-stringr.
+-   `stringr::str_detect()` and friends can use different matching engines by wrapping the pattern in functions like `stringr::fixed()` and `stringr::coll()`. Learn more in @sec-cs-stringr.
 -   `dplyr::left_join()` uses a very advanced form of this pattern where the different strategies for joining two data frames together are expressed in a mini-DSL provided by `dplyr::join_by()`.
 
 What are some counter examples?
 
 -   `forcats::fct_lump()` exposes three lumping strategies through the presence of absence of the `n` and `prop` arguments.
+    We rememediated this issue in forcats 0.5.0 but splitting `fct_lump()` into three separate functions: `fct_lump_prop()`, `fct_lump_n()`, and `fct_lump_lowfreq()`.
+    This allows the function name to hint at the purpose, prevents you from supplying both `n` and `prop` through the design of the functions, and only has the `ties.method` argument where it makes sense.
 
 -   `ggplot2::geom_histogram()` has three main strategies for generating the bins: you can supply the number of `bins`, as the width of each bin (`binwidth`, or the exact `breaks`.
 
 -   `grepl()` has `perl` and `fixed` which can be either `TRUE` or `FALSE`, but you're not really toggling two independent values, you're picking from one of three regular expression engines (the default, the engine used by Perl, and fixed matches).
     Additionally, the `ignore.case` argument only applies to two of the strategies.
-    Learn more in @cs-stringr.
+    Learn more in @sec-cs-stringr.
 
 -   `rep()` exposes two basic strategies: repeat each element of the vector (by setting `each` to a scalar or `times` to a vector) or repeat the entire vector (by setting `times` to a scalar).
     Learn more in @sec-cs-rep.
 
 ## How do I use this pattern?
 
+There are two ways to use this pattern, depending on whether or not the different strategies have different arguments.
+
 ### Name and enumerate
 
-The simplest approach to exposing different strategies is to name each option and then this to use character vector of the possible options, as described in @sec-enumerate-options. This approach typically pairs well with `switch()`.
+The simplest approach to exposing different strategies is to name each option and then this to use character vector of the possible options, as described in @sec-enumerate-options.
+This approach typically pairs well with `switch()`.
 For example, take `stringr::str_trim()` which looks something like this:
 
 ```{r}
@@ -74,8 +80,7 @@ str_trim <- function (string, side = c("both", "left", "right"))
 
 If your function provides only two strategies it's tempting to use a logical to switch between them.
 I recommend against this unless you're REALLY SURE there won't ever be another strategy.
-
-I think there's often also an argument that it's easier to remember an enumeration than a Boolean argument.
+In many cases, it's also easier to remember what an enumeration value means compared to a Boolean argument.
 For example compare these equivalent calls to `sort()` and `vctrs::vec_sort()`:
 
 ```{r}
@@ -90,52 +95,153 @@ vctrs::vec_sort(x, direction = "asc")
 ```
 
 It's unlikely that you'll ever need to implement another sorting direction, but I think it's easier to understand `direction = "asc"` than `decreasing = FALSE` at a glance.
-
-Another example is `cols_vary` in `pivot_wider()`.
+Another example where I think an enumeration is easier to understand is the `cols_vary` argument to `pivot_longer()`.
+This argument can be either fastest or slowest, and it's hard to imagine how you might encode that into a Boolean flag.
 
 ### Varying arguments
 
 In more complicated cases, different strategies will require different arguments, so you'll need a bit more infrastructure.
-I think stringr provides the best model for this technique.
+The basic idea is build on the options object described in @sec-argument-clutter, but instead of providing just one helper function, you'll provide one function per strategy.
+A good example of this approach is readr, which provides `regex()`, `boundary()`, `coll()`, and `fixed()` to pick between four different strategies for matching text.
+You can learn more about why we picked that interface in @sec-cs-stringr, so here I wanted to focus on the implementation.
+
+If you take a look at one of these functions, you'll see it's a wrapper around a stringi function that performs a similar job.
+But `fixed()` does two extra things compared to `stri_opts_fixed()`: it more aggressively checks the input arguments and it combines the stringi options with the pattern and adds a class.
+
+```{r}
+fkxed <- function(pattern, ignore_case = FALSE) {
+  pattern <- as_bare_character(pattern)
+  check_bool(ignore_case)
+
+  options <- stri_opts_fixed(case_insensitive = ignore_case)
+
+  structure(
+    pattern,
+    options = options,
+    class = c("stringr_fixed", "stringr_pattern", "character")
+  )
+}
+```
+
+This class is important because it allows us to check that the user has provided the expect input type and give a useful error message if not.
+Since pretty much every stringr function needs to do this, stringr provides a internal function called `type()` that looks something like this[^explicit-strategies-1]:
+
+[^explicit-strategies-1]: The actual function is more complicated because it takes more care to generate an informative error message, and it uses S3 instead of nested `if` statements.
+    But the overall strategy is the same.
+
+```{r}
+type <- function(x) {
+  if (inherits(x, "stringr_boundary")) {
+    "bound"
+  } else if (inherits(x, "stringr_regex")) {
+    "regex"
+  } else if (inherits(x, "stringr_coll")) {
+    "coll"
+  } else if (inherits(x, "stringr_fixed")) {
+    "fixed"
+  } else if (is.character(x)) {
+    if (identical(x, "")) "empty" else "regex"
+  } else {
+    cli::cli_abort("Must be a string or stringr pattern object")
+  }
+}
+```
+
+Then individual stringr functions can use `type()` plus a `switch` statement:
+
+```{r}
+str_detect <- function(string, pattern) {
+  check_lengths(string, pattern)
+  check_bool(negate)
+
+  switch(type(pattern),
+    empty = no_empty(),    # <1>
+    bound = no_boundary(), # <1>
+    fixed = stri_detect_fixed(string, pattern, opts_fixed = opts(pattern)),  # <2>
+    coll  = stri_detect_coll(string,  pattern, opts_collator = opts(pattern)), # <2>
+    regex = stri_detect_regex(string, pattern, opts_regex = opts(pattern)) # <2>
+  )
+}
+```
+
+1.  `no_empty()` and `no_boundary()` are helper functions that generate errors when a stringr function doesn't support a specific engine.
+2.  `opts()` is a helper function for extracting the stringi options back out of the stringr wrapper object.
+
+You can implement this same strategy using `if` or OOP, but here I particularly like the `switch` pattern because it keeps the stringi function calls close together, which makes it easier to keep them in sync.
+
+### Escape hatches
+
+It's sometimes useful to build in an escape hatch from canned strategies.
+This allows users to access alternative strategies, and allows for experimentation that can later turn into a official strategies.
+One example of such an escape hatch is in name repair, which occurs in many places throughout the tidyverse.
+One place you might encounter it is in `tibble()`:
+
+```{r}
+#| error: true
+tibble::tibble(a = 1, a = 2)
+```
+
+Beneath the surface all tidyverse functions that expose some sort of name repair eventually end up calling `vctrs::vec_as_names()`:
+
+```{r}
+#| error: true
+vctrs::vec_as_names(c("a", "a"), repair = "check_unique")
+vctrs::vec_as_names(c("a", "a"), repair = "unique")
+vctrs::vec_as_names(c("a", "a"), repair = "unique_quiet")
+```
+
+`vec_as_names()` exposes six strategies, but it also allows you to supply a function:
+
+```{r}
+vctrs::vec_as_names(c("a", "a"), repair = toupper)
+```
+
+The implementation looks something like this:
+
+```{r}
+vec_as_names <- function(
+    repair = c(
+      "minimal",
+      "unique",
+      "universal",
+      "check_unique",
+      "unique_quiet",
+      "universal_quiet"
+    )
+) {
+  if (is.character(repair)) {
+    repair <- switch(
+      arg_match(repair), 
+      minimal = minimal_names, 
+      universal = function(names) as_universal_names(names, quiet = FALSE),
+      universal_quiet = function(names) as_universal_names(names, quiet = TRUE),
+      ...
+    )
+  } else if (!is.function(repair)) {
+    cli::cli_abort("{.arg repair} must be a function or string.")
+  }
+}
+```
+
+Notice we use `switch` to convert a string to a function from a set of known values.
 
 ## How do I remediate past mistakes?
 
-Typically the reason that you violate this pattern is because your function begins by implementing a single strategy (e.g. `geom_histogram()` let you ).
-Later on, you discover a new strategy
+It's very easy to violate this pattern because your function often begins by implementing a single strategy, and then later you discover a new strategy.
+It's easy to implement this as a Boolean flag or with some argument magic, which leads to problems when you later discover a third strategy.
+In this section, you'll see a few ways that you can fix these problems if you discover later that you've made a mistake.
 
-If you realise that your function needs another strategy, accept that if you have two strategies, it probably means that you'll discover a third strategy in the future.
-Design your function API for this so rather than adding a Boolean argument, add an enumeration of options.
-For example, when `grepl()` realised that it needed to implement the Perl engine it should have done something like `engine = c("default", "Perl")` so then when later the `fixed` strategy appeared it could have been easily extended to `engine = c("default", "Perl", "fixed")`.
+### Boolean to enumeration
 
-These mistakes are usually easy to avoid when you first write a function; just don't it 😃.
-Typically the problems creep in later as a function grows in capability.
-It starts by implementing a single strategy, and then you discover an alternative.
-So you need to add an argument to pick the strategy.
-And then later on you discover another strategy.
-Do you add another argument to pick this strategy?
-Now what happens if
-
-As it's grown incremently in many small steps, it never seemed worth the effort to fundamentally refactor it or break it up into multiple functions, but but now you have a large complex function.
-To remediate the problem, you'll need to think holistically and reconsider the complete interface.
-There are two common outcomes which are illustrated in the case studies below:
-
--   Splitting the function into multiple functions that each do one thing.
-
--   Encapsulating related details arguments into a single object.
-
-If these changes to the interface occur to exported functions in a package, you'll need to consider how to preserve the interface with deprecation warnings.
-For important functions, it is worth generating an message that includes new code to copy and paste.
-
-### Enumerate
-
-`sort()` uses the `na.last` argument to expose three strategies for handling missing values:
+One sign that you're stretching the limit of a Boolean flag is that you've given an additional meaning to `NA` so instead of selecting between two possible options, your argument now selects between three.
+Take `sort()` for example: its `na.last` argument exposes three strategies for handling missing values:
 
 -   `na.last = TRUE` means put them last.
 -   `na.last = FALSE` means put them first.
 -   `na.list = NA` means to drop them.
 
-I think we could make this more clear by instead using an `na` argument that takes one of three values: last, first, or drop.
-In this case, we can change both the argument name and its interface making remediation relatively simple:
+I think we could make this function more clear by using an enumeration that takes one of three values: `last`, `first`, or `drop`.
+In this case, we can change both the argument name and its interface making remediation relatively simple: we add a new argument called `na` and deprecate the old argument.
 
 ```{r}
 sort <- function(na.last = deprecated(), na = c("drop", "first", "last")) {
@@ -157,31 +263,34 @@ sort <- function(na.last = deprecated(), na = c("drop", "first", "last")) {
   } else {
     na <- arg_match(na)
   }
-  
 }
 ```
 
-It would also be nice to make the default value last (since generally R functions don't remove missing values unless explicitly requested) but that change is much harder to do without affecting existing code.
+Note that the full signature of `sort()` is `sort(x, decreasing = FALSE, na.last = NA, …)` so when doing this it would be good practice to put the new argument after the `…` (@sec-dots-after-required) so that it doesn't change the meaning of existing calls that relying on partial matching, e.g. `sort(x, na = TRUE)`.
 
-### Using multiple top level functions {#sec-cs-fct-lump}
+It would also be nice to make the default value `"last"` since it's very unusual for an R function to silently remove missing values.
+However, that change is much harder to do because it's much more likely to affect existing code.
 
-The goal of `fct_lump()` is to combine infrequent factor levels into a common "other" level, which is useful for displays where you want to concentrate on the most common values but still account for every observation.
-When I first wrote `fct_lump()`, it implemented a single strategy.
-But over time people asked for more and more variations, which I kept adding to `fct_lump()`.
-This lead to a function that picks from one of three different strategies depending which of the `n` and `prop` arguments you supply:
+A similar case arose in `haven::write_sav()` where original the `compress` argument could be `TRUE` or `FALSE`.
+But then SPSS introduced a new way of compressing, expanding the set of options to three (which we have called byte, none, and zsav).
+Since the `compress` argument name is still good we chose to accept either a `TRUE` or `FALSE` or one of the new enumeratiion:
 
--   If `n` and `prop` are missing, it will merge together the least frequent levels, ensuring that `other` is still the smallest level.
-    This case ignores the `ties.method` argument, adding another dependency between arguments.
+```{r}
+write_sav <- function(data, path, compress = c("byte", "none", "zsav"), adjust_tz = TRUE) {
+  if (isTRUE(compress)) {
+    compress <- "zsav"
+  } else if (isFALSE(compress)) {
+    compress <- "none"
+  } else {
+    compress <- arg_match(compress)
+  }
 
--   If a positive `n` is supplied, it preserves the `n` most common values; if a negative `n` is supplied it preserves the `n` least common values.
+  ...
+}
+```
 
--   If a positive `prop` is supplied, lumps values which do not appear at least `prop` of the time.
-    Negative `prop` lumps values that do not appear at most `-prop` of the time.
-
-Overall, this become very hard to explain in the documentation, and people continued to ask for even more strategies, suggesting that even more arguments would be needed.
-
-In forcats 0.5.0 we split `fct_lump()` into three separate functions: `fct_lump_prop()`, `fct_lump_n()`, and `fct_lump_lowfreq()`.
-This allows the function name to hint at the purpose, prevents you from supplying both `n` and `prop` through the design of the functions, and only has the `ties.method` argument where it makes sense.
+You could also imagine deprecating the old logical options, but here we chose to the keep them since it's a small amount of extra code, and means that existing users never need to worry about it.
+See `?haven::read_sav` for how we communicated the in the docs.
 
 ### Using a strategy function {#sec-geom-histogram}
 
@@ -191,17 +300,17 @@ In these situations you want to avoid creating a combinatorial explosion of func
 For example, generating the bins for a histogram is a surprisingly complex topic.
 `ggplot2::stat_bin()`, which powers `ggplot2::geom_histogram()`, has a total of 5 arguments that control where the bins are placed:
 
--   You can supply either `binwidth` or `bins` to specify either the width or the number of evenly spaced bins. Alternatively, you supply `breaks` to specify the exact bin locations yourself (which allows you to create unevenly sized bins[^explicit-strategies-1]).
--   If you use `binwidth` or `bins`, you're specifying the width of each bin, but not where the bins start. So additionally you can use either `boundary` or `center`[^explicit-strategies-2] to specify the location of a side (`boundary`) or the middle (`center`) of a bin[^explicit-strategies-3]. `boundary` and `center` are mutually exclusive; you can only specify one (see @sec-mutually-exclusive for more).
+-   You can supply either `binwidth` or `bins` to specify either the width or the number of evenly spaced bins. Alternatively, you supply `breaks` to specify the exact bin locations yourself (which allows you to create unevenly sized bins[^explicit-strategies-2]).
+-   If you use `binwidth` or `bins`, you're specifying the width of each bin, but not where the bins start. So additionally you can use either `boundary` or `center`[^explicit-strategies-3] to specify the location of a side (`boundary`) or the middle (`center`) of a bin[^explicit-strategies-4]. `boundary` and `center` are mutually exclusive; you can only specify one (see @sec-mutually-exclusive for more).
 -   Regardless of the way that you specify the locations of the bins, you need to choose where a bin from `a` to `b`, is `[a, b)` or `(a, b]`, which is the job of the `closed` argument.
 
-[^explicit-strategies-1]: One nice application of this principle is to create a histogram where each bin contains (approximately) the same number of points, as implemented in <https://github.com/eliocamp/ggpercentogram/>.
+[^explicit-strategies-2]: One nice application of this principle is to create a histogram where each bin contains (approximately) the same number of points, as implemented in <https://github.com/eliocamp/ggpercentogram/>.
 
-[^explicit-strategies-2]: `center` is also a little problematic as an argument name, because UK English would prefer `centre`.
+[^explicit-strategies-3]: `center` is also a little problematic as an argument name, because UK English would prefer `centre`.
     It's probably ok here since this it's a very rarely used argument, but `middle` would be good alternatives that don't have the same US/UK problem.
     Alternatively the pair could be `endpoint` and `midpoint` which perhaps suggest a tighter pairing than `center` and `boundary`.
 
-[^explicit-strategies-3]: It can be any bin; `stat_bin()` will automatically adjust all the other bins.
+[^explicit-strategies-4]: It can be any bin; `stat_bin()` will automatically adjust all the other bins.
 
 One way to resolve this problem would encapsulate the three basic strategies into three functions:
 
@@ -267,8 +376,7 @@ my_fun <- function(strategy = my_stragegy_a()) {
 
 ## See also
 
-GOF strategy pattern
-
+-   The original [strategy pattern](https://en.wikipedia.org/wiki/Strategy_pattern) defined in [Design Patterns](https://en.wikipedia.org/wiki/Design_Patterns). This pattern has a rather different implementation in a classic OOP language.
 -   @sec-independent-meaning the related problem of one argument affecting the interpretation of another argument.
 -   @sec-argument-clutter is about the general problem of moving unimportant arguments to another function.
 
@@ -276,5 +384,3 @@ There are also two exceptions to this pattern that we'll come back to in future 
 
 -   @sec-mutually-exclusive: sometimes you need a pair of mutual exclusive arguments.
 -   @sec-compound-arguments: sometimes you want to provide all the data in a single argument, and other times it's useful to spread the same data across multiple arguments.
-
-## 

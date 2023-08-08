@@ -1,4 +1,4 @@
-# Case study: stringr {#cs-stringr}
+# Case study: stringr {#sec-cs-stringr}
 
 ```{r}
 #| include = FALSE
