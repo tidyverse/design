@@ -50,7 +50,6 @@ book:
       - def-magical.qmd
       - def-inform.qmd
       - def-user.qmd
-      - cs-rgb.qmd
       - dots-data.qmd
       - dots-prefix.qmd
       - dots-inspect.qmd
