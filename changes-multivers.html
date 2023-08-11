@@ -559,9 +559,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; # A tibble: 3 × 5</span></span>
 <span><span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc</span></span>
 <span><span class="co">#&gt;   &lt;bch:expr&gt; &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;</span></span>
-<span><span class="co">#&gt; 1 version     527.5µs  616.8µs     1534.    4.01KB</span></span>
-<span><span class="co">#&gt; 2 exists        3.4µs    4.2µs   198305.    3.29MB</span></span>
-<span><span class="co">#&gt; 3 formals       1.5µs    1.7µs   406707.        0B</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; 1 version     374.6µs  389.8µs     2521.    4.01KB</span></span>
+<span><span class="co">#&gt; 2 exists        3.3µs    3.6µs   256147.    3.29MB</span></span>
+<span><span class="co">#&gt; 3 formals       1.5µs    1.6µs   520040.        0B</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>If you do need to use <code><a href="https://rdrr.io/r/utils/packageDescription.html">packageVersion()</a></code> inside a performance sensitive function, I recommend caching the result in <code>.onLoad()</code> (which, by convention, lives in <code>zzz.R</code>). There a few ways to do this; but the following block shows one approach that matches the function interface I used above:</p>
 <div class="cell">

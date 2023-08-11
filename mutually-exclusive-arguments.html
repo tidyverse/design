@@ -454,7 +454,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
 <li><a href="#whats-the-pattern" id="toc-whats-the-pattern" class="nav-link active" data-scroll-target="#whats-the-pattern"><span class="header-section-number">15.1</span> What’s the pattern?</a></li>
   <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">15.2</span> What are some examples?</a></li>
-  <li><a href="#how-do-you-use-this-pattern" id="toc-how-do-you-use-this-pattern" class="nav-link" data-scroll-target="#how-do-you-use-this-pattern"><span class="header-section-number">15.3</span> How do you use this pattern?</a></li>
+  <li><a href="#alternatives" id="toc-alternatives" class="nav-link" data-scroll-target="#alternatives"><span class="header-section-number">15.3</span> Alternatives</a></li>
+  <li><a href="#how-do-you-use-this-pattern" id="toc-how-do-you-use-this-pattern" class="nav-link" data-scroll-target="#how-do-you-use-this-pattern"><span class="header-section-number">15.4</span> How do you use this pattern?</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/mutually-exclusive-arguments.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
@@ -476,7 +477,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="header-section-number">15.1</span> What’s the pattern?</h2>
 <p>If a function needs to have mutually exclusive arguments (i.e.&nbsp;you must supply only one of theme) make sure you check that only one is supplied in order to give a clear error message. Avoid implementing some precedence order where if both <code>a</code> and <code>b</code> are supplied, <code>b</code> silently wins.</p>
 <p>The main drawback of a pair of mutually exclusive arguments is that there’s no way to the exclusivity clear from the function signature alone. Instead, the best you can do is make both appear required (by leaving them free from defaults) and then performing your own check in the body of the function.</p>
-<p>This technique should generally be reserved for a pair of possible arguments. If there are more than two, that is generally a sign you reach for another technique.</p>
+<p>This technique should generally be reserved for a pair of possible arguments. If there are more than two, that is generally a sign you reach for another technique. You also need to be confident that there will only ever be two options, as switching to a different approach later will be painful.</p>
+<p>(In the case of required args, you might want to consider putting them after <code>…</code>. This violations <a href="dots-after-required.html"><span>Chapter&nbsp;8</span></a>, but forces the user to name the arguments which will make the code easier to read)</p>
 </section><section id="what-are-some-examples" class="level2" data-number="15.2"><h2 data-number="15.2" class="anchored" data-anchor-id="what-are-some-examples">
 <span class="header-section-number">15.2</span> What are some examples?</h2>
 <ul>
@@ -485,9 +487,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><code><a href="https://rvest.tidyverse.org/reference/html_element.html">rvest::html_element()</a></code> allows you to select HTML elements either with a <code>css</code> selector or an <code>xpath</code> expression. If supply neither, or both, you get an error.</p></li>
 <li><p>In <code><a href="https://ggplot2.tidyverse.org/reference/scale_date.html">ggplot2::scale_x_date()</a></code> and friends you can specify the breaks and labels either with <code>breaks</code> and <code>labels</code> (like all other scale functions) or with <code>date_breaks</code> and <code>date_labels</code>. If you set both values in a pair, the <code>date_</code> version wins.</p></li>
 <li><p><code><a href="https://forcats.tidyverse.org/reference/fct_other.html">forcats::fct_other()</a></code> allows you to either <code>keep</code> or <code>drop</code> specified factor values. If supply neither, or both, you get an error.</p></li>
-</ul></section><section id="how-do-you-use-this-pattern" class="level2" data-number="15.3"><h2 data-number="15.3" class="anchored" data-anchor-id="how-do-you-use-this-pattern">
-<span class="header-section-number">15.3</span> How do you use this pattern?</h2>
-<p>Leave the mutually exclusive arguments free from defaults then use <code><a href="https://rlang.r-lib.org/reference/check_exclusive.html">rlang::check_exclusive()</a></code>:</p>
+<li><p><code><a href="https://dplyr.tidyverse.org/reference/relocate.html">dplyr::relocate()</a></code> has optional <code>.before</code> and <code>.after</code> arguments.</p></li>
+</ul></section><section id="alternatives" class="level2" data-number="15.3"><h2 data-number="15.3" class="anchored" data-anchor-id="alternatives">
+<span class="header-section-number">15.3</span> Alternatives</h2>
+<ul>
+<li>
+<p>Use a strategy pattern. For example, <code><a href="https://readr.tidyverse.org/reference/read_delim.html">readr::read_csv()</a></code> doesn’t have separate <code>text</code> and <code>file</code> arguments. Instead, you can supply raw text directly to <code>file</code> by wrapping it in <code><a href="https://rdrr.io/r/base/AsIs.html">I()</a></code>.</p>
+<p>rvest could have done this by providing <code>css()</code> and <code>xpath()</code> helper functions so instead of writing <code>html |&gt; html_element(css = "p a")</code> you’d write <code>html |&gt; html_element(css("p a"))</code>. I think probably would have netted about about the same, and is a reasonable alternative. The big advantage of this pattern would be that it’s easier to extend if we discovered other ways of describing the elements to select.</p>
+</li>
+<li>
+<p>Use separate functions. For example could have <code>fct_other_drop()</code> and <code>fct_other_keep()</code>. This isn’t much less typing for the user since the options are either <code>fct_other(x, drop = "abc")</code> or <code>fct_other_drop(x, "abc")</code>.</p>
+<p>This only works if the pair of arguments is relatively rare in your overall API. It wouldn’t work, for example, in rvest, since a large number of functions take either <code>css</code> or <code>xpath</code> so it would almost double the number of functions in the package.</p>
+</li>
+<li><p><code><a href="https://rdrr.io/r/stats/cutree.html">cutree()</a></code> is an example where I think mutually exclusive arguments shine: it’s so simple</p></li>
+</ul></section><section id="how-do-you-use-this-pattern" class="level2" data-number="15.4"><h2 data-number="15.4" class="anchored" data-anchor-id="how-do-you-use-this-pattern">
+<span class="header-section-number">15.4</span> How do you use this pattern?</h2>
+<p>If the arguments are required, leave the mutually exclusive arguments free from defaults then use <code><a href="https://rlang.r-lib.org/reference/check_exclusive.html">rlang::check_exclusive()</a></code>. If they’re optional, give them <code>NULL</code> arguments.</p>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fct_drop</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">f</span>, <span class="va">drop</span>, <span class="va">keep</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/check_exclusive.html">check_exclusive</a></span><span class="op">(</span><span class="va">drop</span>, <span class="va">keep</span><span class="op">)</span></span>
@@ -501,7 +516,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; Error in `fct_drop()`:</span></span>
 <span><span class="co">#&gt; ! Exactly one of `drop` or `keep` must be supplied.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>If you don’t want to take a dependency on rlang, you can perform the check “by hand” with use <code><a href="https://rdrr.io/r/base/Logic.html">xor()</a></code> and <code><a href="https://rdrr.io/r/base/missing.html">missing()</a></code>:</p>
+<p>(If the arguments are optional, you’ll need <code>.require = FALSE</code> until <a href="https://github.com/r-lib/rlang/issues/1647" class="uri">https://github.com/r-lib/rlang/issues/1647</a>)</p>
+<p>If you don’t want to take a dependency on rlang, you can perform the check “by hand” with <code><a href="https://rdrr.io/r/base/Logic.html">xor()</a></code> and <code><a href="https://rdrr.io/r/base/missing.html">missing()</a></code>:</p>
 <div class="cell">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fct_drop</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">f</span>, <span class="va">drop</span>, <span class="va">keep</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/Logic.html">xor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">keep</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">drop</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
