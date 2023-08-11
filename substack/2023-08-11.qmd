@@ -1,0 +1,133 @@
+# Dot-dot-dot, bang-bang-bang, and `do.call()`
+
+```{r}
+#| include: FALSE
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+This week I wanted to talk through a bit of tidyverse design that I have mixed feelings about: `!!!`.
+What is `!!!` and when might you need it?
+To understand it, you'll need a little back story...
+
+Some functions want to work with both individual values and a list of values.
+For example, take `rbind()`.
+Sometimes you've created a couple of data frames by hand and want to join them together:
+
+```{r}
+df1 <- data.frame(x = 1)
+df2 <- data.frame(x = 2)
+both <- rbind(df1, df2)
+```
+
+But other times you have created an entire list of data frames, typically through the application of `lapply()` or friends:
+
+```{r}
+xs <- 1:5
+dfs <- lapply(xs, \(x) data.frame(x = x))
+```
+
+How can you join these into a single data frame?
+Just calling `rbind()` doesn't do what you want:
+
+```{r}
+rbind(dfs)
+```
+
+And while you certainly *could* index them by hand, you lose much of the advantage of using `lapply()` in the first place:
+
+```{r}
+#| results: false
+rbind(dfs[[1]], dfs[[2]], dfs[[3]], dfs[[4]], dfs[[5]])
+```
+
+This problem is sometimes called splicing or splatting and occurs whenever you have a single object that contains elements that you want to be individual arguments.
+
+The recommended solution for this problem in base R is to use `do.call()`.
+`do.call(rbind, dfs)` generates the call `rbind(dfs[[1]], rbind[[2]], …, rbind[[5]])` for you:
+
+```{r}
+do.call(rbind, dfs)
+```
+
+`do.call()` is an effective, if advanced, technique but it gets a little tricky if you want to supply additional arguments.
+For example, historically, it used to be important to set `stringsAsFactors = FALSE` which requires gymnastics like this:
+
+```{r}
+#| results: false
+do.call(rbind, c(dfs, list(stringsAsFactors = FALSE)))
+```
+
+This was one of the challenges I wanted to tackle in dplyr, so I came up with `bind_rows()` which tries to automatically figure out if you have a list of data frames or you're supplying them individually:
+
+```{r}
+library(dplyr, warn.conflicts = FALSE)
+
+bind_rows(df1, df2)
+
+bind_rows(dfs)
+```
+
+Unfortunately the heuristic we used to decide whether we were in the first case or the second case grew progressively more complicated over time, as people found problems or asked for new functionality.
+Now, while `bind_rows()` works correctly 99% of the time, it has some weird special cases, like below where the inputs can become columns, rather than rows.
+
+```{r}
+bind_rows(x = 1, y = 2)
+```
+
+These problems soured us on the idea of "automatic" splicing so we started looking for other solutions:
+
+-   We could have a pair of functions, one that takes `…` and one that takes a list. This works for `bind_rows()` it turns out there are a lot of functions that take `…` where it would be nice to also take a list of objects so it lead to a substantial amount of duplication.
+-   We could have a pair of arguments, `…` `.dots,` where you can supply individual arguments to `…` or a list of arguments to `.dots`. (I think I first recall seeing this approach in the RCurl package by Duncan Temple Lang.) But this would requires adding an additional argument to every function that uses `…`, and wouldn't it be nice if we didn't have to do that?
+
+Instead we found inspiration from tidy evaluation where we had recently solved a similar problem with `!!!`:
+
+```{r}
+library(rlang)
+
+args <- exprs(a, b, c + d)
+expr(f(!!!args))
+```
+
+So we introduced the idea of "dynamic dots", an extension to `…` that incorporates some features we thought we useful from tidy evaluation: splicing with `!!!` and dynamic names with `:=`.
+Dynamic dots is implemented via `rlang::list2()` and it's easy to use in your own functions if you find the idea appealing.
+
+One place you can see this idea in use is `forcats::fct_cross()`, which creates a factor that contains all combinations of its inputs:
+
+```{r}
+library(forcats)
+
+fruit <- factor(c("apple", "kiwi", "apple", "apple"))
+colour <- factor(c("green", "green", "red", "green"))
+fct_cross(fruit, colour)
+```
+
+Because `fct_cross()` uses dynamic dots (which you can find out by looking at the dots), if you happen to have a list of values, you can use `!!!` to splice them in:
+
+```{r}
+x <- list(fruit = fruit, colour = colour)
+fct_cross(!!!x)
+```
+
+(`fct_cross()` does a similar job to `interaction()`, which interestingly takes the automatic approach, so you can just call `interaction(x)` here.
+I don't love the approach it takes because if `interaction(list(f1, f2))` works, you might expect `interaction(list(f1, f2), f3)` to work, but it does not, and it doesn't give you a particularly useful error message).
+
+We have yet to figure out a way to use dynamic dots in `dplyr::bind_rows()` without breaking existing usage, but it's provided by the function that now does most of the work: `vctrs::vec_rbind()`.
+(vctrs is the package where we stick low-level operations on vectors and data frames that we use in multiple packages. It's designed to be programmer-friendly rather than analyst-friendly so we don't talk about it that much).
+
+```{r}
+vctrs::vec_rbind(!!!dfs)
+```
+
+Because binding lists of data frames together is such a common operation we also provide `purrr::list_rbind()` and `purrr::list_cbind()`.
+If you look you'll see their implementations are very simple!
+
+Overall, I have mixed feelings about `!!!`.
+I love the elegance of it: it makes it easy to splices lists into `…` and it has a beautiful connection to tidy evaluation.
+But I worry it feels like magic to most R users and because it's only supported by some functions, it's not super clear how you know when you can use it, and you still also have to learn `do.call` or similar.
+And, at least for `bind_rows()`, we've still ended up with two functions!
+
+All that said, `!!!` still feels like the "least worst" solution to me, although looking back I wonder if we might have been better off using the more explicit `.dots` argument.
+What do you think?
+Had you heard of `!!!` before reading this post?
+Have you ever used it to successfully solve a problem?
+Do you prefer `do.call()` or are their other approaches used by other packages that you think are better?

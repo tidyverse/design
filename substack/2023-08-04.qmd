@@ -63,7 +63,7 @@ I like how this hierarchy of option arguments buries something that you rarely n
 
 Where else have you seen this pattern?
 Have you written functions where it would be useful?
-Are there places in the tidyverse that you think should use this pattern but don\'t?
+Are there places in the tidyverse that you think should use this pattern but don't?
 Please let me know in the comments!
 
 ------------------------------------------------------------------------
