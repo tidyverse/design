@@ -58,6 +58,22 @@ This pattern is only used in a couple of places, so I have a lot of questions st
 -   Is it better to branch on the first argument being complex (like `str_sub()`) or the additional arguments being missing (like `rgb()`)?
 -   Is this pattern even worth it? Would it be clearer to just have a pair of functions? Or always require that the user use the complex form? Is this just a trick that I think is cool but very few other people would every discover?
 
+## `dplyr::bind_rows()` and `!!!`
+
+Another place that this pattern crops up is in `dplyr::bind_rows()`.
+When binding rows together, it's equally useful to bind a few named data frames as it is to bind a list of data frames that come from map or similar.
+In base R you need to know about `do.call(rbind, mylist)` which is a relatively sophisticated pattern.
+So in dplyr we tried to make `bind_rows()` automatically figure out if you were in situation one or two.
+
+Unfortunately, it turns out to be really hard to tell which of the situations you are in, so dplyr implemented heuristics that work most of the time, but occasionally it fails in surprising ways.
+
+Now we have generally steered away from interfaces that try to automatically "unsplice" their inputs and instead require that you use `!!!` to explicitly unsplice.
+This is has some advantages and disadvantages: it's an interface that's becoming increasingly common in the tidyverse (and we have a good convention for documenting it with the `<dynamic-dots>` tag), but it's still relatively rare and is an advanced technique that we don't expect everyone to learn.
+That's why for this important case, we also have `purrr::list_cbind()`.
+
+But it means that functions like `purrr::hoist()`, `forcats::fct_cross()`, and `rvest::html_form()` which are less commonly given lists have a clearly documented escape hatch that doesn't require another different function.
+(And of course if you understand the `do.call` pattern you can still use that too).
+
 ## How do I use the pattern?
 
 To implement in your own functions, you should branch on the type of the first argument and then check that the others aren't supplied.
