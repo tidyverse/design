@@ -40,13 +40,20 @@ You also need to be confident that there will only ever be two options, as switc
 
 ## Alternatives
 
--   Use a strategy pattern. For example, `readr::read_csv()` doesn't have separate `text` and `file` arguments. Instead, you can supply raw text directly to `file` by wrapping it in `I()`.
+-   Use a strategy pattern.
+    For example, `readr::read_csv()` doesn't have separate `text` and `file` arguments.
+    Instead, you can supply raw text directly to `file` by wrapping it in `I()`.
 
-    rvest could have done this by providing `css()` and `xpath()` helper functions so instead of writing `html |> html_element(css = "p a")` you'd write `html |> html_element(css("p a"))`. I think probably would have netted about about the same, and is a reasonable alternative. The big advantage of this pattern would be that it's easier to extend if we discovered other ways of describing the elements to select.
+    rvest could have done this by providing `css()` and `xpath()` helper functions so instead of writing `html |> html_element(css = "p a")` you'd write `html |> html_element(css("p a"))`.
+    I think probably would have netted about about the same, and is a reasonable alternative.
+    The big advantage of this pattern would be that it's easier to extend if we discovered other ways of describing the elements to select.
 
--   Use separate functions. For example could have `fct_other_drop()` and `fct_other_keep()`. This isn't much less typing for the user since the options are either `fct_other(x, drop = "abc")` or `fct_other_drop(x, "abc")`.
+-   Use separate functions.
+    For example could have `fct_other_drop()` and `fct_other_keep()`.
+    This isn't much less typing for the user since the options are either `fct_other(x, drop = "abc")` or `fct_other_drop(x, "abc")`.
 
-    This only works if the pair of arguments is relatively rare in your overall API. It wouldn't work, for example, in rvest, since a large number of functions take either `css` or `xpath` so it would almost double the number of functions in the package.
+    This only works if the pair of arguments is relatively rare in your overall API.
+    It wouldn't work, for example, in rvest, since a large number of functions take either `css` or `xpath` so it would almost double the number of functions in the package.
 
 -   `cutree()` is an example where I think mutually exclusive arguments shine: it's so simple
 
