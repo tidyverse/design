@@ -1,0 +1,30 @@
+My dad, Brian Walter Wickham, passed away peacefully last month.
+We've known this was coming for a while, but it's still a big blow: he was a very important part of my life.
+You can get a sense of how he influenced the world through [this article in the Irish Farmer's Journal](https://www.farmersjournal.ie/former-icbf-chief-executive-brian-wickham-passes-away-779918), but here I wanted to reflect particularly on how he influenced my work.
+
+I was lucky to have access to computers from a very young age (I don't remember when exactly, but I think around 10), thanks to Dad having a laptop for work.
+This was in the era where laptops were extremely expensive, heavy, and barely transportable, but I still I have fond memories of using Lotus 1-2-3 (an early spreadsheeting tool), learning DOS, and playing Dune 2.
+In my early teens, I remember being greatly excited to find a documentation manual for DOS in a computer shop and convincing Dad to buy it for me.
+
+Databases have been a big part of Dad's work through out his life, and he gave me "the talk" about [Codd's third normal form](https://en.wikipedia.org/wiki/Third_normal_form) when I was around 15.
+This sparked my interest in MS Access, which lead to part time jobs creating and documenting databases in high school and university.
+One projects involved creating a database for the library at his work, and I still remember the feeling after I accidentally deleted a file that contained a week's worth of data entry.
+This lead to "the talk" about backups, the principles of which I have followed ever since.
+Dad's knowledge about and use of databases had a deep impact on my life, leading many years later to the idea of tidy data, a framing of Codd's rules that were easier to understand and apply to statistical data.
+
+Much of Dad's work involved collecting data about cows (hence the databases), and one of his strong beliefs was that farmers should own their own data, and it should live together in a central database that could be used for the good of all.
+This made open source seem natural to me: why not build a community where developers collaboratively owned their code, and could work together to solve problems that were hard to tackle individually.
+Dad's belief in sharing his work for the betterment of all made adopting the principles of open source software seen obvious to me when I started producing software of my own.
+
+Dad did his PhD at Cornell, so growing up it made doing a PhD overseas seem like a totally normal and reasonable to do.
+So when I got interested in statistics and computer science in my undergrad, applying to universities in the US seemed like the obvious choice.
+Unfortunately Dad had given me unrealistic sense of how long a PhD would take, since he finished his in only two years!
+
+One of the things that most impressed me about Dad was his commitment to life long learning.
+He loved to embrace new technologies, and was a fluent user of FaceTime, AirBnB, and Uber (although he also loved to strike up conversations with strangers in a way that is very foreign to me).
+In his early 70s, he learned how to use GitHub and markdown so that he could edit "[People and Places of Clonakilty](https://www.lulu.com/shop/alison-wickham/people-and-places-of-clonakilty/paperback/product-q9qk6e.html)", a book that my mum wrote and that Charlotte and I produced with Quarto.
+He\'s a great role model as I get older; I want to continue to learn new things and embrace new technologies
+
+Dad taught me how to chair a meeting, how to grill a steak, and how to change a tire.
+I admire his optimism, calm and thoughtful manner, and endless patience, and hope I can live up to his legacy.
+He will be greatly missed.
