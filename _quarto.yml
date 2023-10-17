@@ -36,10 +36,15 @@ book:
       - enumerate-options.qmd
       - argument-clutter.qmd
     
-    - part: Argument dependencies
+    - part: Strategies
       chapters:
       - explicit-strategies.qmd
+      - boolean-strategies.qmd
+      - strategy-functions.qmd
       - cs-rep.qmd
+    
+    - part: Argument dependencies
+      chapters:
       - independent-meaning.qmd
       - mutually-exclusive-arguments.qmd
       - compound-arguments.qmd
