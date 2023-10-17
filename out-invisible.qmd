@@ -46,7 +46,7 @@ library(tibble)
 
 mtcars %>%
   as_tibble() %>% 
-  filter(cyl == 6) %>% 
+  dplyr::filter(cyl == 6) %>% 
   print() %>% 
   group_by(vs) %>% 
   summarise(mpg = mean(mpg))
