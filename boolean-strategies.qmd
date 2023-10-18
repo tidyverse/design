@@ -7,7 +7,7 @@ source("common.R")
 
 ## What's the pattern?
 
-If your function provides only two strategies it's tempting to use a logical to switch between them.
+If your function provides only two strategies it's tempting to distinguish between them using a Boolean argument that takes `TRUE` or `FALSE`.
 I recommend against this unless you're REALLY SURE there won't ever be another strategy.
 There are two reasons:
 
@@ -16,41 +16,45 @@ There are two reasons:
 
 ## What are some examples?
 
-Compare these equivalent calls to `sort()` and `vctrs::vec_sort()`:
+-   It's interesting to compare the interfaces of `sort()` and `vctrs::vec_sort()`:
 
-```{r}
-#| results: false
+    ```{r}
+    #| results: false
+    x <- sample(10)
+    sort(x, decreasing = TRUE)
+    vctrs::vec_sort(x, direction = "desc")
 
-x <- sample(10)
-sort(x, decreasing = TRUE)
-vctrs::vec_sort(x, direction = "desc")
+    sort(x, decreasing = FALSE)
+    vctrs::vec_sort(x, direction = "asc")
+    ```
 
-sort(x, decreasing = FALSE)
-vctrs::vec_sort(x, direction = "asc")
-```
+    While it's unlikely that we'll ever need another sorting direction, I think `direction = "asc"`/`"desc"` is mildly easier to understand than `decreasing = FALSE`/`TRUE`.
 
-It's unlikely that you'll ever need to implement another sorting direction, but I think it's easier to understand `direction = "asc"` than `decreasing = FALSE` at a glance.
+-   The `na.last` argument to `sort()` adds `NA` to the mix to allow a Boolean argument to specify one of three possible strategies: put NAs at the end (`TRUE`), at the beginning (`FALSE`), or drop them alltogether (`NA`).
 
-Another example where I think an enumeration is easier to understand is the `cols_vary` argument to `pivot_longer()`.
-This argument can be either fastest or slowest, and it's hard to imagine how you might encode that into a Boolean flag.
+-   `haven::write_sav()` started with a compress argument that could be either `TRUE` (compress the file) or `FALSE` (don't compress the file). But then SPSS introduced a new way of compressing files leading to three possible options: compress with the new way, compress with the old way, or don't compress.
 
 ## How do you remediate past mistakes?
 
+There are two possible cases, based on whether the old argument name still makes sense with the new argument values.
+The sections below show what you'll need to do if you need a new argument (most cases) or if you can reuse the existing argument.
+
 ### New argument
 
-Remediating this problem will typically require adding a new argument and deprecating the old argument.
-For example, imagine we wanted to remediate the `na.last` argument to `sort()`.
-It exposes uses a Boolean to expose three strategies for handling missing values:
+Imagine we wanted to remediate the `na.last` argument to `sort()`:
 
--   `na.last = TRUE` means put them last.
--   `na.last = FALSE` means put them first.
+-   `na.last = TRUE` means put `NA`s last.
+-   `na.last = FALSE` means put `NA`s first.
 -   `na.list = NA` means to drop them.
 
-I think we could make this function more clear by adding a new `na` argument that takes one of three values: `last`, `first`, or `drop`.
+I think we could make this function more clear by instead changing the argument name to `na`, and then accepting one of three values: `last`, `first`, or `drop`.
+To change an argument name in a backward compatible way, you deprecate the old argument and add a new argument, as below.
 
 ```{r}
-sort <- function(x, na.last = lifecycle::deprecated(), na = c("drop", "first", "last")) {
-  
+sort <- function(x, 
+                 na.last = lifecycle::deprecated(), 
+                 na = c("drop", "first", "last")) 
+{
   if (lifecycle::is_present(na.last)) {
     lifecycle::deprecate_warn("1.0.0", "sort(na.last)", "sort(na)")
 
@@ -68,20 +72,24 @@ sort <- function(x, na.last = lifecycle::deprecated(), na = c("drop", "first", "
   } else {
     na <- arg_match(na)
   }
+  
+  ...
 }
 ```
 
+::: callout-note
 Note that because `na` is a prefix of `na.last` and `na.last` comes before `…` (in violation of @sec-dots-after-required), this introduces a very subtle behaviour change: a call like `sort(x, n = TRUE)` would have previously worked and been equivalent to `sort(x, na.last = TRUE)` but will now fail because it matches both `na` and `na.last`.
 
 It would also be nice to make the default value `"last"` since it's very unusual for an R function to silently remove missing values.
 However, that is much more likely to be a breaking change, affecting much existing code, so is unlikely to be worthwhile.
+:::
 
-### Same name
+### Re-use existing name
 
-Sometimes you get lucky and you can use the same argument name for both the boolean and the strategy.
-For example, `haven::write_sav()` originally allowed `compress` to be either `TRUE` or `FALSE`.
-But then SPSS introduced a new way of compressing, expanding the set of options to three (which we have called byte, none, and zsav).
-Since the `compress` argument name is still good we chose to accept either a `TRUE` or `FALSE` or one of the new enumeratiion:
+Sometimes you get lucky and you can use the same argument name, as with `haven::write_sav()`.
+When SPSS version 21.0 introduced a new form of compression (called `zsav`), we change the compress argument from accepting `TRUE` or `FALSE` to accepting, "none", "byte", or "zsav" because `compress = TRUE` reads just as well as `compress = "byte"`.
+
+To make this change in the code, we kept the existing behaviour for `TRUE` and `FALSE` while also adding the ability to supply a string:
 
 ```{r}
 write_sav <- function(data, path, compress = c("byte", "none", "zsav"), adjust_tz = TRUE) {
@@ -97,5 +105,5 @@ write_sav <- function(data, path, compress = c("byte", "none", "zsav"), adjust_t
 }
 ```
 
-You could also imagine deprecating the old logical options, but here we chose to the keep them since it's a small amount of extra code, and means that existing users never need to worry about it.
+You could imagine deprecating the old logical options, but here we chose to the keep them since it's a small amount of extra code, and means that existing users never need to worry about it.
 See `?haven::read_sav` for how we communicated the in the docs.
