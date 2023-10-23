@@ -14,8 +14,8 @@ source("common.R")
 ## What does `rep()` do?
 
 `rep()` is an extremely useful base R function that repeats a vector `x` in various ways.
-It has three details arguments: `times`, `each`, and `length.out`[^cs-rep-1] that interact in complicated ways.
-Let's explore the basics first:
+It takes a vector of data in `x` and has arguments (`times`, `each`, and `length.out`[^cs-rep-1]) that control how `x` is repeated.
+Let's start by exploring the basics:
 
 [^cs-rep-1]: Note that the function specification is `rep(x, ...)`, and `times`, `each`, and `length.out` do not appear explicitly.
     You have to read the documentation to discover these arguments.
@@ -28,11 +28,6 @@ rep(x, length.out = 10)
 ```
 
 `times` and `length.out` replicate the vector in the same way, but `length.out` allows you to specify a non-integer number of replications.
-If you specify both, `length.out` wins.
-
-```{r}
-rep(x, times = 3, length.out = 10)
-```
 
 The `each` argument repeats individual components of the vector rather than the whole vector:
 
@@ -54,16 +49,26 @@ rep(x, times = x)
 
 ## What makes this function hard to understand?
 
--   There's a complicated dependency between `times`, `length.out`, and `each`.
-    `times` and `length.out` both control the same underlying variable in different ways, and you can not set them simultaneously.
-    `times` and `each` are mostly independent, but if you specify a vector for `times` you can't use each.
+-   `times` and `length.out` both control the same underlying variable in different ways, and if you set them both then `length.out` silently wins:
+
+    ```{r}
+    rep(1:3, times = 2, length.out = 3)
+    ```
+
+-   `times` and `each` are usually independent:
+
+    ```{r}
+    rep(1:3, times = 2, each = 2)
+    ```
+
+    But if you specify a vector for `times` you can't use each.
 
     ```{r}
     #| error = TRUE
     rep(1:3, times = c(2, 2, 2), each = 2)
     ```
 
--   I think using `times` with a vector is confusing because it switches from replicating the whole vector to replicating individual values of the vector, like `each` usually does.
+-   I think using `times` with a vector is confusing because it switches from replicating the whole vector to replicating individual values, like `each` usually does.
 
     ```{r}
     rep(1:3, each = 2)
@@ -71,100 +76,99 @@ rep(x, times = x)
     rep(1:3, times = c(2, 2, 2))
     ```
 
-I think these two problems have the same underlying cause: `rep()` is trying to do too much in a single function.
-`rep()` is really exposing two different strategies (@sec-strategies-explicit): repeating each element of the vector vs. repeating the entire vector.
-In this case, rather than exposing the two strategies via an argument, I think it makes sense to expose them each with a different function.
-
-Why two separate functions?
-It only makes sense to supply a vector of `times` when you're replicating the individual values.
-
 ## How might we improve the situation?
 
-Two create two new functions, we need to first come up with names: I like `rep_each()` and `rep_full()`.
+I think these problems have the same underlying cause: `rep()` is trying to do too much in a single function.
+`rep()` is really exposing two different strategies with different arguments (@sec-strategy-functions) and it would be better served by a pair of functions, one which replicates element-by-element, and one which replicates the whole vector.
+
+### Function names
+
+To create the new functions, we need to first come up with names: I like `rep_each()` and `rep_full()`.
 `rep_each()` was a fairly easy name to come up with.
 `rep_full()` was a little harder and took a few iterations: I like that `full` has the same number of letters as `each`, which makes the two functions look like they belong together.
+
 Another possibility would be `rep_every()` since each and every form a natural pair, but to me at least, repeating "every" element doesn't feel very different to repeating each element.
 
+Another possible pair would be `rep_individual()` and `rep_whole()`.
+I like how these capture the differences precisely, but they are maybe too long for such commonly used functions.
+
+### Arguments
+
 Next, we need to think about their arguments.
-Both will have a single data argument: `x`, the vector to repeat.
-`rep_each()` has an additional argument that specifies the number of times to replicate each element, which can either be a single number, or a vector the same length as `x`.
-`rep_time()` has two mutually exclusive details arguments (@sec-mutually-exclusive), the number of times to repeat the whole vector, or the desired length of the output.
+They both will start with `x`, the vector to repeat.
+Then their arguments differ:
+
+-   `rep_each()` needs an argument that specifies the number of times to replicate each element, which can either be a single number, or a vector the same length as `x`.
+-   `rep_full()` has two mutually exclusive arguments (@sec-mutually-exclusive), the number of times to repeat the whole vector, or the desired length of the output.
 
 What should we call the arguments?
-We've already captured the different replication strategies (each vs. full) in the function name, so I think the argument that specifies the number of times to replicate can be the same, and `times` seems reasonable.
+We've already captured the different replication strategies in the function name, so I think the argument that specifies the number of times to replicate can be the same, and `times` seems reasonable.
+
 For the second argument to `rep_full()`, I draw inspiration from `rep()` which uses `length.out`.
-I think it's obvious that the argument controls the output, so `length` is adequate.
+I think it's obvious that the argument controls the output length, so `length` is adequate.
+
+### Implementation
+
+We can combine these specifications with a simple implementation that uses the existing `rep` function.
 
 ```{r}
-rep_each <- function(x, times) {
-  times <- vctrs::vec_recycle(times, length(x))
-  rep(x, times = times)
-}
-
 rep_full <- function(x, times, length) {
   rlang::check_exclusive(times, length)
   
   if (!missing(length)) {
     rep(x, length.out = length)
   } else {
-    rep(x, length.out = times * base::length(x))
+    rep(x, times = times)
+  }
+}
+
+rep_each <- function(x, times) {
+  if (length(times) == 1) {
+    rep(x, each = times)
+  } else if (length(times) == length(x)) {
+    rep(x, times = times)
+  } else {
+    stop('`times` must be length 1 or the same length as `x`')
   }
 }
 ```
 
-(Note the downside of using `length` as the argument name: we have to call [`base::length()`](#0) to avoid evaluating the missing `length` when times is supplied.
-This is probably why `rep()` uses `length.out`.)
+(Note the downside of using `length` as the argument name: we have to call [`base::length()`](#0)to avoid evaluating the missing `length` when times is supplied.
+This is likely why `rep()` uses `length.out`.)
 
 ```{r}
 x <- c(1, 2, 4)
 
-rep_each(x, times = 2)
-rep_full(x, times = 2)
+rep_each(x, times = 3)
+rep_full(x, times = 3)
 
 rep_each(x, times = x)
-
 rep_full(x, length = 5)
 ```
 
 One downside of this approach is if you want to both replicate each component *and* the entire vector, you have to use two function calls, which is much more verbose than the `rep()` equivalent.
-However, I don't think this is a terribly common use case, and so I think a longer call is more readable.
-
-## Dealing with bad inputs
-
-The implementations above work well for correct inputs, but will also work without error for a number of incorrect inputs:
+However, I don't think this is a terribly common use case, and if we use our suggested argument naming principle, the call is the same length:
 
 ```{r}
+rep(x, each = 2, times = 3)
+rep_full(rep_each(x, 2), 3)
+```
+
+And it's only slightly longer if you use the pipe, which is maybe slightly more readable:
+
+```{r}
+x |> rep_each(2) |> rep_full(3)
+```
+
+::: callout-caution
+Note that this implementation lacks any input checking so many inputs will work (possibly with a warning) that shouldn't.
+For example, since we're not checking that `times` and `length` argument to `rep_full()` are single integers, the following calls give suboptimal results:
+
+```{r}
+#| error: true
 rep_full(1:3, 1:3)
-```
-
-Need to think about the types
-
-```{r}
-rep_each <- function(x, times) {
-  times <- vctrs::vec_cast(times, integer())
-  times <- vctrs::vec_recycle(times, vctrs::vec_size(x), x_arg = "times")
-  
-  rep.int(x, times)
-}
-
-rep_full <- function(x, times, length) {
-  rlang::check_exclusive(times, length)
-  
-  if (!missing(length)) {
-    rlang:::check_number_whole(length)
-    rep(x, length.out = length)
-  } else {
-    rlang:::check_number_decimal(times)
-    rep(x, length.out = times * base::length(x))
-  }
-}
-```
-
-```{r}
-#| error = TRUE
-rep_each(1:3, 1:2)
-rep_each(1:3, "x")
-
 rep_full(1:3, "x")
-rep_full(1:3, c(1, 2))
 ```
+
+We'll come back to input checking later in the book.
+:::

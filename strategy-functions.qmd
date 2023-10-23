@@ -1,4 +1,4 @@
-# Strategy functions {#sec-strategy-functions}
+# Use multiple functions for complex strategies {#sec-strategy-functions}
 
 ```{r}
 #| include = FALSE
@@ -7,183 +7,61 @@ source("common.R")
 
 ## What's the problem?
 
-Sometimes different strategies requires different arguments.
-When this happens it's best to make each strategy it's own function to make it as clear as possible which arguments belong to which strategy.
-One sign that this pattern is needed is a complex dependency pattern between arguments: maybe you can set `a` and `b` and `a` and `c` but not `b` and `c`.
-This tends to make the function harder to use because it suggests more viable input combination that actually exist.
-You have to learn and the remember the set of allowed combinations, rather that seeing the underlying strategies.
-
-There are two variations of this pattern depending on how much arguments are shared across all the strategies.
-If many arguments are shared, you might create a strategy object that is used in conjunction with another function; if few arguments are shared you might split into multiple top-level functions.
+You have **complex strategies** when different strategies require different arguments.
+In this case, it's a good idea to use a separate function for each strategy, to make it as clear as possible which arguments belong to which strategy.
+One sign that you have this pattern that you have a complex dependency between arguments: maybe you can set `a` and `b` and `a` and `c` but not `b` and `c`.
+This tends to make the function harder to use because it suggests more viable input combinations than actually exist.
 
 ## What are some examples?
 
-Top-level functions:
+This problem is typically discovered in hindsight.
 
--   An example of a function that could do better is `forcats::fct_lump()` which exposes three lumping strategies based on whether or not you supplied just `n`, just `prop`, or neither.
-    We remediated this issue in forcats 0.5.0 by splitting `fct_lump()` into three separate functions: `fct_lump_prop()`, `fct_lump_n()`, and `fct_lump_lowfreq()`.
-    This allows the function name to hint at the purpose, prevents you from supplying both `n` and `prop` through the design of the functions, and only has the `ties.method` argument where it makes sense.
+-   `forcats::fct_lump()` chooses between one of three lumping strategies depending on whether you supply just `n`, just `prop`, or neither, while supplying both `n` and `prop` is an error.
+    Additionally, the `ties.method` argument only does anything if you supply only `n`.
+    `fct_lump()` is hard to document because it's really three smaller functions in trench coat[^strategy-functions-1].
 
--   `rep()` exposes two basic strategies: repeat each element of the vector (by setting `each` to a scalar or `times` to a vector) or repeat the entire vector (by setting `times` to a scalar).
+-   `seq_along()` and `seq_len()` implement two common strategies for creating sequences starting at 1: matching the length of existing vector, or given the maximum `n`.
+
+-   `runif()`, `rnorm()` ?
+
+-   `isTRUE`, `isFALSE`?
+
+-   `log10`, `log2`, `log` ?
+
+-   I think `rep()` would be easier to understand if it was two separate functions because it exposes two basic strategies: either repeating each element or the full vector.
     Learn more in @sec-cs-rep.
 
-Strategy helper:
+[^strategy-functions-1]: <https://tvtropes.org/pmwiki/pmwiki.php/Main/TotemPoleTrench>
 
--   `ggplot2::geom_histogram()` has three main strategies for defining the bins: you can supply the number of `bins`, the width of each bin (the `binwidth`), or the exact `breaks`.
+## How do I remediate past mistakes?
 
--   `grepl()` has boolean `perl` and `fixed` arguments, but you're not really toggling two independent settings, you're picking from one of three regular expression engines (the default, the engine used by Perl, and fixed matches).
-    Additionally, the `ignore.case` argument only applies to two of the strategies.
-    Learn more in @sec-cs-stringr.
-
-`dplyr::left_join()` uses an advanced form of this pattern where the different strategies for joining two data frames together are expressed in a mini-DSL provided by `dplyr::join_by()`.
-
-## How do you use the pattern?
-
-In more complicated cases, different strategies will require different arguments, so you'll need a bit more infrastructure.
-The basic idea is build on the options object described in @sec-argument-clutter, but instead of providing just one helper function, you'll provide one function per strategy.
-A good example of this approach is readr, which provides `regex()`, `boundary()`, `coll()`, and `fixed()` to pick between four different strategies for matching text.
-You can learn more about why we picked that interface in @sec-cs-stringr, so here I wanted to focus on the implementation.
-
-If you take a look at one of these functions, you'll see it's a wrapper around a stringi function that performs a similar job.
-But `fixed()` does two extra things compared to `stri_opts_fixed()`: it more aggressively checks the input arguments and it combines the stringi options with the pattern and adds a class.
+Remediating past mistakes is straightforward: define, document, and export one function for each strategy.
+Then rewrite the original function to use those strategies, deprecating that entire function if desired.
 
 ```{r}
-fkxed <- function(pattern, ignore_case = FALSE) {
-  pattern <- as_bare_character(pattern)
-  check_bool(ignore_case)
-
-  options <- stri_opts_fixed(case_insensitive = ignore_case)
-
-  structure(
-    pattern,
-    options = options,
-    class = c("stringr_fixed", "stringr_pattern", "character")
-  )
+fct_lump <- function(f,
+                     n,
+                     prop,
+                     w = NULL,
+                     other_level = "Other",
+                     ties.method = c("min", "average", "first", "last", "random", "max")) {
+    if (missing(n) && missing(prop)) {
+      fct_lump_lowfreq(f, w = w, other_level = other_level)
+    } else if (missing(prop)) {
+      fct_lump_n(f, n, w = w, other_level = other_level, ties.method = ties.method)
+    } else if (missing(n)) {
+      fct_lump_prop(f, prop, w = w, other_level = other_level)
+    } else {
+      cli::cli_abort("Must supply only one of {.arg n} and {.arg prop}.")
+    }
 }
 ```
 
-This class is important because it allows us to check that the user has provided the expect input type and give a useful error message if not.
-Since pretty much every stringr function needs to do this, stringr provides a internal function called `type()` that looks something like this[^strategy-functions-1]:
-
-[^strategy-functions-1]: The actual function is more complicated because it takes more care to generate an informative error message, and it uses S3 instead of nested `if` statements.
-    But the overall strategy is the same.
+In forcats we decided to supersede `fct_lump()` rather than deprecating it.
+Deprecating it would only require one extra line:
 
 ```{r}
-type <- function(x) {
-  if (inherits(x, "stringr_boundary")) {
-    "bound"
-  } else if (inherits(x, "stringr_regex")) {
-    "regex"
-  } else if (inherits(x, "stringr_coll")) {
-    "coll"
-  } else if (inherits(x, "stringr_fixed")) {
-    "fixed"
-  } else if (is.character(x)) {
-    if (identical(x, "")) "empty" else "regex"
-  } else {
-    cli::cli_abort("Must be a string or stringr pattern object")
-  }
-}
-```
-
-Then individual stringr functions can use `type()` plus a `switch` statement:
-
-```{r}
-str_detect <- function(string, pattern) {
-  check_lengths(string, pattern)
-  check_bool(negate)
-
-  switch(type(pattern),
-    empty = no_empty(),    # <1>
-    bound = no_boundary(), # <1>
-    fixed = stri_detect_fixed(string, pattern, opts_fixed = opts(pattern)),  # <2>
-    coll  = stri_detect_coll(string,  pattern, opts_collator = opts(pattern)), # <2>
-    regex = stri_detect_regex(string, pattern, opts_regex = opts(pattern)) # <2>
-  )
-}
-```
-
-1.  `no_empty()` and `no_boundary()` are helper functions that generate errors when a stringr function doesn't support a specific engine.
-2.  `opts()` is a helper function for extracting the stringi options back out of the stringr wrapper object.
-
-You can implement this same strategy using `if` or OOP, but here I particularly like the `switch` pattern because it keeps the stringi function calls close together, which makes it easier to keep them in sync.
-
-### Using a strategy function {#sec-geom-histogram}
-
-Sometimes the strategy will be tangled in with many other arguments, or they might be multiple strategies used simultaneously.
-In these situations you want to avoid creating a combinatorial explosion of functions, and instead might want to use a strategy object.
-
-For example, generating the bins for a histogram is a surprisingly complex topic.
-`ggplot2::stat_bin()`, which powers `ggplot2::geom_histogram()`, has a total of 5 arguments that control where the bins are placed:
-
--   You can supply either `binwidth` or `bins` to specify either the width or the number of evenly spaced bins. Alternatively, you supply `breaks` to specify the exact bin locations yourself (which allows you to create unevenly sized bins[^strategy-functions-2]).
--   If you use `binwidth` or `bins`, you're specifying the width of each bin, but not where the bins start. So additionally you can use either `boundary` or `center`[^strategy-functions-3] to specify the location of a side (`boundary`) or the middle (`center`) of a bin[^strategy-functions-4]. `boundary` and `center` are mutually exclusive; you can only specify one (see @sec-mutually-exclusive for more).
--   Regardless of the way that you specify the locations of the bins, you need to choose where a bin from `a` to `b`, is `[a, b)` or `(a, b]`, which is the job of the `closed` argument.
-
-[^strategy-functions-2]: One nice application of this principle is to create a histogram where each bin contains (approximately) the same number of points, as implemented in <https://github.com/eliocamp/ggpercentogram/>.
-
-[^strategy-functions-3]: `center` is also a little problematic as an argument name, because UK English would prefer `centre`.
-    It's probably ok here since this it's a very rarely used argument, but `middle` would be good alternatives that don't have the same US/UK problem.
-    Alternatively the pair could be `endpoint` and `midpoint` which perhaps suggest a tighter pairing than `center` and `boundary`.
-
-[^strategy-functions-4]: It can be any bin; `stat_bin()` will automatically adjust all the other bins.
-
-One way to resolve this problem would encapsulate the three basic strategies into three functions:
-
--   `bin_width(width, center, boundary, closed)`
--   `bin_number(bins, center, boundary, closed)`
--   `bin_breaks(breaks, closed)`
-
-That immediately makes the relationship between the arguments and the strategies more clear.
-
-Note that these functions create "strategies"; i.e. they don't take the data needed to actual perform the operation --- none of these functions take range of the data.
-This makes these functions [function factories](https://adv-r.hadley.nz/function-factories.html), which is a relatively complex technique.
-
-```{r}
-bin_width <- function(width, center, boundary, closed = c("left", "right")) {
-  # https://adv-r.hadley.nz/function-factories.html#forcing-evaluation
-  list(width, center, boundary, closed)
-  
-  function(range) {
-    
-  }
-}
-```
-
-### Argument checking
-
-As in @sec-argument-clutter, you may want to give these functions custom classes so that the function that uses them can provide better error messages if the user supplies the wrong type of object.
-
-Alternatively, you might want to just check that the input is a function with the correct formals; that allows the user to supply their own strategy function.
-It's probably something that few people will take advantage of, but it's a nice escape hatch.
-
-## How do I remediate past mistakes
-
-If your function used an enumeration, but now you realise that some strategies use different arguments you can remediate like this:
-
-```{r}
-# OLD 
-my_fun <- function(strategy = c("a", "b")) {
-  strategy <- arg_match(strategy)
-}
-
-check_strategy <- function(f) {
-  if (!is.function(f) || !identical(names(formals), c("range"))) {
-    cli::abort("{.fun f} must be a function with `range` argument")
-  }
-}
-
-
-# NEW
-my_fun <- function(strategy = my_stragegy_a()) {
-  if (is.characer(strategy)) {
-    strategy <- switch(
-      arg_match(strategy),
-      a = my_strategy_a(),
-      b = my_strategy_b()
-    )
-  } else {
-    check_strategy(strategy)
-  }
+fct_lump <- function(...) {
+  lifecycle::deprecate_warn("0.5.0", "fct_lump()")
 }
 ```

@@ -33,63 +33,6 @@ stringr functions always have `string` as the first argument.
 
 I regret using `string`; I now think `x` would be a more appropriate name.
 
-## Selecting a pattern engine {#sec-pattern-engine}
-
-`grepl()`, has three arguments that take either `FALSE` or `TRUE`: `ignore.case`, `perl`, `fixed`, which might suggest that there are 2 \^ 3 = 8 possible options.
-But `fixed = TRUE` overrides `perl = TRUE`, and `ignore.case = TRUE` only works if `fixed = FALSE` so there are only 5 valid combinations.
-
-```{r}
-x <- grepl("a", letters, fixed = TRUE, ignore.case = TRUE)
-x <- grepl("a", letters, fixed = TRUE, perl = TRUE)
-```
-
-It's easier to understand `fixed` and `perl` once you realise their combination is used to pick from one of three engines for matching text:
-
--   The default is POSIX 1003.2 extended regular expressions.
--   `perl = TRUE` uses Perl-style regular expressions.
--   `fixed = TRUE` uses fixed matching.
-
-This makes it clear why `perl = TRUE` and `fixed = TRUE` isn't permitted: you're trying to pick two conflicting engines.
-
-An alternative interface that makes this choice more clear would be to use @sec-enumerate-options and create a new argument called something like `engine = c("POSIX", "perl", "fixed")`.
-This also has the nice feature of making it easier to extend in the future.
-That might look something like this:
-
-```{r}
-#| eval = FALSE
-grepl(pattern, string, engine = "regex")
-grepl(pattern, string, engine = "fixed")
-grepl(pattern, string, engine = "perl")
-```
-
-But stringr takes a different approach, because of a problem hinted at in `grepl()` and friends: `ignore.case` only works with two of the three engines: POSIX and perl.
-Additionally, having an `engine` argument that affects the meaning of the `pattern` argument is a little unfortunate --- that means you have to read the call until you see the `engine` argument before you can understand precisely what the `pattern` means.
-
-stringr takes a different approach, encoding the engine as an attribute of the pattern:
-
-```{r}
-x <- str_detect(letters, "a")
-# short for:
-x <- str_detect(letters, regex("a"))
-
-# Which is where you supply additional arguments
-x <- str_detect(letters, regex("a", ignore_case = TRUE))
-```
-
-This has the advantage that each engine can take different arguments.
-In base R, the only argument of this nature of `ignore.case`, but stringr's `regex()` has arguments like `multiline`, `comments`, and `dotall` which change how some components of the pattern are matched.
-
-Using an `engine` argument also wouldn't work in stringr because of the `boundary()` engine which rather than matching specific patterns uses matches based on boundaries between things like letters or words or sentences.
-
-```{r}
-#| eval = FALSE
-str_view("This is a sentence.", boundary("word"))
-str_view("This is a sentence.", boundary("sentence"))
-```
-
-This is more appealing than creating a separate function for each engine because there are many other functions in the same family as `grepl()`.
-If we created `grepl_fixed()`, we'd also need `gsub_fixed()`, `regexp_fixed()` etc.
-
 ## `str_flatten()`
 
 `str_flatten()` was a relatively recent addition to stringr.
