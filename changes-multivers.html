@@ -241,7 +241,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./boolean-strategies.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Avoid Boolean strategies</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Use a strategy, even for two choices</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -582,9 +582,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; # A tibble: 3 × 5</span></span>
 <span><span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc</span></span>
 <span><span class="co">#&gt;   &lt;bch:expr&gt; &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;</span></span>
-<span><span class="co">#&gt; 1 version     628.4µs  652.2µs     1480.    4.01KB</span></span>
-<span><span class="co">#&gt; 2 exists        4.2µs    4.6µs   196017.    3.29MB</span></span>
-<span><span class="co">#&gt; 3 formals       1.9µs    2.1µs   385271.        0B</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; 1 version       504µs  593.6µs     1676.    4.01KB</span></span>
+<span><span class="co">#&gt; 2 exists          3µs    4.1µs   226266.    3.29MB</span></span>
+<span><span class="co">#&gt; 3 formals       1.5µs      2µs   422406.        0B</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>If you do need to use <code><a href="https://rdrr.io/r/utils/packageDescription.html">packageVersion()</a></code> inside a performance sensitive function, I recommend caching the result in <code>.onLoad()</code> (which, by convention, lives in <code>zzz.R</code>). There a few ways to do this; but the following block shows one approach that matches the function interface I used above:</p>
 <div class="cell">

@@ -2,154 +2,154 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://design.tidyverse.org/index.html</loc>
-    <lastmod>2023-10-17T13:11:57.316Z</lastmod>
+    <lastmod>2023-10-23T12:50:31.371Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/unifying.html</loc>
-    <lastmod>2023-10-17T13:11:57.332Z</lastmod>
+    <lastmod>2023-10-23T12:50:31.383Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/names.html</loc>
-    <lastmod>2023-10-17T13:11:57.364Z</lastmod>
+    <lastmod>2023-10-23T12:50:31.423Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/call-data-details.html</loc>
-    <lastmod>2023-10-17T13:11:57.396Z</lastmod>
+    <lastmod>2023-10-23T12:50:31.439Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/function-names.html</loc>
-    <lastmod>2023-10-17T13:11:57.412Z</lastmod>
+    <lastmod>2023-10-23T12:50:31.455Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/inputs-explicit.html</loc>
-    <lastmod>2023-10-17T13:11:57.432Z</lastmod>
+    <lastmod>2023-10-23T12:50:31.483Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/important-args-first.html</loc>
-    <lastmod>2023-10-17T13:11:57.468Z</lastmod>
+    <lastmod>2023-10-23T12:50:31.495Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/required-no-defaults.html</loc>
-    <lastmod>2023-10-17T13:11:57.488Z</lastmod>
+    <lastmod>2023-10-23T12:50:31.515Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/dots-after-required.html</loc>
-    <lastmod>2023-10-17T13:11:57.504Z</lastmod>
+    <lastmod>2023-10-23T12:50:31.543Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/defaults-short-and-sweet.html</loc>
-    <lastmod>2023-10-17T13:11:57.552Z</lastmod>
+    <lastmod>2023-10-23T12:50:31.575Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/enumerate-options.html</loc>
-    <lastmod>2023-10-17T13:11:57.596Z</lastmod>
+    <lastmod>2023-10-23T12:50:31.607Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/argument-clutter.html</loc>
-    <lastmod>2023-10-17T13:11:57.616Z</lastmod>
+    <lastmod>2023-10-23T12:50:31.627Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/explicit-strategies.html</loc>
-    <lastmod>2023-10-17T13:11:57.636Z</lastmod>
+    <lastmod>2023-10-23T12:50:31.659Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/boolean-strategies.html</loc>
-    <lastmod>2023-10-17T13:11:57.712Z</lastmod>
+    <lastmod>2023-10-23T12:50:31.679Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/strategy-functions.html</loc>
-    <lastmod>2023-10-17T13:11:57.760Z</lastmod>
+    <lastmod>2023-10-23T12:50:31.711Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/cs-rep.html</loc>
-    <lastmod>2023-10-17T13:11:57.788Z</lastmod>
+    <lastmod>2023-10-23T12:50:31.739Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/independent-meaning.html</loc>
-    <lastmod>2023-10-17T13:11:57.816Z</lastmod>
+    <lastmod>2023-10-23T12:50:31.767Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/mutually-exclusive-arguments.html</loc>
-    <lastmod>2023-10-17T13:11:57.832Z</lastmod>
+    <lastmod>2023-10-23T12:50:31.807Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/compound-arguments.html</loc>
-    <lastmod>2023-10-17T13:11:57.848Z</lastmod>
+    <lastmod>2023-10-23T12:50:31.847Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/cs-stringr.html</loc>
-    <lastmod>2023-10-17T13:11:57.888Z</lastmod>
+    <lastmod>2023-10-23T12:50:31.883Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/def-magical.html</loc>
-    <lastmod>2023-10-17T13:11:57.908Z</lastmod>
+    <lastmod>2023-10-23T12:50:31.903Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/def-inform.html</loc>
-    <lastmod>2023-10-17T13:11:57.964Z</lastmod>
+    <lastmod>2023-10-23T12:50:31.923Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/def-user.html</loc>
-    <lastmod>2023-10-17T13:11:57.972Z</lastmod>
+    <lastmod>2023-10-23T12:50:31.943Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/dots-data.html</loc>
-    <lastmod>2023-10-17T13:11:58.000Z</lastmod>
+    <lastmod>2023-10-23T12:50:31.975Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/dots-prefix.html</loc>
-    <lastmod>2023-10-17T13:11:58.028Z</lastmod>
+    <lastmod>2023-10-23T12:50:32.003Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/dots-inspect.html</loc>
-    <lastmod>2023-10-17T13:11:58.052Z</lastmod>
+    <lastmod>2023-10-23T12:50:32.027Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/cs-mapply-pmap.html</loc>
-    <lastmod>2023-10-17T13:11:58.080Z</lastmod>
+    <lastmod>2023-10-23T12:50:32.055Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/cs-setNames.html</loc>
-    <lastmod>2023-10-17T13:11:58.120Z</lastmod>
+    <lastmod>2023-10-23T12:50:32.091Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/out-multi.html</loc>
-    <lastmod>2023-10-17T13:11:58.140Z</lastmod>
+    <lastmod>2023-10-23T12:50:32.115Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/out-type-stability.html</loc>
-    <lastmod>2023-10-17T13:11:58.156Z</lastmod>
+    <lastmod>2023-10-23T12:50:32.135Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/out-vectorisation.html</loc>
-    <lastmod>2023-10-17T13:11:58.168Z</lastmod>
+    <lastmod>2023-10-23T12:50:32.143Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/out-invisible.html</loc>
-    <lastmod>2023-10-17T13:11:58.196Z</lastmod>
+    <lastmod>2023-10-23T12:50:32.171Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/changes-multivers.html</loc>
-    <lastmod>2023-10-17T13:11:58.216Z</lastmod>
+    <lastmod>2023-10-23T12:50:32.195Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/side-effects.html</loc>
-    <lastmod>2023-10-17T13:11:58.252Z</lastmod>
+    <lastmod>2023-10-23T12:50:32.227Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/spooky-action.html</loc>
-    <lastmod>2023-10-17T13:11:58.300Z</lastmod>
+    <lastmod>2023-10-23T12:50:32.263Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/err-call.html</loc>
-    <lastmod>2023-10-17T13:11:58.312Z</lastmod>
+    <lastmod>2023-10-23T12:50:32.287Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/err-constructor.html</loc>
-    <lastmod>2023-10-17T13:11:58.332Z</lastmod>
+    <lastmod>2023-10-23T12:50:32.303Z</lastmod>
   </url>
   <url>
     <loc>https://design.tidyverse.org/glossary.html</loc>
-    <lastmod>2023-10-17T13:11:58.344Z</lastmod>
+    <lastmod>2023-10-23T12:50:32.315Z</lastmod>
   </url>
 </urlset>

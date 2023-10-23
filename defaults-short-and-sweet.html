@@ -241,7 +241,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./boolean-strategies.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Avoid Boolean strategies</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Use a strategy, even for two choices</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -633,7 +633,7 @@ Sentinel value
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot2</span><span class="fu">::</span><span class="va"><a href="https://ggplot2.tidyverse.org/reference/waiver.html">waiver</a></span></span>
 <span><span class="co">#&gt; function () </span></span>
 <span><span class="co">#&gt; structure(list(), class = "waiver")</span></span>
-<span><span class="co">#&gt; &lt;bytecode: 0x5568b6e57078&gt;</span></span>
+<span><span class="co">#&gt; &lt;bytecode: 0x55bad632bdf8&gt;</span></span>
 <span><span class="co">#&gt; &lt;environment: namespace:ggplot2&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>And then ggplot2 also provides the internal <code>is.waive()</code><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> function which allows to work with it in the same way we might work with a <code>NULL</code>:</p>
