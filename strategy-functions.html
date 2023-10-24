@@ -483,7 +483,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
 <li><a href="#whats-the-problem" id="toc-whats-the-problem" class="nav-link active" data-scroll-target="#whats-the-problem"><span class="header-section-number">14.1</span> What’s the problem?</a></li>
   <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">14.2</span> What are some examples?</a></li>
-  <li><a href="#how-do-i-remediate-past-mistakes" id="toc-how-do-i-remediate-past-mistakes" class="nav-link" data-scroll-target="#how-do-i-remediate-past-mistakes"><span class="header-section-number">14.3</span> How do I remediate past mistakes?</a></li>
+  <li><a href="#how-do-i-identify-the-problem" id="toc-how-do-i-identify-the-problem" class="nav-link" data-scroll-target="#how-do-i-identify-the-problem"><span class="header-section-number">14.3</span> How do I identify the problem?</a></li>
+  <li><a href="#how-do-i-remediate-past-mistakes" id="toc-how-do-i-remediate-past-mistakes" class="nav-link" data-scroll-target="#how-do-i-remediate-past-mistakes"><span class="header-section-number">14.4</span> How do I remediate past mistakes?</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/strategy-functions.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
@@ -504,21 +505,52 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header><section id="whats-the-problem" class="level2" data-number="14.1"><h2 data-number="14.1" class="anchored" data-anchor-id="whats-the-problem">
 <span class="header-section-number">14.1</span> What’s the problem?</h2>
 <p>You have <strong>complex strategies</strong> when different strategies require different arguments. In this case, it’s a good idea to use a separate function for each strategy, to make it as clear as possible which arguments belong to which strategy. One sign that you have this pattern that you have a complex dependency between arguments: maybe you can set <code>a</code> and <code>b</code> and <code>a</code> and <code>c</code> but not <code>b</code> and <code>c</code>. This tends to make the function harder to use because it suggests more viable input combinations than actually exist.</p>
+<p>In <a href="strategy-objects.html"><span>Chapter&nbsp;16</span></a> we’ll consider an extension of this idea you can use either when multiple functions need to use the same strategy, or the strategy is just one part of what the function does.</p>
 </section><section id="what-are-some-examples" class="level2" data-number="14.2"><h2 data-number="14.2" class="anchored" data-anchor-id="what-are-some-examples">
 <span class="header-section-number">14.2</span> What are some examples?</h2>
-<p>This problem is typically discovered in hindsight.</p>
 <ul>
-<li><p><code><a href="https://forcats.tidyverse.org/reference/fct_lump.html">forcats::fct_lump()</a></code> chooses between one of three lumping strategies depending on whether you supply just <code>n</code>, just <code>prop</code>, or neither, while supplying both <code>n</code> and <code>prop</code> is an error. Additionally, the <code>ties.method</code> argument only does anything if you supply only <code>n</code>. <code>fct_lump()</code> is hard to document because it’s really three smaller functions in trench coat<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p></li>
-<li><p><code><a href="https://rdrr.io/r/base/seq.html">seq_along()</a></code> and <code><a href="https://rdrr.io/r/base/seq.html">seq_len()</a></code> implement two common strategies for creating sequences starting at 1: matching the length of existing vector, or given the maximum <code>n</code>.</p></li>
-<li><p><code><a href="https://rdrr.io/r/stats/Uniform.html">runif()</a></code>, <code><a href="https://rdrr.io/r/stats/Normal.html">rnorm()</a></code> ?</p></li>
-<li><p><code>isTRUE</code>, <code>isFALSE</code>?</p></li>
-<li><p><code>log10</code>, <code>log2</code>, <code>log</code> ?</p></li>
-<li><p>I think <code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code> would be easier to understand if it was two separate functions because it exposes two basic strategies: either repeating each element or the full vector. Learn more in <a href="cs-rep.html"><span>Chapter&nbsp;15</span></a>.</p></li>
-</ul></section><section id="how-do-i-remediate-past-mistakes" class="level2" data-number="14.3"><h2 data-number="14.3" class="anchored" data-anchor-id="how-do-i-remediate-past-mistakes">
-<span class="header-section-number">14.3</span> How do I remediate past mistakes?</h2>
+<li><p><code><a href="https://forcats.tidyverse.org/reference/fct_lump.html">forcats::fct_lump()</a></code> chooses between one of three lumping strategies depending on whether you supply just <code>n</code>, just <code>prop</code>, or neither, while supplying both <code>n</code> and <code>prop</code> is an error. Additionally, the <code>ties.method</code> argument only does anything if you supply only <code>n</code>. <code>fct_lump()</code> is hard to understand and document because it’s really three smaller functions in a trench coat<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p></li>
+<li><p><code><a href="https://rdrr.io/r/base/diag.html">diag()</a></code> is used to both extract the diagonal of a matrix or construct a matrix from its diagonal. This combination of purposes makes its arguments hard to understand.</p></li>
+<li><p><code><a href="https://rdrr.io/r/base/sample.html">sample()</a></code> is used to both randomly reorder a vector and generate a random vector of length <code>n</code>. This function is particularly troublesome because it picks between the two strategies based on the length of the first argument.</p></li>
+<li><p><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code> is used to both repeating each element of a vector and to repeat the complete vector. I discuss this more in <a href="cs-rep.html"><span>Chapter&nbsp;15</span></a>.</p></li>
+</ul></section><section id="how-do-i-identify-the-problem" class="level2" data-number="14.3"><h2 data-number="14.3" class="anchored" data-anchor-id="how-do-i-identify-the-problem">
+<span class="header-section-number">14.3</span> How do I identify the problem?</h2>
+<p>Typically this problem arises as the scope of your function grows over time, and because the growth tends to be gradual it’s hard to notice exactly when it becomes an issue. One way to splot this problem is notice that your function consists of a big if statement where the branches share very little code. An extreme example of this is the base <code><a href="https://rdrr.io/r/base/sample.html">sample()</a></code> function. As of R 4.3.0 it looks something like this:</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">size</span>, <span class="va">replace</span> <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">prob</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1L</span> <span class="op">&amp;&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">is.numeric</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/is.finite.html">is.finite</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="va">x</span> <span class="op">&gt;=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">size</span><span class="op">)</span><span class="op">)</span></span>
+<span>      <span class="va">size</span> <span class="op">&lt;-</span> <span class="va">x</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample.int</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">size</span>, <span class="va">replace</span>, <span class="va">prob</span><span class="op">)</span></span>
+<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">size</span><span class="op">)</span><span class="op">)</span></span>
+<span>      <span class="va">size</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>    <span class="va">x</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample.int</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="va">size</span>, <span class="va">replace</span>, <span class="va">prob</span><span class="op">)</span><span class="op">]</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You can see that there are two branches that share very little code, and each branch uses a different default value for <code>size</code>. This suggests it might be better to have two functions:</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sample_vec</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">size</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="va">replace</span> <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">prob</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># check_vector(x)</span></span>
+<span>  <span class="co"># check_number_whole(size)</span></span>
+<span>  </span>
+<span>  <span class="va">x</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample.int</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="va">size</span>, <span class="va">replace</span>, <span class="va">prob</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">sample_int</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">size</span> <span class="op">=</span> <span class="va">x</span>, <span class="va">replace</span> <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">prob</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># check_number_whole(x)</span></span>
+<span>  <span class="co"># check_number_whole(size)</span></span>
+<span>  </span>
+<span>  <span class="va">x</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample.int</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="va">size</span>, <span class="va">replace</span>, <span class="va">prob</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In other cases you might spot the problem because you’re having trouble explaining the arguments in the documentation. If it feels like</p>
+</section><section id="how-do-i-remediate-past-mistakes" class="level2" data-number="14.4"><h2 data-number="14.4" class="anchored" data-anchor-id="how-do-i-remediate-past-mistakes">
+<span class="header-section-number">14.4</span> How do I remediate past mistakes?</h2>
 <p>Remediating past mistakes is straightforward: define, document, and export one function for each strategy. Then rewrite the original function to use those strategies, deprecating that entire function if desired.</p>
 <div class="cell">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fct_lump</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">f</span>,</span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fct_lump</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">f</span>,</span>
 <span>                     <span class="va">n</span>,</span>
 <span>                     <span class="va">prop</span>,</span>
 <span>                     <span class="va">w</span> <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -537,7 +569,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>In forcats we decided to supersede <code>fct_lump()</code> rather than deprecating it. Deprecating it would only require one extra line:</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fct_lump</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fct_lump</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecate_soft.html">deprecate_warn</a></span><span class="op">(</span><span class="st">"0.5.0"</span>, <span class="st">"fct_lump()"</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>

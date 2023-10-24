@@ -486,8 +486,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li>
 <a href="#how-do-you-remediate-past-mistakes" id="toc-how-do-you-remediate-past-mistakes" class="nav-link" data-scroll-target="#how-do-you-remediate-past-mistakes"><span class="header-section-number">13.3</span> How do you remediate past mistakes?</a>
   <ul class="collapse">
-<li><a href="#new-argument" id="toc-new-argument" class="nav-link" data-scroll-target="#new-argument"><span class="header-section-number">13.3.1</span> New argument</a></li>
-  <li><a href="#re-use-existing-name" id="toc-re-use-existing-name" class="nav-link" data-scroll-target="#re-use-existing-name"><span class="header-section-number">13.3.2</span> Re-use existing name</a></li>
+<li><a href="#create-a-new-argument" id="toc-create-a-new-argument" class="nav-link" data-scroll-target="#create-a-new-argument"><span class="header-section-number">13.3.1</span> Create a new argument</a></li>
+  <li><a href="#re-use-an-existing-name" id="toc-re-use-an-existing-name" class="nav-link" data-scroll-target="#re-use-an-existing-name"><span class="header-section-number">13.3.2</span> Re-use an existing name</a></li>
   </ul>
 </li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/boolean-strategies.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
@@ -509,38 +509,41 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header><section id="whats-the-pattern" class="level2" data-number="13.1"><h2 data-number="13.1" class="anchored" data-anchor-id="whats-the-pattern">
 <span class="header-section-number">13.1</span> What’s the pattern?</h2>
-<p>If your function implements two strategies it’s tempting to distinguish between them using an argument that takes either <code>TRUE</code> or <code>FALSE</code>. I recommend against this unless you’re <strong>really sure</strong> there won’t ever be another strategy. There are two reasons:</p>
+<p>If your function implements two strategies, it’s tempting to distinguish between them using an argument that takes either <code>TRUE</code> or <code>FALSE</code>. However, I recommend that you use an enumeration unless:</p>
 <ul>
-<li>If you do discover a third strategy, you’ll need to carefully remediate your function.</li>
-<li>In many cases, you can be more express with a enumeration than a Boolean argument.</li>
+<li>You’re <strong>really sure</strong> there won’t ever be another strategy. If you do discover a third (or fourth, or fifth, or …) strategy, you’ll need to change the interface of your function.</li>
+<li>It’s very clear what both <code>TRUE</code> and <code>FALSE</code> will mean just from the name of the argument. Otherwise, the <code>TRUE</code> value tends to be easier to understand because <code>something = TRUE</code> implies exactly what will happen, where as <code>something = FALSE</code> only tells you what won’t happen.</li>
 </ul></section><section id="what-are-some-examples" class="level2" data-number="13.2"><h2 data-number="13.2" class="anchored" data-anchor-id="what-are-some-examples">
 <span class="header-section-number">13.2</span> What are some examples?</h2>
-<p>There are quite a few examples of the problem in tidyverse, because this is a pattern that we discovered relatively recently. Here are two examples that I spotted recently:</p>
+<p>There are quite a few examples of the problem in tidyverse, because this is a pattern that we discovered relatively recently:</p>
 <ul>
-<li><p><code>httr2::multi_req_perform()</code> has a very good example of this problem as it has an argument called <code>cancel_on_error</code>. In hindsight, it’s very obvious that there are other things that you might want to do on error other than cancel, and even though I don’t know what they are know, it would be better to design for the future.</p></li>
-<li><p><code><a href="https://haven.tidyverse.org/reference/read_spss.html">haven::write_sav()</a></code> started with a compress argument that could be either <code>TRUE</code> (compress the file) or <code>FALSE</code> (don’t compress the file). But then SPSS introduced a new way of compressing files leading to three possible options: compress with the new way, compress with the old way, or don’t compress. We’ll discuss what we did to remediate the problem below.</p></li>
+<li>By default, <code>stringr::str_subset(string, pattern)</code> returns the elements of <code>string</code> that match the <code>pattern</code>. You can use <code>negate = TRUE</code> to instead return the elements that don’t match the pattern, but I now think this would be more clear as <code>return = c("matches", "non-matches")</code>.</li>
+<li>
+<code>httr2::multi_req_perform()</code> allows you to perform a bunch of HTTP requests in parallel. It has an argument called <code>cancel_on_error</code> that can take <code>TRUE</code> or <code>FALSE</code>. It’s fairly clear what <code>cancel_on_error = TRUE</code> means; but it’s not so obvious what <code>cancel_on_error = FALSE</code> does. Additionally, it seems likely that I’ll come up with other possible error handling strategies in the future, and even though I don’t know what they are now, it would be better to plan for the future with an argument specification like <code>error = c("cancel", "continue")</code>.</li>
 </ul>
-<p>Another interesting case is <code><a href="https://rdrr.io/r/base/sort.html">sort()</a></code> which has two arguments that take a single logical value: <code>decreasing</code> and <code>na.last</code>.</p>
+<p><code><a href="https://rdrr.io/r/base/cut.html">cut()</a></code> has an argument called <code>right</code> which is used to pick between right-closed left-open intervals (<code>TRUE)</code> and right-open left-closed arguments. I think it’s hard to remember which is which and a clearer specification might be <code>open_side``= c("right", "left")</code> or maybe <code>bounds = c("[)", "(]")</code>. Another interesting case in base R is <code><a href="https://rdrr.io/r/base/sort.html">sort()</a></code> which has two arguments that take a single logical value: <code>decreasing</code> and <code>na.last</code>:</p>
 <ul>
 <li>
-<p><code>decreasing</code> is interesting to think about because it picks between two directions: ascending and descending. It’s extremely unlikely that we’d ever need a third direction, but I think there’s still benefit in using the strategy pattern here because I think it makes the arguments mildly easier to understand. For example, compare the interfaces of <code><a href="https://rdrr.io/r/base/sort.html">sort()</a></code> and <code><a href="https://vctrs.r-lib.org/reference/vec_order.html">vctrs::vec_sort()</a></code>:</p>
+<p>The <code>decreasing</code> argument is used to pick between sorting in ascending or descending order. It’s easy to understand what <code>decreasing = TRUE</code> does, but it’s not so clear what <code>decreasing = FALSE</code>, the default, means:</p>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="va">x</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu">vctrs</span><span class="fu">::</span><span class="fu"><a href="https://vctrs.r-lib.org/reference/vec_order.html">vec_sort</a></span><span class="op">(</span><span class="va">x</span>, direction <span class="op">=</span> <span class="st">"desc"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="va">x</span>, decreasing <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="va">x</span>, decreasing <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Compare this with <code><a href="https://vctrs.r-lib.org/reference/vec_order.html">vctrs::vec_sort()</a></code>, which uses an enum:</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">vctrs</span><span class="fu">::</span><span class="fu"><a href="https://vctrs.r-lib.org/reference/vec_order.html">vec_sort</a></span><span class="op">(</span><span class="va">x</span>, direction <span class="op">=</span> <span class="st">"desc"</span><span class="op">)</span></span>
 <span><span class="fu">vctrs</span><span class="fu">::</span><span class="fu"><a href="https://vctrs.r-lib.org/reference/vec_order.html">vec_sort</a></span><span class="op">(</span><span class="va">x</span>, direction <span class="op">=</span> <span class="st">"asc"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>While you never need to explicitly right <code>decreasing = FALSE</code> (since that’s the default), I think it’s easier to understand <code>direction = "asc"</code> than trying to process what not-decreasing means.</p>
+<p>I think this is a mild improvement because the two options are spelled out explicitly.</p>
 </li>
-<li><p>The <code>na.last</code> argument to <code><a href="https://rdrr.io/r/base/sort.html">sort()</a></code> can be <code>TRUE</code> (put <code>NA</code>s at the end), <code>FALSE</code> (put <code>NA</code>s at the beginning), or <code>NA</code> (drop <code>NA</code>s from the result). This is an interesting way to extend a Boolean argument to take one of three different values.</p></li>
+<li><p>The <code>na.last</code> argument is used to control the location of missing values in the result. It takes three possible values: <code>TRUE</code> (put <code>NA</code>s at the end), <code>FALSE</code> (put <code>NA</code>s at the beginning), or <code>NA</code> (drop <code>NA</code>s from the result). This is an interesting way to support three strategies, but as we’ll see later I think this would be more clear the argument specification was <code>na = c("drop", "first", "last")</code>.</p></li>
 </ul></section><section id="how-do-you-remediate-past-mistakes" class="level2" data-number="13.3"><h2 data-number="13.3" class="anchored" data-anchor-id="how-do-you-remediate-past-mistakes">
 <span class="header-section-number">13.3</span> How do you remediate past mistakes?</h2>
 <p>There are two possible ways to switch to using a strategy instead of <code>TRUE</code>/<code>FALSE</code> depending on whether the old argument name still makes sense with the new argument values. The sections below show what you’ll need to do if you need a new argument (most cases) or if you’re lucky enough to be able to reuse the existing argument.</p>
-<section id="new-argument" class="level3" data-number="13.3.1"><h3 data-number="13.3.1" class="anchored" data-anchor-id="new-argument">
-<span class="header-section-number">13.3.1</span> New argument</h3>
-<p>Imagine we wanted to remediate the <code>na.last</code> argument to <code><a href="https://rdrr.io/r/base/sort.html">sort()</a></code>:</p>
+<section id="create-a-new-argument" class="level3" data-number="13.3.1"><h3 data-number="13.3.1" class="anchored" data-anchor-id="create-a-new-argument">
+<span class="header-section-number">13.3.1</span> Create a new argument</h3>
+<p>Imagine we wanted to remediate the <code>na.last</code> argument to <code><a href="https://rdrr.io/r/base/sort.html">sort()</a></code>. Currently:</p>
 <ul>
 <li>
 <code>na.last = TRUE</code> means put <code>NA</code>s last.</li>
@@ -549,12 +552,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>
 <code>na.list = NA</code> means to drop them.</li>
 </ul>
-<p>I think we could make this function more clear by changing the argument name to <code>na</code> and accepting one of three values: <code>last</code>, <code>first</code>, or <code>drop</code>. Changing an argument name is equivalent removing the old name and adding the new name. This way of thinking about the change makes it easier to see how you do it in a backward compatible way: you you just need deprecate the old argument in favour of the new one.</p>
+<p>I think we could make this function more clear by changing the argument name to <code>na</code> and accepting one of three values: <code>last</code>, <code>first</code>, or <code>drop</code>.</p>
+<p>Changing an argument name is equivalent removing the old name and adding the new name. This way of thinking about the change makes it easier to see how you do it in a backward compatible way: you need to deprecate the old argument in favour of the new one.</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sort</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, </span>
-<span>                 <span class="va">na.last</span> <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html">deprecated</a></span><span class="op">(</span><span class="op">)</span>, </span>
-<span>                 <span class="va">na</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"drop"</span>, <span class="st">"first"</span>, <span class="st">"last"</span><span class="op">)</span><span class="op">)</span> </span>
-<span><span class="op">{</span></span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sort</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>,</span>
+<span>                 <span class="va">na.last</span> <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html">deprecated</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>                 <span class="va">na</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"drop"</span>, <span class="st">"first"</span>, <span class="st">"last"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html">is_present</a></span><span class="op">(</span><span class="va">na.last</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecate_soft.html">deprecate_warn</a></span><span class="op">(</span><span class="st">"1.0.0"</span>, <span class="st">"sort(na.last)"</span>, <span class="st">"sort(na)"</span><span class="op">)</span></span>
 <span></span>
@@ -582,16 +585,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<p>Note that because <code>na</code> is a prefix of <code>na.last</code> and <code><a href="https://rdrr.io/r/base/sort.html">sort()</a></code> puts <code>na.last</code> before <code>…,</code>not after it (see <a href="dots-after-required.html"><span>Chapter&nbsp;8</span></a>), this introduces a very subtle behaviour change. Previously, <code>sort(x, n = TRUE)</code> would have worked and been equivalent to <code>sort(x, na.last = TRUE)</code>. But now it will fail, because <code>n</code> is a prefix of two arguments (<code>na</code> and <code>na.last)</code>. This is unlikely to affect much code, but is something that you need to consider.</p>
-<p>It would also be nice to make the default value <code>"last"</code> to match <code><a href="https://rdrr.io/r/base/order.html">order()</a></code>, especially since it’s very unusual for a function to silently remove missing values. However, that’s likely to affect a lot of existing code, meaning that it’s unlikely to be worthwhile.</p>
+<p>Note that because <code>na</code> is a prefix of <code>na.last</code> and <code><a href="https://rdrr.io/r/base/sort.html">sort()</a></code> puts <code>na.last</code> before <code>…,</code>not after it (see <a href="dots-after-required.html"><span>Chapter&nbsp;8</span></a>), this introduces a very subtle behaviour change. Previously, <code>sort(x, n = TRUE)</code> would have worked and been equivalent to <code>sort(x, na.last = TRUE)</code>. But it will now fail because <code>n</code> is a prefix of two arguments (<code>na</code> and <code>na.last)</code>. This is unlikely to affect much code, but is worth being aware of.</p>
+<p>It would also be nice to make the default value <code>"last"</code> to match <code><a href="https://rdrr.io/r/base/order.html">order()</a></code>, especially since it’s very unusual for a function to silently remove missing values. However, that’s likely to affect a lot of existing code, making it unlikely to be worthwhile.</p>
 </div>
 </div>
 </div>
-</section><section id="re-use-existing-name" class="level3" data-number="13.3.2"><h3 data-number="13.3.2" class="anchored" data-anchor-id="re-use-existing-name">
-<span class="header-section-number">13.3.2</span> Re-use existing name</h3>
-<p>When remediating a old mistake sometimes you get lucky and you can use the same argument name, as with <code><a href="https://haven.tidyverse.org/reference/read_spss.html">haven::write_sav()</a></code>. When SPSS version 21.0 introduced a new form of compression (called <code>zsav</code>), we changed the compress argument from accepting <code>TRUE</code> or <code>FALSE</code> to accepting, “none”, “byte”, or “zsav” because <code>compress = TRUE</code> reads just as well as <code>compress = "byte"</code>. To implement thiis we kept the existing behaviour for <code>TRUE</code> and <code>FALSE</code> while also adding the ability to supply a string:</p>
+</section><section id="re-use-an-existing-name" class="level3" data-number="13.3.2"><h3 data-number="13.3.2" class="anchored" data-anchor-id="re-use-an-existing-name">
+<span class="header-section-number">13.3.2</span> Re-use an existing name</h3>
+<p>Originally <code>haven::write_sav(compress)</code> could either be <code>TRUE</code> (compress the file) or <code>FALSE</code> (don’t compress it). But then SPSS version 21.0 introduced a new way of compressing files leading to three possible options: compress with the new way (zsav), compress with the old way (bytes), or don’t compress. In this case we got lucky because we can continue to use the same argument name: <code>compress = c("byte", "zsav", "none")</code>. We allowed existing code by special casing the behaviour of <code>TRUE</code> and <code>FALSE</code>:</p>
 <div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">write_sav</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">path</span>, <span class="va">compress</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"byte"</span>, <span class="st">"none"</span>, <span class="st">"zsav"</span><span class="op">)</span>, <span class="va">adjust_tz</span> <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">{</span></span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">write_sav</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">path</span>, <span class="va">compress</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"byte"</span>, <span class="st">"zsav"</span>, <span class="st">"none"</span><span class="op">)</span>, <span class="va">adjust_tz</span> <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Logic.html">isTRUE</a></span><span class="op">(</span><span class="va">compress</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="va">compress</span> <span class="op">&lt;-</span> <span class="st">"zsav"</span></span>
 <span>  <span class="op">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Logic.html">isFALSE</a></span><span class="op">(</span><span class="va">compress</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
@@ -604,9 +607,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You could choose to deprecate <code>TRUE</code> and <code>FALSE</code>, but here we chose to the keep them since it’s only a small amount of extra code in haven, and it means that existing users don’t need to think about it. See <code><a href="https://haven.tidyverse.org/reference/read_spss.html">?haven::read_sav</a></code> for how we communicated the change in the docs.</p>
+<p>In a future version of haven we might change the order of the enum so that the <code>zsav</code> compression method becomes the default. This generally yields smaller files but can’t be read by older versions of SPSS. Now that v21 is over 5 years old<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, it’s reasonable to make the smaller format the default.</p>
 
 
-</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+<ol>
+<li id="fn1"><p>Five years is the general threshold for support across the tidyverse.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
