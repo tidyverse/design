@@ -1,4 +1,4 @@
-# Extract strategies into objects {#sec-strategy-functions}
+# Extract strategies into objects {#sec-strategy-objects}
 
 ```{r}
 #| include = FALSE

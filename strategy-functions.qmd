@@ -12,26 +12,67 @@ In this case, it's a good idea to use a separate function for each strategy, to 
 One sign that you have this pattern that you have a complex dependency between arguments: maybe you can set `a` and `b` and `a` and `c` but not `b` and `c`.
 This tends to make the function harder to use because it suggests more viable input combinations than actually exist.
 
-## What are some examples?
+In @sec-strategy-objects we'll consider an extension of this idea you can use either when multiple functions need to use the same strategy, or the strategy is just one part of what the function does.
 
-This problem is typically discovered in hindsight.
+## What are some examples?
 
 -   `forcats::fct_lump()` chooses between one of three lumping strategies depending on whether you supply just `n`, just `prop`, or neither, while supplying both `n` and `prop` is an error.
     Additionally, the `ties.method` argument only does anything if you supply only `n`.
-    `fct_lump()` is hard to document because it's really three smaller functions in trench coat[^strategy-functions-1].
+    `fct_lump()` is hard to understand and document because it's really three smaller functions in a trench coat[^strategy-functions-1].
 
--   `seq_along()` and `seq_len()` implement two common strategies for creating sequences starting at 1: matching the length of existing vector, or given the maximum `n`.
+-   `diag()` is used to both extract the diagonal of a matrix or construct a matrix from its diagonal.
+    This combination of purposes makes its arguments hard to understand.
 
--   `runif()`, `rnorm()` ?
+-   `sample()` is used to both randomly reorder a vector and generate a random vector of length `n`.
+    This function is particularly troublesome because it picks between the two strategies based on the length of the first argument.
 
--   `isTRUE`, `isFALSE`?
-
--   `log10`, `log2`, `log` ?
-
--   I think `rep()` would be easier to understand if it was two separate functions because it exposes two basic strategies: either repeating each element or the full vector.
-    Learn more in @sec-cs-rep.
+-   `rep()` is used to both repeating each element of a vector and to repeat the complete vector.
+    I discuss this more in @sec-cs-rep.
 
 [^strategy-functions-1]: <https://tvtropes.org/pmwiki/pmwiki.php/Main/TotemPoleTrench>
+
+## How do I identify the problem?
+
+Typically this problem arises as the scope of your function grows over time, and because the growth tends to be gradual it's hard to notice exactly when it becomes an issue.
+One way to splot this problem is notice that your function consists of a big if statement where the branches share very little code.
+An extreme example of this is the base `sample()` function.
+As of R 4.3.0 it looks something like this:
+
+```{r}
+sample <- function(x, size, replace = FALSE, prob = NULL) {
+  if (length(x) == 1L && is.numeric(x) && is.finite(x) && x >= 1) {
+    if (missing(size))
+      size <- x
+    sample.int(x, size, replace, prob)
+  } else {
+    if (missing(size))
+      size <- length(x)
+    x[sample.int(length(x), size, replace, prob)]
+  }
+}
+```
+
+You can see that there are two branches that share very little code, and each branch uses a different default value for `size`.
+This suggests it might be better to have two functions:
+
+```{r}
+sample_vec <- function(x, size = length(x), replace = FALSE, prob = NULL) {
+  # check_vector(x)
+  # check_number_whole(size)
+  
+  x[sample.int(length(x), size, replace, prob)]
+}
+
+sample_int <- function(x, size = x, replace = FALSE, prob = NULL) {
+  # check_number_whole(x)
+  # check_number_whole(size)
+  
+  x[sample.int(length(x), size, replace, prob)]
+}
+```
+
+In other cases you might spot the problem because you're having trouble explaining the arguments in the documentation.
+If it feels like
 
 ## How do I remediate past mistakes?
 
