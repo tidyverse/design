@@ -7,68 +7,71 @@ source("common.R")
 
 ## What's the pattern?
 
-If your function implements two strategies it's tempting to distinguish between them using an argument that takes either `TRUE` or `FALSE`.
-I recommend against this unless you're **really sure** there won't ever be another strategy.
-There are two reasons:
+If your function implements two strategies, it's tempting to distinguish between them using an argument that takes either `TRUE` or `FALSE`.
+However, I recommend that you use an enumeration unless:
 
--   If you do discover a third strategy, you'll need to carefully remediate your function.
--   In many cases, you can be more express with a enumeration than a Boolean argument.
+-   You're **really sure** there won't ever be another strategy. If you do discover a third (or fourth, or fifth, or ...) strategy, you'll need to change the interface of your function.
+-   It's very clear what both `TRUE` and `FALSE` will mean just from the name of the argument. Otherwise, the `TRUE` value tends to be easier to understand because `something = TRUE` implies exactly what will happen, where as `something = FALSE` only tells you what won't happen.
 
 ## What are some examples?
 
-There are quite a few examples of the problem in tidyverse, because this is a pattern that we discovered relatively recently.
-Here are two examples that I spotted recently:
+There are quite a few examples of the problem in tidyverse, because this is a pattern that we discovered relatively recently:
 
--   `httr2::multi_req_perform()` has a very good example of this problem as it has an argument called `cancel_on_error`.
-    In hindsight, it's very obvious that there are other things that you might want to do on error other than cancel, and even though I don't know what they are know, it would be better to design for the future.
+-   By default, `stringr::str_subset(string, pattern)` returns the elements of `string` that match the `pattern`. You can use `negate = TRUE` to instead return the elements that don't match the pattern, but I now think this would be more clear as `return = c("matches", "non-matches")`.
+-   `httr2::multi_req_perform()` allows you to perform a bunch of HTTP requests in parallel. It has an argument called `cancel_on_error` that can take `TRUE` or `FALSE`. It's fairly clear what `cancel_on_error = TRUE` means; but it's not so obvious what `cancel_on_error = FALSE` does. Additionally, it seems likely that I'll come up with other possible error handling strategies in the future, and even though I don't know what they are now, it would be better to plan for the future with an argument specification like `error = c("cancel", "continue")`.
 
--   `haven::write_sav()` started with a compress argument that could be either `TRUE` (compress the file) or `FALSE` (don't compress the file).
-    But then SPSS introduced a new way of compressing files leading to three possible options: compress with the new way, compress with the old way, or don't compress.
-    We'll discuss what we did to remediate the problem below.
+`cut()` has an argument called `right` which is used to pick between right-closed left-open intervals (`TRUE)` and right-open left-closed arguments.
+I think it's hard to remember which is which and a clearer specification might be `open_side``= c("right", "left")` or maybe `bounds = c("[)", "(]")`.
+Another interesting case in base R is `sort()` which has two arguments that take a single logical value: `decreasing` and `na.last`:
 
-Another interesting case is `sort()` which has two arguments that take a single logical value: `decreasing` and `na.last`.
-
--   `decreasing` is interesting to think about because it picks between two directions: ascending and descending.
-    It's extremely unlikely that we'd ever need a third direction, but I think there's still benefit in using the strategy pattern here because I think it makes the arguments mildly easier to understand.
-    For example, compare the interfaces of `sort()` and `vctrs::vec_sort()`:
+-   The `decreasing` argument is used to pick between sorting in ascending or descending order.
+    It's easy to understand what `decreasing = TRUE` does, but it's not so clear what `decreasing = FALSE`, the default, means:
 
     ```{r}
     #| results: false
+
     x <- sample(10)
     sort(x, decreasing = TRUE)
-    vctrs::vec_sort(x, direction = "desc")
-
     sort(x, decreasing = FALSE)
+    ```
+
+    Compare this with `vctrs::vec_sort()`, which uses an enum:
+
+    ```{r}
+    #| results: false
+    vctrs::vec_sort(x, direction = "desc")
     vctrs::vec_sort(x, direction = "asc")
     ```
 
-    While you never need to explicitly right `decreasing = FALSE` (since that's the default), I think it's easier to understand `direction = "asc"` than trying to process what not-decreasing means.
+    I think this is a mild improvement because the two options are spelled out explicitly.
 
--   The `na.last` argument to `sort()` can be `TRUE` (put `NA`s at the end), `FALSE` (put `NA`s at the beginning), or `NA` (drop `NA`s from the result).
-    This is an interesting way to extend a Boolean argument to take one of three different values.
+-   The `na.last` argument is used to control the location of missing values in the result.
+    It takes three possible values: `TRUE` (put `NA`s at the end), `FALSE` (put `NA`s at the beginning), or `NA` (drop `NA`s from the result).
+    This is an interesting way to support three strategies, but as we'll see later I think this would be more clear the argument specification was `na = c("drop", "first", "last")`.
 
 ## How do you remediate past mistakes?
 
 There are two possible ways to switch to using a strategy instead of `TRUE`/`FALSE` depending on whether the old argument name still makes sense with the new argument values.
 The sections below show what you'll need to do if you need a new argument (most cases) or if you're lucky enough to be able to reuse the existing argument.
 
-### New argument
+### Create a new argument
 
-Imagine we wanted to remediate the `na.last` argument to `sort()`:
+Imagine we wanted to remediate the `na.last` argument to `sort()`.
+Currently:
 
 -   `na.last = TRUE` means put `NA`s last.
 -   `na.last = FALSE` means put `NA`s first.
 -   `na.list = NA` means to drop them.
 
 I think we could make this function more clear by changing the argument name to `na` and accepting one of three values: `last`, `first`, or `drop`.
+
 Changing an argument name is equivalent removing the old name and adding the new name.
-This way of thinking about the change makes it easier to see how you do it in a backward compatible way: you you just need deprecate the old argument in favour of the new one.
+This way of thinking about the change makes it easier to see how you do it in a backward compatible way: you need to deprecate the old argument in favour of the new one.
 
 ```{r}
-sort <- function(x, 
-                 na.last = lifecycle::deprecated(), 
-                 na = c("drop", "first", "last")) 
-{
+sort <- function(x,
+                 na.last = lifecycle::deprecated(),
+                 na = c("drop", "first", "last")) {
   if (lifecycle::is_present(na.last)) {
     lifecycle::deprecate_warn("1.0.0", "sort(na.last)", "sort(na)")
 
@@ -94,21 +97,22 @@ sort <- function(x,
 ::: callout-note
 Note that because `na` is a prefix of `na.last` and `sort()` puts `na.last` before `…,`not after it (see @sec-dots-after-required), this introduces a very subtle behaviour change.
 Previously, `sort(x, n = TRUE)` would have worked and been equivalent to `sort(x, na.last = TRUE)`.
-But now it will fail, because `n` is a prefix of two arguments (`na` and `na.last)`.
-This is unlikely to affect much code, but is something that you need to consider.
+But it will now fail because `n` is a prefix of two arguments (`na` and `na.last)`.
+This is unlikely to affect much code, but is worth being aware of.
 
 It would also be nice to make the default value `"last"` to match `order()`, especially since it's very unusual for a function to silently remove missing values.
-However, that's likely to affect a lot of existing code, meaning that it's unlikely to be worthwhile.
+However, that's likely to affect a lot of existing code, making it unlikely to be worthwhile.
 :::
 
-### Re-use existing name
+### Re-use an existing name
 
-When remediating a old mistake sometimes you get lucky and you can use the same argument name, as with `haven::write_sav()`.
-When SPSS version 21.0 introduced a new form of compression (called `zsav`), we changed the compress argument from accepting `TRUE` or `FALSE` to accepting, "none", "byte", or "zsav" because `compress = TRUE` reads just as well as `compress = "byte"`.
-To implement thiis we kept the existing behaviour for `TRUE` and `FALSE` while also adding the ability to supply a string:
+Originally `haven::write_sav(compress)` could either be `TRUE` (compress the file) or `FALSE` (don't compress it).
+But then SPSS version 21.0 introduced a new way of compressing files leading to three possible options: compress with the new way (zsav), compress with the old way (bytes), or don't compress.
+In this case we got lucky because we can continue to use the same argument name: `compress = c("byte", "zsav", "none")`.
+We allowed existing code by special casing the behaviour of `TRUE` and `FALSE`:
 
 ```{r}
-write_sav <- function(data, path, compress = c("byte", "none", "zsav"), adjust_tz = TRUE) {
+write_sav <- function(data, path, compress = c("byte", "zsav", "none"), adjust_tz = TRUE) {
   if (isTRUE(compress)) {
     compress <- "zsav"
   } else if (isFALSE(compress)) {
@@ -123,3 +127,9 @@ write_sav <- function(data, path, compress = c("byte", "none", "zsav"), adjust_t
 
 You could choose to deprecate `TRUE` and `FALSE`, but here we chose to the keep them since it's only a small amount of extra code in haven, and it means that existing users don't need to think about it.
 See `?haven::read_sav` for how we communicated the change in the docs.
+
+In a future version of haven we might change the order of the enum so that the `zsav` compression method becomes the default.
+This generally yields smaller files but can't be read by older versions of SPSS.
+Now that v21 is over 5 years old[^boolean-strategies-1], it's reasonable to make the smaller format the default.
+
+[^boolean-strategies-1]: Five years is the general threshold for support across the tidyverse.
