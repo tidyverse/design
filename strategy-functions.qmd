@@ -13,7 +13,7 @@ Two signs that this might be the case:
 -   You're struggling to document how the arguments interact. Maybe you can set `a` and `b` and `a` and `c` but not `b` and `c`.
 -   The implementation of your function has a couple of big if branches that share relatively little code.
 
-You can continue to document the functions together, and they are likely to continuing to sharing multiple arguments, but
+Splitting one complex multi-strategy function into multiple simpler functions can make maintenance and testing easier, while also improving the user experience.
 
 ## What are some examples?
 
@@ -21,13 +21,13 @@ You can continue to document the functions together, and they are likely to cont
     Additionally, the `ties.method` argument only does anything if you supply only `n`.
     `fct_lump()` is hard to understand and document because it's really three smaller functions in a trench coat[^strategy-functions-1].
 
--   `diag()` is used to both extract the diagonal of a matrix or construct a matrix from its diagonal.
-    This combination of purposes makes its arguments hard to understand.
+-   `diag()` is used to both extract the diagonal of a matrix and construct a matrix from a vector of diagonal values.
+    This combination of purposes makes its arguments hard to understand: if `x` is a matrix, you can `names` but not `nrow` and `ncol`; if `x` is a vector, you can use `nrow` and `ncol` but not `names`.
 
--   `sample()` is used to both randomly reorder a vector and generate a random vector of length `n`.
+-   `sample()` is used to both randomly reorder a vector and generate a random vector of specified length.
     This function is particularly troublesome because it picks between the two strategies based on the length of the first argument.
 
--   `rep()` is used to both repeating each element of a vector and to repeat the complete vector.
+-   `rep()` is used to both repeat each element of a vector and to repeat the complete vector.
     I discuss this more in @sec-cs-rep.
 
 [^strategy-functions-1]: <https://tvtropes.org/pmwiki/pmwiki.php/Main/TotemPoleTrench>

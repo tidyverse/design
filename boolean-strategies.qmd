@@ -1,4 +1,4 @@
-# Use a strategy, even for two choices {#sec-avoid-boolean-strategies}
+# Prefer a enum, even if only two choices {#sec-avoid-boolean-strategies}
 
 ```{r}
 #| include = FALSE
