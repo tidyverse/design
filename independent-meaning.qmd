@@ -28,7 +28,7 @@ This makes reading function calls harder because if the argument that changes me
 -   In `install.packages()` setting `repos = NULL` changes the interpretation of `pkgs` from being a vector of package names to a vector of file paths.
 
 -   In the base R string functions, `perl` and `fixed` change the interpretation of the `pattern` argument.
-    See @sec-pattern-engine for more details.
+    See @sec-strategy-objects for more details.
 
 -   In `ggplot2::geom_label()`, setting `parse = TRUE` changes the meaning of the label argument/aesthetic from being any string to be a string on unparsed R code.
 

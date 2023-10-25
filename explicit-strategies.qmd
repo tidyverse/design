@@ -1,4 +1,4 @@
-# Make strategies explicit {#sec-strategies-explicit}
+# Strategies {#sec-strategies-explicit}
 
 ```{r}
 #| include = FALSE
@@ -11,79 +11,6 @@ library(stringr)
 If your function exposes multiple **implementation strategies**, make those explicit through a single argument that takes an [enumeration](#sec-enumerate-options).
 This makes it clear how to control the operation of your function and extends gracefully if you discover new strategies in the future.
 
-## What are some examples?
-
-This pattern is used in a bunch of base R functions, where I learned it from:
-
--   `rank()` exposes six different methods for handling ties with the `ties.method` argument.
--   `quantile()` exposes nine different approaches to computing a quantile through the `type` argument.
--   `p.adjust()` exposes eight strategies for adjusting P values to account for multiple comparisons using the `p.adjust.methods` argument.
-
-## How do I use this pattern?
-
-The simplest approach to exposing different strategies is give each approach a name, then use an enumeration to pick between them, as described in @sec-enumerate-options.
-For simple implementations you can then use `switch()` to pick between them.
-For example, take `stringr::str_trim()`, which looks something like this:
-
-```{r}
-str_trim <- function (string, side = c("both", "left", "right")) 
-{
-  switch(
-    arg_match(side),
-    left = stri_trim_left(string),
-    right = stri_trim_right(string),
-    both = stri_trim_both(string)
-  )
-}
-```
-
-This is particularly simple because stringr relies on the stringi package for its implementation.
-But it's still straightforward even if we implement it "by hand" with regular expressions:
-
-```{r}
-str_trim <- function (string, side = c("both", "left", "right")) 
-{
-  pattern <- switch(
-    arg_match(side),
-    left = "^\\s+",
-    right = "\\s$",
-    both = "^\\s+|\\s$"
-  )
-  str_replace_all(string, pattern, "")
-}
-```
-
-If the implementation of each strategy doesn't fit on one line you could make helper functions where most of the implementation lives or you could use if statements.
-
-### Escape hatch
-
-It's sometimes useful to build in an escape hatch from canned strategies.
-This allows users to access alternative strategies, and allows for experimentation that can later turn into a official strategies.
-One example of such an escape hatch is in name repair, which occurs in many places throughout the tidyverse.
-One place you might encounter it is in `tibble()`:
-
-```{r}
-#| error: true
-tibble::tibble(a = 1, a = 2)
-```
-
-Beneath the surface all tidyverse functions that expose some sort of name repair eventually end up calling `vctrs::vec_as_names()`:
-
-```{r}
-#| error: true
-vctrs::vec_as_names(c("a", "a"), repair = "check_unique")
-vctrs::vec_as_names(c("a", "a"), repair = "unique")
-vctrs::vec_as_names(c("a", "a"), repair = "unique_quiet")
-```
-
-`vec_as_names()` exposes six strategies, but it also allows you to supply a function:
-
-```{r}
-vctrs::vec_as_names(c("a", "a"), repair = toupper)
-```
-
-## How do I remediate past mistakes?
-
 It's very easy to violate this pattern because your function often begins by implementing a single strategy, and then later you discover a new strategy.
 It's easy to implement this as a Boolean flag or with some argument magic, which leads to problems when you later discover a third strategy.
 In this section, you'll see a few ways that you can fix these problems if you discover later that you've made a mistake.
@@ -91,5 +18,3 @@ In this section, you'll see a few ways that you can fix these problems if you di
 ## See also
 
 -   The original [strategy pattern](https://en.wikipedia.org/wiki/Strategy_pattern) defined in [Design Patterns](https://en.wikipedia.org/wiki/Design_Patterns). This pattern has a rather different implementation in a classic OOP language.
--   @sec-independent-meaning the related problem of one argument affecting the interpretation of another argument.
--   @sec-argument-clutter is about the general problem of moving unimportant arguments to another function.

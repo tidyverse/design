@@ -1,4 +1,4 @@
-# Use multiple functions for complex strategies {#sec-strategy-functions}
+# A complex strategy might be better as separate functions {#sec-strategy-functions}
 
 ```{r}
 #| include = FALSE
@@ -7,12 +7,13 @@ source("common.R")
 
 ## What's the problem?
 
-You have **complex strategies** when different strategies require different arguments.
-In this case, it's a good idea to use a separate function for each strategy, to make it as clear as possible which arguments belong to which strategy.
-One sign that you have this pattern that you have a complex dependency between arguments: maybe you can set `a` and `b` and `a` and `c` but not `b` and `c`.
-This tends to make the function harder to use because it suggests more viable input combinations than actually exist.
+Sometimes a function that implements multiple strategies might be better off as independent functions.
+Two signs that this might be the case:
 
-In @sec-strategy-objects we'll consider an extension of this idea you can use either when multiple functions need to use the same strategy, or the strategy is just one part of what the function does.
+-   You're struggling to document how the arguments interact. Maybe you can set `a` and `b` and `a` and `c` but not `b` and `c`.
+-   The implementation of your function has a couple of big if branches that share relatively little code.
+
+You can continue to document the functions together, and they are likely to continuing to sharing multiple arguments, but
 
 ## What are some examples?
 
@@ -99,10 +100,26 @@ fct_lump <- function(f,
 ```
 
 In forcats we decided to supersede `fct_lump()` rather than deprecating it.
-Deprecating it would only require one extra line:
+Deprecating it would require adding one deprecation for each branch:
 
 ```{r}
-fct_lump <- function(...) {
-  lifecycle::deprecate_warn("0.5.0", "fct_lump()")
+fct_lump <- function(f,
+                     n,
+                     prop,
+                     w = NULL,
+                     other_level = "Other",
+                     ties.method = c("min", "average", "first", "last", "random", "max")) {
+    if (missing(n) && missing(prop)) {
+      lifecycle::deprecate_warn("0.5.0", "fct_lump()", "fct_lump_lowfreq()")
+      fct_lump_lowfreq(f, w = w, other_level = other_level)
+    } else if (missing(prop)) {
+      lifecycle::deprecate_warn("0.5.0", "fct_lump()", "fct_lump_n()")
+      fct_lump_n(f, n, w = w, other_level = other_level, ties.method = ties.method)
+    } else if (missing(n)) {
+      lifecycle::deprecate_warn("0.5.0", "fct_lump()", "fct_lump_prop()")
+      fct_lump_prop(f, prop, w = w, other_level = other_level)
+    } else {
+      cli::cli_abort("Must supply only one of {.arg n} and {.arg prop}.")
+    }
 }
 ```

@@ -36,13 +36,12 @@ book:
       - enumerate-options.qmd
       - argument-clutter.qmd
     
-    - part: Strategies
+    - part: explicit-strategies.qmd
       chapters:
-      - explicit-strategies.qmd
       - boolean-strategies.qmd
-      - strategy-functions.qmd
-      - cs-rep.qmd
       - strategy-objects.qmd
+      - cs-rep.qmd
+      - strategy-functions.qmd
     
     - part: Argument dependencies
       chapters:

@@ -127,4 +127,4 @@ Then you can remove the old arguments in a future release.
 
 ## See also
 
--   @sec-strategies-explicit is a similar pattern when you have multiple options function that each encapsulate a different strategy.
+-   @sec-strategy-objects is a similar pattern when you have multiple options function that each encapsulate a different strategy.

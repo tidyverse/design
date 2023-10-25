@@ -45,19 +45,25 @@ The advertisement happens in the function specification, so you see in tool tips
 
 -   In `rank()`, you can select the `ties.method` from one of "average", "first", "last", "random", "max", or "min".
 
-## How do I use it?
+-   `rank()` exposes six different methods for handling ties with the `ties.method` argument.
+
+-   `quantile()` exposes nine different approaches to computing a quantile through the `type` argument.
+
+-   `p.adjust()` exposes eight strategies for adjusting P values to account for multiple comparisons using the `p.adjust.methods` argument.
+
+## How do I use this pattern?
 
 To use this technique, set the default value to a character vector, where the first value is the default.
-Inside the function, use `match.arg()` or `rlang::arg_match()` to check that the value comes from the known good set, and pick the default if none is suppled.
+Inside the function, use `match.arg()` or `rlang::arg_match()` to check that the value comes from the known good set, and pick the default if none is supplied.
 
 Take `rank()`, for example.
 The heart of its implementation looks like this:
 
 ```{r}
-rank <- function(x, 
-                 ties.method = 
-                  c("average", "first", "last", "random", "max", "min")
-                 ) {
+rank <- function(
+    x,
+    ties.method = c("average", "first", "last", "random", "max", "min")
+) {
   
   ties.method <- match.arg(ties.method)
   
@@ -97,7 +103,10 @@ It instead provides a helpful error message:
 
 ```{r}
 #| error = TRUE
-rank2 <- function(x, ties.method = c("average", "first", "last", "random", "max", "min")) {
+rank2 <- function(
+    x,
+    ties.method = c("average", "first", "last", "random", "max", "min")
+) {
   ties.method <- rlang::arg_match(ties.method)
   rank(x, ties.method = ties.method)
 }
@@ -106,6 +115,33 @@ rank2(x, ties.method = "r")
 
 # It also provides a suggestion if you misspell the argument
 rank2(x, ties.method = "avarage")
+```
+
+### Escape hatch
+
+It's sometimes useful to build in an escape hatch from canned strategies.
+This allows users to access alternative strategies, and allows for experimentation that can later turn into a official strategies.
+One example of such an escape hatch is in name repair, which occurs in many places throughout the tidyverse.
+One place you might encounter it is in `tibble()`:
+
+```{r}
+#| error: true
+tibble::tibble(a = 1, a = 2)
+```
+
+Beneath the surface all tidyverse functions that expose some sort of name repair eventually end up calling `vctrs::vec_as_names()`:
+
+```{r}
+#| error: true
+vctrs::vec_as_names(c("a", "a"), repair = "check_unique")
+vctrs::vec_as_names(c("a", "a"), repair = "unique")
+vctrs::vec_as_names(c("a", "a"), repair = "unique_quiet")
+```
+
+`vec_as_names()` exposes six strategies, but it also allows you to supply a function:
+
+```{r}
+vctrs::vec_as_names(c("a", "a"), repair = toupper)
 ```
 
 ### How keep defaults short?
