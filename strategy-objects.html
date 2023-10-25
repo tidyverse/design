@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.3.450">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
 <meta name="author" content="Hadley Wickham">
-
-<title>Tidy design principles - 16&nbsp; Extract strategies into objects</title>
+<title>Tidy design principles - 13&nbsp; Extract strategies into objects</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -57,7 +54,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
-
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
@@ -65,8 +61,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./independent-meaning.html" rel="next">
-<link href="./cs-rep.html" rel="prev">
+<link href="./cs-rep.html" rel="next">
+<link href="./boolean-strategies.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -75,8 +71,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -95,36 +90,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
-<script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/script.js"></script>
-
-
+}</script><script defer="" data-domain="design.tidyverse.org" src="https://plausible.io/js/script.js"></script>
 </head>
-
 <body class="nav-sidebar floating">
 
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./explicit-strategies.html">Strategies</a></li><li class="breadcrumb-item"><a href="./strategy-objects.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Extract strategies into objects</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./explicit-strategies.html">Strategies</a></li><li class="breadcrumb-item"><a href="./strategy-objects.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Extract strategies into objects</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Tidy design principles</a> 
         <div class="sidebar-tools-main">
@@ -144,7 +129,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Welcome</span></a>
@@ -164,8 +149,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./names.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Names attribute</span></span></a>
@@ -184,7 +169,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
@@ -193,8 +178,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./inputs-explicit.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Make inputs explicit</span></span></a>
@@ -237,48 +222,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <a href="./explicit-strategies.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Strategies</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./explicit-strategies.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Make strategies explicit</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./boolean-strategies.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Use a strategy, even for two choices</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./strategy-functions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Use multiple functions for complex strategies</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./cs-rep.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Case study: <code>rep()</code></span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Prefer a enum, even if only two choices</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./strategy-objects.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Extract strategies into objects</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Extract strategies into objects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cs-rep.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./strategy-functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">A complex strategy might be better as separate functions</span></span></a>
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
@@ -287,33 +266,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./independent-meaning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Argument meaning should be independent</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Argument meaning should be independent</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./mutually-exclusive-arguments.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Mutually exclusive arguments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Mutually exclusive arguments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./compound-arguments.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Compound arguments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Compound arguments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-stringr.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Case study: stringr</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Case study: stringr</span></span></a>
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
@@ -322,57 +301,57 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./def-magical.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Avoid magical defaults</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Avoid magical defaults</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./def-inform.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Explain important defaults</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Explain important defaults</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./def-user.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">User settable defaults</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">User settable defaults</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dots-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Making data with …</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Making data with …</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dots-prefix.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Dot prefix</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Dot prefix</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dots-inspect.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Inspect the dots</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Inspect the dots</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-mapply-pmap.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Case study: <code>mapply()</code> vs <code>pmap()</code></span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/mapply.html">mapply()</a></code> vs <code>pmap()</code>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-setNames.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Case study: <code>setNames()</code></span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/stats/setNames.html">setNames()</a></code>
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
@@ -381,33 +360,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-multi.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Returning multiple values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Returning multiple values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-type-stability.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Type-stability</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Type-stability</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-vectorisation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Vectorisation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Vectorisation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-invisible.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Side-effect functions should return invisibly</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Side-effect functions should return invisibly</span></span></a>
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
@@ -416,15 +395,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./changes-multivers.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Work with multiple dependency versions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Work with multiple dependency versions</span></span></a>
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
@@ -433,21 +412,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./side-effects.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Side-effect soup</span></span></a>
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Side-effect soup</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./spooky-action.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Spooky action</span></span></a>
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Spooky action</span></span></a>
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true">
@@ -456,21 +435,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./err-call.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Error call</span></span></a>
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Error call</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./err-constructor.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Error constructors</span></span></a>
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Error constructors</span></span></a>
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-expanded="true">
@@ -479,42 +458,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./glossary.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
   </div>
 </li>
       </ul>
-  </li>
+</li>
     </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+</div>
+</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#whats-the-problem" id="toc-whats-the-problem" class="nav-link active" data-scroll-target="#whats-the-problem"><span class="header-section-number">16.1</span> What’s the problem?</a></li>
-  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">16.2</span> What are some examples?</a></li>
-  <li><a href="#how-do-you-use-the-pattern" id="toc-how-do-you-use-the-pattern" class="nav-link" data-scroll-target="#how-do-you-use-the-pattern"><span class="header-section-number">16.3</span> How do you use the pattern?</a></li>
-  <li><a href="#strategy-objects-sec-pattern-engine" id="toc-strategy-objects-sec-pattern-engine" class="nav-link" data-scroll-target="#strategy-objects-sec-pattern-engine"><span class="header-section-number">16.4</span> Selecting a pattern engine</a>
+<li><a href="#whats-the-problem" id="toc-whats-the-problem" class="nav-link active" data-scroll-target="#whats-the-problem"><span class="header-section-number">13.1</span> What’s the problem?</a></li>
+  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">13.2</span> What are some examples?</a></li>
+  <li>
+<a href="#how-do-you-use-the-pattern" id="toc-how-do-you-use-the-pattern" class="nav-link" data-scroll-target="#how-do-you-use-the-pattern"><span class="header-section-number">13.3</span> How do you use the pattern?</a>
   <ul class="collapse">
-  <li><a href="#strategy-objects-sec-geom-histogram" id="toc-strategy-objects-sec-geom-histogram" class="nav-link" data-scroll-target="#strategy-objects-sec-geom-histogram"><span class="header-section-number">16.4.1</span> Using a strategy function</a></li>
-  </ul></li>
-  <li><a href="#how-do-i-remediate-past-mistakes" id="toc-how-do-i-remediate-past-mistakes" class="nav-link" data-scroll-target="#how-do-i-remediate-past-mistakes"><span class="header-section-number">16.5</span> How do I remediate past mistakes?</a></li>
+<li><a href="#strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-sec-pattern-engine" id="toc-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-sec-pattern-engine" class="nav-link" data-scroll-target="#strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-sec-pattern-engine"><span class="header-section-number">13.3.1</span> Selecting a pattern engine</a></li>
+  <li><a href="#implementation" id="toc-implementation" class="nav-link" data-scroll-target="#implementation"><span class="header-section-number">13.3.2</span> Implementation</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/strategy-objects.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+</li>
+  <li><a href="#how-do-i-remediate-past-problems" id="toc-how-do-i-remediate-past-problems" class="nav-link" data-scroll-target="#how-do-i-remediate-past-problems"><span class="header-section-number">13.4</span> How do I remediate past problems?</a></li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/strategy-objects.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title"><span id="sec-strategy-objects" class="quarto-section-identifier"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Extract strategies into objects</span></span></h1>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title"><span id="sec-strategy-objects" class="quarto-section-identifier"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Extract strategies into objects</span></span></h1>
 </div>
 
 
@@ -527,203 +502,114 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header>
-
-<section id="whats-the-problem" class="level2" data-number="16.1">
-<h2 data-number="16.1" class="anchored" data-anchor-id="whats-the-problem"><span class="header-section-number">16.1</span> What’s the problem?</h2>
-<p>A more advanced form of this pattern arises when you have many arguments apart from the arguments needed by the different strategies. One example that we’ll explore below is <code>ggplot2::stat_bin()</code>. A key part of <code>stat_bin()</code> (which powers <code>ggplot2::geom_histogram()</code> is defining the locations of the bins, which currently uses five argument (<code>binwidth</code>, <code>bins</code>, <code>breaks</code>, <code>boundary</code>, <code>center</code>, <code>closed</code>). But it also has many arguments (e.g.&nbsp;<code>na.rm</code>, <code>orientation</code>, <code>show.legend</code>, ...)</p>
-</section>
-<section id="what-are-some-examples" class="level2" data-number="16.2">
-<h2 data-number="16.2" class="anchored" data-anchor-id="what-are-some-examples"><span class="header-section-number">16.2</span> What are some examples?</h2>
+</header><section id="whats-the-problem" class="level2" data-number="13.1"><h2 data-number="13.1" class="anchored" data-anchor-id="whats-the-problem">
+<span class="header-section-number">13.1</span> What’s the problem?</h2>
+<p>Sometimes different strategies need different arguments. In this case, instead of using an enum, you’ll need to use richer objects capable of storing optional values as well as the strategy name.</p>
+<p>You can also see this as an extension of <a href="argument-clutter.html"><span>Chapter&nbsp;11</span></a></p>
+<p>A more advanced form of this pattern arises when you have many arguments apart from the arguments needed by the different strategies. One example that we’ll explore below is <code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">ggplot2::stat_bin()</a></code>. A key part of <code>stat_bin()</code> (which powers <code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">ggplot2::geom_histogram()</a></code> is defining the locations of the bins, which currently uses five argument (<code>binwidth</code>, <code>bins</code>, <code>breaks</code>, <code>boundary</code>, <code>center</code>, <code>closed</code>). But it also has many arguments (e.g.&nbsp;<code>na.rm</code>, <code>orientation</code>, <code>show.legend</code>, ...)</p>
+</section><section id="what-are-some-examples" class="level2" data-number="13.2"><h2 data-number="13.2" class="anchored" data-anchor-id="what-are-some-examples">
+<span class="header-section-number">13.2</span> What are some examples?</h2>
 <ul>
-<li><p><code>grepl()</code> has boolean <code>perl</code> and <code>fixed</code> arguments, but you’re not really toggling two independent settings, you’re picking from one of three regular expression engines (the default, the engine used by Perl, and fixed matches). Additionally, the <code>ignore.case</code> argument only applies to two of the strategies. Learn more in <a href="cs-stringr.html"><span>Chapter&nbsp;20</span></a>.</p></li>
-<li><p><code>ggplot2::geom_histogram()</code> has three main strategies for defining the bins: you can supply the number of <code>bins</code>, the width of each bin (the <code>binwidth</code>), or the exact <code>breaks</code>. But it’s very difficult to tell this from the function specification, and there are complex argument dependencies.</p></li>
-<li><p><code>dplyr::left_join()</code> uses an advanced form of this pattern where the different strategies for joining two data frames together are expressed in a mini-DSL provided by <code>dplyr::join_by()</code>.</p></li>
-</ul>
-</section>
-<section id="how-do-you-use-the-pattern" class="level2" data-number="16.3">
-<h2 data-number="16.3" class="anchored" data-anchor-id="how-do-you-use-the-pattern"><span class="header-section-number">16.3</span> How do you use the pattern?</h2>
-<p>In more complicated cases, different strategies will require different arguments, so you’ll need a bit more infrastructure. The basic idea is build on the options object described in <a href="argument-clutter.html"><span>Chapter&nbsp;11</span></a>, but instead of providing just one helper function, you’ll provide one function per strategy. A good example of this approach is readr, which provides <code>regex()</code>, <code>boundary()</code>, <code>coll()</code>, and <code>fixed()</code> to pick between four different strategies for matching text. You can learn more about why we picked that interface in <a href="cs-stringr.html"><span>Chapter&nbsp;20</span></a>, so here I wanted to focus on the implementation.</p>
-</section>
-<section id="strategy-objects-sec-pattern-engine" class="level2" data-number="16.4">
-<h2 data-number="16.4" class="anchored" data-anchor-id="strategy-objects-sec-pattern-engine"><span class="header-section-number">16.4</span> Selecting a pattern engine</h2>
-<p><code>grepl()</code>, has three arguments that take either <code>FALSE</code> or <code>TRUE</code>: <code>ignore.case</code>, <code>perl</code>, <code>fixed</code>, which might suggest that there are 2 ^ 3 = 8 possible options. But <code>fixed = TRUE</code> overrides <code>perl = TRUE</code>, and <code>ignore.case = TRUE</code> only works if <code>fixed = FALSE</code> so there are only 5 valid combinations.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">grepl</span>(<span class="st">"a"</span>, letters, <span class="at">fixed =</span> <span class="cn">TRUE</span>, <span class="at">ignore.case =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning in grepl("a", letters, fixed = TRUE, ignore.case = TRUE): argument</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 'ignore.case = TRUE' will be ignored</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">grepl</span>(<span class="st">"a"</span>, letters, <span class="at">fixed =</span> <span class="cn">TRUE</span>, <span class="at">perl =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning in grepl("a", letters, fixed = TRUE, perl = TRUE): argument 'perl =</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TRUE' will be ignored</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>It’s easier to understand <code>fixed</code> and <code>perl</code> once you realise their combination is used to pick from one of three engines for matching text:</p>
+<li><p><code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code> has boolean <code>perl</code> and <code>fixed</code> arguments, but you’re not really toggling two independent settings, you’re picking from one of three regular expression engines (the default, the engine used by Perl, and fixed matches). Additionally, the <code>ignore.case</code> argument only applies to two of the strategies. Learn more in <a href="cs-stringr.html"><span>Chapter&nbsp;19</span></a>.</p></li>
+<li><p><code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">ggplot2::geom_histogram()</a></code> has three main strategies for defining the bins: you can supply the number of <code>bins</code>, the width of each bin (the <code>binwidth</code>), or the exact <code>breaks</code>. But it’s very difficult to tell this from the function specification, and there are complex argument dependencies.</p></li>
+<li><p><code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">dplyr::left_join()</a></code> uses an advanced form of this pattern where the different strategies for joining two data frames together are expressed in a mini-DSL provided by <code><a href="https://dplyr.tidyverse.org/reference/join_by.html">dplyr::join_by()</a></code>.</p></li>
+</ul></section><section id="how-do-you-use-the-pattern" class="level2" data-number="13.3"><h2 data-number="13.3" class="anchored" data-anchor-id="how-do-you-use-the-pattern">
+<span class="header-section-number">13.3</span> How do you use the pattern?</h2>
+<p>In more complicated cases, different strategies will require different arguments, so you’ll need a bit more infrastructure. The basic idea is to build on the options object described in <a href="argument-clutter.html"><span>Chapter&nbsp;11</span></a>, but instead of providing just one helper function, you’ll provide one function per strategy. This is the way stringr works: you can select a different matching engine by wrapping the <code>pattern</code> in one of <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">regex()</a></code>, <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">boundary()</a></code>, <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">coll()</a></code>, or <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">fixed()</a></code>. We’ll explore how stringr ended up with design and how you can implement something similar yourself by looking at the base regular expression functions.</p>
+<section id="strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-sec-pattern-engine" class="level3" data-number="13.3.1"><h3 data-number="13.3.1" class="anchored" data-anchor-id="strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-sec-pattern-engine">
+<span class="header-section-number">13.3.1</span> Selecting a pattern engine</h3>
+<p>The basic regular expression functions (<code><a href="https://rdrr.io/r/base/grep.html">grep()</a></code>, <code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code>, <code><a href="https://rdrr.io/r/base/grep.html">sub()</a></code>, <code><a href="https://rdrr.io/r/base/grep.html">gsub()</a></code>, <code><a href="https://rdrr.io/r/base/grep.html">regexpr()</a></code>, <code><a href="https://rdrr.io/r/base/grep.html">gregexpr()</a></code>, <code><a href="https://rdrr.io/r/base/grep.html">regexec()</a></code>, and <code><a href="https://rdrr.io/r/base/grep.html">gregexec()</a></code>) all <code>fixed</code> and <code>perl</code> arguments that allow to select the regular expression engine that’s used:</p>
 <ul>
-<li>The default is POSIX 1003.2 extended regular expressions.</li>
-<li><code>perl = TRUE</code> uses Perl-style regular expressions.</li>
-<li><code>fixed = TRUE</code> uses fixed matching.</li>
+<li>
+<code>perl = FALSE</code>, <code>fixed = FALSE</code>, the default, uses POSIX 1003.2 extended regular expressions.</li>
+<li>
+<code>perl = TRUE</code>, <code>fixed = FALSE</code> uses Perl-style regular expressions.</li>
+<li>
+<code>perl = FALSE</code>, <code>fixed = TRUE</code> uses fixed matching.</li>
+<li>
+<code>perl = TRUE</code>, <code>fixed = TRUE</code> is an error.</li>
 </ul>
-<p>This makes it clear why <code>perl = TRUE</code> and <code>fixed = TRUE</code> isn’t permitted: you’re trying to pick two conflicting engines.</p>
-<p>An alternative interface that makes this choice more clear would be to use <a href="enumerate-options.html"><span>Chapter&nbsp;10</span></a> and create a new argument called something like <code>engine = c("POSIX", "perl", "fixed")</code>. This also has the nice feature of making it easier to extend in the future. That might look something like this:</p>
+<p>You could make this choice more clear by using an enumeration (<a href="enumerate-options.html"><span>Chapter&nbsp;10</span></a>) maybe something like <code>engine = c("POSIX", "perl", "fixed")</code>. That might look something like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grepl</span>(pattern, string, <span class="at">engine =</span> <span class="st">"regex"</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grepl</span>(pattern, string, <span class="at">engine =</span> <span class="st">"fixed"</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">grepl</span>(pattern, string, <span class="at">engine =</span> <span class="st">"perl"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="va">pattern</span>, <span class="va">string</span>, engine <span class="op">=</span> <span class="st">"regex"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="va">pattern</span>, <span class="va">string</span>, engine <span class="op">=</span> <span class="st">"fixed"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="va">pattern</span>, <span class="va">string</span>, engine <span class="op">=</span> <span class="st">"perl"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>But stringr takes a different approach, because of a problem hinted at in <code>grepl()</code> and friends: <code>ignore.case</code> only works with two of the three engines: POSIX and perl. Additionally, having an <code>engine</code> argument that affects the meaning of the <code>pattern</code> argument is a little unfortunate — that means you have to read the call until you see the <code>engine</code> argument before you can understand precisely what the <code>pattern</code> means.</p>
-<p>stringr takes a different approach, encoding the engine as an attribute of the pattern:</p>
+<p>But there’s an additional argument that throws a spanner in the works: <code>ignore.case = TRUE</code> only works with two of the three engines: POSIX and perl. Additionally, it’s a bit unforunate that the <code>engine</code> argument, which is likely to come later in the call, affects the <code>pattern</code>, the first argument. That means you have to read the call until you see the <code>engine</code> argument before you can understand precisely what the <code>pattern</code> means.</p>
+<p>An alternative approach, as used by stringr, is to provide some helper functions that encode the engine as an attribute of the pattern:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">str_detect</span>(letters, <span class="st">"a"</span>)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># short for:</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">str_detect</span>(letters, <span class="fu">regex</span>(<span class="st">"a"</span>))</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Which is where you supply additional arguments</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">str_detect</span>(letters, <span class="fu">regex</span>(<span class="st">"a"</span>, <span class="at">ignore_case =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="va">pattern</span>, <span class="fu">regex</span><span class="op">(</span><span class="va">string</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="va">pattern</span>, <span class="fu">fixed</span><span class="op">(</span><span class="va">string</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="va">pattern</span>, <span class="fu">perl</span><span class="op">(</span><span class="va">string</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>This has the advantage that each engine can take different arguments. In base R, the only argument of this nature of <code>ignore.case</code>, but stringr’s <code>regex()</code> has arguments like <code>multiline</code>, <code>comments</code>, and <code>dotall</code> which change how some components of the pattern are matched.</p>
-<p>Using an <code>engine</code> argument also wouldn’t work in stringr because of the <code>boundary()</code> engine which rather than matching specific patterns uses matches based on boundaries between things like letters or words or sentences.</p>
+<p>And because these are separate functions, they can take different arguments:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_view</span>(<span class="st">"This is a sentence."</span>, <span class="fu">boundary</span>(<span class="st">"word"</span>))</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str_view</span>(<span class="st">"This is a sentence."</span>, <span class="fu">boundary</span>(<span class="st">"sentence"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">regex</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">pattern</span>, <span class="va">ignore.case</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span><span class="op">}</span></span>
+<span><span class="va">perl</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">pattern</span>, <span class="va">ignore.case</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span><span class="op">}</span></span>
+<span><span class="va">fixed</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">pattern</span><span class="op">)</span> <span class="op">{</span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>This is more appealing than creating a separate function for each engine because there are many other functions in the same family as <code>grepl()</code>. If we created <code>grepl_fixed()</code>, we’d also need <code>gsub_fixed()</code>, <code>regexp_fixed()</code> etc.</p>
-<p>If you take a look at one of these functions, you’ll see it’s a wrapper around a stringi function that performs a similar job. But <code>fixed()</code> does two extra things compared to <code>stri_opts_fixed()</code>: it more aggressively checks the input arguments and it combines the stringi options with the pattern and adds a class.</p>
+<p>This gives a very flexible interface which is particularly nice in stringr because it means there’s an easy way to support boundary matching, which doesn’t even take a pattern:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fixed <span class="ot">&lt;-</span> <span class="cf">function</span>(pattern, <span class="at">ignore_case =</span> <span class="cn">FALSE</span>) {</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  pattern <span class="ot">&lt;-</span> <span class="fu">as_bare_character</span>(pattern)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_bool</span>(ignore_case)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  options <span class="ot">&lt;-</span> <span class="fu">stri_opts_fixed</span>(<span class="at">case_insensitive =</span> ignore_case)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">structure</span>(</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    pattern,</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">options =</span> options,</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">class =</span> <span class="fu">c</span>(<span class="st">"stringr_fixed"</span>, <span class="st">"stringr_pattern"</span>, <span class="st">"character"</span>)</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://stringr.tidyverse.org">stringr</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="st">"This is a sentence."</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">boundary</a></span><span class="op">(</span><span class="st">"word"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ &lt;This&gt; &lt;is&gt; &lt;a&gt; &lt;sentence&gt;.</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="st">"This is a sentence."</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">boundary</a></span><span class="op">(</span><span class="st">"sentence"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ &lt;This is a sentence.&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>This class is important because it allows us to check that the user has provided the expect input type and give a useful error message if not. Since pretty much every stringr function needs to do this, stringr provides a internal function called <code>type()</code> that looks something like this<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>:</p>
+</section><section id="implementation" class="level3" data-number="13.3.2"><h3 data-number="13.3.2" class="anchored" data-anchor-id="implementation">
+<span class="header-section-number">13.3.2</span> Implementation</h3>
+<p>Lets flesh this interface into an implementation. First we flesh out the pattern engine wrappers. These need to return an object that has the name of engine, the pattern, and any other arguments:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>type <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">inherits</span>(x, <span class="st">"stringr_boundary"</span>)) {</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"bound"</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">inherits</span>(x, <span class="st">"stringr_regex"</span>)) {</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"regex"</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">inherits</span>(x, <span class="st">"stringr_coll"</span>)) {</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"coll"</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">inherits</span>(x, <span class="st">"stringr_fixed"</span>)) {</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"fixed"</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">is.character</span>(x)) {</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">identical</span>(x, <span class="st">""</span>)) <span class="st">"empty"</span> <span class="cf">else</span> <span class="st">"regex"</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    cli<span class="sc">::</span><span class="fu">cli_abort</span>(<span class="st">"Must be a string or stringr pattern object"</span>)</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">regex</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">pattern</span>, <span class="va">ignore.case</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="va">pattern</span>, engine <span class="op">=</span> <span class="st">"regex"</span>, ignore.case <span class="op">=</span> <span class="va">ignore.case</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="va">perl</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">pattern</span>, <span class="va">ignore.case</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="va">pattern</span>, engine <span class="op">=</span> <span class="st">"perl"</span>, ignore.case <span class="op">=</span> <span class="va">ignore.case</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="va">fixed</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">pattern</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="va">pattern</span>, engine <span class="op">=</span> <span class="st">"fixed"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Then individual stringr functions can use <code>type()</code> plus a <code>switch</code> statement:</p>
+<p>Then you could create a new <code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code> variant that might look something like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="annotated-cell-7"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-hidden="true" tabindex="-1"></a>str_detect <span class="ot">&lt;-</span> <span class="cf">function</span>(string, pattern) {</span>
-<span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_lengths</span>(string, pattern)</span>
-<span id="annotated-cell-7-3"><a href="#annotated-cell-7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_bool</span>(negate)</span>
-<span id="annotated-cell-7-4"><a href="#annotated-cell-7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-7-5"><a href="#annotated-cell-7-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span>(<span class="fu">type</span>(pattern),</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-7-6" class="code-annotation-target"><a href="#annotated-cell-7-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">empty =</span> <span class="fu">no_empty</span>(),</span>
-<span id="annotated-cell-7-7"><a href="#annotated-cell-7-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">bound =</span> <span class="fu">no_boundary</span>(),</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-7-8" class="code-annotation-target"><a href="#annotated-cell-7-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">fixed =</span> <span class="fu">stri_detect_fixed</span>(string, pattern, <span class="at">opts_fixed =</span> <span class="fu">opts</span>(pattern)),</span>
-<span id="annotated-cell-7-9"><a href="#annotated-cell-7-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">coll  =</span> <span class="fu">stri_detect_coll</span>(string,  pattern, <span class="at">opts_collator =</span> <span class="fu">opts</span>(pattern)),</span>
-<span id="annotated-cell-7-10"><a href="#annotated-cell-7-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">regex =</span> <span class="fu">stri_detect_regex</span>(string, pattern, <span class="at">opts_regex =</span> <span class="fu">opts</span>(pattern))</span>
-<span id="annotated-cell-7-11"><a href="#annotated-cell-7-11" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="annotated-cell-7-12"><a href="#annotated-cell-7-12" aria-hidden="true" tabindex="-1"></a>}</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-annotation">
-<dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-7" data-target-annotation="1">1</dt>
-<dd>
-<span data-code-lines="6,7" data-code-cell="annotated-cell-7" data-code-annotation="1"><code>no_empty()</code> and <code>no_boundary()</code> are helper functions that generate errors when a stringr function doesn’t support a specific engine.</span>
-</dd>
-<dt data-target-cell="annotated-cell-7" data-target-annotation="2">2</dt>
-<dd>
-<span data-code-lines="8,9,10" data-code-cell="annotated-cell-7" data-code-annotation="2"><code>opts()</code> is a helper function for extracting the stringi options back out of the stringr wrapper object.</span>
-</dd>
-</dl>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_grepl</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">pattern</span>, <span class="va">x</span>, <span class="va">useBytes</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/switch.html">switch</a></span><span class="op">(</span><span class="va">pattern</span><span class="op">$</span><span class="va">engine</span>, </span>
+<span>    regex <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="va">pattern</span><span class="op">$</span><span class="va">pattern</span>, <span class="va">x</span>, ignore.case <span class="op">=</span> <span class="va">pattern</span><span class="op">$</span><span class="va">ignore.case</span>, useBytes <span class="op">=</span> <span class="va">useBytes</span><span class="op">)</span>,</span>
+<span>    perl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="va">pattern</span><span class="op">$</span><span class="va">pattern</span>, <span class="va">x</span>, perl <span class="op">=</span> <span class="cn">TRUE</span>, ignore.case <span class="op">=</span> <span class="va">pattern</span><span class="op">$</span><span class="va">ignore.case</span>, useBytes <span class="op">=</span> <span class="va">useBytes</span><span class="op">)</span>,</span>
+<span>    fixed <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="va">pattern</span><span class="op">$</span><span class="va">pattern</span>, <span class="va">x</span>, fixed <span class="op">=</span> <span class="cn">TRUE</span>, useBytes <span class="op">=</span> <span class="va">useBytes</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Or if you wanted to make it more clear how the engines differ, you could pull out a helper function that pulls out the repeated code:</p>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_grepl</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">pattern</span>, <span class="va">x</span>, <span class="va">useBytes</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">grepl_wrapper</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="va">pattern</span><span class="op">$</span><span class="va">pattern</span>, <span class="va">x</span>, <span class="va">...</span>, useBytes <span class="op">=</span> <span class="va">useBytes</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  </span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/switch.html">switch</a></span><span class="op">(</span><span class="va">pattern</span><span class="op">$</span><span class="va">engine</span>, </span>
+<span>    regex <span class="op">=</span> <span class="fu">grepl_wrapper</span><span class="op">(</span>ignore.case <span class="op">=</span> <span class="va">pattern</span><span class="op">$</span><span class="va">ignore.case</span><span class="op">)</span>,</span>
+<span>    perl <span class="op">=</span> <span class="fu">grepl_wrapper</span><span class="op">(</span>perl <span class="op">=</span> <span class="cn">TRUE</span>, ignore.case <span class="op">=</span> <span class="va">pattern</span><span class="op">$</span><span class="va">ignore.case</span><span class="op">)</span>,</span>
+<span>    fixed <span class="op">=</span> <span class="fu">grepl_wrapper</span><span class="op">(</span>fixed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>You can implement this same strategy using <code>if</code> or OOP, but here I particularly like the <code>switch</code> pattern because it keeps the stringi function calls close together, which makes it easier to keep them in sync.</p>
-<section id="strategy-objects-sec-geom-histogram" class="level3" data-number="16.4.1">
-<h3 data-number="16.4.1" class="anchored" data-anchor-id="strategy-objects-sec-geom-histogram"><span class="header-section-number">16.4.1</span> Using a strategy function</h3>
-<p>Sometimes the strategy will be tangled in with many other arguments, or they might be multiple strategies used simultaneously. In these situations you want to avoid creating a combinatorial explosion of functions, and instead might want to use a strategy object.</p>
-<p>For example, generating the bins for a histogram is a surprisingly complex topic. <code>ggplot2::stat_bin()</code>, which powers <code>ggplot2::geom_histogram()</code>, has a total of 5 arguments that control where the bins are placed:</p>
+<p>Here I’m just wrapping around the existing <code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code> implementation because I don’t want to go into the details of its implementation; for your own code you’d probably inline the implementation.</p>
+<p>I particularly like the <code>switch</code> pattern here and in stringr because it keeps the function calls close together, which makes it easier to keep them in sync. You could also implement the same strategy using <code>if</code> or S7 generic functions, depending on your needs.</p>
+<p>This is implementation a sketch that gives you the basic ideas. For a real implementation you’d also need to consider:</p>
 <ul>
-<li>You can supply either <code>binwidth</code> or <code>bins</code> to specify either the width or the number of evenly spaced bins. Alternatively, you supply <code>breaks</code> to specify the exact bin locations yourself (which allows you to create unevenly sized bins<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>).</li>
-<li>If you use <code>binwidth</code> or <code>bins</code>, you’re specifying the width of each bin, but not where the bins start. So additionally you can use either <code>boundary</code> or <code>center</code><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> to specify the location of a side (<code>boundary</code>) or the middle (<code>center</code>) of a bin<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. <code>boundary</code> and <code>center</code> are mutually exclusive; you can only specify one (see <a href="mutually-exclusive-arguments.html"><span>Chapter&nbsp;18</span></a> for more).</li>
-<li>Regardless of the way that you specify the locations of the bins, you need to choose where a bin from <code>a</code> to <code>b</code>, is <code>[a, b)</code> or <code>(a, b]</code>, which is the job of the <code>closed</code> argument.</li>
+<li>Are <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">fixed()</a></code>, <code>perl()</code>, and <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">regex()</a></code> the right names? Would it be useful to give them a common prefix?</li>
+<li>It would be better for the engines to return an S7 object instead of a list, so we could provide a print method to make them display more nicely.</li>
+<li>
+<code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code> needs some error checking to ensure that <code>pattern</code> is generated by one of the engines, and probably should have a default path to handle bare character vectors as regular expressions (the current default).</li>
 </ul>
-<p>One way to resolve this problem would encapsulate the three basic strategies into three functions:</p>
-<ul>
-<li><code>bin_width(width, center, boundary, closed)</code></li>
-<li><code>bin_number(bins, center, boundary, closed)</code></li>
-<li><code>bin_breaks(breaks, closed)</code></li>
-</ul>
-<p>That immediately makes the relationship between the arguments and the strategies more clear.</p>
-<p>Note that these functions create “strategies”; i.e.&nbsp;they don’t take the data needed to actual perform the operation — none of these functions take range of the data. This makes these functions <a href="https://adv-r.hadley.nz/function-factories.html">function factories</a>, which is a relatively complex technique.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>bin_width <span class="ot">&lt;-</span> <span class="cf">function</span>(width, center, boundary, <span class="at">closed =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"right"</span>)) {</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># https://adv-r.hadley.nz/function-factories.html#forcing-evaluation</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(width, center, boundary, closed)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(range) {</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>As in <a href="argument-clutter.html"><span>Chapter&nbsp;11</span></a>, you may want to give these functions custom classes so that the function that uses them can provide better error messages if the user supplies the wrong type of object.</p>
-<p>Alternatively, you might want to just check that the input is a function with the correct formals; that allows the user to supply their own strategy function. It’s probably something that few people will take advantage of, but it’s a nice escape hatch.</p>
-</section>
-</section>
-<section id="how-do-i-remediate-past-mistakes" class="level2" data-number="16.5">
-<h2 data-number="16.5" class="anchored" data-anchor-id="how-do-i-remediate-past-mistakes"><span class="header-section-number">16.5</span> How do I remediate past mistakes?</h2>
-<p>If your function used an enumeration, but now you realise that some strategies use different arguments you can remediate like this:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># OLD </span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>my_fun <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">strategy =</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>)) {</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  strategy <span class="ot">&lt;-</span> <span class="fu">arg_match</span>(strategy)</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>check_strategy <span class="ot">&lt;-</span> <span class="cf">function</span>(f) {</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.function</span>(f) <span class="sc">||</span> <span class="sc">!</span><span class="fu">identical</span>(<span class="fu">names</span>(formals), <span class="fu">c</span>(<span class="st">"range"</span>))) {</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    cli<span class="sc">::</span><span class="fu">abort</span>(<span class="st">"{.fun f} must be a function with `range` argument"</span>)</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co"># NEW</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>my_fun <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">strategy =</span> <span class="fu">my_stragegy_a</span>()) {</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.characer</span>(strategy)) {</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    strategy <span class="ot">&lt;-</span> <span class="cf">switch</span>(</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>      <span class="fu">arg_match</span>(strategy),</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">a =</span> <span class="fu">my_strategy_a</span>(),</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">b =</span> <span class="fu">my_strategy_b</span>()</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">check_strategy</span>(strategy)</span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<p>You can see these detailed worked out in the stringr package if you look at the source code, particularly that of <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">fixed()</a></code>, <code>type()</code>, <code>opts()</code>, then <code><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect()</a></code>.</p>
+</section></section><section id="how-do-i-remediate-past-problems" class="level2" data-number="13.4"><h2 data-number="13.4" class="anchored" data-anchor-id="how-do-i-remediate-past-problems">
+<span class="header-section-number">13.4</span> How do I remediate past problems?</h2>
+<p>If you previously used an enum, and now you need a</p>
 
 
-</section>
-<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
-<hr>
-<ol>
-<li id="fn1"><p>The actual function is more complicated because it takes more care to generate an informative error message, and it uses S3 instead of nested <code>if</code> statements. But the overall strategy is the same.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>One nice application of this principle is to create a histogram where each bin contains (approximately) the same number of points, as implemented in <a href="https://github.com/eliocamp/ggpercentogram/" class="uri">https://github.com/eliocamp/ggpercentogram/</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p><code>center</code> is also a little problematic as an argument name, because UK English would prefer <code>centre</code>. It’s probably ok here since this it’s a very rarely used argument, but <code>middle</code> would be good alternatives that don’t have the same US/UK problem. Alternatively the pair could be <code>endpoint</code> and <code>midpoint</code> which perhaps suggest a tighter pairing than <code>center</code> and <code>boundary</code>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>It can be any bin; <code>stat_bin()</code> will automatically adjust all the other bins.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section>
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -955,22 +841,19 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
-      <a href="./cs-rep.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Case study: <code>rep()</code></span></span>
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./boolean-strategies.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Prefer a enum, even if only two choices</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./independent-meaning.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Argument meaning should be independent</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
+      <a href="./cs-rep.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code> <i class="bi bi-arrow-right-short"></i>
+      
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
+<footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">Tidy design principles was written by Hadley Wickham</div>   
     <div class="nav-footer-center">
       &nbsp;
@@ -978,7 +861,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a>.</div>
   </div>
 </footer>
-
 
 
 </body></html>
