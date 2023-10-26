@@ -6,14 +6,14 @@ source("common.R")
 library(stringr)
 ```
 
-## What's the problem?
-
 If your function exposes multiple **implementation strategies**, make those explicit through a single argument that takes an [enumeration](#sec-enumerate-options).
 This makes it clear how to control the operation of your function and extends gracefully if you discover new strategies in the future.
 
-It's very easy to violate this pattern because your function often begins by implementing a single strategy, and then later you discover a new strategy.
-It's easy to implement this as a Boolean flag or with some argument magic, which leads to problems when you later discover a third strategy.
-In this section, you'll see a few ways that you can fix these problems if you discover later that you've made a mistake.
+This part of the book goes into some of the details of and variations on this pattern:
+
+-   You should consider this pattern even if there are only two variations and you're tempted to use `TRUE` and `FALSE` instead. @sec-boolean-strategies discusses why.
+-   Sometimes, different strategies need different arguments and @sec-strategy-objects shows a useful pattern to achieve this.
+-   Other time, the need for different arguments might suggest that you actually need different functions. That's the topic of @sec-strategy-functions, and then we dive into a big case study of that problem by looking at `rep()` in @sec-cs-rep.
 
 ## See also
 

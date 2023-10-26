@@ -1,4 +1,4 @@
-# Prefer a enum, even if only two choices {#sec-avoid-boolean-strategies}
+# Prefer a enum, even if only two choices {#sec-boolean-strategies}
 
 ```{r}
 #| include = FALSE
@@ -21,7 +21,7 @@ There are quite a few examples of the problem in tidyverse, because this is a pa
 -   `httr2::multi_req_perform()` allows you to perform a bunch of HTTP requests in parallel. It has an argument called `cancel_on_error` that can take `TRUE` or `FALSE`. It's fairly clear what `cancel_on_error = TRUE` means; but it's not so obvious what `cancel_on_error = FALSE` does. Additionally, it seems likely that I'll come up with other possible error handling strategies in the future, and even though I don't know what they are now, it would be better to plan for the future with an argument specification like `error = c("cancel", "continue")`.
 
 `cut()` has an argument called `right` which is used to pick between right-closed left-open intervals (`TRUE)` and right-open left-closed arguments.
-I think it's hard to remember which is which and a clearer specification might be `open_side``= c("right", "left")` or maybe `bounds = c("[)", "(]")`.
+I think it's hard to remember which is which and a clearer specification might be `open_side = c("right", "left")` or maybe `bounds = c("[)", "(]")`.
 Another interesting case in base R is `sort()` which has two arguments that take a single logical value: `decreasing` and `na.last`:
 
 -   The `decreasing` argument is used to pick between sorting in ascending or descending order.

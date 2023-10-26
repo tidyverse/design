@@ -40,8 +40,8 @@ book:
       chapters:
       - boolean-strategies.qmd
       - strategy-objects.qmd
-      - cs-rep.qmd
       - strategy-functions.qmd
+      - cs-rep.qmd
     
     - part: Argument dependencies
       chapters:
