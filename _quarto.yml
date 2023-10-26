@@ -48,8 +48,7 @@ book:
       - independent-meaning.qmd
       - mutually-exclusive-arguments.qmd
       - compound-arguments.qmd
-      - cs-stringr.qmd
-    
+
     - part: Function arguments
       chapters: 
       - def-magical.qmd

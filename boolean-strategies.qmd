@@ -11,13 +11,13 @@ If your function implements two strategies, it's tempting to distinguish between
 However, I recommend that you use an enumeration unless:
 
 -   You're **really sure** there won't ever be another strategy. If you do discover a third (or fourth, or fifth, or ...) strategy, you'll need to change the interface of your function.
--   It's very clear what both `TRUE` and `FALSE` will mean just from the name of the argument. Otherwise, the `TRUE` value tends to be easier to understand because `something = TRUE` implies exactly what will happen, where as `something = FALSE` only tells you what won't happen.
+-   It's very clear what both `TRUE` and `FALSE` options mean just from the name of the argument. Generally the `TRUE` value tends to be easier to understand because `something = TRUE` tells you what will happen, but `something = FALSE` only tells you what won't happen.
 
 ## What are some examples?
 
-There are quite a few examples of the problem in tidyverse, because this is a pattern that we discovered relatively recently:
+There are quite a few examples of the problem in tidyverse, because this is a pattern that we only discovered relatively recently:
 
--   By default, `stringr::str_subset(string, pattern)` returns the elements of `string` that match the `pattern`. You can use `negate = TRUE` to instead return the elements that don't match the pattern, but I now think this would be more clear as `return = c("matches", "non-matches")`.
+-   By default, `stringr::str_subset(string, pattern)` returns the elements of `string` that match the `pattern`. You can use `negate = TRUE` to instead return the elements that don't match the pattern, but I now wonder if would be more clear as `return = c("matches", "non-matches")`.
 -   `httr2::multi_req_perform()` allows you to perform a bunch of HTTP requests in parallel. It has an argument called `cancel_on_error` that can take `TRUE` or `FALSE`. It's fairly clear what `cancel_on_error = TRUE` means; but it's not so obvious what `cancel_on_error = FALSE` does. Additionally, it seems likely that I'll come up with other possible error handling strategies in the future, and even though I don't know what they are now, it would be better to plan for the future with an argument specification like `error = c("cancel", "continue")`.
 
 `cut()` has an argument called `right` which is used to pick between right-closed left-open intervals (`TRUE)` and right-open left-closed arguments.
@@ -25,7 +25,7 @@ I think it's hard to remember which is which and a clearer specification might b
 Another interesting case in base R is `sort()` which has two arguments that take a single logical value: `decreasing` and `na.last`:
 
 -   The `decreasing` argument is used to pick between sorting in ascending or descending order.
-    It's easy to understand what `decreasing = TRUE` does, but it's not so clear what `decreasing = FALSE`, the default, means:
+    It's easy to understand what `decreasing = TRUE` does, but slightly less clear what `decreasing = FALSE`, the default, means because it feels like a double negative:
 
     ```{r}
     #| results: false
@@ -51,7 +51,7 @@ Another interesting case in base R is `sort()` which has two arguments that take
 
 ## How do you remediate past mistakes?
 
-There are two possible ways to switch to using a strategy instead of `TRUE`/`FALSE` depending on whether the old argument name still makes sense with the new argument values.
+There are two possible ways to switch to using a strategy instead of `TRUE`/`FALSE` depending on whether the old argument name makes sense with the new argument values.
 The sections below show what you'll need to do if you need a new argument (most cases) or if you're lucky enough to be able to reuse the existing argument.
 
 ### Create a new argument

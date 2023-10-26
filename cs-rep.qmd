@@ -79,18 +79,20 @@ rep(x, times = x)
 ## How might we improve the situation?
 
 I think these problems have the same underlying cause: `rep()` is trying to do too much in a single function.
-`rep()` is really exposing two different strategies with different arguments (@sec-strategy-functions) and it would be better served by a pair of functions, one which replicates element-by-element, and one which replicates the whole vector.
+`rep()` is really two functions in a trench coat (@sec-strategy-functions) and it would be better served by a pair of functions, one which replicates element-by-element, and one which replicates the whole vector.
+
+The following sections consider how we might do so, starting with what we should call the functions, then what arguments they'll need, then what an implementation might look like, and then considering the downsides of this approach.
 
 ### Function names
 
 To create the new functions, we need to first come up with names: I like `rep_each()` and `rep_full()`.
-`rep_each()` was a fairly easy name to come up with.
+`rep_each()` was a fairly easy name to come up with because it'll repeating each element.
 `rep_full()` was a little harder and took a few iterations: I like that `full` has the same number of letters as `each`, which makes the two functions look like they belong together.
 
-Another possibility would be `rep_every()` since each and every form a natural pair, but to me at least, repeating "every" element doesn't feel very different to repeating each element.
+Some other possibilities I considered:
 
-Another possible pair would be `rep_individual()` and `rep_whole()`.
-I like how these capture the differences precisely, but they are maybe too long for such commonly used functions.
+-   `rep_each()` + `rep_every()`: each and every form a natural pair, but to me at least, repeating "every" element doesn't feel very different to repeating each element.
+-   `rep_element()` and `rep_whole()`: I like how these capture the differences precisely, but they are maybe too long for such commonly used functions.
 
 ### Arguments
 
@@ -98,18 +100,21 @@ Next, we need to think about their arguments.
 They both will start with `x`, the vector to repeat.
 Then their arguments differ:
 
--   `rep_each()` needs an argument that specifies the number of times to replicate each element, which can either be a single number, or a vector the same length as `x`.
--   `rep_full()` has two mutually exclusive arguments (@sec-mutually-exclusive), the number of times to repeat the whole vector, or the desired length of the output.
+-   `rep_each()` needs an argument that specifies the number of times to repeat each element, which can either be a single number, or a vector the same length as `x`.
+-   `rep_full()` has two mutually exclusive arguments (@sec-mutually-exclusive), either the number of times to repeat the whole vector or the desired length of the output.
 
 What should we call the arguments?
-We've already captured the different replication strategies in the function name, so I think the argument that specifies the number of times to replicate can be the same, and `times` seems reasonable.
+We've already captured the different replication strategies in the function name, so I think the argument that specifies the number of times to replicate can be the same for both functions, and `times` seems reasonable.
 
-For the second argument to `rep_full()`, I draw inspiration from `rep()` which uses `length.out`.
-I think it's obvious that the argument controls the output length, so `length` is adequate.
+What about the second argument to `rep_full()` which specifies the desired length of the output vector?
+I draw inspiration from `rep()` which uses `length.out`.
+But I think it's obvious that the argument controls the output length, so `length` is adequate.
 
 ### Implementation
 
-We can combine these specifications with a simple implementation that uses the existing `rep` function.
+We can combine these specifications with a simple implementation that uses the existing `rep` function.[^cs-rep-2]
+
+[^cs-rep-2]: In real code I'd want to turn these into explicit unit tests so we can run them repeatedly as we make changes.
 
 ```{r}
 rep_full <- function(x, times, length) {
@@ -133,21 +138,26 @@ rep_each <- function(x, times) {
 }
 ```
 
-(Note the downside of using `length` as the argument name: we have to call [`base::length()`](#0)to avoid evaluating the missing `length` when times is supplied.
-This is likely why `rep()` uses `length.out`.)
+We can quickly check that the functions behave as we expect:
 
 ```{r}
 x <- c(1, 2, 4)
 
+# First the common times argument
 rep_each(x, times = 3)
 rep_full(x, times = 3)
 
+# Then a vector times argument to rep_each:
 rep_each(x, times = x)
+
+# Then the length argumetn to rep_full
 rep_full(x, length = 5)
 ```
 
-One downside of this approach is if you want to both replicate each component *and* the entire vector, you have to use two function calls, which is much more verbose than the `rep()` equivalent.
-However, I don't think this is a terribly common use case, and if we use our suggested argument naming principle, the call is the same length:
+### Downsides
+
+One downside of this approach is if you want to both replicate each component *and* the entire vector, you have to use two function calls, which you might expect to be more verbose.
+However, I don't think this is a terribly common use case, and if we use our usual call naming conventions, then the new call is the same length:
 
 ```{r}
 rep(x, each = 2, times = 3)
@@ -161,7 +171,7 @@ x |> rep_each(2) |> rep_full(3)
 ```
 
 ::: callout-caution
-Note that this implementation lacks any input checking so many inputs will work (possibly with a warning) that shouldn't.
+Note that this implementation lacks any input checking so invalid inputs might work, warn, or throw an unhelpful error.
 For example, since we're not checking that `times` and `length` argument to `rep_full()` are single integers, the following calls give suboptimal results:
 
 ```{r}

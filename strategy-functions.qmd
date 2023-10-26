@@ -32,6 +32,10 @@ Splitting one complex multi-strategy function into multiple simpler functions ca
 
 [^strategy-functions-1]: <https://tvtropes.org/pmwiki/pmwiki.php/Main/TotemPoleTrench>
 
+These functions all also suffer from the problem that the strategies are implicit, not explicit.
+That's because they use either the presence or absence of different arguments or the type of an argument pick strategies.
+This combination tends to produce particularly opaque code.
+
 ## How do I identify the problem?
 
 Typically this problem arises as the scope of your function grows over time, and because the growth tends to be gradual it's hard to notice exactly when it becomes an issue.
@@ -79,6 +83,7 @@ If it feels like
 
 Remediating past mistakes is straightforward: define, document, and export one function for each strategy.
 Then rewrite the original function to use those strategies, deprecating that entire function if desired.
+For example, this is what `fct_lump()` looked like after we realised it was really the combination of three simpler functions:
 
 ```{r}
 fct_lump <- function(f,
@@ -99,8 +104,8 @@ fct_lump <- function(f,
 }
 ```
 
-In forcats we decided to supersede `fct_lump()` rather than deprecating it.
-Deprecating it would require adding one deprecation for each branch:
+We decided to supersede `fct_lump()` rather than deprecating it, so we kept old function around and working.
+If we wanted to deprecate it, we'd need to add one deprecation for each branch:
 
 ```{r}
 fct_lump <- function(f,
