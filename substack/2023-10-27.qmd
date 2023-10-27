@@ -1,0 +1,60 @@
+# Strategies
+
+```{r}
+#| include: FALSE
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+Over the last couple of weeks I've been noodling on the idea of strategies: what happens if your function contains a few different approaches to the problem, and you want to expose to the user select.
+I believe that it's best to expose these explicitly like the `ties.method` argument to `rank()`, the `method` argument to `p.adjust()`, or the `.keep` argument to `dplyr::mutate()`.
+
+In functions that expose a strategy, it's common to see a character vector in the function interface.
+For example, `rank()` looks like this:
+
+```{r}
+#| eval: false
+rank(
+  x,
+  na.last = TRUE,
+  ties.method = c("average", "first", "last", "random", "max", "min")
+)
+```
+
+I call this character vector an **enumeration** and discuss it in "[Enumerate possible options](https://design.tidyverse.org/enumerate-options.html)".
+This vector enumerates (itemises) the possible options (six here) and it also tells you the default value, the first value in the vector (`"average"`).
+This type of default value is usually paired with either `match.arg()` or `rlang::arg_match()` to give an informative error if the user supplies an unsupported value.
+The chief difference between the base and rlang versions of this function is that the base version supports partial matching (e.g. you can write `rank(x, ties.method = "r")` for short), which we believe is no longer a good idea.
+
+One of the reasons it's useful to understand this pattern is that you might want to apply it even when there are only two options.
+In such a case, it's tempting to expose the option as a Boolean argument, accepting either `TRUE` or `FALSE`.
+But this has two problems:
+
+-   You might later discover that there's a third option. Now you're going to need to make more radical changes to your function interface to allow this.
+-   It's often trickier to understand a negative. For example, I recently discovered the `cancel_on_error` argument in an [httr2](https://httr2.r-lib.org) function. I think it's pretty clear what `cancel_on_error = TRUE` does (it cancels if there's an error), but what does `cancel_on_error = FALSE` do? I wrote this code and now I couldn't tell you what it actually does.
+
+I explore this idea in more detail in "[Prefer a enum, even if only two choices](https://design.tidyverse.org/boolean-strategies.html)", including a deeper look at the `decreasing` and `na.last` arguments to `sort()`.
+
+A more complicated example of the strategy pattern comes about when different strategies require different arguments.
+The best example of this sort of pattern is stringr, which uses the functions `regex()`, `fixed()`, `boundary()`, and `coll()` to define the pattern matching engine:
+
+```{r}
+library(stringr)
+x <- "The quick brown fox jumped over the lazy dog."
+
+str_view(x, regex("[aeiou]+", ignore_case = TRUE))
+str_view(x, fixed("."))
+str_view(x, boundary("word"))
+```
+
+I explore this idea more in "[Extract strategies into objects](https://design.tidyverse.org/strategy-objects.html)" (which really needs a catchier name), motivated by the `perl`, `fixed`, and `ignore.case` arguments to `grepl()` and friends.
+
+Finally, sometimes exposing multiple strategies in one function isn't the right move, and you're better off creating more simpler functions.
+I think of this problem as "[three functions in a trench coat](https://www.reddit.com/r/comics/comments/hzqw80/sheep_in_human_clothing/)" because it can feel like three or more functions crammed into one breaking apart at the seems.
+`forcats::fct_lump()` is a good example of this problem: it started off simple and then gained new strategies over time.
+Eventually it got so hard to explain that we decided to split apart in to three simpler functions.
+Another good example of this problem is the `rep()` function: I think it's actually two functions in trench coat and it gets easier to understand if you pull them apart.
+See the [rep() case study](https://design.tidyverse.org/cs-rep.html) for a full exploration including some of my thoughts about what you might name the functions and arguments.
+
+Do these patterns resonate with you?
+Are there other functions in the tidyverse that you think do a particularly good or bad job of exposing a strategy?
+Please let me know in the comments!
