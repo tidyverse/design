@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.450">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Hadley Wickham">
-<title>Tidy design principles - 16&nbsp; Argument meaning should be independent</title>
+<title>Tidy design principles - 12&nbsp; Argument meaning should be independent</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -61,8 +61,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./mutually-exclusive-arguments.html" rel="next">
-<link href="./cs-rep.html" rel="prev">
+<link href="./explicit-strategies.html" rel="next">
+<link href="./argument-clutter.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -100,7 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./independent-meaning.html">Argument dependencies</a></li><li class="breadcrumb-item"><a href="./independent-meaning.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Argument meaning should be independent</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./inputs-explicit.html">Scannable specs</a></li><li class="breadcrumb-item"><a href="./independent-meaning.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Argument meaning should be independent</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -221,6 +221,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Reduce argument clutter with an options object</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./independent-meaning.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Argument meaning should be independent</span></span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -235,25 +241,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./boolean-strategies.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Prefer a enum, even if only two choices</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Prefer a enum, even if only two choices</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./strategy-objects.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Extract strategies into objects</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Extract strategies into objects</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./strategy-functions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">A complex strategy might be better as separate functions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Three functions in trench coat</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-rep.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./implicit-strategies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Implicit strategies</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cs-rvest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Case study: <code>html_element()</code></span></span></a>
   </div>
 </li>
       </ul>
@@ -261,41 +279,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
- <span class="menu-text">Argument dependencies</span></a>
+ <span class="menu-text">Function arguments</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./independent-meaning.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Argument meaning should be independent</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./mutually-exclusive-arguments.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Mutually exclusive arguments</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./compound-arguments.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Compound arguments</span></span></a>
-  </div>
-</li>
-      </ul>
-</li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
- <span class="menu-text">Function arguments</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./def-magical.html" class="sidebar-item-text sidebar-link">
@@ -348,13 +337,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
  <span class="menu-text">Outputs</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-multi.html" class="sidebar-item-text sidebar-link">
@@ -383,13 +372,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
  <span class="menu-text">Evolution</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./changes-multivers.html" class="sidebar-item-text sidebar-link">
@@ -400,13 +389,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
  <span class="menu-text">Side effects</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./side-effects.html" class="sidebar-item-text sidebar-link">
@@ -423,13 +412,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
  <span class="menu-text">Errors</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./err-call.html" class="sidebar-item-text sidebar-link">
@@ -446,13 +435,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true">
  <span class="menu-text">Appendices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./glossary.html" class="sidebar-item-text sidebar-link">
@@ -469,14 +458,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#whats-the-problem" id="toc-whats-the-problem" class="nav-link active" data-scroll-target="#whats-the-problem"><span class="header-section-number">16.1</span> What’s the problem?</a></li>
-  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">16.2</span> What are some examples?</a></li>
-  <li><a href="#how-do-i-remediate-past-mistakes" id="toc-how-do-i-remediate-past-mistakes" class="nav-link" data-scroll-target="#how-do-i-remediate-past-mistakes"><span class="header-section-number">16.3</span> How do I remediate past mistakes?</a></li>
+<li><a href="#whats-the-problem" id="toc-whats-the-problem" class="nav-link active" data-scroll-target="#whats-the-problem"><span class="header-section-number">12.1</span> What’s the problem?</a></li>
+  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">12.2</span> What are some examples?</a></li>
+  <li><a href="#how-do-i-remediate-past-mistakes" id="toc-how-do-i-remediate-past-mistakes" class="nav-link" data-scroll-target="#how-do-i-remediate-past-mistakes"><span class="header-section-number">12.3</span> How do I remediate past mistakes?</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/independent-meaning.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-independent-meaning" class="quarto-section-identifier"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Argument meaning should be independent</span></span></h1>
+<h1 class="title"><span id="sec-independent-meaning" class="quarto-section-identifier"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Argument meaning should be independent</span></span></h1>
 </div>
 
 
@@ -489,40 +478,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header><section id="whats-the-problem" class="level2" data-number="16.1"><h2 data-number="16.1" class="anchored" data-anchor-id="whats-the-problem">
-<span class="header-section-number">16.1</span> What’s the problem?</h2>
-<p>Avoid having one argument change the interpretation of another argument. This makes reading function calls harder because if the argument that changes meaning comes after the argument who’s meaning is changed you need to reinterpret the rest of the call.</p>
-</section><section id="what-are-some-examples" class="level2" data-number="16.2"><h2 data-number="16.2" class="anchored" data-anchor-id="what-are-some-examples">
-<span class="header-section-number">16.2</span> What are some examples?</h2>
+</header><section id="whats-the-problem" class="level2" data-number="12.1"><h2 data-number="12.1" class="anchored" data-anchor-id="whats-the-problem">
+<span class="header-section-number">12.1</span> What’s the problem?</h2>
+<p>Avoid having one argument change the interpretation of another argument. This makes it harder to understand a call, because you might need to re-intepret an earlier argument. This sort of call is like a <a href="https://en.wikipedia.org/wiki/Garden-path_sentence">garden path sentence</a>, like “The horse raced past the barn fell<strong>”</strong> where your initial understanding of”raced” needs to be modified when you to get to the end of the sentence in order for it to make sense.</p>
+</section><section id="what-are-some-examples" class="level2" data-number="12.2"><h2 data-number="12.2" class="anchored" data-anchor-id="what-are-some-examples">
+<span class="header-section-number">12.2</span> What are some examples?</h2>
+<p>There aren’t many examples of this problem, but it’s pretty rare. I think it’s still worth being aware of it so you can avoid in your own code.</p>
 <ul>
 <li>
 <p>In <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> the <code>character.only</code> argument changes how the <code>package</code> argument is interpreted:</p>
 <div class="cell">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ggplot2</span> <span class="op">&lt;-</span> <span class="st">"dplyr"</span></span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">package</span> <span class="op">&lt;-</span> <span class="st">"dplyr"</span></span>
 <span></span>
-<span><span class="co"># Loads ggplot2</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="co"># Loads a package called "package"</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">package</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Loads dplyr</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span>, character.only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">package</span>, character.only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </li>
 <li><p>In <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> setting <code>repos = NULL</code> changes the interpretation of <code>pkgs</code> from being a vector of package names to a vector of file paths.</p></li>
-<li><p>In the base R string functions, <code>perl</code> and <code>fixed</code> change the interpretation of the <code>pattern</code> argument. See <a href="strategy-objects.html"><span>Chapter&nbsp;13</span></a> for more details.</p></li>
-<li><p>In <code><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">ggplot2::geom_label()</a></code>, setting <code>parse = TRUE</code> changes the meaning of the label argument/aesthetic from being any string to be a string on unparsed R code.</p></li>
-<li><p>In <code><a href="https://readr.tidyverse.org/reference/locale.html">readr::locale()</a></code> there’s a complex dependency between <code>decimal_mark</code> and <code>grouping_mark</code> because they can’t be the same value, and Europe and the US Europe use different standards. That suggests it might have been better to specify them in a single argument like <code>marks = c(",", ".")</code>.</p></li>
 <li><p>In <code><a href="https://rdrr.io/r/base/findInterval.html">findInterval()</a></code> if you set <code>left.open = TRUE</code> the <code>rightmost.closed</code> means <code>leftmost.closed</code>.</p></li>
-</ul></section><section id="how-do-i-remediate-past-mistakes" class="level2" data-number="16.3"><h2 data-number="16.3" class="anchored" data-anchor-id="how-do-i-remediate-past-mistakes">
-<span class="header-section-number">16.3</span> How do I remediate past mistakes?</h2>
-<p>Not clear that there’s a single solution. For the examples above:</p>
+</ul></section><section id="how-do-i-remediate-past-mistakes" class="level2" data-number="12.3"><h2 data-number="12.3" class="anchored" data-anchor-id="how-do-i-remediate-past-mistakes">
+<span class="header-section-number">12.3</span> How do I remediate past mistakes?</h2>
+<p>It’s not clear that there’s a single solution. For the examples above:</p>
 <ul>
-<li>
-<p>In <code><a href="https://rdrr.io/r/base/library.html">library()</a></code>, I think this is an example of why base R needs a consistent mechanism for quoting and unquoting. If <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> were a tidyverse function it would use tidy-eval, and so you’d write <code><a href="https://ggplot2.tidyverse.org">library(ggplot2)</a></code> or <code><a href="https://rdrr.io/r/base/library.html">library(!!ggplot2)</a></code>.</p>
-<p>Alternatively, you could maybe argue that it should be <code><a href="https://ggplot2.tidyverse.org">library("ggplot2")</a></code> and <code><a href="https://ggplot2.tidyverse.org">library(ggplot2)</a></code>.</p>
-</li>
+<li><p>In <code><a href="https://rdrr.io/r/base/library.html">library()</a></code>, I think this is an example of why base R needs a consistent mechanism for quoting and unquoting. If <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> were a tidyverse function it would use tidy-eval, and so you’d write <code><a href="https://rdrr.io/r/base/library.html">library(package)</a></code> or <code><a href="https://rdrr.io/r/base/library.html">library(!!package)</a></code>. Another option would be to use the same mechanism as <code><a href="https://rdrr.io/r/utils/help.html">help()</a></code> where <code>help((topic))</code> will always look for the topic named by the <code>topic</code> variable.</p></li>
 <li><p>In <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> maybe it would be better to have mutually exclusive <code>packages</code> and <code>paths</code> arguments? Then <code>repos</code> only applies to <code>paths</code> which might suggest this is an example of the strategy pattern?</p></li>
-<li><p><code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code> and friends are another example of the strategy pattern.</p></li>
-<li><p>For <code><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">ggplot2::geom_label()</a></code> my gut feeling would be to make it another function, but <code>parse = TRUE</code> applies to <code><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text()</a></code> as well. So maybe the current setup is the least worst?</p></li>
 <li><p>In <code><a href="https://rdrr.io/r/base/findInterval.html">findInterval()</a></code> I think I’d fix it by renaming the argument to something that wasn’t direction specific. Maybe <code>extemum.closed</code>?</p></li>
 </ul>
 
@@ -760,13 +742,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./cs-rep.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code>
-                
+      <a href="./argument-clutter.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Reduce argument clutter with an options object</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./mutually-exclusive-arguments.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Mutually exclusive arguments</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./explicit-strategies.html" class="pagination-link">
+        <span class="nav-page-text">Strategies</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

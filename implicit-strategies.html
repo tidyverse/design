@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.450">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Hadley Wickham">
-<title>Tidy design principles - 17&nbsp; Mutually exclusive arguments</title>
+<title>Tidy design principles - 17&nbsp; Implicit strategies</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -61,8 +61,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./compound-arguments.html" rel="next">
-<link href="./independent-meaning.html" rel="prev">
+<link href="./cs-rvest.html" rel="next">
+<link href="./cs-rep.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -100,7 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./independent-meaning.html">Argument dependencies</a></li><li class="breadcrumb-item"><a href="./mutually-exclusive-arguments.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Mutually exclusive arguments</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./explicit-strategies.html">Strategies</a></li><li class="breadcrumb-item"><a href="./implicit-strategies.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Implicit strategies</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -221,6 +221,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Reduce argument clutter with an options object</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./independent-meaning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Argument meaning should be independent</span></span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -235,25 +241,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./boolean-strategies.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Prefer a enum, even if only two choices</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Prefer a enum, even if only two choices</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./strategy-objects.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Extract strategies into objects</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Extract strategies into objects</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./strategy-functions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">A complex strategy might be better as separate functions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Three functions in trench coat</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-rep.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./implicit-strategies.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Implicit strategies</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cs-rvest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Case study: <code>html_element()</code></span></span></a>
   </div>
 </li>
       </ul>
@@ -261,41 +279,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
- <span class="menu-text">Argument dependencies</span></a>
+ <span class="menu-text">Function arguments</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./independent-meaning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Argument meaning should be independent</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./mutually-exclusive-arguments.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Mutually exclusive arguments</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./compound-arguments.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Compound arguments</span></span></a>
-  </div>
-</li>
-      </ul>
-</li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
- <span class="menu-text">Function arguments</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./def-magical.html" class="sidebar-item-text sidebar-link">
@@ -348,13 +337,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
  <span class="menu-text">Outputs</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./out-multi.html" class="sidebar-item-text sidebar-link">
@@ -383,13 +372,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
  <span class="menu-text">Evolution</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./changes-multivers.html" class="sidebar-item-text sidebar-link">
@@ -400,13 +389,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
  <span class="menu-text">Side effects</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./side-effects.html" class="sidebar-item-text sidebar-link">
@@ -423,13 +412,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
  <span class="menu-text">Errors</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./err-call.html" class="sidebar-item-text sidebar-link">
@@ -446,13 +435,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true">
  <span class="menu-text">Appendices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./glossary.html" class="sidebar-item-text sidebar-link">
@@ -470,14 +459,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
 <li><a href="#whats-the-pattern" id="toc-whats-the-pattern" class="nav-link active" data-scroll-target="#whats-the-pattern"><span class="header-section-number">17.1</span> What’s the pattern?</a></li>
-  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">17.2</span> What are some examples?</a></li>
-  <li><a href="#alternatives" id="toc-alternatives" class="nav-link" data-scroll-target="#alternatives"><span class="header-section-number">17.3</span> Alternatives</a></li>
-  <li><a href="#how-do-you-use-this-pattern" id="toc-how-do-you-use-this-pattern" class="nav-link" data-scroll-target="#how-do-you-use-this-pattern"><span class="header-section-number">17.4</span> How do you use this pattern?</a></li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/mutually-exclusive-arguments.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+  <li>
+<a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">17.2</span> What are some examples?</a>
+  <ul class="collapse">
+<li><a href="#mutually-exclusive-arguments" id="toc-mutually-exclusive-arguments" class="nav-link" data-scroll-target="#mutually-exclusive-arguments"><span class="header-section-number">17.2.1</span> Mutually exclusive arguments</a></li>
+  <li><a href="#compound-objects" id="toc-compound-objects" class="nav-link" data-scroll-target="#compound-objects"><span class="header-section-number">17.2.2</span> Compound objects</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#how-do-you-use-this-pattern" id="toc-how-do-you-use-this-pattern" class="nav-link" data-scroll-target="#how-do-you-use-this-pattern"><span class="header-section-number">17.3</span> How do you use this pattern?</a>
+  <ul class="collapse">
+<li><a href="#mutually-exclusive-arguments-1" id="toc-mutually-exclusive-arguments-1" class="nav-link" data-scroll-target="#mutually-exclusive-arguments-1"><span class="header-section-number">17.3.1</span> Mutually exclusive arguments</a></li>
+  <li><a href="#compound-arguments" id="toc-compound-arguments" class="nav-link" data-scroll-target="#compound-arguments"><span class="header-section-number">17.3.2</span> Compound arguments</a></li>
+  </ul>
+</li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/implicit-strategies.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-mutually-exclusive" class="quarto-section-identifier"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Mutually exclusive arguments</span></span></h1>
+<h1 class="title"><span id="sec-implicit-strategies" class="quarto-section-identifier"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Implicit strategies</span></span></h1>
 </div>
 
 
@@ -492,36 +492,61 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header><section id="whats-the-pattern" class="level2" data-number="17.1"><h2 data-number="17.1" class="anchored" data-anchor-id="whats-the-pattern">
 <span class="header-section-number">17.1</span> What’s the pattern?</h2>
-<p>If a function needs to have mutually exclusive arguments (i.e.&nbsp;you must supply only one of theme) make sure you check that only one is supplied in order to give a clear error message. Avoid implementing some precedence order where if both <code>a</code> and <code>b</code> are supplied, <code>b</code> silently wins.</p>
-<p>The main drawback of a pair of mutually exclusive arguments is that there’s no way to the exclusivity clear from the function signature alone. Instead, the best you can do is make both appear required (by leaving them free from defaults) and then performing your own check in the body of the function.</p>
-<p>This technique should generally be reserved for a pair of possible arguments. If there are more than two, that is generally a sign you reach for another technique. You also need to be confident that there will only ever be two options, as switching to a different approach later will be painful.</p>
-<p>(In the case of required args, you might want to consider putting them after <code>…</code>. This violations <a href="dots-after-required.html"><span>Chapter&nbsp;8</span></a>, but forces the user to name the arguments which will make the code easier to read)</p>
+<p>There are two implicit strategies that are sometimes useful. I call them implicit because you don’t select them explicitly with a single argument, but instead select between them based on the presence and absence of different arguments. As you might guess, this can make for a confusing interface, but it is occassionaly the best option.</p>
+<ul>
+<li>With <strong>mutually exclusive arguments</strong> you select between two strategies based on whether you supply argument <code>a</code> or argument <code>b</code>.</li>
+<li>With <strong>compound objects</strong> you select between two strategies based on whether you supply one complex object (e.g.&nbsp;a data frame) or multiple simple objects (e.g.&nbsp;vectors). I think the most compelling reason to use this pattern is when another function might be called directly by a user (who will supply individual arguments) or with the output from another function (which needs to pour into a single argument).</li>
+</ul>
+<p>The main challenge with using these pattern is that you can’t make them clear from the function signature alone, so you need to carefully document and check inputs yourself. They are also likely to be surprising to the user as they are relatively rare patterns. So before using either of these techniques you should try using an explicit strategy via an enum (<a href="enumerate-options.html"><span>Chapter&nbsp;10</span></a>), using separate functions (<a href="strategy-functions.html"><span>Chapter&nbsp;15</span></a>), or using strategy objects (<a href="strategy-objects.html"><span>Chapter&nbsp;14</span></a>). <a href="cs-rvest.html"><span>Chapter&nbsp;18</span></a> explores these options from the perspective of <code><a href="http://xml2.r-lib.org/reference/read_xml.html">rvest::read_html()</a></code>.</p>
 </section><section id="what-are-some-examples" class="level2" data-number="17.2"><h2 data-number="17.2" class="anchored" data-anchor-id="what-are-some-examples">
 <span class="header-section-number">17.2</span> What are some examples?</h2>
+<section id="mutually-exclusive-arguments" class="level3" data-number="17.2.1"><h3 data-number="17.2.1" class="anchored" data-anchor-id="mutually-exclusive-arguments">
+<span class="header-section-number">17.2.1</span> Mutually exclusive arguments</h3>
 <ul>
+<li><p><code><a href="https://rdrr.io/r/stats/cutree.html">cutree()</a></code> is an example where I think mutually exclusive arguments shine: it’s so simple</p></li>
 <li><p><code><a href="https://rdrr.io/r/utils/read.table.html">read.table()</a></code> allows you to supply data either with a path to a <code>file</code>, or inline as <code>text</code>. If you supply both, <code>path</code> wins.</p></li>
-<li><p>In <code><a href="https://rdrr.io/r/stats/cor.html">var()</a></code> you can remove missing values by either setting <code>na.rm = TRUE</code> or <code>use = "complete.obs"</code>. If you supply both, <code>use</code> wins.</p></li>
-<li><p><code><a href="https://rvest.tidyverse.org/reference/html_element.html">rvest::html_element()</a></code> allows you to select HTML elements either with a <code>css</code> selector or an <code>xpath</code> expression. If supply neither, or both, you get an error.</p></li>
 <li><p>In <code><a href="https://ggplot2.tidyverse.org/reference/scale_date.html">ggplot2::scale_x_date()</a></code> and friends you can specify the breaks and labels either with <code>breaks</code> and <code>labels</code> (like all other scale functions) or with <code>date_breaks</code> and <code>date_labels</code>. If you set both values in a pair, the <code>date_</code> version wins.</p></li>
 <li><p><code><a href="https://forcats.tidyverse.org/reference/fct_other.html">forcats::fct_other()</a></code> allows you to either <code>keep</code> or <code>drop</code> specified factor values. If supply neither, or both, you get an error.</p></li>
 <li><p><code><a href="https://dplyr.tidyverse.org/reference/relocate.html">dplyr::relocate()</a></code> has optional <code>.before</code> and <code>.after</code> arguments.</p></li>
-</ul></section><section id="alternatives" class="level2" data-number="17.3"><h2 data-number="17.3" class="anchored" data-anchor-id="alternatives">
-<span class="header-section-number">17.3</span> Alternatives</h2>
+</ul></section><section id="compound-objects" class="level3" data-number="17.2.2"><h3 data-number="17.2.2" class="anchored" data-anchor-id="compound-objects">
+<span class="header-section-number">17.2.2</span> Compound objects</h3>
 <ul>
 <li>
-<p>Use a strategy pattern. For example, <code><a href="https://readr.tidyverse.org/reference/read_delim.html">readr::read_csv()</a></code> doesn’t have separate <code>text</code> and <code>file</code> arguments. Instead, you can supply raw text directly to <code>file</code> by wrapping it in <code><a href="https://rdrr.io/r/base/AsIs.html">I()</a></code>.</p>
-<p>rvest could have done this by providing <code>css()</code> and <code>xpath()</code> helper functions so instead of writing <code>html |&gt; html_element(css = "p a")</code> you’d write <code>html |&gt; html_element(css("p a"))</code>. I think probably would have netted about about the same, and is a reasonable alternative. The big advantage of this pattern would be that it’s easier to extend if we discovered other ways of describing the elements to select.</p>
+<p>For example, it seems reasonable that you should be able to feed the output of <code><a href="https://stringr.tidyverse.org/reference/str_locate.html">str_locate()</a></code> directly into <code><a href="https://stringr.tidyverse.org/reference/str_sub.html">str_sub()</a></code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://stringr.tidyverse.org">stringr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"aaaaab"</span>, <span class="st">"aaab"</span>, <span class="st">"ccccb"</span><span class="op">)</span></span>
+<span><span class="va">loc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_locate.html">str_locate</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"a+b"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_sub.html">str_sub</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">loc</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "aaaaab" "aaab"   NA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>But equally, it’s nice to be able to supply individual start and end values when calling it directly:</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_sub.html">str_sub</a></span><span class="op">(</span><span class="st">"Hadley"</span>, start <span class="op">=</span> <span class="fl">2</span>, end <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "adl"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>So <code><a href="https://stringr.tidyverse.org/reference/str_sub.html">str_sub()</a></code> allows either individual vectors supplied to <code>start</code> and <code>end</code>, or a two-column matrix supplied to <code>start</code>.</p>
 </li>
 <li>
-<p>Use separate functions. For example could have <code>fct_other_drop()</code> and <code>fct_other_keep()</code>. This isn’t much less typing for the user since the options are either <code>fct_other(x, drop = "abc")</code> or <code>fct_other_drop(x, "abc")</code>.</p>
-<p>This only works if the pair of arguments is relatively rare in your overall API. It wouldn’t work, for example, in rvest, since a large number of functions take either <code>css</code> or <code>xpath</code> so it would almost double the number of functions in the package.</p>
+<p><code>options(list(a = 1, b = 2))</code> is equivalent to <code>options(a = 1, b = 2)</code>. This is half of very useful pattern. The other half of that pattern is that <code><a href="https://rdrr.io/r/base/options.html">options()</a></code> returns the previous value of any options that you set. That means you can do <code>old &lt;- options(…); options(old)</code> to temporarily set options with in a function.</p>
+<p><code><a href="https://withr.r-lib.org/reference/with_options.html">withr::local_options()</a></code> and <code><a href="https://withr.r-lib.org/reference/with_envvar.html">withr::local_envvar()</a></code> work similarly: you can either supply a single list of values, or individually named values. But they do it with different arguments.</p>
 </li>
-<li><p><code><a href="https://rdrr.io/r/stats/cutree.html">cutree()</a></code> is an example where I think mutually exclusive arguments shine: it’s so simple</p></li>
-</ul></section><section id="how-do-you-use-this-pattern" class="level2" data-number="17.4"><h2 data-number="17.4" class="anchored" data-anchor-id="how-do-you-use-this-pattern">
-<span class="header-section-number">17.4</span> How do you use this pattern?</h2>
-<p>If the arguments are required, leave the mutually exclusive arguments free from defaults then use <code><a href="https://rlang.r-lib.org/reference/check_exclusive.html">rlang::check_exclusive()</a></code>. If they’re optional, give them <code>NULL</code> arguments.</p>
+<li>
+<p>Another place that this pattern crops up is in <code><a href="https://dplyr.tidyverse.org/reference/bind_rows.html">dplyr::bind_rows()</a></code>. When binding rows together, it’s equally useful to bind a few named data frames as it is to bind a list of data frames that come from map or similar. In base R you need to know about <code>do.call(rbind, mylist)</code> which is a relatively sophisticated pattern. So in dplyr we tried to make <code>bind_rows()</code> automatically figure out if you were in situation one or two. Unfortunately, it turns out to be really hard to tell which of the situations you are in, so dplyr implemented heuristics that work most of the time, but occasionally it fails in surprising ways.</p>
+<p>Now we have generally steered away from interfaces that try to automatically “unsplice” their inputs and instead require that you use <code>!!!</code> to explicitly unsplice. This is has some advantages and disadvantages: it’s an interface that’s becoming increasingly common in the tidyverse (and we have a good convention for documenting it with the <code>&lt;dynamic-dots&gt;</code> tag), but it’s still relatively rare and is an advanced technique that we don’t expect everyone to learn. That’s why for this important case, we also have <code><a href="https://purrr.tidyverse.org/reference/list_c.html">purrr::list_cbind()</a></code>.</p>
+<p>But it means that functions like <code>purrr::hoist()</code>, <code><a href="https://forcats.tidyverse.org/reference/fct_cross.html">forcats::fct_cross()</a></code>, and <code><a href="https://rvest.tidyverse.org/reference/html_form.html">rvest::html_form()</a></code> which are less commonly given lists have a clearly documented escape hatch that doesn’t require another different function. (And of course if you understand the <code>do.call</code> pattern you can still use that too).</p>
+</li>
+</ul></section></section><section id="how-do-you-use-this-pattern" class="level2" data-number="17.3"><h2 data-number="17.3" class="anchored" data-anchor-id="how-do-you-use-this-pattern">
+<span class="header-section-number">17.3</span> How do you use this pattern?</h2>
+<section id="mutually-exclusive-arguments-1" class="level3" data-number="17.3.1"><h3 data-number="17.3.1" class="anchored" data-anchor-id="mutually-exclusive-arguments-1">
+<span class="header-section-number">17.3.1</span> Mutually exclusive arguments</h3>
+<p>If a function needs to have mutually exclusive arguments (i.e.&nbsp;you must supply only one of theme) make sure you check that only one is supplied in order to give a clear error message. Avoid implementing some precedence order where if both <code>a</code> and <code>b</code> are supplied, <code>b</code> silently wins. The easiest way to do this is to use <code><a href="https://rlang.r-lib.org/reference/check_exclusive.html">rlang::check_exclusive()</a></code>.</p>
+<p>(In the case of required args, you might want to consider putting them after <code>…</code>. This violations <a href="dots-after-required.html"><span>Chapter&nbsp;8</span></a>, but forces the user to name the arguments which will make the code easier to read)</p>
+<p>If you must pick one of the two mutually exclusive arguments, make their defaults empty. Otherwise, if they’re optional, give them <code>NULL</code> arguments.</p>
 <div class="cell">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fct_drop</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">f</span>, <span class="va">drop</span>, <span class="va">keep</span><span class="op">)</span> <span class="op">{</span></span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fct_drop</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">f</span>, <span class="va">drop</span>, <span class="va">keep</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/check_exclusive.html">check_exclusive</a></span><span class="op">(</span><span class="va">drop</span>, <span class="va">keep</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
@@ -534,30 +559,71 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; ! Exactly one of `drop` or `keep` must be supplied.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>(If the arguments are optional, you’ll need <code>.require = FALSE</code> until <a href="https://github.com/r-lib/rlang/issues/1647" class="uri">https://github.com/r-lib/rlang/issues/1647</a>)</p>
-<p>If you don’t want to take a dependency on rlang, you can perform the check “by hand” with <code><a href="https://rdrr.io/r/base/Logic.html">xor()</a></code> and <code><a href="https://rdrr.io/r/base/missing.html">missing()</a></code>:</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+With base R
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>If you don’t want to use rlang, you implement yourself with <code><a href="https://rdrr.io/r/base/Logic.html">xor()</a></code> and <code><a href="https://rdrr.io/r/base/missing.html">missing()</a></code>:</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fct_drop</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">f</span>, <span class="va">drop</span>, <span class="va">keep</span><span class="op">)</span> <span class="op">{</span></span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fct_drop</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">f</span>, <span class="va">drop</span>, <span class="va">keep</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/Logic.html">xor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">keep</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">drop</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="kw"><a href="https://rdrr.io/r/base/stop.html">stop</a></span><span class="op">(</span><span class="st">"Exactly one of `keep` and `drop` must be supplied"</span><span class="op">)</span></span>
 <span>  <span class="op">}</span>  </span>
 <span><span class="op">}</span></span>
 <span><span class="fu">fct_drop</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in fct_drop(factor()): Exactly one of `keep` and `drop` must be supplied</span></span>
 <span></span>
-<span><span class="fu">fct_drop</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="op">)</span>, keep <span class="op">=</span> <span class="st">"a"</span>, drop <span class="op">=</span> <span class="st">"b"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in fct_drop(factor(), keep = "a", drop = "b"): Exactly one of `keep` and `drop` must be supplied</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu">fct_drop</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="op">)</span>, keep <span class="op">=</span> <span class="st">"a"</span>, drop <span class="op">=</span> <span class="st">"b"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
 </div>
 <p>In the documentation, document the pair of arguments together, and make it clear that only one of the pair can be supplied:</p>
 <div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' @param keep,drop Pick one of `keep` and `drop`:</span></span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' @param keep,drop Pick one of `keep` and `drop`:</span></span>
 <span><span class="co">#'   * `keep` will preserve listed levels, replacing all others with </span></span>
 <span><span class="co">#'     `other_level`.</span></span>
 <span><span class="co">#'   * `drop` will replace listed levels with `other_level`, keeping all</span></span>
 <span><span class="co">#'     as is.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section><section id="compound-arguments" class="level3" data-number="17.3.2"><h3 data-number="17.3.2" class="anchored" data-anchor-id="compound-arguments">
+<span class="header-section-number">17.3.2</span> Compound arguments</h3>
+<p>To implement in your own functions, you should branch on the type of the first argument and then check that the others aren’t supplied.</p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">str_sub</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">string</span>, <span class="va">start</span>, <span class="va">end</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">is.matrix</a></span><span class="op">(</span><span class="va">start</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/missing.html">missing</a></span><span class="op">(</span><span class="va">end</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="fu">abort</span><span class="op">(</span><span class="st">"`end` must be missing when `start` is a matrix"</span><span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">start</span><span class="op">)</span> <span class="op">!=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="fu">abort</span><span class="op">(</span><span class="st">"Matrix `start` must have exactly two columns"</span><span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>    <span class="fu">stri_sub</span><span class="op">(</span><span class="va">string</span>, from <span class="op">=</span> <span class="va">start</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, to <span class="op">=</span> <span class="va">start</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>    <span class="fu">stri_sub</span><span class="op">(</span><span class="va">string</span>, from <span class="op">=</span> <span class="va">start</span>, to <span class="op">=</span> <span class="va">end</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And make it clear in the documentation:</p>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' @param start,end Integer vectors giving the `start` (default: first)</span></span>
+<span><span class="co">#'   and `end` (default: last) positions, inclusively. </span></span>
+<span><span class="co">#'   </span></span>
+<span><span class="co">#'   Alternatively, you pass a two-column matrix to `start`, i.e. </span></span>
+<span><span class="co">#'   `str_sub(x, start, end)` is equivalent to </span></span>
+<span><span class="co">#'   `str_sub(x, cbind(start, end))`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>(If you look at <code>string::str_sub()</code> you’ll notice that <code>start</code> and <code>end</code> do have defaults; I think this is a mistake because <code>start</code> and <code>end</code> are important enough that the user should always be forced to supply them.)</p>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -790,13 +856,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./independent-meaning.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Argument meaning should be independent</span></span>
-      </a>          
+      <a href="./cs-rep.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code>
+                
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./compound-arguments.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Compound arguments</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./cs-rvest.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Case study: <code>html_element()</code></span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
