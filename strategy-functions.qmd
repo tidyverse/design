@@ -1,4 +1,4 @@
-# A complex strategy might be better as separate functions {#sec-strategy-functions}
+# Three functions in trench coat {#sec-strategy-functions}
 
 ```{r}
 #| include = FALSE
@@ -14,12 +14,15 @@ Two signs that this might be the case:
 -   The implementation of your function has a couple of big if branches that share relatively little code.
 
 Splitting one complex multi-strategy function into multiple simpler functions can make maintenance and testing easier, while also improving the user experience.
+I think of this the three (or more generally $n$) functions in a trench coat[^strategy-functions-1] problem, because the reality of the separate functions tends to become very obvious in time.
+
+[^strategy-functions-1]: <https://tvtropes.org/pmwiki/pmwiki.php/Main/TotemPoleTrench>
 
 ## What are some examples?
 
 -   `forcats::fct_lump()` chooses between one of three lumping strategies depending on whether you supply just `n`, just `prop`, or neither, while supplying both `n` and `prop` is an error.
     Additionally, the `ties.method` argument only does anything if you supply only `n`.
-    `fct_lump()` is hard to understand and document because it's really three smaller functions in a trench coat[^strategy-functions-1].
+    `fct_lump()` is hard to understand and document because it's really three smaller functions.
 
 -   `diag()` is used to both extract the diagonal of a matrix and construct a matrix from a vector of diagonal values.
     This combination of purposes makes its arguments hard to understand: if `x` is a matrix, you can `names` but not `nrow` and `ncol`; if `x` is a vector, you can use `nrow` and `ncol` but not `names`.
@@ -29,8 +32,6 @@ Splitting one complex multi-strategy function into multiple simpler functions ca
 
 -   `rep()` is used to both repeat each element of a vector and to repeat the complete vector.
     I discuss this more in @sec-cs-rep.
-
-[^strategy-functions-1]: <https://tvtropes.org/pmwiki/pmwiki.php/Main/TotemPoleTrench>
 
 These functions all also suffer from the problem that the strategies are implicit, not explicit.
 That's because they use either the presence or absence of different arguments or the type of an argument pick strategies.
