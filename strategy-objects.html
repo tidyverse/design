@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.450">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Hadley Wickham">
-<title>Tidy design principles - 14&nbsp; Extract strategies into objects</title>
+<title>Tidy design principles - Extract strategies into objects</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -137,8 +137,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./unifying.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Unifying principles</span></span></a>
+  <a href="./unifying.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Unifying principles</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -152,20 +151,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./names.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Names attribute</span></span></a>
+  <a href="./names.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Names attribute</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./call-data-details.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Name all but the most important arguments</span></span></a>
+  <a href="./call-data-details.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Name all but the most important arguments</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./function-names.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Function names</span></span></a>
+  <a href="./function-names.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Function names</span></a>
   </div>
 </li>
       </ul>
@@ -181,50 +177,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./inputs-explicit.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Make inputs explicit</span></span></a>
+  <a href="./inputs-explicit.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Make inputs explicit</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./important-args-first.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Put the most important arguments first</span></span></a>
+  <a href="./important-args-first.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Put the most important arguments first</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./required-no-defaults.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Required args shouldn’t have defaults</span></span></a>
+  <a href="./required-no-defaults.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Required args shouldn’t have defaults</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./dots-after-required.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Put <code>…</code> after required arguments</span></span></a>
+  <a href="./dots-after-required.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Put <code>…</code> after required arguments</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./defaults-short-and-sweet.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Keep defaults short and sweet</span></span></a>
+  <a href="./defaults-short-and-sweet.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Keep defaults short and sweet</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./enumerate-options.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Enumerate possible options</span></span></a>
+  <a href="./enumerate-options.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Enumerate possible options</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./argument-clutter.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Reduce argument clutter with an options object</span></span></a>
+  <a href="./argument-clutter.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Reduce argument clutter with an options object</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./independent-meaning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Argument meaning should be independent</span></span></a>
+  <a href="./independent-meaning.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Argument meaning should be independent</span></a>
   </div>
 </li>
       </ul>
@@ -240,38 +228,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./boolean-strategies.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Prefer a enum, even if only two choices</span></span></a>
+  <a href="./boolean-strategies.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Prefer a enum, even if only two choices</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./strategy-objects.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Extract strategies into objects</span></span></a>
+  <a href="./strategy-objects.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Extract strategies into objects</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./strategy-functions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Three functions in trench coat</span></span></a>
+  <a href="./strategy-functions.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Three functions in trench coat</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./cs-rep.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code>
+  <a href="./cs-rep.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Case study: <code></code></span></a><code><a href="https://rdrr.io/r/base/rep.html">rep()</a></code>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./implicit-strategies.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Implicit strategies</span></span></a>
+  <a href="./implicit-strategies.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implicit strategies</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./cs-rvest.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Case study: <code>html_element()</code></span></span></a>
+  <a href="./cs-rvest.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Case study: <code>html_element()</code></span></a>
   </div>
 </li>
       </ul>
@@ -287,50 +269,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./def-magical.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Avoid magical defaults</span></span></a>
+  <a href="./def-magical.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Avoid magical defaults</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./def-inform.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Explain important defaults</span></span></a>
+  <a href="./def-inform.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Explain important defaults</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./def-user.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">User settable defaults</span></span></a>
+  <a href="./def-user.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">User settable defaults</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./dots-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Making data with …</span></span></a>
+  <a href="./dots-data.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Making data with …</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./dots-prefix.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Dot prefix</span></span></a>
+  <a href="./dots-prefix.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Dot prefix</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./dots-inspect.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Inspect the dots</span></span></a>
+  <a href="./dots-inspect.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Inspect the dots</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./cs-mapply-pmap.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/base/mapply.html">mapply()</a></code> vs <code>pmap()</code>
+  <a href="./cs-mapply-pmap.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Case study: <code></code></span></a><code><a href="https://rdrr.io/r/base/mapply.html">mapply()</a></code> vs <code>pmap()</code>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./cs-setNames.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Case study: <code></code></span></span></a><code><a href="https://rdrr.io/r/stats/setNames.html">setNames()</a></code>
+  <a href="./cs-setNames.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Case study: <code></code></span></a><code><a href="https://rdrr.io/r/stats/setNames.html">setNames()</a></code>
   </div>
 </li>
       </ul>
@@ -346,26 +320,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./out-multi.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Returning multiple values</span></span></a>
+  <a href="./out-multi.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Returning multiple values</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./out-type-stability.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Type-stability</span></span></a>
+  <a href="./out-type-stability.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Type-stability</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./out-vectorisation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Vectorisation</span></span></a>
+  <a href="./out-vectorisation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Vectorisation</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./out-invisible.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Side-effect functions should return invisibly</span></span></a>
+  <a href="./out-invisible.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Side-effect functions should return invisibly</span></a>
   </div>
 </li>
       </ul>
@@ -381,8 +351,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./changes-multivers.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Work with multiple dependency versions</span></span></a>
+  <a href="./changes-multivers.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Work with multiple dependency versions</span></a>
   </div>
 </li>
       </ul>
@@ -398,14 +367,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./side-effects.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Side-effect soup</span></span></a>
+  <a href="./side-effects.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Side-effect soup</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./spooky-action.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Spooky action</span></span></a>
+  <a href="./spooky-action.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Spooky action</span></a>
   </div>
 </li>
       </ul>
@@ -421,14 +388,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./err-call.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Error call</span></span></a>
+  <a href="./err-call.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Error call</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./err-constructor.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Error constructors</span></span></a>
+  <a href="./err-constructor.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Error constructors</span></a>
   </div>
 </li>
       </ul>
@@ -444,8 +409,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./glossary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+  <a href="./glossary.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Glossary</span></a>
   </div>
 </li>
       </ul>
@@ -458,21 +422,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#whats-the-problem" id="toc-whats-the-problem" class="nav-link active" data-scroll-target="#whats-the-problem"><span class="header-section-number">14.1</span> What’s the problem?</a></li>
-  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples"><span class="header-section-number">14.2</span> What are some examples?</a></li>
+<li><a href="#whats-the-problem" id="toc-whats-the-problem" class="nav-link active" data-scroll-target="#whats-the-problem">What’s the problem?</a></li>
+  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples">What are some examples?</a></li>
   <li>
-<a href="#how-do-you-use-the-pattern" id="toc-how-do-you-use-the-pattern" class="nav-link" data-scroll-target="#how-do-you-use-the-pattern"><span class="header-section-number">14.3</span> How do you use the pattern?</a>
+<a href="#how-do-you-use-the-pattern" id="toc-how-do-you-use-the-pattern" class="nav-link" data-scroll-target="#how-do-you-use-the-pattern">How do you use the pattern?</a>
   <ul class="collapse">
-<li><a href="#strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-sec-pattern-engine" id="toc-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-sec-pattern-engine" class="nav-link" data-scroll-target="#strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-sec-pattern-engine"><span class="header-section-number">14.3.1</span> Selecting a pattern engine</a></li>
-  <li><a href="#implementation" id="toc-implementation" class="nav-link" data-scroll-target="#implementation"><span class="header-section-number">14.3.2</span> Implementation</a></li>
+<li><a href="#strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-sec-pattern-engine" id="toc-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-sec-pattern-engine" class="nav-link" data-scroll-target="#strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-sec-pattern-engine">Selecting a pattern engine</a></li>
+  <li><a href="#implementation" id="toc-implementation" class="nav-link" data-scroll-target="#implementation">Implementation</a></li>
   </ul>
 </li>
-  <li><a href="#how-do-i-remediate-past-problems" id="toc-how-do-i-remediate-past-problems" class="nav-link" data-scroll-target="#how-do-i-remediate-past-problems"><span class="header-section-number">14.4</span> How do I remediate past problems?</a></li>
+  <li><a href="#how-do-i-remediate-past-problems" id="toc-how-do-i-remediate-past-problems" class="nav-link" data-scroll-target="#how-do-i-remediate-past-problems">How do I remediate past problems?</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/strategy-objects.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-strategy-objects" class="quarto-section-identifier"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Extract strategies into objects</span></span></h1>
+<h1 class="title"><span class="chapter-title">Extract strategies into objects</span></h1>
 </div>
 
 
@@ -485,22 +449,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header><section id="whats-the-problem" class="level2" data-number="14.1"><h2 data-number="14.1" class="anchored" data-anchor-id="whats-the-problem">
-<span class="header-section-number">14.1</span> What’s the problem?</h2>
+</header><section id="whats-the-problem" class="level2"><h2 class="anchored" data-anchor-id="whats-the-problem">What’s the problem?</h2>
 <p>Sometimes different strategies need different arguments. In this case, instead of using an enum, you’ll need to use richer objects capable of storing optional values as well as the strategy name.</p>
 <p>You can also see this as an extension of <a href="argument-clutter.html"><span>Chapter&nbsp;11</span></a></p>
 <p>A more advanced form of this pattern arises when you have many arguments apart from the arguments needed by the different strategies. One example that we’ll explore below is <code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">ggplot2::stat_bin()</a></code>. A key part of <code>stat_bin()</code> (which powers <code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">ggplot2::geom_histogram()</a></code> is defining the locations of the bins, which currently uses five argument (<code>binwidth</code>, <code>bins</code>, <code>breaks</code>, <code>boundary</code>, <code>center</code>, <code>closed</code>). But it also has many arguments (e.g.&nbsp;<code>na.rm</code>, <code>orientation</code>, <code>show.legend</code>, ...)</p>
-</section><section id="what-are-some-examples" class="level2" data-number="14.2"><h2 data-number="14.2" class="anchored" data-anchor-id="what-are-some-examples">
-<span class="header-section-number">14.2</span> What are some examples?</h2>
+</section><section id="what-are-some-examples" class="level2"><h2 class="anchored" data-anchor-id="what-are-some-examples">What are some examples?</h2>
 <ul>
 <li><p><code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code> has boolean <code>perl</code> and <code>fixed</code> arguments, but you’re not really toggling two independent settings, you’re picking from one of three regular expression engines (the default, the engine used by Perl, and fixed matches). Additionally, the <code>ignore.case</code> argument only applies to two of the strategies.</p></li>
 <li><p><code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">ggplot2::geom_histogram()</a></code> has three main strategies for defining the bins: you can supply the number of <code>bins</code>, the width of each bin (the <code>binwidth</code>), or the exact <code>breaks</code>. But it’s very difficult to tell this from the function specification, and there are complex argument dependencies.</p></li>
 <li><p><code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">dplyr::left_join()</a></code> uses an advanced form of this pattern where the different strategies for joining two data frames together are expressed in a mini-DSL provided by <code><a href="https://dplyr.tidyverse.org/reference/join_by.html">dplyr::join_by()</a></code>.</p></li>
-</ul></section><section id="how-do-you-use-the-pattern" class="level2" data-number="14.3"><h2 data-number="14.3" class="anchored" data-anchor-id="how-do-you-use-the-pattern">
-<span class="header-section-number">14.3</span> How do you use the pattern?</h2>
+</ul></section><section id="how-do-you-use-the-pattern" class="level2"><h2 class="anchored" data-anchor-id="how-do-you-use-the-pattern">How do you use the pattern?</h2>
 <p>In more complicated cases, different strategies will require different arguments, so you’ll need a bit more infrastructure. The basic idea is to build on the options object described in <a href="argument-clutter.html"><span>Chapter&nbsp;11</span></a>, but instead of providing just one helper function, you’ll provide one function per strategy. This is the way stringr works: you can select a different matching engine by wrapping the <code>pattern</code> in one of <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">regex()</a></code>, <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">boundary()</a></code>, <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">coll()</a></code>, or <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">fixed()</a></code>. We’ll explore how stringr ended up with design and how you can implement something similar yourself by looking at the base regular expression functions.</p>
-<section id="strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-sec-pattern-engine" class="level3" data-number="14.3.1"><h3 data-number="14.3.1" class="anchored" data-anchor-id="strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-sec-pattern-engine">
-<span class="header-section-number">14.3.1</span> Selecting a pattern engine</h3>
+<section id="strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-sec-pattern-engine" class="level3"><h3 class="anchored" data-anchor-id="strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-sec-pattern-engine">Selecting a pattern engine</h3>
 <p>The basic regular expression functions (<code><a href="https://rdrr.io/r/base/grep.html">grep()</a></code>, <code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code>, <code><a href="https://rdrr.io/r/base/grep.html">sub()</a></code>, <code><a href="https://rdrr.io/r/base/grep.html">gsub()</a></code>, <code><a href="https://rdrr.io/r/base/grep.html">regexpr()</a></code>, <code><a href="https://rdrr.io/r/base/grep.html">gregexpr()</a></code>, <code><a href="https://rdrr.io/r/base/grep.html">regexec()</a></code>, and <code><a href="https://rdrr.io/r/base/grep.html">gregexec()</a></code>) all <code>fixed</code> and <code>perl</code> arguments that allow to select the regular expression engine that’s used:</p>
 <ul>
 <li>
@@ -539,8 +499,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="st">"This is a sentence."</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">boundary</a></span><span class="op">(</span><span class="st">"sentence"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] │ &lt;This is a sentence.&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section><section id="implementation" class="level3" data-number="14.3.2"><h3 data-number="14.3.2" class="anchored" data-anchor-id="implementation">
-<span class="header-section-number">14.3.2</span> Implementation</h3>
+</section><section id="implementation" class="level3"><h3 class="anchored" data-anchor-id="implementation">Implementation</h3>
 <p>Lets flesh this interface into an implementation. First we flesh out the pattern engine wrappers. These need to return an object that has the name of engine, the pattern, and any other arguments:</p>
 <div class="cell">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">regex</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">pattern</span>, <span class="va">ignore.case</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
@@ -587,8 +546,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code> needs some error checking to ensure that <code>pattern</code> is generated by one of the engines, and probably should have a default path to handle bare character vectors as regular expressions (the current default).</li>
 </ul>
 <p>You can see these detailed worked out in the stringr package if you look at the source code, particularly that of <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">fixed()</a></code>, <code>type()</code>, <code>opts()</code>, then <code><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect()</a></code>.</p>
-</section></section><section id="how-do-i-remediate-past-problems" class="level2" data-number="14.4"><h2 data-number="14.4" class="anchored" data-anchor-id="how-do-i-remediate-past-problems">
-<span class="header-section-number">14.4</span> How do I remediate past problems?</h2>
+</section></section><section id="how-do-i-remediate-past-problems" class="level2"><h2 class="anchored" data-anchor-id="how-do-i-remediate-past-problems">How do I remediate past problems?</h2>
 <p>If you previously used an enum, and now you need a</p>
 
 
@@ -826,12 +784,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./boolean-strategies.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Prefer a enum, even if only two choices</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Prefer a enum, even if only two choices</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./strategy-functions.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Three functions in trench coat</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-title">Three functions in trench coat</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
