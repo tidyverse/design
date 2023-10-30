@@ -63,6 +63,12 @@ mean3(x, , TRUE)
 mean3(x, n = TRUE, t = 0.1)
 ```
 
+::: {.callout-note collapse="true"}
+## Base R
+
+In base R you can use `base::chkDots()`, but it uses a slightly simpler technique which means it's not suitable for usage in S3 methods.
+:::
+
 ## See also
 
 -   @sec-dots-data: if `…` is a required argument because it's used to combine an arbitrary number of objects in a data structure.
