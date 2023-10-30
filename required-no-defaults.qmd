@@ -82,11 +82,3 @@ This pattern is generally easy to follow: if you don't use `missing()` it's very
 
 If an argument is required, remove the default argument.
 If an argument is optional, either set it to the default value, or if the computation is complicated, set it to `NULL` and then compute inside the body of the function.
-
-## See also
-
-There are some exceptions to this rule when some arguments are only required sometimes:
-
--   @sec-mutually-exclusive: mutually exclusive arguments shouldn't have defaults even though one is required.
-
--   @sec-compound-arguments: compound arguments allow one argument to occasionally take the place of multiple required arguments.

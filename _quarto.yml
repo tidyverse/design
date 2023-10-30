@@ -35,6 +35,7 @@ book:
       - defaults-short-and-sweet.qmd
       - enumerate-options.qmd
       - argument-clutter.qmd
+      - independent-meaning.qmd
     
     - part: explicit-strategies.qmd
       chapters:
@@ -42,12 +43,8 @@ book:
       - strategy-objects.qmd
       - strategy-functions.qmd
       - cs-rep.qmd
-    
-    - part: Argument dependencies
-      chapters:
-      - independent-meaning.qmd
-      - mutually-exclusive-arguments.qmd
-      - compound-arguments.qmd
+      - implicit-strategies.qmd
+      - cs-rvest.qmd
 
     - part: Function arguments
       chapters: 

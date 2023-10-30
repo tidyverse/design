@@ -1,9 +1,3 @@
----
-depends_on:
-- defs-required
-- args-independence
----
-
 # Case study: `rep()` {#sec-cs-rep}
 
 ```{r}
@@ -101,7 +95,7 @@ They both will start with `x`, the vector to repeat.
 Then their arguments differ:
 
 -   `rep_each()` needs an argument that specifies the number of times to repeat each element, which can either be a single number, or a vector the same length as `x`.
--   `rep_full()` has two mutually exclusive arguments (@sec-mutually-exclusive), either the number of times to repeat the whole vector or the desired length of the output.
+-   `rep_full()` has two mutually exclusive arguments (@sec-implicit-strategies), either the number of times to repeat the whole vector or the desired length of the output.
 
 What should we call the arguments?
 We've already captured the different replication strategies in the function name, so I think the argument that specifies the number of times to replicate can be the same for both functions, and `times` seems reasonable.

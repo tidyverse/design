@@ -1,0 +1,180 @@
+# Implicit strategies {#sec-implicit-strategies}
+
+```{r}
+#| include = FALSE
+source("common.R")
+```
+
+## What's the pattern?
+
+There are two implicit strategies that are sometimes useful.
+I call them implicit because you don't select them explicitly with a single argument, but instead select between them based on the presence and absence of different arguments.
+As you might guess, this can make for a confusing interface, but it is occassionaly the best option.
+
+-   With **mutually exclusive arguments** you select between two strategies based on whether you supply argument `a` or argument `b`.
+-   With **compound objects** you select between two strategies based on whether you supply one complex object (e.g. a data frame) or multiple simple objects (e.g. vectors). I think the most compelling reason to use this pattern is when another function might be called directly by a user (who will supply individual arguments) or with the output from another function (which needs to pour into a single argument).
+
+The main challenge with using these pattern is that you can't make them clear from the function signature alone, so you need to carefully document and check inputs yourself.
+They are also likely to be surprising to the user as they are relatively rare patterns.
+So before using either of these techniques you should try using an explicit strategy via an enum (@sec-enumerate-options), using separate functions (@sec-strategy-functions), or using strategy objects (@sec-strategy-objects).
+@sec-cs-rvest explores these options from the perspective of `rvest::read_html()`.
+
+## What are some examples?
+
+### Mutually exclusive arguments
+
+-   `read.table()` allows you to supply data either with a path to a `file`, or inline as `text`.
+    If you supply both, `path` wins.
+
+-   `cutree()` is an example where I think mutually exclusive arguments shine: it's so simple
+
+-   In `var()` you can remove missing values by either setting `na.rm = TRUE` or `use = "complete.obs"`.
+    If you supply both, `use` wins.
+
+-   `rvest::html_element()` allows you to select HTML elements either with a `css` selector or an `xpath` expression.
+    If supply neither, or both, you get an error.
+
+-   In `ggplot2::scale_x_date()` and friends you can specify the breaks and labels either with `breaks` and `labels` (like all other scale functions) or with `date_breaks` and `date_labels`.
+    If you set both values in a pair, the `date_` version wins.
+
+-   `forcats::fct_other()` allows you to either `keep` or `drop` specified factor values.
+    If supply neither, or both, you get an error.
+
+-   `dplyr::relocate()` has optional `.before` and `.after` arguments.
+
+### Compound objects
+
+-    For example, it seems reasonable that you should be able to feed the output of `str_locate()` directly into `str_sub()`:
+
+    ```{r}
+    library(stringr)
+
+    x <- c("aaaaab", "aaab", "ccccb")
+    loc <- str_locate(x, "a+b")
+
+    str_sub(x, loc)
+    ```
+
+    But equally, it's nice to be able to supply individual start and end values if known:
+
+    ```{r}
+    str_sub("Hadley", start = 2, end = 4)
+    ```
+
+    So `str_sub()` allows either individual vectors supplied to `start` and `end`, or a two-column matrix supplied to `start`.
+
+-   `rgb(cbind(r, g, b))` is equivalent to `rgb(r, g, b)`.
+    This is useful because what `rgb()` really operates on is colours, as specified by their red, green, and blue components.
+    When working interactively it's useful to set the components individually, but when operating on colour with functions, it's nice to have a single object.
+
+-   `options(list(a = 1, b = 2))` is equivalent to `options(a = 1, b = 2)`.
+    This is half of very useful pattern.
+    The other half of that pattern is that `options()` returns the previous value of any options that you set.
+    That means you can do `old <- options(…); options(old)` to temporarily set then reset options.
+
+-   `withr::local_options()` and `withr::local_envvar()` work similarly: you can either supply a single list of values, or individually named values.
+
+-   `stringr::str_sub(x, cbind(start, end))` is equivalent to `str_sub(x, start, end)`.
+    I'm not sure if it would be better to accept a data frame or a matrix.
+
+-   Another place that this pattern crops up is in `dplyr::bind_rows()`.
+    When binding rows together, it's equally useful to bind a few named data frames as it is to bind a list of data frames that come from map or similar.
+    In base R you need to know about `do.call(rbind, mylist)` which is a relatively sophisticated pattern.
+    So in dplyr we tried to make `bind_rows()` automatically figure out if you were in situation one or two.
+    Unfortunately, it turns out to be really hard to tell which of the situations you are in, so dplyr implemented heuristics that work most of the time, but occasionally it fails in surprising ways.
+
+    Now we have generally steered away from interfaces that try to automatically "unsplice" their inputs and instead require that you use `!!!` to explicitly unsplice.
+    This is has some advantages and disadvantages: it's an interface that's becoming increasingly common in the tidyverse (and we have a good convention for documenting it with the `<dynamic-dots>` tag), but it's still relatively rare and is an advanced technique that we don't expect everyone to learn.
+    That's why for this important case, we also have `purrr::list_cbind()`.
+
+    But it means that functions like `purrr::hoist()`, `forcats::fct_cross()`, and `rvest::html_form()` which are less commonly given lists have a clearly documented escape hatch that doesn't require another different function.
+    (And of course if you understand the `do.call` pattern you can still use that too).
+
+## How do you use this pattern?
+
+### Mutually exclusive arguments
+
+If a function needs to have mutually exclusive arguments (i.e. you must supply only one of theme) make sure you check that only one is supplied in order to give a clear error message.
+Avoid implementing some precedence order where if both `a` and `b` are supplied, `b` silently wins.
+The easiest way to do this is to use `rlang::check_exclusive()`.
+
+(In the case of required args, you might want to consider putting them after `…`. This violations @sec-dots-after-required, but forces the user to name the arguments which will make the code easier to read)
+
+If you must pick one of the two mutually exclusive arguments, make their defaults empty.
+Otherwise, if they're optional, give them `NULL` arguments.
+
+```{r}
+#| error: true
+
+fct_drop <- function(f, drop, keep) {
+  rlang::check_exclusive(drop, keep)
+}
+
+fct_drop(factor())
+
+fct_drop(factor(), keep = "a", drop = "b")
+```
+
+(If the arguments are optional, you'll need `.require = FALSE` until <https://github.com/r-lib/rlang/issues/1647>)
+
+::: {.callout-note collapse="true"}
+## With base R
+
+If you don't want to use rlang, you implement yourself with `xor()` and `missing()`:
+
+```{r}
+#| eval: false
+
+fct_drop <- function(f, drop, keep) {
+  if (!xor(missing(keep), missing(drop))) {
+    stop("Exactly one of `keep` and `drop` must be supplied")
+  }  
+}
+fct_drop(factor())
+
+fct_drop(factor(), keep = "a", drop = "b")
+```
+:::
+
+In the documentation, document the pair of arguments together, and make it clear that only one of the pair can be supplied:
+
+```{r}
+#' @param keep,drop Pick one of `keep` and `drop`:
+#'   * `keep` will preserve listed levels, replacing all others with 
+#'     `other_level`.
+#'   * `drop` will replace listed levels with `other_level`, keeping all
+#'     as is.
+```
+
+### Compound arguments
+
+To implement in your own functions, you should branch on the type of the first argument and then check that the others aren't supplied.
+
+```{r}
+str_sub <- function(string, start, end) {
+  if (is.matrix(start)) {
+    if (!missing(end)) {
+      abort("`end` must be missing when `start` is a matrix")
+    }
+    if (ncol(start) != 2) {
+      abort("Matrix `start` must have exactly two columns")
+    }
+    stri_sub(string, from = start[, 1], to = start[, 2])
+  } else {
+    stri_sub(string, from = start, to = end)
+  }
+}
+```
+
+And make it clear in the documentation:
+
+```{r}
+#' @param start,end Integer vectors giving the `start` (default: first)
+#'   and `end` (default: last) positions, inclusively. 
+#'   
+#'   Alternatively, you pass a two-column matrix to `start`, i.e. 
+#'   `str_sub(x, start, end)` is equivalent to 
+#'   `str_sub(x, cbind(start, end))`
+```
+
+(If you look at `string::str_sub()` you'll notice that `start` and `end` do have defaults; I think this is a mistake because `start` and `end` are important enough that the user should always be forced to supply them.)

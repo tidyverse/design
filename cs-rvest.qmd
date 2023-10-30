@@ -1,0 +1,32 @@
+# Case study: `html_element()` {#sec-cs-rvest}
+
+```{r}
+#| include = FALSE
+source("common.R")
+```
+
+## What does the function do?
+
+`rvest::html_element()` is used to extract matching HTML elements/nodes from a web page.
+You can select nodes using one of two languages: CSS selectors or XPath expressions.
+These are both mini-languages for describing how to find the node you want.
+You can think of them like regular expressions, but instead of being design to find patterns in strings, they are designed to find patterns in trees (since HTML nodes form a tree).
+
+Interesting case because CSS selectors are much much simpler and likely to be used the majority of the time.
+XPath is a much richer and more powerful language, but most of the time that complexity is not required and just adds unneeded overhead.
+(One interesting wrinkle is that CSS selectors actually use XPath behind the hood because they are transformed using the selectr package by Simon Potter).
+
+`html_element()` implements these two strategies using mutually exclusive `css` and `xpath` arguments.
+
+Other approaches:
+
+-   `html_element(x, selector, type = c("css", "xpath"))`
+-   ``` html_element(x, css``(pattern``)) ``` vs `html_element(x, xpath(pattern))`
+-   `html_element_css(x, pattern)`, ``` html_element_xpath(x,``pattern``) ```
+
+| Common case                | Rare case                                  |
+|----------------------------|--------------------------------------------|
+| `x |> html_element("sel")` | `x |> html_element("sel", type = "xpath")` |
+| `x |> html_element("sel")` | `x |> html_element(xpath = "sel")`         |
+| `x |> html_element("sel")` | `x |> html_element(xpath("sel"))`          |
+| `x |> html_element("sel")` | `x |> html_element_xpath("sel")`           |

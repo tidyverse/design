@@ -73,7 +73,7 @@ paths
 ```
 
 Functions that modify some global state, like `options()` or `par()`, should return the *previous* value of the variables.
-This, in combination with @sec-compound-arguments, makes it possible to easily reset the effect of the change:
+This, in combination with compound argument pattern from @sec-implicit-strategies, makes it possible to easily reset the effect of the change:
 
 ```{r}
 x <- runif(1)
