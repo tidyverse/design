@@ -24,6 +24,8 @@ I think of this the three (or more generally $n$) functions in a trench coat[^st
     Additionally, the `ties.method` argument only does anything if you supply only `n`.
     `fct_lump()` is hard to understand and document because it's really three smaller functions.
 
+-   Depending on the arguments used `library()` can load a package, it can list all installed packages, or display the help for a package.
+
 -   `diag()` is used to both extract the diagonal of a matrix and construct a matrix from a vector of diagonal values.
     This combination of purposes makes its arguments hard to understand: if `x` is a matrix, you can `names` but not `nrow` and `ncol`; if `x` is a vector, you can use `nrow` and `ncol` but not `names`.
 

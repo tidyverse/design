@@ -8,52 +8,42 @@ source("common.R")
 ## What's the problem?
 
 Avoid having one argument change the interpretation of another argument.
-This makes reading function calls harder because if the argument that changes meaning comes after the argument who's meaning is changed you need to reinterpret the rest of the call.
+This makes it harder to understand a call, because you might need to re-intepret an earlier argument.
+This sort of call is like a [garden path sentence](https://en.wikipedia.org/wiki/Garden-path_sentence), like "The horse raced past the barn fell**"** where your initial understanding of "raced" needs to be modified when you to get to the end of the sentence in order for it to make sense.
 
 ## What are some examples?
+
+There aren't many examples of this problem, but it's pretty rare.
+I think it's still worth being aware of it so you can avoid in your own code.
 
 -   In `library()` the `character.only` argument changes how the `package` argument is interpreted:
 
     ```{r}
     #| eval = FALSE
-    ggplot2 <- "dplyr"
+    package <- "dplyr"
 
-    # Loads ggplot2
-    library(ggplot2)
+    # Loads a package called "package"
+    library(package)
 
     # Loads dplyr
-    library(ggplot2, character.only = TRUE)
+    library(package, character.only = TRUE)
     ```
 
 -   In `install.packages()` setting `repos = NULL` changes the interpretation of `pkgs` from being a vector of package names to a vector of file paths.
-
--   In the base R string functions, `perl` and `fixed` change the interpretation of the `pattern` argument.
-    See @sec-strategy-objects for more details.
-
--   In `ggplot2::geom_label()`, setting `parse = TRUE` changes the meaning of the label argument/aesthetic from being any string to be a string on unparsed R code.
-
--   In `readr::locale()` there's a complex dependency between `decimal_mark` and `grouping_mark` because they can't be the same value, and Europe and the US Europe use different standards.
-    That suggests it might have been better to specify them in a single argument like `marks = c(",", ".")`.
 
 -   In `findInterval()` if you set `left.open = TRUE` the `rightmost.closed` means `leftmost.closed`.
 
 ## How do I remediate past mistakes?
 
-Not clear that there's a single solution.
+It's not clear that there's a single solution.
 For the examples above:
 
 -   In `library()`, I think this is an example of why base R needs a consistent mechanism for quoting and unquoting.
-    If `library()` were a tidyverse function it would use tidy-eval, and so you'd write `library(ggplot2)` or `library(!!ggplot2)`.
-
-    Alternatively, you could maybe argue that it should be `library("ggplot2")` and `library(ggplot2)`.
+    If `library()` were a tidyverse function it would use tidy-eval, and so you'd write `library(package)` or `library(!!package)`.
+    Another option would be to use the same mechanism as `help()` where `help((topic))` will always look for the topic named by the `topic` variable.
 
 -   In `install.packages()` maybe it would be better to have mutually exclusive `packages` and `paths` arguments?
     Then `repos` only applies to `paths` which might suggest this is an example of the strategy pattern?
-
--   `grepl()` and friends are another example of the strategy pattern.
-
--   For `ggplot2::geom_label()` my gut feeling would be to make it another function, but `parse = TRUE` applies to `geom_text()` as well.
-    So maybe the current setup is the least worst?
 
 -   In `findInterval()` I think I'd fix it by renaming the argument to something that wasn't direction specific.
     Maybe `extemum.closed`?
