@@ -88,6 +88,7 @@ format:
     - r4ds.scss
     code-link: true
 
+    number-sections: false
     author-meta: "Hadley Wickham"
     include-in-header: "plausible.html"
     callout-appearance: simple
