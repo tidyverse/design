@@ -14,7 +14,7 @@ This has two positive impacts:
 -   It forces the user of your function to fully name optional arguments, because arguments that come after `...` are never matched by position or by partial name.
     We believe that using full names for optional arguments is good practice because it makes code easier to read.
 
--   This in turn means that uou can easily add new optional arguments or change the order of existing arguments without affecting existing code.
+-   This in turn means that you can easily add new optional arguments or change the order of existing arguments without affecting existing code.
 
 ## What are some examples?
 
