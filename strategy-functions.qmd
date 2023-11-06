@@ -1,4 +1,4 @@
-# Three functions in trench coat {#sec-strategy-functions}
+# Three functions in a trench coat {#sec-strategy-functions}
 
 ```{r}
 #| include = FALSE
