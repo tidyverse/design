@@ -238,7 +238,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./strategy-functions.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Three functions in trench coat</span></a>
+  <a href="./strategy-functions.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Three functions in a trench coat</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -498,7 +498,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>It also supports partial matching so that the following code is shorthand for <code>ties.method = "random"</code>:</p>
 <div class="cell">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/rank.html">rank</a></span><span class="op">(</span><span class="va">x</span>, ties.method <span class="op">=</span> <span class="st">"r"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 1 3 2 5 6 4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; [1] 1 3 2 5 4 6</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We prefer to avoid partial matching because while it saves a little time writing the code, it makes reading the code less clear. <code><a href="https://rlang.r-lib.org/reference/arg_match.html">rlang::arg_match()</a></code> is an alternative to <code><a href="https://rdrr.io/r/base/match.arg.html">match.arg()</a></code> that doesn’t support partial matching. It instead provides a helpful error message:</p>
 <div class="cell">

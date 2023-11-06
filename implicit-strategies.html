@@ -238,7 +238,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./strategy-functions.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Three functions in trench coat</span></a>
+  <a href="./strategy-functions.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Three functions in a trench coat</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -455,7 +455,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 </header><section id="whats-the-pattern" class="level2"><h2 class="anchored" data-anchor-id="whats-the-pattern">What’s the pattern?</h2>
-<p>There are two implicit strategies that are sometimes useful. I call them implicit because you don’t select them explicitly with a single argument, but instead select between them based on the presence and absence of different arguments. As you might guess, this can make for a confusing interface, but it is occassionaly the best option.</p>
+<p>There are two implicit strategies that are sometimes useful. I call them implicit because you don’t select them explicitly with a single argument, but instead select between them based on the presence and absence of different arguments. As you might guess, this can make for a confusing interface, but it is occasionaly the best option.</p>
 <ul>
 <li>With <strong>mutually exclusive arguments</strong> you select between two strategies based on whether you supply argument <code>a</code> or argument <code>b</code>.</li>
 <li>With <strong>compound objects</strong> you select between two strategies based on whether you supply one complex object (e.g.&nbsp;a data frame) or multiple simple objects (e.g.&nbsp;vectors). I think the most compelling reason to use this pattern is when another function might be called directly by a user (who will supply individual arguments) or with the output from another function (which needs to pour into a single argument).</li>
@@ -465,7 +465,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="mutually-exclusive-arguments" class="level3"><h3 class="anchored" data-anchor-id="mutually-exclusive-arguments">Mutually exclusive arguments</h3>
 <ul>
 <li><p><code><a href="https://rdrr.io/r/stats/cutree.html">cutree()</a></code> is an example where I think mutually exclusive arguments shine: it’s so simple</p></li>
-<li><p><code><a href="https://rdrr.io/r/utils/read.table.html">read.table()</a></code> allows you to supply data either with a path to a <code>file</code>, or inline as <code>text</code>. If you supply both, <code>path</code> wins.</p></li>
 <li><p>In <code><a href="https://ggplot2.tidyverse.org/reference/scale_date.html">ggplot2::scale_x_date()</a></code> and friends you can specify the breaks and labels either with <code>breaks</code> and <code>labels</code> (like all other scale functions) or with <code>date_breaks</code> and <code>date_labels</code>. If you set both values in a pair, the <code>date_</code> version wins.</p></li>
 <li><p><code><a href="https://forcats.tidyverse.org/reference/fct_other.html">forcats::fct_other()</a></code> allows you to either <code>keep</code> or <code>drop</code> specified factor values. If supply neither, or both, you get an error.</p></li>
 <li><p><code><a href="https://dplyr.tidyverse.org/reference/relocate.html">dplyr::relocate()</a></code> has optional <code>.before</code> and <code>.after</code> arguments.</p></li>

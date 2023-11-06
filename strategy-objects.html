@@ -238,7 +238,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./strategy-functions.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Three functions in trench coat</span></a>
+  <a href="./strategy-functions.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Three functions in a trench coat</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -427,7 +427,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li>
 <a href="#how-do-you-use-the-pattern" id="toc-how-do-you-use-the-pattern" class="nav-link" data-scroll-target="#how-do-you-use-the-pattern">How do you use the pattern?</a>
   <ul class="collapse">
-<li><a href="#strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-sec-pattern-engine" id="toc-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-sec-pattern-engine" class="nav-link" data-scroll-target="#strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-sec-pattern-engine">Selecting a pattern engine</a></li>
+<li><a href="#selecting-a-pattern-engine" id="toc-selecting-a-pattern-engine" class="nav-link" data-scroll-target="#selecting-a-pattern-engine">Selecting a pattern engine</a></li>
   <li><a href="#implementation" id="toc-implementation" class="nav-link" data-scroll-target="#implementation">Implementation</a></li>
   </ul>
 </li>
@@ -451,16 +451,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header><section id="whats-the-problem" class="level2"><h2 class="anchored" data-anchor-id="whats-the-problem">What’s the problem?</h2>
 <p>Sometimes different strategies need different arguments. In this case, instead of using an enum, you’ll need to use richer objects capable of storing optional values as well as the strategy name.</p>
-<p>You can also see this as an extension of <a href="argument-clutter.html"><span>Chapter&nbsp;11</span></a></p>
-<p>A more advanced form of this pattern arises when you have many arguments apart from the arguments needed by the different strategies. One example that we’ll explore below is <code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">ggplot2::stat_bin()</a></code>. A key part of <code>stat_bin()</code> (which powers <code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">ggplot2::geom_histogram()</a></code> is defining the locations of the bins, which currently uses five argument (<code>binwidth</code>, <code>bins</code>, <code>breaks</code>, <code>boundary</code>, <code>center</code>, <code>closed</code>). But it also has many arguments (e.g.&nbsp;<code>na.rm</code>, <code>orientation</code>, <code>show.legend</code>, ...)</p>
+<p>This pattern is similar to combining <a href="argument-clutter.html"><span>Chapter&nbsp;11</span></a> and <a href="enumerate-options.html"><span>Chapter&nbsp;10</span></a> together.</p>
 </section><section id="what-are-some-examples" class="level2"><h2 class="anchored" data-anchor-id="what-are-some-examples">What are some examples?</h2>
 <ul>
-<li><p><code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code> has boolean <code>perl</code> and <code>fixed</code> arguments, but you’re not really toggling two independent settings, you’re picking from one of three regular expression engines (the default, the engine used by Perl, and fixed matches). Additionally, the <code>ignore.case</code> argument only applies to two of the strategies.</p></li>
-<li><p><code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">ggplot2::geom_histogram()</a></code> has three main strategies for defining the bins: you can supply the number of <code>bins</code>, the width of each bin (the <code>binwidth</code>), or the exact <code>breaks</code>. But it’s very difficult to tell this from the function specification, and there are complex argument dependencies.</p></li>
+<li>
+<p><code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code> has Boolean <code>perl</code> and <code>fixed</code> arguments, but you’re not really toggling two independent settings, you’re picking from one of three regular expression engines (the default, the engine used by Perl, and fixed matches). Additionally, the <code>ignore.case</code> argument only applies to two of the strategies.</p>
+<p>In stringr, however, you use helper functions like <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">regex()</a></code> and <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">fixed()</a></code> to wrap around the pattern, and supply optional arguments that only apply to that strategy.</p>
+</li>
+<li><p><code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">ggplot2::geom_histogram()</a></code> has three main strategies for defining the bins: you can supply the number of <code>bins</code>, the width of each bin (the <code>binwidth</code>), or the exact <code>breaks</code>. But it’s currently difficult to derive this from the function specification, and there are complex argument dependencies (e.g.&nbsp;you can only supply one of <code>boundary</code> and <code>center</code>, and neither applies if you use <code>breaks</code>).</p></li>
 <li><p><code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">dplyr::left_join()</a></code> uses an advanced form of this pattern where the different strategies for joining two data frames together are expressed in a mini-DSL provided by <code><a href="https://dplyr.tidyverse.org/reference/join_by.html">dplyr::join_by()</a></code>.</p></li>
 </ul></section><section id="how-do-you-use-the-pattern" class="level2"><h2 class="anchored" data-anchor-id="how-do-you-use-the-pattern">How do you use the pattern?</h2>
 <p>In more complicated cases, different strategies will require different arguments, so you’ll need a bit more infrastructure. The basic idea is to build on the options object described in <a href="argument-clutter.html"><span>Chapter&nbsp;11</span></a>, but instead of providing just one helper function, you’ll provide one function per strategy. This is the way stringr works: you can select a different matching engine by wrapping the <code>pattern</code> in one of <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">regex()</a></code>, <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">boundary()</a></code>, <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">coll()</a></code>, or <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">fixed()</a></code>. We’ll explore how stringr ended up with design and how you can implement something similar yourself by looking at the base regular expression functions.</p>
-<section id="strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-sec-pattern-engine" class="level3"><h3 class="anchored" data-anchor-id="strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-sec-pattern-engine">Selecting a pattern engine</h3>
+<section id="selecting-a-pattern-engine" class="level3"><h3 class="anchored" data-anchor-id="selecting-a-pattern-engine">Selecting a pattern engine</h3>
 <p>The basic regular expression functions (<code><a href="https://rdrr.io/r/base/grep.html">grep()</a></code>, <code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code>, <code><a href="https://rdrr.io/r/base/grep.html">sub()</a></code>, <code><a href="https://rdrr.io/r/base/grep.html">gsub()</a></code>, <code><a href="https://rdrr.io/r/base/grep.html">regexpr()</a></code>, <code><a href="https://rdrr.io/r/base/grep.html">gregexpr()</a></code>, <code><a href="https://rdrr.io/r/base/grep.html">regexec()</a></code>, and <code><a href="https://rdrr.io/r/base/grep.html">gregexec()</a></code>) all <code>fixed</code> and <code>perl</code> arguments that allow to select the regular expression engine that’s used:</p>
 <ul>
 <li>
@@ -547,7 +549,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>You can see these detailed worked out in the stringr package if you look at the source code, particularly that of <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">fixed()</a></code>, <code>type()</code>, <code>opts()</code>, then <code><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect()</a></code>.</p>
 </section></section><section id="how-do-i-remediate-past-problems" class="level2"><h2 class="anchored" data-anchor-id="how-do-i-remediate-past-problems">How do I remediate past problems?</h2>
-<p>If you previously used an enum, and now you need a</p>
+<p>Changing from a complex dependency of individual arguments to a stra</p>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
@@ -789,7 +791,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
   <div class="nav-page nav-page-next">
       <a href="./strategy-functions.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-title">Three functions in trench coat</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-title">Three functions in a trench coat</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

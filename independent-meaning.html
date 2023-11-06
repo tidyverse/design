@@ -238,7 +238,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./strategy-functions.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Three functions in trench coat</span></a>
+  <a href="./strategy-functions.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Three functions in a trench coat</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -443,9 +443,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 </header><section id="whats-the-problem" class="level2"><h2 class="anchored" data-anchor-id="whats-the-problem">What’s the problem?</h2>
-<p>Avoid having one argument change the interpretation of another argument. This makes it harder to understand a call, because you might need to re-intepret an earlier argument. This sort of call is like a <a href="https://en.wikipedia.org/wiki/Garden-path_sentence">garden path sentence</a>, like “The horse raced past the barn fell<strong>”</strong> where your initial understanding of”raced” needs to be modified when you to get to the end of the sentence in order for it to make sense.</p>
+<p>Avoid having one argument change the interpretation of another argument. This makes it harder to understand a call, because as you read a call, you might need to go back and to re-interpret an earlier argument. This sort of call can lead to code that reads like a <a href="https://en.wikipedia.org/wiki/Garden-path_sentence">garden path sentence</a>, a human language problem where you need to re-parse a sentence when you get to the end of it. For example, in “the horse raced past the barn fell”, your initial understanding of”raced” needs to be modified when you to get to the end of the sentence in order for it to make sense.</p>
+<p>Another way you will come across this problem is when only certain combinations of arguments are allowed or if one argument is ignored if another argument has a certain value.</p>
 </section><section id="what-are-some-examples" class="level2"><h2 class="anchored" data-anchor-id="what-are-some-examples">What are some examples?</h2>
-<p>There aren’t many examples of this problem, but it’s pretty rare. I think it’s still worth being aware of it so you can avoid in your own code.</p>
+<p>There aren’t too many examples of one argument changing the meaning of another argument but here are few I dug up:</p>
 <ul>
 <li>
 <p>In <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> the <code>character.only</code> argument changes how the <code>package</code> argument is interpreted:</p>
@@ -459,18 +460,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">package</span>, character.only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </li>
+<li><p>In <code><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">ggplot2::geom_text()</a></code> setting <code>parse = TRUE</code> causes the contents of the label aesthetic to be interpreted as mathematical equations, rather simple text.</p></li>
 <li><p>In <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> setting <code>repos = NULL</code> changes the interpretation of <code>pkgs</code> from being a vector of package names to a vector of file paths.</p></li>
-<li><p>In <code><a href="https://rdrr.io/r/base/findInterval.html">findInterval()</a></code> if you set <code>left.open = TRUE</code> the <code>rightmost.closed</code> means <code>leftmost.closed</code>.</p></li>
-</ul></section><section id="how-do-i-remediate-past-mistakes" class="level2"><h2 class="anchored" data-anchor-id="how-do-i-remediate-past-mistakes">How do I remediate past mistakes?</h2>
-<p>It’s not clear that there’s a single solution. For the examples above:</p>
-<ul>
-<li><p>In <code><a href="https://rdrr.io/r/base/library.html">library()</a></code>, I think this is an example of why base R needs a consistent mechanism for quoting and unquoting. If <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> were a tidyverse function it would use tidy-eval, and so you’d write <code><a href="https://rdrr.io/r/base/library.html">library(package)</a></code> or <code><a href="https://rdrr.io/r/base/library.html">library(!!package)</a></code>. Another option would be to use the same mechanism as <code><a href="https://rdrr.io/r/utils/help.html">help()</a></code> where <code>help((topic))</code> will always look for the topic named by the <code>topic</code> variable.</p></li>
-<li><p>In <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> maybe it would be better to have mutually exclusive <code>packages</code> and <code>paths</code> arguments? Then <code>repos</code> only applies to <code>paths</code> which might suggest this is an example of the strategy pattern?</p></li>
-<li><p>In <code><a href="https://rdrr.io/r/base/findInterval.html">findInterval()</a></code> I think I’d fix it by renaming the argument to something that wasn’t direction specific. Maybe <code>extemum.closed</code>?</p></li>
+<li><p>In <code><a href="https://rdrr.io/r/base/findInterval.html">findInterval()</a></code> if you set <code>left.open = TRUE</code> then the <code>rightmost.closed</code> argument actually controls the whether or not the <em>left</em>most interval is closed.</p></li>
 </ul>
+<p>A subtler example of this problem also arises in <code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code> and friends where you can’t fully interpret the pattern until you have seen if the <code>fixed</code> argument is set. This is one of the patterns that heavily influenced the design of stringr, and is discussed more in <a href="strategy-objects.html"><span>Chapter&nbsp;14</span></a>.</p>
+<p>There are quite a few functions that only allow certain combinations of arguments:</p>
+<ul>
+<li>
+<code><a href="https://rdrr.io/r/utils/read.table.html">read.table()</a></code> allows you to supply data with either a path to a <code>file</code>, or with in line <code>text</code>. If you supply both, <code>path</code> wins.</li>
+</ul></section><section id="how-do-i-remediate-past-mistakes" class="level2"><h2 class="anchored" data-anchor-id="how-do-i-remediate-past-mistakes">How do I remediate past mistakes?</h2>
+<p>There isn’t a single solution to this problem and remediating the problem will require a situation dependent technique. For example, each of the cases above requires a different technique:</p>
+<ul>
+<li><p><code><a href="https://rdrr.io/r/base/library.html">library()</a></code> could use the same mechanism as <code><a href="https://rdrr.io/r/utils/help.html">help()</a></code> where <code>help((topic))</code><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> will always look for the topic recorded in the <code>topic</code> variable, rather than the topic literally called “topic”.</p></li>
+<li><p>Instead of <code>geom_text(parse = TRUE)</code>, maybe it would be better to have <code>geom_equation()</code>. However, this change would be challenging because ggplot2 has another functions with the parse argument: <code>geom_label()</code>, which is like <code>geom_text()</code> but draws a rectangle behind the text, often making it easier to read. Maybe it would be better to make this an argument (<code>background = TRUE</code>) but that would leave three arguments (<code>label.r</code>, <code>label.padding</code>, <code>label.size</code>) that only make sense when <code>background = TRUE</code>. So maybe we could do something like <code>background = label()</code>, where the new <code>label</code> function would have <code>r</code>, <code>padding</code>, and <code>size</code> arguments. This would also make it possible to specify different types of backgrounds.</p></li>
+<li><p><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> feels like a function that has grown organically over time: it started out simple, but gained more and more features over time. I suspect improving the design would involve recognising <a href="strategy-functions.html"><span>Chapter&nbsp;15</span></a> and breaking it apart into multiple functions, possibly using <a href="argument-clutter.html"><span>Chapter&nbsp;11</span></a> for the common, less important arguments.</p></li>
+<li><p><code><a href="https://rdrr.io/r/base/findInterval.html">findInterval()</a></code> could be fixed by using an argument name that isn’t direction specific. One possible option would be <code>extemum.closed</code>. Extremum is technical term that most people probably aren’t familiar with, but it’s also for a fairly uncommon argument in a rarely function, so is probably fine.</p></li>
+</ul>
+<p>Cases where arguments have complex dependencies often require techniques from the “Stategies” part of the book.</p>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+<ol>
+<li id="fn1"><p>If <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> were a tidyverse function it would use tidyeval, and so you’d write <code><a href="https://rdrr.io/r/base/library.html">library(!!package)</a></code> if you wanted to refer to the package name stored in the package variable.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
