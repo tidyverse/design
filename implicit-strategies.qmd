@@ -9,7 +9,7 @@ source("common.R")
 
 There are two implicit strategies that are sometimes useful.
 I call them implicit because you don't select them explicitly with a single argument, but instead select between them based on the presence and absence of different arguments.
-As you might guess, this can make for a confusing interface, but it is occassionaly the best option.
+As you might guess, this can make for a confusing interface, but it is occasionaly the best option.
 
 -   With **mutually exclusive arguments** you select between two strategies based on whether you supply argument `a` or argument `b`.
 -   With **compound objects** you select between two strategies based on whether you supply one complex object (e.g. a data frame) or multiple simple objects (e.g. vectors). I think the most compelling reason to use this pattern is when another function might be called directly by a user (who will supply individual arguments) or with the output from another function (which needs to pour into a single argument).
@@ -24,9 +24,6 @@ So before using either of these techniques you should try using an explicit stra
 ### Mutually exclusive arguments
 
 -   `cutree()` is an example where I think mutually exclusive arguments shine: it's so simple
-
--   `read.table()` allows you to supply data either with a path to a `file`, or inline as `text`.
-    If you supply both, `path` wins.
 
 -   In `ggplot2::scale_x_date()` and friends you can specify the breaks and labels either with `breaks` and `labels` (like all other scale functions) or with `date_breaks` and `date_labels`.
     If you set both values in a pair, the `date_` version wins.

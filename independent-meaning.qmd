@@ -8,13 +8,15 @@ source("common.R")
 ## What's the problem?
 
 Avoid having one argument change the interpretation of another argument.
-This makes it harder to understand a call, because you might need to re-intepret an earlier argument.
-This sort of call is like a [garden path sentence](https://en.wikipedia.org/wiki/Garden-path_sentence), like "The horse raced past the barn fell**"** where your initial understanding of "raced" needs to be modified when you to get to the end of the sentence in order for it to make sense.
+This makes it harder to understand a call, because as you read a call, you might need to go back and to re-interpret an earlier argument.
+This sort of call can lead to code that reads like a [garden path sentence](https://en.wikipedia.org/wiki/Garden-path_sentence), a human language problem where you need to re-parse a sentence when you get to the end of it.
+For example, in "the horse raced past the barn fell", your initial understanding of"raced" needs to be modified when you to get to the end of the sentence in order for it to make sense.
+
+Another way you will come across this problem is when only certain combinations of arguments are allowed or if one argument is ignored if another argument has a certain value.
 
 ## What are some examples?
 
-There aren't many examples of this problem, but it's pretty rare.
-I think it's still worth being aware of it so you can avoid in your own code.
+There aren't too many examples of one argument changing the meaning of another argument but here are few I dug up:
 
 -   In `library()` the `character.only` argument changes how the `package` argument is interpreted:
 
@@ -29,21 +31,40 @@ I think it's still worth being aware of it so you can avoid in your own code.
     library(package, character.only = TRUE)
     ```
 
+-   In `ggplot2::geom_text()` setting `parse = TRUE` causes the contents of the label aesthetic to be interpreted as mathematical equations, rather simple text.
+
 -   In `install.packages()` setting `repos = NULL` changes the interpretation of `pkgs` from being a vector of package names to a vector of file paths.
 
--   In `findInterval()` if you set `left.open = TRUE` the `rightmost.closed` means `leftmost.closed`.
+-   In `findInterval()` if you set `left.open = TRUE` then the `rightmost.closed` argument actually controls the whether or not the *left*most interval is closed.
+
+A subtler example of this problem also arises in `grepl()` and friends where you can't fully interpret the pattern until you have seen if the `fixed` argument is set.
+This is one of the patterns that heavily influenced the design of stringr, and is discussed more in @sec-strategy-objects.
+
+There are quite a few functions that only allow certain combinations of arguments:
+
+-   `read.table()` allows you to supply data with either a path to a `file`, or with in line `text`.
+    If you supply both, `path` wins.
 
 ## How do I remediate past mistakes?
 
-It's not clear that there's a single solution.
-For the examples above:
+There isn't a single solution to this problem and remediating the problem will require a situation dependent technique.
+For example, each of the cases above requires a different technique:
 
--   In `library()`, I think this is an example of why base R needs a consistent mechanism for quoting and unquoting.
-    If `library()` were a tidyverse function it would use tidy-eval, and so you'd write `library(package)` or `library(!!package)`.
-    Another option would be to use the same mechanism as `help()` where `help((topic))` will always look for the topic named by the `topic` variable.
+-   `library()` could use the same mechanism as `help()` where `help((topic))`[^independent-meaning-1] will always look for the topic recorded in the `topic` variable, rather than the topic literally called "topic".
 
--   In `install.packages()` maybe it would be better to have mutually exclusive `packages` and `paths` arguments?
-    Then `repos` only applies to `paths` which might suggest this is an example of the strategy pattern?
+-   Instead of `geom_text(parse = TRUE)`, maybe it would be better to have `geom_equation()`.
+    However, this change would be challenging because ggplot2 has another functions with the parse argument: `geom_label()`, which is like `geom_text()` but draws a rectangle behind the text, often making it easier to read.
+    Maybe it would be better to make this an argument (`background = TRUE`) but that would leave three arguments (`label.r`, `label.padding`, `label.size`) that only make sense when `background = TRUE`.
+    So maybe we could do something like `background = label()`, where the new `label` function would have `r`, `padding`, and `size` arguments.
+    This would also make it possible to specify different types of backgrounds.
 
--   In `findInterval()` I think I'd fix it by renaming the argument to something that wasn't direction specific.
-    Maybe `extemum.closed`?
+-   `install.packages()` feels like a function that has grown organically over time: it started out simple, but gained more and more features over time.
+    I suspect improving the design would involve recognising @sec-strategy-functions and breaking it apart into multiple functions, possibly using @sec-argument-clutter for the common, less important arguments.
+
+-   `findInterval()` could be fixed by using an argument name that isn't direction specific.
+    One possible option would be `extemum.closed`.
+    Extremum is technical term that most people probably aren't familiar with, but it's also for a fairly uncommon argument in a rarely function, so is probably fine.
+
+[^independent-meaning-1]: If `library()` were a tidyverse function it would use tidyeval, and so you'd write `library(!!package)` if you wanted to refer to the package name stored in the package variable.
+
+Cases where arguments have complex dependencies often require techniques from the "Stategies" part of the book.

@@ -10,20 +10,17 @@ source("common.R")
 Sometimes different strategies need different arguments.
 In this case, instead of using an enum, you'll need to use richer objects capable of storing optional values as well as the strategy name.
 
-You can also see this as an extension of @sec-argument-clutter
-
-A more advanced form of this pattern arises when you have many arguments apart from the arguments needed by the different strategies.
-One example that we'll explore below is `ggplot2::stat_bin()`.
-A key part of `stat_bin()` (which powers `ggplot2::geom_histogram()` is defining the locations of the bins, which currently uses five argument (`binwidth`, `bins`, `breaks`, `boundary`, `center`, `closed`).
-But it also has many arguments (e.g. `na.rm`, `orientation`, `show.legend`, \...)
+This pattern is similar to combining @sec-argument-clutter and @sec-enumerate-options together.
 
 ## What are some examples?
 
--   `grepl()` has boolean `perl` and `fixed` arguments, but you're not really toggling two independent settings, you're picking from one of three regular expression engines (the default, the engine used by Perl, and fixed matches).
+-   `grepl()` has Boolean `perl` and `fixed` arguments, but you're not really toggling two independent settings, you're picking from one of three regular expression engines (the default, the engine used by Perl, and fixed matches).
     Additionally, the `ignore.case` argument only applies to two of the strategies.
 
+    In stringr, however, you use helper functions like `regex()` and `fixed()` to wrap around the pattern, and supply optional arguments that only apply to that strategy.
+
 -   `ggplot2::geom_histogram()` has three main strategies for defining the bins: you can supply the number of `bins`, the width of each bin (the `binwidth`), or the exact `breaks`.
-    But it's very difficult to tell this from the function specification, and there are complex argument dependencies.
+    But it's currently difficult to derive this from the function specification, and there are complex argument dependencies (e.g. you can only supply one of `boundary` and `center`, and neither applies if you use `breaks`).
 
 -   `dplyr::left_join()` uses an advanced form of this pattern where the different strategies for joining two data frames together are expressed in a mini-DSL provided by `dplyr::join_by()`.
 
@@ -145,4 +142,4 @@ You can see these detailed worked out in the stringr package if you look at the 
 
 ## How do I remediate past problems?
 
-If you previously used an enum, and now you need a
+Changing from a complex dependency of individual arguments to a stra
