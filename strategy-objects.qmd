@@ -34,7 +34,7 @@ The basic idea is to build on the options object described in @sec-argument-clut
 This is the way stringr works: you can select a different matching engine by wrapping the `pattern` in one of `regex()`, `boundary()`, `coll()`, or `fixed()`.
 We'll explore how stringr ended up with design and how you can implement something similar yourself by looking at the base regular expression functions.
 
-### Selecting a pattern engine {#strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-strategy-objects-sec-pattern-engine}
+### Selecting a pattern engine
 
 The basic regular expression functions (`grep()`, `grepl()`, `sub()`, `gsub()`, `regexpr()`, `gregexpr()`, `regexec()`, and `gregexec()`) all `fixed` and `perl` arguments that allow to select the regular expression engine that's used:
 

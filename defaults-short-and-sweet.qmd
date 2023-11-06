@@ -171,7 +171,7 @@ Because it has a relatively complex explanation, it's nice to be able to documen
 If the above techniques don't work for your case there are two other alternatives that we don't generally recommend but can be useful in limited situations.
 
 ::: {.callout-note collapse="true"}
-#### Sentinel value {#defaults-short-and-sweet-defaults-short-and-sweet-sec-args-default-sentinel}
+#### Sentinel value
 
 Sometimes you'd like to use the `NULL` approach defined above, but `NULL` already has a specific meaning that you want to preserve.
 For example, this comes up in ggplot2 scales functions which allow you to set the `name` of the scale which is displayed on the axis or legend.
