@@ -45,6 +45,7 @@ book:
       - cs-rep.qmd
       - implicit-strategies.qmd
       - cs-rvest.qmd
+      - identity-strategy.qmd
 
     - part: Function arguments
       chapters: 
