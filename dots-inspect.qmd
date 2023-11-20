@@ -92,10 +92,14 @@ But most of the arguments in `stri_opts_collator()` are sufficiently arcane that
 
 (The importance of the `locale` argument comes up in "hidden inputs", @sec-inputs-explicit.)
 
+TODO: Update this!
+It's now wrong!
+
 However, `stri_opts_collator()` deliberately ignores any arguments in `...`.
 This means that misspellings are silently ignored:
 
 ```{r}
+#| eval: false
 str_sort(x, numric = TRUE)
 ```
 
