@@ -17,7 +17,8 @@ These are useful for representing values that should remain as is, when the defa
 
 There are two places that you can use `I()` in base R:
 
--   When creating a data frame, you can use it to request that `data.frame()` not transform the column in any way. It's one way you can create a list-column in base R:
+-   When creating a data frame, you can use it to request that `data.frame()` not transform the column in any way.
+    It's one way you can create a list-column in base R:
 
     ```{r}
     #| error: true
@@ -52,7 +53,8 @@ You'll see `I()` used in a variety of places in the tidyverse:
     readr::read_csv(I("x,y\n1,2"))
     ```
 
--   In ggplot2, you can use it to indicate that the values don't need to be transformed; they're the literal aeshetic values already. For example, compare the following two plots:
+-   In ggplot2, you can use it to indicate that the values don't need to be transformed; they're the literal aeshetic values already.
+    For example, compare the following two plots:
 
     ```{r}
     #| layout-ncol: 2
@@ -73,7 +75,8 @@ You'll see `I()` used in a variety of places in the tidyverse:
     df |> ggplot(aes(x, fill = I(colour))) + geom_bar()
     ```
 
--   httr2, a tool for generating HTTP requests, will automatically escape special characters when constructing a URL. You can use `I()` to say that you've already escaped the string and it doesn't need further escaping.
+-   httr2, a tool for generating HTTP requests, will automatically escape special characters when constructing a URL.
+    You can use `I()` to say that you've already escaped the string and it doesn't need further escaping.
 
 ### How can I use it?
 

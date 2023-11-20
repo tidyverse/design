@@ -42,8 +42,7 @@ This is one of the patterns that heavily influenced the design of stringr, and i
 
 There are quite a few functions that only allow certain combinations of arguments:
 
--   `read.table()` allows you to supply data with either a path to a `file`, or with in line `text`.
-    If you supply both, `path` wins.
+-   `read.table()` allows you to supply data with either a path to a `file`, or with in line `text`. If you supply both, `path` wins.
 
 ## How do I remediate past mistakes?
 
