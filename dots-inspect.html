@@ -100,7 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./def-magical.html">Function arguments</a></li><li class="breadcrumb-item"><a href="./dots-inspect.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Inspect the dots</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./def-magical.html">Function arguments</a></li><li class="breadcrumb-item"><a href="./dots-inspect.html"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Inspect the dots</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -254,6 +254,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-rvest.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Case study: <code>html_element()</code></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./identity-strategy.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">The I()dentity strategy</span></a>
   </div>
 </li>
       </ul>
@@ -511,12 +516,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>This is wrapper is useful because it decouples <code>str_sort()</code> from the <code>stri_opts_collator()</code> meaning that if <code>stri_opts_collator()</code> gains new arguments users of <code>str_sort()</code> can take advantage of them immediately. But most of the arguments in <code>stri_opts_collator()</code> are sufficiently arcane that they don’t need to be exposed directly in stringr, which is designed to minimise the cognitive load of the user, by hiding some of the full complexity of string handling.</p>
 <p>(The importance of the <code>locale</code> argument comes up in “hidden inputs”, <a href="inputs-explicit.html"><span>Chapter&nbsp;5</span></a>.)</p>
+<p>TODO: Update this! It’s now wrong!</p>
 <p>However, <code>stri_opts_collator()</code> deliberately ignores any arguments in <code>...</code>. This means that misspellings are silently ignored:</p>
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">str_sort</span><span class="op">(</span><span class="va">x</span>, numric <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in stringi::stri_opts_collator(locale, numeric = numeric, ...): Unknown</span></span>
-<span><span class="co">#&gt; option to `stri_opts_collator`.</span></span>
-<span><span class="co">#&gt; [1] "x1"   "x100" "x2"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">str_sort</span><span class="op">(</span><span class="va">x</span>, numric <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can work around this behaviour by adding <code>check_dots_used()</code> to <code>str_sort()</code>:</p>
 <div class="cell">
@@ -536,13 +539,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu">str_sort</span><span class="op">(</span><span class="va">x</span>, numric <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in stringi::stri_opts_collator(locale, numeric = numeric, ...): Unknown</span></span>
-<span><span class="co">#&gt; option to `stri_opts_collator`.</span></span>
-<span><span class="co">#&gt; Error in `str_sort()`:</span></span>
-<span><span class="co">#&gt; ! Arguments in `...` must be used.</span></span>
-<span><span class="co">#&gt; ✖ Problematic argument:</span></span>
-<span><span class="co">#&gt; • numric = TRUE</span></span>
-<span><span class="co">#&gt; ℹ Did you misspell an argument name?</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; Error in stringi::stri_opts_collator(locale, numeric = numeric, ...): unused argument (numric = TRUE)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Note, however, that it’s better to figure out why <code>stri_opts_collator()</code> ignores <code>...</code> in the first place. You can see that discussion at <a href="https://github.com/gagolews/stringi/issues/347" class="uri">https://github.com/gagolews/stringi/issues/347</a>.</p>
 <p>See <a href="https://github.com/r-lib/devtools/issues/2016" class="uri">https://github.com/r-lib/devtools/issues/2016</a> for discussion about using this in another discussion about using this in <code>devtools::install_github()</code> which is an similar situation, but with a more complicated chain of calls: <code>devtools::install_github()</code> -&gt; <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> -&gt; <code><a href="https://rdrr.io/r/utils/download.file.html">download.file()</a></code>.</p>

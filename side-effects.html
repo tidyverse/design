@@ -100,7 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./side-effects.html">Side effects</a></li><li class="breadcrumb-item"><a href="./side-effects.html"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Side-effect soup</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./side-effects.html">Side effects</a></li><li class="breadcrumb-item"><a href="./side-effects.html"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Side-effect soup</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -254,6 +254,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-rvest.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Case study: <code>html_element()</code></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./identity-strategy.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">The I()dentity strategy</span></a>
   </div>
 </li>
       </ul>
@@ -561,10 +566,10 @@ regression. This value is only computed when the summary is printed: you can see
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">xhist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">x</span>, plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">xhist</span><span class="op">)</span></span>
 <span><span class="co">#&gt; List of 6</span></span>
-<span><span class="co">#&gt;  $ breaks  : num [1:20] -4.5 -4 -3.5 -3 -2.5 -2 -1.5 -1 -0.5 0 ...</span></span>
-<span><span class="co">#&gt;  $ counts  : int [1:19] 2 17 95 475 1678 4377 9124 14809 19333 19043 ...</span></span>
-<span><span class="co">#&gt;  $ density : num [1:19] 0.00004 0.00034 0.0019 0.0095 0.03356 ...</span></span>
-<span><span class="co">#&gt;  $ mids    : num [1:19] -4.25 -3.75 -3.25 -2.75 -2.25 -1.75 -1.25 -0.75 -0.25 0.25 ...</span></span>
+<span><span class="co">#&gt;  $ breaks  : num [1:21] -5 -4.5 -4 -3.5 -3 -2.5 -2 -1.5 -1 -0.5 ...</span></span>
+<span><span class="co">#&gt;  $ counts  : int [1:20] 1 2 23 120 444 1643 4414 9086 15031 19196 ...</span></span>
+<span><span class="co">#&gt;  $ density : num [1:20] 0.00002 0.00004 0.00046 0.0024 0.00888 ...</span></span>
+<span><span class="co">#&gt;  $ mids    : num [1:20] -4.75 -4.25 -3.75 -3.25 -2.75 -2.25 -1.75 -1.25 -0.75 -0.25 ...</span></span>
 <span><span class="co">#&gt;  $ xname   : chr "x"</span></span>
 <span><span class="co">#&gt;  $ equidist: logi TRUE</span></span>
 <span><span class="co">#&gt;  - attr(*, "class")= chr "histogram"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -593,7 +598,7 @@ regression. This value is only computed when the summary is printed: you can see
 <div class="cell">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">old</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>my_option1 <span class="op">=</span> <span class="fl">1</span>, my_option2 <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>(I wouldn’t recommend copying this technique, but I’d instead recommend always taking a single named list. This makes the function because it has a single way to call it and makes it easy to extend the API in the future, as discussed in <a href="dots-data.html"><span>Chapter&nbsp;22</span></a>)</p>
+<p>(I wouldn’t recommend copying this technique, but I’d instead recommend always taking a single named list. This makes the function because it has a single way to call it and makes it easy to extend the API in the future, as discussed in <a href="dots-data.html"><span>Chapter&nbsp;23</span></a>)</p>
 </li>
 </ol>
 <p>Together, this means that you easily can set options temporarily.:</p>

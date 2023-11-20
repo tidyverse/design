@@ -256,6 +256,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <a href="./cs-rvest.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Case study: <code>html_element()</code></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./identity-strategy.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">The I()dentity strategy</span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -471,7 +476,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; [1] 4.333333</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section><section id="how-do-i-remediate-past-mistakes" class="level2"><h2 class="anchored" data-anchor-id="how-do-i-remediate-past-mistakes">How do I remediate past mistakes?</h2>
-<p>It’s straightforward to fix a function where you’ve put <code>...</code> in the wrong place: you just need to change the argument order and use <code><a href="https://rlang.r-lib.org/reference/check_dots_used.html">rlang::check_dots_used()</a></code> to check that no arguments are lost (learn more in <a href="dots-inspect.html"><span>Chapter&nbsp;24</span></a>). This is a breaking change, but it tends to affect relatively little code because most people do fully name optional arguments.</p>
+<p>It’s straightforward to fix a function where you’ve put <code>...</code> in the wrong place: you just need to change the argument order and use <code><a href="https://rlang.r-lib.org/reference/check_dots_used.html">rlang::check_dots_used()</a></code> to check that no arguments are lost (learn more in <a href="dots-inspect.html"><span>Chapter&nbsp;25</span></a>). This is a breaking change, but it tends to affect relatively little code because most people do fully name optional arguments.</p>
 <p>We can use this approach to make a safer version of <code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code>:</p>
 <div class="cell">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mean3</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, <span class="va">na.rm</span> <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">trim</span> <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
@@ -513,9 +518,9 @@ Base R
 </section><section id="see-also" class="level2"><h2 class="anchored" data-anchor-id="see-also">See also</h2>
 <ul>
 <li>
-<a href="dots-data.html"><span>Chapter&nbsp;22</span></a>: if <code>…</code> is a required argument because it’s used to combine an arbitrary number of objects in a data structure.</li>
+<a href="dots-data.html"><span>Chapter&nbsp;23</span></a>: if <code>…</code> is a required argument because it’s used to combine an arbitrary number of objects in a data structure.</li>
 <li>
-<a href="dots-inspect.html"><span>Chapter&nbsp;24</span></a>: to ensure that arguments to <code>…</code> never go silently missing.</li>
+<a href="dots-inspect.html"><span>Chapter&nbsp;25</span></a>: to ensure that arguments to <code>…</code> never go silently missing.</li>
 </ul>
 
 

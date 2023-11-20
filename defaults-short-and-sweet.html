@@ -256,6 +256,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <a href="./cs-rvest.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Case study: <code>html_element()</code></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./identity-strategy.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">The I()dentity strategy</span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -553,7 +558,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="va">...</span></span>
 <span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The problem with using an internal function as the default is that the user can’t easily run this function to see what it does, making the default a bit magical (<a href="def-magical.html"><span>Chapter&nbsp;19</span></a>). So we recommend that if you want to do this you export and document that function. This is the main downside of this approach: you have to think carefully about the name of the function because it’s user facing.</p>
+<p>The problem with using an internal function as the default is that the user can’t easily run this function to see what it does, making the default a bit magical (<a href="def-magical.html"><span>Chapter&nbsp;20</span></a>). So we recommend that if you want to do this you export and document that function. This is the main downside of this approach: you have to think carefully about the name of the function because it’s user facing.</p>
 <p>A good example of this pattern is <code><a href="https://readr.tidyverse.org/reference/show_progress.html">readr::show_progress()</a></code>: it’s used in every <code>read_</code> function in readr to determine whether or not a progress bar should be shown. Because it has a relatively complex explanation, it’s nice to be able to document it in its own file, rather than cluttering up file reading functions with incidental details.</p>
 </section><section id="alternatives" class="level3"><h3 class="anchored" data-anchor-id="alternatives">Alternatives</h3>
 <p>If the above techniques don’t work for your case there are two other alternatives that we don’t generally recommend but can be useful in limited situations.</p>
@@ -575,7 +580,7 @@ Sentinel value
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot2</span><span class="fu">::</span><span class="va"><a href="https://ggplot2.tidyverse.org/reference/waiver.html">waiver</a></span></span>
 <span><span class="co">#&gt; function () </span></span>
 <span><span class="co">#&gt; structure(list(), class = "waiver")</span></span>
-<span><span class="co">#&gt; &lt;bytecode: 0x55f1a5e89708&gt;</span></span>
+<span><span class="co">#&gt; &lt;bytecode: 0x557b1355dba8&gt;</span></span>
 <span><span class="co">#&gt; &lt;environment: namespace:ggplot2&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>And then ggplot2 also provides the internal <code>is.waive()</code><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> function which allows to work with it in the same way we might work with a <code>NULL</code>:</p>

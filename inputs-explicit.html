@@ -256,6 +256,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <a href="./cs-rvest.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Case study: <code>html_element()</code></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./identity-strategy.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">The I()dentity strategy</span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -473,7 +478,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul></section><section id="how-can-i-remediate-the-problem" class="level2"><h2 class="anchored" data-anchor-id="how-can-i-remediate-the-problem">How can I remediate the problem?</h2>
 <p>At some level, implicit inputs are easy to avoid when creating new functions: just don’t use the locale or global options! But it’s easy for such problems to creep in indirectly, when you call a function not knowing that it has hidden inputs. The best way to prevent that is to consult the list of common offenders provided above.</p>
 <section id="make-an-option-explicit" class="level3"><h3 class="anchored" data-anchor-id="make-an-option-explicit">Make an option explicit</h3>
-<p>If you want depend on an option or locale, make sure it’s an explicit argument. Such arguments generally should not affect computation (<a href="def-user.html"><span>Chapter&nbsp;21</span></a>), just side-effects like printed output or status messages. If they do affect results, follow <a href="def-inform.html"><span>Chapter&nbsp;20</span></a> to make sure the user knows what’s happening. For example, lets take <code><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct()</a></code> which basically looks something like this:</p>
+<p>If you want depend on an option or locale, make sure it’s an explicit argument. Such arguments generally should not affect computation (<a href="def-user.html"><span>Chapter&nbsp;22</span></a>), just side-effects like printed output or status messages. If they do affect results, follow <a href="def-inform.html"><span>Chapter&nbsp;21</span></a> to make sure the user knows what’s happening. For example, lets take <code><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct()</a></code> which basically looks something like this:</p>
 <div class="cell">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">as.POSIXct</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">tz</span> <span class="op">=</span> <span class="st">""</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="va">x</span>, tz <span class="op">=</span> <span class="va">tz</span><span class="op">)</span></span>
@@ -511,9 +516,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section></section><section id="see-also" class="level2"><h2 class="anchored" data-anchor-id="see-also">See also</h2>
 <ul>
 <li>
-<a href="def-user.html"><span>Chapter&nbsp;21</span></a> and <a href="def-inform.html"><span>Chapter&nbsp;20</span></a>: how to make an option as explicit as possible.</li>
+<a href="def-user.html"><span>Chapter&nbsp;22</span></a> and <a href="def-inform.html"><span>Chapter&nbsp;21</span></a>: how to make an option as explicit as possible.</li>
 <li>
-<a href="spooky-action.html"><span>Chapter&nbsp;33</span></a>: where a function changes global state in a surprising way.</li>
+<a href="spooky-action.html"><span>Chapter&nbsp;34</span></a>: where a function changes global state in a surprising way.</li>
 </ul>
 
 

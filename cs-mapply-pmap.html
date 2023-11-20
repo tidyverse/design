@@ -100,7 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./def-magical.html">Function arguments</a></li><li class="breadcrumb-item"><a href="./cs-mapply-pmap.html"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Case study: `mapply()` vs `pmap()`</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./def-magical.html">Function arguments</a></li><li class="breadcrumb-item"><a href="./cs-mapply-pmap.html"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Case study: `mapply()` vs `pmap()`</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -254,6 +254,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-rvest.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Case study: <code>html_element()</code></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./identity-strategy.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">The I()dentity strategy</span></a>
   </div>
 </li>
       </ul>
@@ -487,7 +492,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; [1] "axxle"  "bafafa" "cqerry"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>There’s a subtle difference here that doesn’t matter in most cases - in the <code><a href="https://rdrr.io/r/base/mapply.html">mapply()</a></code> <code>fixed</code> is recycled to the same length as <code>pattern</code> whereas it is not <code><a href="https://purrr.tidyverse.org/reference/pmap.html">pmap()</a></code>. TODO: figure out example where that’s more clear.</p>
-<p>(Also note that <code><a href="https://purrr.tidyverse.org/reference/pmap.html">pmap()</a></code> uses the <code>.</code> prefix to avoid the problem described in Chapter <a href="dots-prefix.html"><span>Chapter&nbsp;23</span></a>.)</p>
+<p>(Also note that <code><a href="https://purrr.tidyverse.org/reference/pmap.html">pmap()</a></code> uses the <code>.</code> prefix to avoid the problem described in Chapter <a href="dots-prefix.html"><span>Chapter&nbsp;24</span></a>.)</p>
 
 
 

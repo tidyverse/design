@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.450">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Hadley Wickham">
-<title>Tidy design principles - Prefer a enum, even if only two choices</title>
+<title>Tidy design principles - The I()dentity strategy</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -61,8 +61,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./strategy-objects.html" rel="next">
-<link href="./explicit-strategies.html" rel="prev">
+<link href="./def-magical.html" rel="next">
+<link href="./cs-rvest.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -100,7 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./explicit-strategies.html">Strategies</a></li><li class="breadcrumb-item"><a href="./boolean-strategies.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Prefer a enum, even if only two choices</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./explicit-strategies.html">Strategies</a></li><li class="breadcrumb-item"><a href="./identity-strategy.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">The I()dentity strategy</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -228,7 +228,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./boolean-strategies.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Prefer a enum, even if only two choices</span></a>
+  <a href="./boolean-strategies.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Prefer a enum, even if only two choices</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -258,7 +258,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./identity-strategy.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">The I()dentity strategy</span></a>
+  <a href="./identity-strategy.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">The I()dentity strategy</span></a>
   </div>
 </li>
       </ul>
@@ -428,19 +428,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
 <li><a href="#whats-the-pattern" id="toc-whats-the-pattern" class="nav-link active" data-scroll-target="#whats-the-pattern">What’s the pattern?</a></li>
-  <li><a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples">What are some examples?</a></li>
   <li>
-<a href="#how-do-you-remediate-past-mistakes" id="toc-how-do-you-remediate-past-mistakes" class="nav-link" data-scroll-target="#how-do-you-remediate-past-mistakes">How do you remediate past mistakes?</a>
+<a href="#what-are-some-examples" id="toc-what-are-some-examples" class="nav-link" data-scroll-target="#what-are-some-examples">What are some examples?</a>
   <ul class="collapse">
-<li><a href="#create-a-new-argument" id="toc-create-a-new-argument" class="nav-link" data-scroll-target="#create-a-new-argument">Create a new argument</a></li>
-  <li><a href="#re-use-an-existing-name" id="toc-re-use-an-existing-name" class="nav-link" data-scroll-target="#re-use-an-existing-name">Re-use an existing name</a></li>
+<li><a href="#how-can-i-use-it" id="toc-how-can-i-use-it" class="nav-link" data-scroll-target="#how-can-i-use-it">How can I use it?</a></li>
   </ul>
 </li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/boolean-strategies.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/tidyverse/design/edit/main/identity-strategy.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/tidyverse/design/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span class="chapter-title">Prefer a enum, even if only two choices</span></h1>
+<h1 class="title"><span class="chapter-title">The I()dentity strategy</span></h1>
 </div>
 
 
@@ -454,107 +452,100 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 </header><section id="whats-the-pattern" class="level2"><h2 class="anchored" data-anchor-id="whats-the-pattern">What’s the pattern?</h2>
-<p>If your function implements two strategies, it’s tempting to distinguish between them using an argument that takes either <code>TRUE</code> or <code>FALSE</code>. However, I recommend that you use an enumeration unless:</p>
-<ul>
-<li>You’re <strong>really sure</strong> there won’t ever be another strategy. If you do discover a third (or fourth, or fifth, or …) strategy, you’ll need to change the interface of your function.</li>
-<li>It’s very clear what both <code>TRUE</code> and <code>FALSE</code> options mean just from the name of the argument. Generally the <code>TRUE</code> value tends to be easier to understand because <code>something = TRUE</code> tells you what will happen, but <code>something = FALSE</code> only tells you what won’t happen.</li>
-</ul></section><section id="what-are-some-examples" class="level2"><h2 class="anchored" data-anchor-id="what-are-some-examples">What are some examples?</h2>
-<p>There are quite a few examples of the problem in tidyverse, because this is a pattern that we only discovered relatively recently:</p>
-<ul>
-<li>By default, <code>stringr::str_subset(string, pattern)</code> returns the elements of <code>string</code> that match the <code>pattern</code>. You can use <code>negate = TRUE</code> to instead return the elements that don’t match the pattern, but I now wonder if would be more clear as <code>return = c("matches", "non-matches")</code>.</li>
-<li>
-<code>httr2::multi_req_perform()</code> allows you to perform a bunch of HTTP requests in parallel. It has an argument called <code>cancel_on_error</code> that can take <code>TRUE</code> or <code>FALSE</code>. It’s fairly clear what <code>cancel_on_error = TRUE</code> means; but it’s not so obvious what <code>cancel_on_error = FALSE</code> does. Additionally, it seems likely that I’ll come up with other possible error handling strategies in the future, and even though I don’t know what they are now, it would be better to plan for the future with an argument specification like <code>error = c("cancel", "continue")</code>.</li>
-</ul>
-<p><code><a href="https://rdrr.io/r/base/cut.html">cut()</a></code> has an argument called <code>right</code> which is used to pick between right-closed left-open intervals (<code>TRUE)</code> and right-open left-closed arguments. I think it’s hard to remember which is which and a clearer specification might be <code>open_side = c("right", "left")</code> or maybe <code>bounds = c("[)", "(]")</code>. Another interesting case in base R is <code><a href="https://rdrr.io/r/base/sort.html">sort()</a></code> which has two arguments that take a single logical value: <code>decreasing</code> and <code>na.last</code>:</p>
+<p>One simple, but convenient, strategy is to use the base <code><a href="https://rdrr.io/r/base/AsIs.html">I()</a></code> function to create objects of class <code>AsIs</code>. These are useful for representing values that should remain as is, when the default might be to change them in some way.</p>
+</section><section id="what-are-some-examples" class="level2"><h2 class="anchored" data-anchor-id="what-are-some-examples">What are some examples?</h2>
+<p>There are two places that you can use <code><a href="https://rdrr.io/r/base/AsIs.html">I()</a></code> in base R:</p>
 <ul>
 <li>
-<p>The <code>decreasing</code> argument is used to pick between sorting in ascending or descending order. It’s easy to understand what <code>decreasing = TRUE</code> does, but slightly less clear what <code>decreasing = FALSE</code>, the default, means because it feels like a double negative:</p>
+<p>When creating a data frame, you can use it to request that <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code> not transform the column in any way. It’s one way you can create a list-column in base R:</p>
 <div class="cell">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="va">x</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="va">x</span>, decreasing <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">3</span>, <span class="fl">4</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># By default, if you give a data frame a list it will try to make</span></span>
+<span><span class="co"># each element a column:</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in (function (..., row.names = NULL, check.rows = FALSE, check.names = TRUE, : arguments imply differing number of rows: 1, 2, 3</span></span>
+<span></span>
+<span><span class="co"># But if you wrap it in `I()` it will become a list-column</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html">I</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         x</span></span>
+<span><span class="co">#&gt; 1       1</span></span>
+<span><span class="co">#&gt; 2    2, 3</span></span>
+<span><span class="co">#&gt; 3 4, 5, 6</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Compare this with <code><a href="https://vctrs.r-lib.org/reference/vec_order.html">vctrs::vec_sort()</a></code>, which uses an enum:</p>
-<div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">vctrs</span><span class="fu">::</span><span class="fu"><a href="https://vctrs.r-lib.org/reference/vec_order.html">vec_sort</a></span><span class="op">(</span><span class="va">x</span>, direction <span class="op">=</span> <span class="st">"desc"</span><span class="op">)</span></span>
-<span><span class="fu">vctrs</span><span class="fu">::</span><span class="fu"><a href="https://vctrs.r-lib.org/reference/vec_order.html">vec_sort</a></span><span class="op">(</span><span class="va">x</span>, direction <span class="op">=</span> <span class="st">"asc"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>I think this is a mild improvement because the two options are spelled out explicitly.</p>
 </li>
-<li><p>The <code>na.last</code> argument is used to control the location of missing values in the result. It takes three possible values: <code>TRUE</code> (put <code>NA</code>s at the end), <code>FALSE</code> (put <code>NA</code>s at the beginning), or <code>NA</code> (drop <code>NA</code>s from the result). This is an interesting way to support three strategies, but as we’ll see later I think this would be more clear the argument specification was <code>na = c("drop", "first", "last")</code>.</p></li>
-</ul></section><section id="how-do-you-remediate-past-mistakes" class="level2"><h2 class="anchored" data-anchor-id="how-do-you-remediate-past-mistakes">How do you remediate past mistakes?</h2>
-<p>There are two possible ways to switch to using a strategy instead of <code>TRUE</code>/<code>FALSE</code> depending on whether the old argument name makes sense with the new argument values. The sections below show what you’ll need to do if you need a new argument (most cases) or if you’re lucky enough to be able to reuse the existing argument.</p>
-<section id="create-a-new-argument" class="level3"><h3 class="anchored" data-anchor-id="create-a-new-argument">Create a new argument</h3>
-<p>Imagine we wanted to remediate the <code>na.last</code> argument to <code><a href="https://rdrr.io/r/base/sort.html">sort()</a></code>. Currently:</p>
+<li>
+<p>When fitting a linear model, <code><a href="https://rdrr.io/r/base/AsIs.html">I()</a></code> allows you to escape the usual Wilkinson-Rogers interpretation of addition and multiplication and instead created a transformed input:</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># fit a model with three terms: x, y, x:y</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">z</span> <span class="op">~</span> <span class="va">x</span> <span class="op">*</span> <span class="va">y</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># fit a model with one term: x * y</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">z</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html">I</a></span><span class="op">(</span><span class="va">x</span> <span class="op">*</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</li>
+</ul>
+<p>You’ll see <code><a href="https://rdrr.io/r/base/AsIs.html">I()</a></code> used in a variety of places in the tidyverse:</p>
 <ul>
 <li>
-<code>na.last = TRUE</code> means put <code>NA</code>s last.</li>
+<p>In readr, you can use <code><a href="https://rdrr.io/r/base/AsIs.html">I()</a></code> to indiate that you are supplying a string containing the literal data, rather than a path giving where to find the data:</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/AsIs.html">I</a></span><span class="op">(</span><span class="st">"x,y\n1,2"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 × 2</span></span>
+<span><span class="co">#&gt;       x     y</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1     1     2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</li>
 <li>
-<code>na.last = FALSE</code> means put <code>NA</code>s first.</li>
-<li>
-<code>na.list = NA</code> means to drop them.</li>
+<p>In ggplot2, you can use it to indicate that the values don’t need to be transformed; they’re the literal aeshetic values already. For example, compare the following two plots:</p>
+<div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, colour <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"green"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span>, fill <span class="op">=</span> <span class="va">colour</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span>, fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html">I</a></span><span class="op">(</span><span class="va">colour</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="identity-strategy_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" alt="Two bar plots. In the plot the bars are coloured blue-green and a pinkish red, using the default ggplot2 colour scale. In the second plot, the bars are coloured red and bright green, using the literal R &quot;red&quot; and &quot;green&quot; colours. The first plot has a legend; the second does not. " width="288"></p>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="identity-strategy_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid" alt="Two bar plots. In the plot the bars are coloured blue-green and a pinkish red, using the default ggplot2 colour scale. In the second plot, the bars are coloured red and bright green, using the literal R &quot;red&quot; and &quot;green&quot; colours. The first plot has a legend; the second does not. " width="288"></p>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li><p>httr2, a tool for generating HTTP requests, will automatically escape special characters when constructing a URL. You can use <code><a href="https://rdrr.io/r/base/AsIs.html">I()</a></code> to say that you’ve already escaped the string and it doesn’t need further escaping.</p></li>
 </ul>
-<p>I think we could make this function more clear by changing the argument name to <code>na</code> and accepting one of three values: <code>last</code>, <code>first</code>, or <code>drop</code>.</p>
-<p>Changing an argument name is equivalent removing the old name and adding the new name. This way of thinking about the change makes it easier to see how you do it in a backward compatible way: you need to deprecate the old argument in favour of the new one.</p>
+<section id="how-can-i-use-it" class="level3"><h3 class="anchored" data-anchor-id="how-can-i-use-it">How can I use it?</h3>
+<p><code><a href="https://rdrr.io/r/base/AsIs.html">I()</a></code> wraps adds the <code>"AsIs"</code> class to the object it wraps, so you can detect if <code><a href="https://rdrr.io/r/base/AsIs.html">I()</a></code> has been used by checking for <code>inherits(x, "AsIs")</code>.</p>
+<p>It’s best used for simple cases where there are two possible interpretations for an argument and one of them has more of a sense for being untransformed or unaltered in some way. For example, you could imagine using it instead of <code>fixed()</code> in stringr if there was only a choice between regular expressions and fixed stringr, but it’s not quite powerful.</p>
+<p>If you’re using <code><a href="https://rdrr.io/r/base/AsIs.html">I()</a></code> for escaping, it’s good practice to wrap any escaped values in <code><a href="https://rdrr.io/r/base/AsIs.html">I()</a></code> to indicate that you’ve escaped them. That ensures that you never accidentally double-escape an input. For example, this is how you might write code like what httr2 uses to escape query parameters.</p>
 <div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sort</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>,</span>
-<span>                 <span class="va">na.last</span> <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html">deprecated</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>                 <span class="va">na</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"drop"</span>, <span class="st">"first"</span>, <span class="st">"last"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html">is_present</a></span><span class="op">(</span><span class="va">na.last</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecate_soft.html">deprecate_warn</a></span><span class="op">(</span><span class="st">"1.0.0"</span>, <span class="st">"sort(na.last)"</span>, <span class="st">"sort(na)"</span><span class="op">)</span></span>
-<span></span>
-<span>    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/logical.html">is.logical</a></span><span class="op">(</span><span class="va">na.last</span><span class="op">)</span> <span class="op">||</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">na.last</span><span class="op">)</span> <span class="op">!=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span></span>
-<span>      <span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_abort.html">cli_abort</a></span><span class="op">(</span><span class="st">"{.arg na.last} must be a single TRUE, FALSE, or NA."</span><span class="op">)</span></span>
-<span>    <span class="op">}</span></span>
-<span>    </span>
-<span>    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Logic.html">isTRUE</a></span><span class="op">(</span><span class="va">na.last</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>      <span class="va">na</span> <span class="op">&lt;-</span> <span class="st">"last"</span></span>
-<span>    <span class="op">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Logic.html">isFALSE</a></span><span class="op">(</span><span class="va">na.last</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>      <span class="va">na</span> <span class="op">&lt;-</span> <span class="st">"first"</span></span>
-<span>    <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span>      <span class="va">na</span> <span class="op">&lt;-</span> <span class="st">"drop"</span></span>
-<span>    <span class="op">}</span></span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">escape_params</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/class.html">inherits</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"AsIs"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">x</span></span>
 <span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span>    <span class="va">na</span> <span class="op">&lt;-</span> <span class="fu">arg_match</span><span class="op">(</span><span class="va">na</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html">I</a></span><span class="op">(</span><span class="fu">curl</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/curl/man/curl_escape.html">curl_escape</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
-<span>  </span>
-<span>  <span class="va">...</span></span>
-<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">escape_params</span><span class="op">(</span><span class="st">"Good morning"</span><span class="op">)</span></span>
+<span><span class="va">x</span></span>
+<span><span class="co">#&gt; [1] "Good%20morning"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>Note that because <code>na</code> is a prefix of <code>na.last</code> and <code><a href="https://rdrr.io/r/base/sort.html">sort()</a></code> puts <code>na.last</code> before <code>…,</code>not after it (see <a href="dots-after-required.html"><span>Chapter&nbsp;8</span></a>), this introduces a very subtle behaviour change. Previously, <code>sort(x, n = TRUE)</code> would have worked and been equivalent to <code>sort(x, na.last = TRUE)</code>. But it will now fail because <code>n</code> is a prefix of two arguments (<code>na</code> and <code>na.last)</code>. This is unlikely to affect much code, but is worth being aware of.</p>
-<p>It would also be nice to make the default value <code>"last"</code> to match <code><a href="https://rdrr.io/r/base/order.html">order()</a></code>, especially since it’s very unusual for a function to silently remove missing values. However, that’s likely to affect a lot of existing code, making it unlikely to be worthwhile.</p>
-</div>
-</div>
-</div>
-</section><section id="re-use-an-existing-name" class="level3"><h3 class="anchored" data-anchor-id="re-use-an-existing-name">Re-use an existing name</h3>
-<p>Originally <code>haven::write_sav(compress)</code> could either be <code>TRUE</code> (compress the file) or <code>FALSE</code> (don’t compress it). But then SPSS version 21.0 introduced a new way of compressing files leading to three possible options: compress with the new way (zsav), compress with the old way (bytes), or don’t compress. In this case we got lucky because we can continue to use the same argument name: <code>compress = c("byte", "zsav", "none")</code>. We allowed existing code by special casing the behaviour of <code>TRUE</code> and <code>FALSE</code>:</p>
+<p>Wrapping the output in <code><a href="https://rdrr.io/r/base/AsIs.html">I()</a></code> ensures that no matter how many times we call <code>escape_params()</code> the string is only escaped once. This is a particularly useful property as your code starts to get more complicated.</p>
 <div class="cell">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">write_sav</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">path</span>, <span class="va">compress</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"byte"</span>, <span class="st">"zsav"</span>, <span class="st">"none"</span><span class="op">)</span>, <span class="va">adjust_tz</span> <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Logic.html">isTRUE</a></span><span class="op">(</span><span class="va">compress</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">compress</span> <span class="op">&lt;-</span> <span class="st">"zsav"</span></span>
-<span>  <span class="op">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Logic.html">isFALSE</a></span><span class="op">(</span><span class="va">compress</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">compress</span> <span class="op">&lt;-</span> <span class="st">"none"</span></span>
-<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span>    <span class="va">compress</span> <span class="op">&lt;-</span> <span class="fu">arg_match</span><span class="op">(</span><span class="va">compress</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
-<span></span>
-<span>  <span class="va">...</span></span>
-<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">escape_params</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "Good%20morning"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>You could choose to deprecate <code>TRUE</code> and <code>FALSE</code>, but here we chose to the keep them since it’s only a small amount of extra code in haven, and it means that existing users don’t need to think about it. See <code><a href="https://haven.tidyverse.org/reference/read_spss.html">?haven::read_sav</a></code> for how we communicated the change in the docs.</p>
-<p>In a future version of haven we might change the order of the enum so that the <code>zsav</code> compression method becomes the default. This generally yields smaller files but can’t be read by older versions of SPSS. Now that v21 is over 5 years old<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, it’s reasonable to make the smaller format the default.</p>
+<p>You can see here one of the downsides of using <code><a href="https://rdrr.io/r/base/AsIs.html">I()</a></code>: the printed output of wrapped objects are no different from the objects themselves leaving to potentially confusing behaviour when two seemingly identical inputs yield different outputs.</p>
 
 
-</section></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
-<ol>
-<li id="fn1"><p>Five years is the general threshold for support across the tidyverse.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -787,13 +778,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./explicit-strategies.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Strategies</span>
+      <a href="./cs-rvest.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Case study: <code>html_element()</code></span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./strategy-objects.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-title">Extract strategies into objects</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./def-magical.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-title">Avoid magical defaults</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

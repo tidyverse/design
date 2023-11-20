@@ -100,7 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./side-effects.html">Side effects</a></li><li class="breadcrumb-item"><a href="./spooky-action.html"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Spooky action</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./side-effects.html">Side effects</a></li><li class="breadcrumb-item"><a href="./spooky-action.html"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Spooky action</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -254,6 +254,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cs-rvest.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Case study: <code>html_element()</code></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./identity-strategy.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">The I()dentity strategy</span></a>
   </div>
 </li>
       </ul>
@@ -503,7 +508,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/now.html">now</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span><span class="fu">current_time</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "2023-11-06 14:27:09 UTC"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; [1] "2023-11-20 16:10:45 UTC"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section><section id="ask-for-confirmation" class="level3"><h3 class="anchored" data-anchor-id="ask-for-confirmation">Ask for confirmation</h3>
 <p>If you can’t parameterise the operation, and need to perform it from somewhere deep within the cope, make sure to confirm with the user before performing the action. The code below shows how you might do so when installing a package:</p>
@@ -648,8 +653,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">out</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]</span></span>
-<span><span class="co">#&gt; x      5   13   16    9   12   18   10    9   12     7</span></span>
-<span><span class="co">#&gt; out    5   18   34   43   55   73   83   92  104   111</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; x      8    5   12   10   11    4   15   11   10     8</span></span>
+<span><span class="co">#&gt; out    8   13   25   35   46   50   65   76   86    94</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>A simple transformation from to use <code><a href="https://purrr.tidyverse.org/reference/map.html">map()</a></code> doesn’t work:</p>
 <div class="cell">
@@ -662,7 +667,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>    <span class="va">out</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">+</span> <span class="va">out</span><span class="op">[[</span><span class="va">i</span> <span class="op">-</span> <span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span>  <span class="op">}</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  [1]  5 13 16  9 12 18 10  9 12  7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt;  [1]  8  5 12 10 11  4 15 11 10  8</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Because the modification of <code>out</code> is happening inside of a function, R creates a copy of <code>out</code> (this is called <a href="https://adv-r.hadley.nz/names-values.html#copy-on-modify">copy-on-modify principle</a>). Instead we need to use <code>&lt;&lt;-</code> to reach outside of the function to modify the outer <code>out</code>:</p>
 <div class="cell">
@@ -673,7 +678,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>    <span class="va">out</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;&lt;-</span> <span class="va">x</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">+</span> <span class="va">out</span><span class="op">[[</span><span class="va">i</span> <span class="op">-</span> <span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span>  <span class="op">}</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  [1]   5  18  34  43  55  73  83  92 104 111</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt;  [1]  8 13 25 35 46 50 65 76 86 94</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This use of <code>&lt;&lt;-</code> is a spooky action because we’re reaching up the tree of environments to modify an object created outside of the function. In this case, however, there’s no point in using <code><a href="https://purrr.tidyverse.org/reference/map.html">map()</a></code>: the point of those functions is to restrict what you can do compared to a for loop so that your code is easier to understand. <a href="https://r4ds.had.co.nz/iteration.html#for-loop-variations">R for data science</a> has other examples of for loops that <em>could</em> be rewritten with <code><a href="https://purrr.tidyverse.org/reference/map.html">map()</a></code>, but shouldn’t be.</p>
 <p>Note that we could still wrap this code into a function to eliminate the spooky action:</p>
