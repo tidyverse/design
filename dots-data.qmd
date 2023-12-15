@@ -113,7 +113,7 @@ safe_sum <- function(..., na.rm = TRUE) {
 safe_sum(1, 1, 1, na.omit = TRUE)
 ```
 
-If you want your vector to have names, the problem is harder, and there's relatively little that you can.
+If you want your vector to have names, the problem is harder, and there's relatively little that you can do.
 You'll need to ensure that all other arguments get a `.` prefix (to minimise chances of a mismatch) and then think carefully about how you might detect problems by thinking about the expect type of `c(...)`.
 As far as I know, there are no general techniques, and you'll have to think about the problem on a case-by-case basis.
 
