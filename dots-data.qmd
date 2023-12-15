@@ -39,7 +39,7 @@ In general, I think it is best to avoid using `...` for this purpose because it 
     mean(1, 2, 3)
     ```
 
-    (See Chapter @sec-dots-after-required to learn why this doesn't give an error message.)
+    (See @sec-dots-after-required to learn why this doesn't give an error message.)
 
 -   It makes it harder to adapt the function for new uses.
     For example, `fct_relevel()` can also be called with a function:
