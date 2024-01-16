@@ -61,7 +61,7 @@ Currently:
 
 -   `na.last = TRUE` means put `NA`s last.
 -   `na.last = FALSE` means put `NA`s first.
--   `na.list = NA` means to drop them.
+-   `na.last = NA` means to drop them.
 
 I think we could make this function more clear by changing the argument name to `na` and accepting one of three values: `last`, `first`, or `drop`.
 
