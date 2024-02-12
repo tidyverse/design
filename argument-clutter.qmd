@@ -75,13 +75,13 @@ This then allows you to create more informative error messages:
 ```{r}
 #| error: true
 
-my_fun_opts <- function(..., opts = my_fun_opts()) {
+my_fun <- function(..., opts = my_fun_opts()) {
   if (!inherits(opts, "mypackage_my_fun_opts")) {
     cli::cli_abort("{.arg opts} must be created by {.fun my_fun_opts}.")
   }
 }
 
-my_fun_opts(opts = 1)
+my_fun(opts = 1)
 ```
 
 If you use this option in many places, you should consider pulling out the repeated code into a `check_my_fun_opts()` function.
