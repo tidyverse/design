@@ -102,8 +102,8 @@ This problem is generally easy to avoid for new functions:
     f1(y)
     ```
 
-    When `x` takes the value `y` from its default, it's evaluated inside the function, yielding `1`.
-    When `y` is supplied explicitly, it is evaluated in the caller environment, yielding `2`.
+    When `x` takes the value `y` from its default, it's evaluated inside the function, yielding `2`.
+    When `y` is supplied explicitly, it is evaluated in the caller environment, yielding `1`.
 
 -   Don't use `missing()`\[\^def-magical-1\].
 
