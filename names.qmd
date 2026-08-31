@@ -65,6 +65,7 @@ names(x)
 
 This means that the names of `x` are sometimes a character vector the same length of `x`, and sometimes `NULL`.
 rlang papers of this problem by providing `names2()` which always returns a character vector:
+<!-- The line above does not make sense as the phrase "papers of this problem" does not make sense. Are words missing?-->
 
 ```{r}
 rlang::names2(x)
