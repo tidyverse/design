@@ -1,4 +1,4 @@
-# Prefer a enum, even if only two choices {#sec-boolean-strategies}
+# Prefer an enum, even if only two choices {#sec-boolean-strategies}
 
 ```{r}
 #| include = FALSE
@@ -8,7 +8,7 @@ source("common.R")
 ## What's the pattern?
 
 If your function implements two strategies, it's tempting to distinguish between them using an argument that takes either `TRUE` or `FALSE`.
-However, I recommend that you use an enumeration unless:
+However, I recommend that you use an enumeration unless both of these are true:
 
 -   You're **really sure** there won't ever be another strategy. If you do discover a third (or fourth, or fifth, or ...) strategy, you'll need to change the interface of your function.
 -   It's very clear what both `TRUE` and `FALSE` options mean just from the name of the argument. Generally the `TRUE` value tends to be easier to understand because `something = TRUE` tells you what will happen, but `something = FALSE` only tells you what won't happen.
@@ -17,12 +17,12 @@ However, I recommend that you use an enumeration unless:
 
 There are quite a few examples of the problem in tidyverse, because this is a pattern that we only discovered relatively recently:
 
--   By default, `stringr::str_subset(string, pattern)` returns the elements of `string` that match the `pattern`. You can use `negate = TRUE` to instead return the elements that don't match the pattern, but I now wonder if would be more clear as `return = c("matches", "non-matches")`.
--   `httr2::multi_req_perform()` allows you to perform a bunch of HTTP requests in parallel. It has an argument called `cancel_on_error` that can take `TRUE` or `FALSE`. It's fairly clear what `cancel_on_error = TRUE` means; but it's not so obvious what `cancel_on_error = FALSE` does. Additionally, it seems likely that I'll come up with other possible error handling strategies in the future, and even though I don't know what they are now, it would be better to plan for the future with an argument specification like `error = c("cancel", "continue")`.
+-   By default, `stringr::str_subset(string, pattern)` returns the elements of `string` that match the `pattern`. You can use `negate = TRUE` to instead return the elements that don't match the pattern, but I now wonder if it would be more clear as `return = c("matches", "non-matches")`.
+-   `httr2::multi_req_perform()` allows you to perform a bunch of HTTP requests in parallel. It has an argument called `cancel_on_error` that can take `TRUE` or `FALSE`. It's fairly clear what `cancel_on_error = TRUE` means, but it's not so obvious what `cancel_on_error = FALSE` does. Additionally, it seems likely that I'll come up with other possible error handling strategies in the future, and even though I don't know what they are now, it would be better to plan for the future with an argument specification like `error = c("cancel", "continue")`.
 
-`cut()` has an argument called `right` which is used to pick between right-closed left-open intervals (`TRUE)` and right-open left-closed arguments.
+`cut()` has an argument called `right` which is used to pick between right-closed left-open intervals (`TRUE)` and right-open left-closed intervals.
 I think it's hard to remember which is which and a clearer specification might be `open_side = c("right", "left")` or maybe `bounds = c("[)", "(]")`.
-Another interesting case in base R is `sort()` which has two arguments that take a single logical value: `decreasing` and `na.last`:
+Another interesting case in base R is `sort()`, which has two arguments that take a single logical value: `decreasing` and `na.last`:
 
 -   The `decreasing` argument is used to pick between sorting in ascending or descending order.
     It's easy to understand what `decreasing = TRUE` does, but slightly less clear what `decreasing = FALSE`, the default, means because it feels like a double negative:
@@ -47,7 +47,7 @@ Another interesting case in base R is `sort()` which has two arguments that take
 
 -   The `na.last` argument is used to control the location of missing values in the result.
     It takes three possible values: `TRUE` (put `NA`s at the end), `FALSE` (put `NA`s at the beginning), or `NA` (drop `NA`s from the result).
-    This is an interesting way to support three strategies, but as we'll see later I think this would be more clear the argument specification was `na = c("drop", "first", "last")`.
+    This is an interesting way to support three strategies, but as we'll see later I think this would be more clear if the argument specification was `na = c("drop", "first", "last")`.
 
 ## How do you remediate past mistakes?
 
@@ -65,7 +65,7 @@ Currently:
 
 I think we could make this function more clear by changing the argument name to `na` and accepting one of three values: `last`, `first`, or `drop`.
 
-Changing an argument name is equivalent removing the old name and adding the new name.
+Changing an argument name is equivalent to removing the old name and adding the new name.
 This way of thinking about the change makes it easier to see how you do it in a backward compatible way: you need to deprecate the old argument in favour of the new one.
 
 ```{r}
@@ -125,7 +125,7 @@ write_sav <- function(data, path, compress = c("byte", "zsav", "none"), adjust_t
 }
 ```
 
-You could choose to deprecate `TRUE` and `FALSE`, but here we chose to the keep them since it's only a small amount of extra code in haven, and it means that existing users don't need to think about it.
+You could choose to deprecate `TRUE` and `FALSE`, but here we chose to keep them since it's only a small amount of extra code in haven, and it means that existing users don't need to think about it.
 See `?haven::read_sav` for how we communicated the change in the docs.
 
 In a future version of haven we might change the order of the enum so that the `zsav` compression method becomes the default.
