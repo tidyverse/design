@@ -69,7 +69,7 @@ I'll also show you two other alternatives which we don't generally recommend but
 ### `NULL` default
 
 The simplest, and most common, way to indicate that an argument is optional, but has a complex default is to use `NULL` as the default.
-Then in the body of the function you perform the actual calculation only if the is `NULL`.
+Then in the body of the function you perform the actual calculation only if the argument is `NULL`.
 For example, if we were to use this approach in `sample.int()`, it might look something like this:
 
 ```{r}
