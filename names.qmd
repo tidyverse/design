@@ -64,7 +64,7 @@ names(x)
 ```
 
 This means that the names of `x` are sometimes a character vector the same length of `x`, and sometimes `NULL`.
-rlang papers of this problem by providing `names2()` which always returns a character vector:
+rlang papers over this problem by providing `names2()` which always returns a character vector:
 
 ```{r}
 rlang::names2(x)
