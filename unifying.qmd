@@ -70,7 +70,7 @@ The most important API principle of the tidyverse is to be consistent.
 We want to find the smallest possible set of key ideas and use them again and again.
 This is important because it makes the tidyverse easier to learn and remember.
 
-(Another framing of this principle is [Less Volume, More Creativity](http://www.calvin.edu/~rpruim/talks/LessVolume/2015-06-24-AKL/LessVolume-2015-06-24.html#1), which comes from Mike McCarthy, the head coach of the Green Bay Packers, and popularised in Statistics Education by [Randall Pruim](https://www.calvin.edu/~rpruim/))
+(Another framing of this principle is [Less Volume, More Creativity](http://www.calvin.edu/~rpruim/talks/LessVolume/2015-06-24-AKL/LessVolume-2015-06-24.html#1), which comes from Mike McCarthy, the head coach of the Green Bay Packers, and popularised in Statistics Education by [Randall Pruim](https://www.calvin.edu/~rpruim/).)
 
 This is related to one of my favourite saying from the Python community:
 
@@ -87,11 +87,11 @@ The principle of consistency reveals itself in two primary ways: in function API
 The API of a function defines its external interface (independent of its internal implementation).
 Having consistent APIs means that each time you learn a function, learning the next function is a little easier; once you've mastered one package, mastering the next is easier.
 
-There are two ways that we make functions consistent that are so important that they're explicitly pull out as high-level principles below:
+There are two ways that we make functions consistent that are so important that they're explicitly pulled out as high-level principles below:
 
 -   Functions should be composable: each individual function should tackle one well contained problem, and you solve complex real-world problems by composing many individual functions.
 
--   Overall, the API should feel "functional", which is a technical term for the programming paradigm favoured by the tidyverse
+-   Overall, the API should feel "functional", which is a technical term for the programming paradigm favoured by the tidyverse.
 
 But consistency also applies to data structures: we want to ensure we use the same data structures again and again and again.
 Principally, we expect data to be stored in [tidy](https://www.jstatsoft.org/article/view/v059i10) data frames or [tibbles](https://github.com/hadley/tibble/).
