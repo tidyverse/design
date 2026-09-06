@@ -30,7 +30,7 @@ But there's only a limited number of short prefixes and I think it would break d
 Use suffixes for variations on a theme (e.g. `map_int()`, `map_lgl()`, `map_dbl()`; `str_locate()`, `str_locate_all()`.)
 
 Strive for thematic unity in related functions.
-Can you make related fuctions rhyme?
+Can you make related functions rhyme?
 Or have the same number of letters?
 Or similar background (i.e. all Germanic origins vs. French).
 
